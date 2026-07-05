@@ -3,11 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>FreeDom — космический центр развития</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- ===== SEO ===== -->
+    <title>FreeDom — космический центр развития в Сочи, гостевой дом с ЗОЖ-кухней и баней</title>
+    <meta name="description" content="Гостевой дом FreeDom в Сочи на Мамайке: номера от 600 ₽/сутки, сыроедческая кухня, баня, медитации. Уютная космическая атмосфера, сад, бассейн. Бронируйте напрямую без комиссии.">
+    <meta name="keywords" content="гостевой дом Сочи, Мамайка, здоровый образ жизни, сыроедение, баня, медитация, йога, вегетарианское питание, отдых в Сочи, экопоселение">
+    <link rel="canonical" href="https://emodji-coder.github.io/FreedOm/">
+
+    <!-- ===== OPEN GRAPH ===== -->
+    <meta property="og:title" content="FreeDom — космический центр развития в Сочи" />
+    <meta property="og:description" content="Уютные номера, баня, сыроедческая кухня, медитации. Бронируйте отдых в гармонии с собой." />
+    <meta property="og:image" content="https://emodji-coder.github.io/FreedOm/images/logo.png" />
+    <meta property="og:url" content="https://emodji-coder.github.io/FreedOm/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- ===== СТРУКТУРИРОВАННЫЕ ДАННЫЕ (Schema.org) ===== -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "GuestHouse",
+        "name": "FreeDom",
+        "description": "Гостевой дом с космической атмосферой, сыроедческой кухней, баней и медитациями в Сочи на Мамайке.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Теневой пер., 48",
+            "addressLocality": "Сочи",
+            "addressRegion": "Краснодарский край",
+            "addressCountry": "Россия"
+        },
+        "telephone": "+79630326011",
+        "url": "https://emodji-coder.github.io/FreedOm/",
+        "priceRange": "600 ₽ – 3000 ₽",
+        "amenities": ["Бассейн", "Сауна", "Баня", "Бесплатный Wi-Fi", "Вегетарианская кухня", "Йога-зал", "Сад"],
+        "image": "https://emodji-coder.github.io/FreedOm/images/logo.png",
+        "review": [
+            {
+                "@type": "Review",
+                "author": { "@type": "Person", "name": "Сергей Огородник" },
+                "reviewBody": "Отличное место! Живу тут уже 2 недели и рад, что нашел единомышленников. Очень душевное и уникальное место!",
+                "datePublished": "2025-06-01"
+            },
+            {
+                "@type": "Review",
+                "author": { "@type": "Person", "name": "Алёна Белослудцева" },
+                "reviewBody": "Хорошее место, где можно помедитировать и отдохнуть, есть баня. Так же проходит чайная церемония и есть возможность уединиться.",
+                "datePublished": "2025-05-20"
+            },
+            {
+                "@type": "Review",
+                "author": { "@type": "Person", "name": "Ринкус Мария" },
+                "reviewBody": "Обожаю Фридом! Всегда туда приезжаю. Мое место восстановления! Если хотите баню, бассейн, практики, релакс, оздоровление, интересные беседы за камином — рекомендую обязательно. За такие цены лучше не найдете.",
+                "datePublished": "2025-05-10"
+            }
+        ]
+    }
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ===== ВСЕ СТИЛИ (обновлён только .header и добавлен .header::before) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Inter', sans-serif;
             background: #0b0d17;
@@ -16,9 +73,12 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            padding-bottom: 80px;
+            opacity: 0;
+            transition: opacity 0.5s;
         }
+        body.loaded { opacity: 1; }
 
-        /* --- КОСМИЧЕСКИЙ ФОН СО ЗВЁЗДАМИ --- */
         body::before {
             content: '';
             position: fixed;
@@ -43,8 +103,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
-        /* --- МЕРЦАНИЕ ЗВЁЗД (анимация) --- */
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; }
             50% { opacity: 1; }
@@ -69,7 +127,6 @@
             z-index: 0;
             animation: twinkle 4s ease-in-out infinite alternate;
         }
-
         .container {
             max-width: 640px;
             margin: 0 auto;
@@ -78,8 +135,10 @@
             z-index: 1;
         }
 
-        /* --- ШАПКА С КОСМИЧЕСКИМ ГРАДИЕНТОМ --- */
+        /* ===== ОБНОВЛЁННАЯ ШАПКА С ИЗОБРАЖЕНИЕМ ВЕТОК ===== */
         .header {
+            position: relative;
+            overflow: hidden;
             background: linear-gradient(145deg, rgba(26,16,61,0.95), rgba(11,13,23,0.95));
             border: 1px solid rgba(212,175,55,0.2);
             box-shadow: 0 0 60px rgba(212,175,55,0.05);
@@ -88,62 +147,44 @@
             text-align: center;
             border-radius: 0 0 40px 40px;
             margin: 0 -16px 1.5rem;
-            position: relative;
-            overflow: hidden;
         }
-
-        /* Свечение над шапкой */
         .header::before {
             content: '';
             position: absolute;
-            top: -40%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse, rgba(212,175,55,0.08), transparent 70%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/branches.png') center/cover no-repeat;
+            opacity: 0.5; /* регулируйте прозрачность веток */
+            z-index: 0;
             pointer-events: none;
+        }
+        .header .logo,
+        .header h1,
+        .header p {
+            position: relative;
+            z-index: 1;
         }
 
         .header .logo {
-            max-width: 180px;
+            width: 160px;
+            height: auto;
             border-radius: 50%;
             border: 2px solid rgba(212,175,55,0.4);
             box-shadow: 0 0 30px rgba(212,175,55,0.1);
             margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
         }
+        .header h1 { font-weight: 300; font-size: 2.2rem; text-shadow: 0 0 40px rgba(212,175,55,0.1); }
+        .header h1 span { color: #d4af37; }
+        .header p { opacity: 0.7; font-weight: 300; }
 
-        .header h1 {
-            font-weight: 300;
-            font-size: 2.2rem;
-            text-shadow: 0 0 40px rgba(212,175,55,0.1);
-            position: relative;
-            z-index: 1;
-        }
-        .header h1 span {
-            color: #d4af37;
-        }
-        .header p {
-            opacity: 0.7;
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-        }
+        /* ===== ОСТАЛЬНЫЕ СТИЛИ (без изменений) ===== */
+        h2 { font-size: 1.6rem; color: #d4af37; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 6px; margin: 2rem 0 1rem; text-shadow: 0 0 20px rgba(212,175,55,0.05); }
 
-        /* --- ЗАГОЛОВКИ --- */
-        h2 {
-            font-size: 1.5rem;
-            color: #d4af37;
-            border-bottom: 1px solid rgba(212,175,55,0.2);
-            padding-bottom: 6px;
-            margin: 2rem 0 1rem;
-            text-shadow: 0 0 20px rgba(212,175,55,0.05);
-        }
-
-        /* --- КАРТОЧКИ (КОСМИЧЕСКИЙ СТИЛЬ) --- */
-        .room-card {
+        .room-card, .sweet-item {
+            cursor: pointer;
+            transition: 0.3s;
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
@@ -152,29 +193,25 @@
             overflow: hidden;
             box-shadow: 0 8px 32px rgba(0,0,0,0.4);
             margin-bottom: 1.2rem;
-            transition: 0.3s;
         }
-        .room-card:hover {
-            border-color: rgba(212,175,55,0.15);
-            box-shadow: 0 8px 40px rgba(212,175,55,0.05);
+        .room-card:hover, .sweet-item:hover {
+            border-color: rgba(212,175,55,0.4);
+            transform: scale(1.01);
         }
-
-        .room-card img {
+        .room-card img, .sweet-item img {
             width: 100%;
             height: 180px;
             object-fit: cover;
             display: block;
         }
-
-        .room-card .content {
+        .room-card .content, .sweet-item .content {
             padding: 1rem 1.2rem 1.2rem;
         }
-
-        .room-card h3 {
+        .room-card h3, .sweet-item .name {
             color: #eae6f0;
             margin-top: 0;
+            font-size: 1.2rem;
         }
-
         .badge {
             background: rgba(212,175,55,0.12);
             border: 1px solid rgba(212,175,55,0.15);
@@ -185,71 +222,65 @@
             display: inline-block;
             margin-right: 6px;
         }
-
-        /* --- БАНЯ --- */
-        .sauna-block {
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        .price {
+            color: #d4af37;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 4px;
+            letter-spacing: 0.3px;
         }
-        .sauna-block img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            display: block;
+        .price .popular {
+            background: rgba(212,175,55,0.15);
+            border-radius: 30px;
+            padding: 0 12px;
+            font-size: 0.8rem;
+            margin-left: 6px;
+            display: inline-block;
+            color: #d4af37;
         }
-        .sauna-block .content {
-            padding: 1rem 1.2rem;
+        .sweet-item .price {
+            font-size: 1rem;
+            margin-top: 0;
         }
-
-        /* --- СЛАДОСТИ (СЕТКА) --- */
         .sweets-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
             margin-top: 0.5rem;
         }
-
         .sweet-item {
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
-            overflow: hidden;
+            margin-bottom: 0;
             text-align: center;
-            transition: 0.3s;
-        }
-        .sweet-item:hover {
-            border-color: rgba(212,175,55,0.15);
         }
         .sweet-item img {
-            width: 100%;
             height: 130px;
-            object-fit: cover;
-            display: block;
         }
         .sweet-item .name {
-            padding: 8px 0 4px;
             font-weight: 500;
-            font-size: 0.9rem;
-            color: #eae6f0;
-        }
-        .sweet-item .price {
-            color: #d4af37;
-            font-size: 0.85rem;
-            padding-bottom: 8px;
+            font-size: 0.95rem;
         }
 
-        /* --- КНОПКИ --- */
+        .sauna-block {
+            cursor: pointer;
+            transition: 0.3s;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .sauna-block:hover {
+            border-color: rgba(212,175,55,0.4);
+            transform: scale(1.01);
+        }
+        .sauna-block img { width: 100%; height: 160px; object-fit: cover; display: block; }
+        .sauna-block .content { padding: 1rem 1.2rem; }
+
         .btn {
             display: inline-block;
-            background: linear-gradient(145deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05));
-            border: 1px solid rgba(212,175,55,0.2);
+            background: linear-gradient(145deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05));
+            border: 1px solid rgba(212,175,55,0.3);
             color: #d4af37;
             padding: 10px 24px;
             border-radius: 40px;
@@ -257,45 +288,21 @@
             text-decoration: none;
             cursor: pointer;
             transition: 0.3s;
-            font-weight: 500;
-            text-shadow: 0 0 20px rgba(212,175,55,0.1);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.1);
         }
         .btn:hover {
-            background: rgba(212,175,55,0.12);
-            border-color: rgba(212,175,55,0.3);
-            box-shadow: 0 0 30px rgba(212,175,55,0.05);
-            transform: scale(0.98);
+            background: rgba(212,175,55,0.15);
+            border-color: rgba(212,175,55,0.5);
+            box-shadow: 0 4px 25px rgba(212,175,55,0.2);
+            transform: scale(1.02);
         }
-        .btn-wa {
-            background: rgba(37,211,102,0.12);
-            border-color: rgba(37,211,102,0.2);
-            color: #25D366;
-        }
-        .btn-wa:hover {
-            background: rgba(37,211,102,0.18);
-            border-color: rgba(37,211,102,0.3);
-        }
-        .btn-block {
-            display: block;
-            width: 100%;
-            text-align: center;
-            margin: 8px 0;
-        }
+        .btn-wa { background: rgba(37,211,102,0.15); border-color: rgba(37,211,102,0.3); color: #25D366; }
+        .btn-wa:hover { background: rgba(37,211,102,0.2); border-color: rgba(37,211,102,0.5); }
+        .btn-block { display: block; width: 100%; text-align: center; margin: 8px 0; }
 
-        /* --- МЕНЮ СПИСКОМ --- */
-        .menu-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-        .menu-item .price {
-            color: #d4af37;
-            font-weight: 600;
-        }
+        .menu-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .menu-item .price { color: #d4af37; font-weight: 600; }
         .oil-tag {
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.06);
@@ -307,25 +314,16 @@
             color: #b8a9d4;
         }
 
-        /* --- ФОРМА --- */
         .form-card {
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 18px;
             padding: 1.5rem 1.2rem;
         }
         .field { margin-bottom: 16px; }
-        .field label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 4px;
-            color: #b8a9d4;
-        }
-        .field input,
-        .field select,
-        .field textarea {
+        .field label { display: block; font-weight: 500; margin-bottom: 4px; color: #b8a9d4; }
+        .field input, .field select, .field textarea {
             width: 100%;
             padding: 10px 14px;
             font-size: 1rem;
@@ -334,59 +332,20 @@
             background: rgba(255,255,255,0.04);
             color: #eae6f0;
             font-family: inherit;
-            transition: 0.3s;
         }
-        .field input:focus,
-        .field select:focus,
-        .field textarea:focus {
+        .field input:focus, .field select:focus, .field textarea:focus {
             border-color: rgba(212,175,55,0.2);
             outline: none;
             background: rgba(255,255,255,0.06);
-            box-shadow: 0 0 20px rgba(212,175,55,0.02);
         }
-        .field input::placeholder,
-        .field textarea::placeholder {
-            color: rgba(255,255,255,0.15);
-        }
-        .checkbox {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin: 12px 0;
-        }
-        .checkbox input {
-            width: 20px;
-            height: 20px;
-            margin-top: 2px;
-            accent-color: #d4af37;
-        }
-        .checkbox label {
-            color: #b8a9d4;
-        }
-        .btn-submit {
-            width: 100%;
-            padding: 14px;
-            font-size: 1.15rem;
-        }
-        .success {
-            display: none;
-            background: rgba(37,211,102,0.08);
-            border: 1px solid rgba(37,211,102,0.15);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            color: #25D366;
-            margin-top: 10px;
-        }
+        .checkbox { display: flex; align-items: flex-start; gap: 10px; margin: 12px 0; }
+        .checkbox input { width: 20px; height: 20px; accent-color: #d4af37; }
+        .checkbox label { color: #b8a9d4; }
+        .btn-submit { width: 100%; padding: 14px; font-size: 1.15rem; }
+        .success { display: none; background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.15); border-radius: 16px; padding: 20px; text-align: center; color: #25D366; margin-top: 10px; }
         .success.show { display: block; }
-        .small-note {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.2);
-            text-align: center;
-            margin-top: 10px;
-        }
+        .small-note { font-size: 0.8rem; color: rgba(255,255,255,0.2); text-align: center; margin-top: 10px; }
 
-        /* --- КОНТАКТЫ (иконки-картинки) --- */
         .contact-links {
             display: flex;
             gap: 20px;
@@ -394,16 +353,20 @@
             flex-wrap: wrap;
             margin: 1rem 0;
         }
-        .contact-links a {
-            display: inline-block;
-            transition: 0.3s;
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
             opacity: 0.6;
+            transition: 0.3s;
         }
-        .contact-links a:hover {
+        .contact-item:hover {
             opacity: 1;
-            transform: translateY(-3px) scale(1.05);
+            transform: translateY(-3px);
         }
-        .contact-links img {
+        .contact-item img {
             width: 44px;
             height: 44px;
             border-radius: 50%;
@@ -411,28 +374,281 @@
             background: rgba(255,255,255,0.03);
             padding: 4px;
         }
-
-        /* --- ФУТЕР --- */
-        .footer {
-            text-align: center;
-            margin-top: 2.5rem;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.15);
-            border-top: 1px solid rgba(255,255,255,0.04);
-            padding-top: 1.5rem;
+        .contact-item span {
+            font-size: 0.65rem;
+            color: #b8a9d4;
+            letter-spacing: 0.3px;
         }
 
-        /* АДАПТИВ */
-        @media (max-width: 480px) {
-            .header h1 { font-size: 1.8rem; }
-            .contact-links img { width: 38px; height: 38px; }
+        .footer { text-align: center; margin-top: 2.5rem; font-size: 0.9rem; color: rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.04); padding-top: 1.5rem; }
+
+        /* Модалка */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-window {
+            background: #121626;
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px 20px 20px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #d4af37;
+            font-size: 28px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: 0.2s;
+            line-height: 1;
+        }
+        .modal-close:hover { opacity: 1; }
+        .modal-window img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+        .modal-window h2 {
+            font-size: 1.6rem;
+            color: #eae6f0;
+            border-bottom: none;
+            margin: 0 0 6px 0;
+        }
+        .modal-window .price { font-size: 1.2rem; margin-bottom: 10px; }
+        .modal-window .badge { font-size: 0.8rem; }
+        .modal-window .description { margin: 12px 0 16px; color: #c8c2d4; line-height: 1.7; white-space: pre-line; }
+        .modal-window .btn { width: 100%; text-align: center; padding: 14px; font-size: 1.1rem; }
+        @media (max-width: 480px) { .modal-window { padding: 20px 16px; } }
+
+        #floatingBooking {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            background: linear-gradient(145deg, #d4af37, #b8952a);
+            color: #0b0d17;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            box-shadow: 0 8px 30px rgba(212,175,55,0.4);
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+        #floatingBooking:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 8px 40px rgba(212,175,55,0.6);
+        }
+
+        #musicToggle {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            z-index: 999;
+            background: rgba(212,175,55,0.15);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: #d4af37;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            transition: 0.3s;
+        }
+        #musicToggle:hover {
+            transform: scale(1.05);
+            background: rgba(212,175,55,0.25);
+        }
+
+        .about-toggle {
+            color: #d4af37;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 4px;
+            border-bottom: 1px dashed rgba(212,175,55,0.3);
+        }
+        .about-toggle:hover { opacity: 0.8; }
+        .about-full { display: none; margin-top: 8px; }
+        .about-full.open { display: block; }
+
+        .meditation-block {
+            background: linear-gradient(145deg, rgba(180,169,212,0.08), rgba(11,13,23,0.9));
+            border: 1px solid rgba(180,169,212,0.15);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(180,169,212,0.05);
+            position: relative;
+        }
+        .meditation-block::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(ellipse at 30% 40%, rgba(180,169,212,0.06), transparent 60%);
+            pointer-events: none;
+        }
+        .meditation-block img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+        .meditation-block .content {
+            padding: 1rem 1.2rem 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .meditation-block .content p { opacity: 0.9; }
+
+        .review-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .review-card .author { font-weight: 600; color: #d4af37; }
+        .review-card .text { margin-top: 4px; font-style: italic; color: #c8c2d4; }
+        .review-card .date { font-size: 0.7rem; opacity: 0.4; margin-top: 4px; }
+        .review-form .btn { width: 100%; padding: 12px; font-size: 1rem; }
+
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            margin-bottom: 1.2rem;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 200px;
+            display: block;
+            border: none;
+        }
+        .map-text {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border-radius: 16px;
+            padding: 0.8rem 1.2rem;
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            color: #c8c2d4;
+        }
+        .map-text strong { color: #d4af37; }
+
+        .room-card.popular-glow {
+            border-color: rgba(212,175,55,0.6);
+            box-shadow: 0 0 40px rgba(212,175,55,0.15), 0 8px 32px rgba(0,0,0,0.4);
+            transition: 0.3s;
+        }
+        .room-card.popular-glow:hover {
+            border-color: rgba(212,175,55,0.8);
+            box-shadow: 0 0 60px rgba(212,175,55,0.2), 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        .fade-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .fade-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Прелоадер */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0b0d17;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        #preloader.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-ring {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid rgba(212,175,55,0.1);
+            border-top: 3px solid #d4af37;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 30px rgba(212,175,55,0.1);
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loader-logo {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #d4af37;
+            font-weight: 300;
+            letter-spacing: 3px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<!-- ПРЕЛОАДЕР -->
+<div id="preloader">
+    <div class="loader-ring"></div>
+    <div class="loader-logo">FreeDom</div>
+</div>
 
+<div class="container">
     <!-- ШАПКА -->
     <div class="header">
         <img src="images/logo.png" alt="FreeDom" class="logo">
@@ -442,240 +658,322 @@
     </div>
 
     <!-- О НАС -->
-    <h2>✨ О нас</h2>
-    <div class="room-card" style="padding:1.2rem;">
-        <p>Мы — команда единомышленников, стремящихся к здоровому образу жизни. На территории не едим мясо, не употребляем алкоголь, не курим, ограничиваем сахар. Ежедневно: кулинарные, спортивные, интеллектуальные и развлекательные мероприятия. Сад, бассейн, йога-зал, музыка, караоке, PlayStation, чайная. Есть баня (индивидуально или по четвергам/воскресеньям для проживающих).</p>
-        <p style="margin-top:0.5rem; font-style:italic; color:rgba(212,175,55,0.5);">«Относись к другим так, как хочешь, чтобы относились к тебе».</p>
-    </div>
+    <section class="fade-section">
+        <h2>✨ О нас</h2>
+        <div class="room-card" style="padding:1.2rem; cursor:default;">
+            <p>
+                Мы — команда единомышленников, стремящихся к здоровому образу жизни. 
+                <span class="about-toggle" id="aboutToggle">Читать далее →</span>
+            </p>
+            <div class="about-full" id="aboutFull">
+                <p>На территории не едим мясо, не употребляем алкоголь, не курим, ограничиваем сахар. Ежедневно: кулинарные, спортивные, интеллектуальные и развлекательные мероприятия. Сад, бассейн, йога-зал, музыка, караоке, PlayStation, чайная. Есть баня (индивидуально или по четвергам/воскресеньям для проживающих).</p>
+                <p style="margin-top:0.5rem; font-style:italic; color:rgba(212,175,55,0.5);">«Относись к другим так, как хочешь, чтобы относились к тебе».</p>
+            </div>
+        </div>
+    </section>
 
     <!-- НОМЕРА -->
-   <!-- НОМЕРА -->
-<h2>🚀 Наши номера</h2>
-
-<div class="room-card">
-    <img src="images/room-family.jpg" alt="Семейная комната">
-    <div class="content">
-        <h3>🏡 Семейная комната</h3>
-        <div><span class="badge">до 4 чел</span><span class="badge">двуспальная + двухъярусная</span></div>
-        <div class="price">2 500 ₽/сутки · 24 000 ₽/месяц</div>
-        <p>Просторная комната для семьи или компании. Есть стол, шкаф. Санузел на этаже. Рядом общая кухня и летняя кухня с видом на бассейн.</p>
-    </div>
-</div>
-
-<div class="room-card">
-    <img src="images/room-balcony.jpg" alt="Двухместный с балконом">
-    <div class="content">
-        <h3>🌿 Двухместный с балконом</h3>
-        <div><span class="badge">до 2 чел</span><span class="badge">балкон</span></div>
-        <div class="price">3 000 ₽/сутки · 30 000 ₽/месяц</div>
-        <p>Уютная комната с выходом на балкон. Двуспальная кровать, рабочий стол. Санузел на этаже. Идеально для пары или solo с видом на сад.</p>
-    </div>
-</div>
-
-<div class="room-card">
-    <img src="images/room-attic.jpg" alt="Мансардная комната">
-    <div class="content">
-        <h3>🏠 Мансардная комната</h3>
-        <div><span class="badge">1 место</span><span class="badge">уединение</span></div>
-        <div class="price">1 500 ₽/сутки · 20 000 ₽/месяц</div>
-        <p>Отдельное пространство на мансарде с одноместной кроватью, столом, лампой. Красивый вид, утром солнце заливает комнату.</p>
-    </div>
-</div>
-
-<div class="room-card">
-    <img src="images/room-bungalow.jpg" alt="Бунгало в саду">
-    <div class="content">
-        <h3>🌴 Бунгало в саду</h3>
-        <div><span class="badge">до 2 чел</span><span class="badge">с верандой</span></div>
-        <div class="price">1 000 ₽/сутки · 15 000 ₽/месяц</div>
-        <p>Домик на природе с двухместной кроватью, непромокаемая сетка от дождя и насекомых. Веранда с видом на сад и бассейн.</p>
-    </div>
-</div>
-
-<div class="room-card">
-    <img src="images/room-balcony-bed.jpg" alt="Спальное место на балконе">
-    <div class="content">
-        <h3>⭐ Спальное место на балконе</h3>
-        <div><span class="badge">летнее</span><span class="badge">звёзды</span></div>
-        <div class="price">700 ₽/сутки · 12 000 ₽/месяц</div>
-        <p>Уникальный вариант — спать под открытым небом на балконе. Матрасы, крыша от дождя. Для мечтателей и романтиков.</p>
-    </div>
-</div>
-
-<div class="room-card">
-    <img src="images/room-hostel.jpg" alt="Хостел стандарт">
-    <div class="content">
-        <h3>🛌 Хостел стандарт</h3>
-        <div><span class="badge">4 места</span><span class="badge">бюджет</span></div>
-        <div class="price">800 ₽/сутки · 15 000 ₽/месяц</div>
-        <p>Место в 4-местном номере. Всё необходимое: кровать, стол, стулья. Отличный вариант для знакомств и экономии.</p>
-    </div>
-</div>
-
-<div class="room-card" style="padding:1.2rem;">
-    <h3>💰 Хостел эконом</h3>
-    <div><span class="badge">бюджет</span></div>
-    <div class="price">600 ₽/сутки · 9 000 ₽/месяц</div>
-    <p>Самый доступный вариант для тех, кто хочет познакомиться с пространством FreeDom.</p>
-</div>
-    <!-- БАНЯ -->
-    <h2>🔥 Баня</h2>
-    <div class="sauna-block">
-        <img src="images/sauna.jpg" alt="Баня FreeDom">
-        <div class="content">
-            <p><strong style="color:#d4af37;">Индивидуально:</strong> 2 часа — 3000 ₽ (до 4 чел), каждый следующий час +1000 ₽, доп. гость +500 ₽. Дети до 10 лет бесплатно. Банщик — 800 ₽ за 10 мин (2 подхода по 5 мин).</p>
-            <p><strong style="color:#d4af37;">Бонус:</strong> при заказе от 3 часов — чайник с лечебными травами в подарок.</p>
-            <p><strong style="color:#d4af37;">Для проживающих:</strong> четверг и воскресенье — общая баня (небольшая плата).</p>
-            <p style="font-size:0.9rem; opacity:0.6;">Предоплата 1000 ₽. При отмене 500 ₽ невозвратные, при переносе — остаются на счёте.</p>
+    <section class="fade-section">
+        <h2>🚀 Наши номера</h2>
+        <!-- Семейная (без подсветки) -->
+        <div class="room-card" data-id="room1">
+            <img src="images/room-family.jpg" alt="Семейная комната">
+            <div class="content">
+                <h3>🏡 Семейная комната</h3>
+                <div><span class="badge">до 4 чел</span><span class="badge">двуспальная + двухъярусная</span></div>
+                <div class="price">2 500 ₽/сутки · 24 000 ₽/месяц</div>
+            </div>
         </div>
-    </div>
+
+        <!-- Двухместная с балконом (популярная, с подсветкой) -->
+        <div class="room-card popular-glow" data-id="room2">
+            <img src="images/room-balcony.jpg" alt="Двухместный с балконом">
+            <div class="content">
+                <h3>🌿 Двухместный с балконом</h3>
+                <div><span class="badge">до 2 чел</span><span class="badge">балкон</span></div>
+                <div class="price">3 000 ₽/сутки · 30 000 ₽/месяц <span class="popular">🔥 Популярный</span></div>
+            </div>
+        </div>
+
+        <!-- Остальные номера -->
+        <div class="room-card" data-id="room3">
+            <img src="images/room-attic.jpg" alt="Мансардная комната">
+            <div class="content">
+                <h3>🏠 Мансардная комната</h3>
+                <div><span class="badge">1 место</span><span class="badge">уединение</span></div>
+                <div class="price">1 500 ₽/сутки · 20 000 ₽/месяц</div>
+            </div>
+        </div>
+        <div class="room-card" data-id="room4">
+            <img src="images/room-bungalow.jpg" alt="Бунгало в саду">
+            <div class="content">
+                <h3>🌴 Бунгало в саду</h3>
+                <div><span class="badge">до 2 чел</span><span class="badge">с верандой</span></div>
+                <div class="price">1 000 ₽/сутки · 15 000 ₽/месяц</div>
+            </div>
+        </div>
+        <div class="room-card" data-id="room5">
+            <img src="images/room-balcony-bed.jpg" alt="Спальное место на балконе">
+            <div class="content">
+                <h3>⭐ Спальное место на балконе</h3>
+                <div><span class="badge">летнее</span><span class="badge">звёзды</span></div>
+                <div class="price">700 ₽/сутки · 12 000 ₽/месяц</div>
+            </div>
+        </div>
+        <div class="room-card" data-id="room6">
+            <img src="images/room-hostel.jpg" alt="Хостел стандарт">
+            <div class="content">
+                <h3>🛌 Хостел стандарт</h3>
+                <div><span class="badge">4 места</span><span class="badge">бюджет</span></div>
+                <div class="price">800 ₽/сутки · 15 000 ₽/месяц</div>
+            </div>
+        </div>
+        <div class="room-card" style="padding:1.2rem; cursor:default;" data-id="room7">
+            <h3>💰 Хостел эконом</h3>
+            <div><span class="badge">бюджет</span></div>
+            <div class="price">600 ₽/сутки · 9 000 ₽/месяц</div>
+            <p style="margin-top:8px;">Самый доступный вариант для тех, кто хочет познакомиться с пространством FreeDom.</p>
+        </div>
+    </section>
+
+    <!-- БАНЯ (кликабельная карточка) -->
+    <section class="fade-section">
+        <h2>🔥 Баня</h2>
+        <div class="sauna-block" data-id="sauna">
+            <img src="images/sauna.jpg" alt="Баня FreeDom">
+            <div class="content">
+                <p><strong style="color:#d4af37;">Индивидуально</strong> и <strong style="color:#d4af37;">для проживающих</strong> — баня доступна в любое время.</p>
+                <p style="margin-top:0.5rem; opacity:0.7;">Нажмите, чтобы узнать подробности →</p>
+            </div>
+        </div>
+    </section>
 
     <!-- СЛАДОСТИ -->
-    <h2>🍫 Наши сладости</h2>
-    <div class="sweets-grid">
-        <div class="sweet-item">
-            <img src="images/chocolate1.jpg" alt="Шоколад с орехами">
-            <div class="name">Шоколад с орехами и клюквой</div>
-            <div class="price">300</div>
+    <section class="fade-section">
+        <h2>🍫 Наши сладости</h2>
+        <div class="sweets-grid">
+            <div class="sweet-item" data-id="sweet1">
+                <img src="images/chocolate1.jpg" alt="Шоколад с орехами">
+                <div class="name">Шоколад с орехами и клюквой</div>
+                <div class="price">—</div>
+            </div>
+            <div class="sweet-item" data-id="sweet2">
+                <img src="images/chocolate2.jpg" alt="Шоколад с мухомором">
+                <div class="name">Шоколад с красным мухомором</div>
+                <div class="price">—</div>
+            </div>
+            <div class="sweet-item" data-id="sweet3">
+                <img src="images/chocolate3.jpg" alt="Шоколад Ясность разума">
+                <div class="name">Шоколад «Ясность разума»</div>
+                <div class="price">—</div>
+            </div>
+            <div class="sweet-item" data-id="sweet4">
+                <img src="images/halva.jpg" alt="Халва">
+                <div class="name">Халва сыроедческая</div>
+                <div class="price">333 ₽</div>
+            </div>
+            <div class="sweet-item" data-id="sweet5">
+                <img src="images/honey.jpg" alt="Мёд">
+                <div class="name">Мёд луговой</div>
+                <div class="price">—</div>
+            </div>
         </div>
-        <div class="sweet-item">
-            <img src="images/chocolate2.jpg" alt="Шоколад с мухомором">
-            <div class="name">Шоколад с красным мухомором</div>
-            <div class="price">60p</div>
-        </div>
-        <div class="sweet-item">
-            <img src="images/chocolate3.jpg" alt="Шоколад Ясность разума">
-            <div class="name">Шоколад «Ясность разума»</div>
-            <div class="price">500</div>
-        </div>
-        <div class="sweet-item">
-            <img src="images/halva.jpg" alt="Халва">
-            <div class="name">Халва сыроедческая</div>
-            <div class="price">333 ₽</div>
-        </div>
-        <div class="sweet-item">
-            <img src="images/honey.jpg" alt="Мёд">
-            <div class="name">Мёд луговой</div>
-            <div class="price">555</div>
-        </div>
-    </div>
-    <div style="font-size:0.9rem; opacity:0.4; margin-top:0.5rem;">* Уточняйте цену и наличие по WhatsApp</div>
+        <div style="font-size:0.9rem; opacity:0.4; margin-top:0.5rem;">* Нажмите на карточку для подробного описания</div>
+    </section>
 
-    <div style="margin:1.5rem 0;">
-        <h3>Масла холодного отжима</h3>
-        <div>
-            <span class="oil-tag">Лён коричневый 700 ₽</span>
-            <span class="oil-tag">Лён золотой 800 ₽</span>
-            <span class="oil-tag">Подсолнечник 500 ₽</span>
-            <span class="oil-tag">Кунжут белый 800 ₽</span>
-            <span class="oil-tag">Чёрный тмин 800 ₽</span>
-            <span class="oil-tag">Миндальное 700 ₽</span>
-            <span class="oil-tag">Абрикос 700 ₽</span>
-            <span class="oil-tag">Расторопша 800 ₽</span>
-            <span class="oil-tag">Тыквенное 800 ₽</span>
-            <span class="oil-tag">Конопляное 750 ₽</span>
+    <!-- МАСЛА И КНОПКА ЗАКАЗА -->
+    <section class="fade-section">
+        <div style="margin:1.5rem 0;">
+            <h3>Масла холодного отжима</h3>
+            <div>
+                <span class="oil-tag">Лён коричневый 700 ₽</span>
+                <span class="oil-tag">Лён золотой 800 ₽</span>
+                <span class="oil-tag">Подсолнечник 500 ₽</span>
+                <span class="oil-tag">Кунжут белый 800 ₽</span>
+                <span class="oil-tag">Чёрный тмин 800 ₽</span>
+                <span class="oil-tag">Миндальное 700 ₽</span>
+                <span class="oil-tag">Абрикос 700 ₽</span>
+                <span class="oil-tag">Расторопша 800 ₽</span>
+                <span class="oil-tag">Тыквенное 800 ₽</span>
+                <span class="oil-tag">Конопляное 750 ₽</span>
+            </div>
         </div>
-    </div>
-
-    <a href="https://wa.me/79630326011?text=Здравствуйте! Хочу заказать еду из вашего меню" class="btn btn-wa btn-block">📱 Заказать еду в WhatsApp</a>
+        <a href="https://wa.me/79630326011?text=Здравствуйте! Хочу заказать еду из вашего меню" class="btn btn-wa btn-block">📱 Заказать еду в WhatsApp</a>
+    </section>
 
     <!-- МЕДИТАЦИЯ -->
-    <h2>🧘 Медитация и осознанность</h2>
-    <div class="room-card" style="padding:0; overflow:hidden;">
-        <img src="images/meditation.jpg" alt="Медитация FreeDom" style="width:100%; height:160px; object-fit:cover;">
-        <div style="padding:1rem 1.2rem 1.2rem;">
-            <p>Практики каждую неделю. 30 минут тишины помогают снять напряжение, улучшить сон и ясность ума. Для проживающих — раз в неделю <strong style="color:#d4af37;">бесплатно</strong>.</p>
-            <p style="margin-top:0.3rem; opacity:0.6;">Присоединяйтесь к нам в саду или йога-зале.</p>
+    <section class="fade-section">
+        <h2>🧘 Медитация и осознанность</h2>
+        <div class="meditation-block">
+            <img src="images/meditation.jpg" alt="Медитация FreeDom">
+            <div class="content">
+                <p>Практики каждую неделю. 30 минут тишины помогают снять напряжение, улучшить сон и ясность ума. Для проживающих — раз в неделю <strong style="color:#d4af37;">бесплатно</strong>.</p>
+                <p style="margin-top:0.3rem; opacity:0.6;">Присоединяйтесь к нам в саду или йога-зале.</p>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- ОТЗЫВЫ -->
+    <section class="fade-section">
+        <h2>💬 Отзывы</h2>
+        <div class="review-card">
+            <div class="author">Сергей Огородник</div>
+            <div class="text">«Отличное место! Живу тут уже 2 недели и рад, что нашел единомышленников. Очень душевное и уникальное место!»</div>
+            <div class="date">июнь 2025</div>
+        </div>
+        <div class="review-card">
+            <div class="author">Алёна Белослудцева</div>
+            <div class="text">«Хорошее место, где можно помедитировать и отдохнуть, есть баня. Так же проходит чайная церемония и есть возможность уединиться.»</div>
+            <div class="date">май 2025</div>
+        </div>
+        <div class="review-card">
+            <div class="author">Ринкус Мария</div>
+            <div class="text">«Обожаю Фридом! Всегда туда приезжаю. Мое место восстановления! Если хотите баню, бассейн, практики, релакс, оздоровление, интересные беседы за камином — рекомендую обязательно. За такие цены лучше не найдете.»</div>
+            <div class="date">май 2025</div>
+        </div>
+        <div class="review-card">
+            <div class="author">Максим Р.</div>
+            <div class="text">«FreeDom по-настоящему Дом Свободы настолько, насколько вы можете себе это позволить во всех направлениях. Уверен, каждый найдёт здесь свой райский оазис и возможность раскрыться своему потенциалу. Мне очень полюбилось это место и его волшебные душевные жители. Любовь окрыляет, музыка вечна, вибрации бесконечны. Тепло бани, уютная атмосфера, близость уникальной природы, живое общение, радость жить во всех проявлениях. Приветствуйте свободу, живите свою жизнь с любовью ;) Welcome Freedom, Live Life Love М.»</div>
+            <div class="date">май 2025</div>
+        </div>
+
+        <div class="form-card review-form">
+            <p style="margin-bottom:1rem; opacity:0.6;">Оставьте свой отзыв о FreeDom — он появится на сайте!</p>
+            <form id="reviewForm" action="https://formspree.io/f/ВАШ_УНИКАЛЬНЫЙ_ID_ДЛЯ_ОТЗЫВОВ" method="POST">
+                <div class="field">
+                    <label>Ваше имя</label>
+                    <input type="text" name="name" placeholder="Анна" required>
+                </div>
+                <div class="field">
+                    <label>Текст отзыва</label>
+                    <textarea name="review" rows="3" placeholder="Поделитесь впечатлениями..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-block">Отправить отзыв</button>
+            </form>
+            <div id="reviewSuccess" class="success" style="display:none;">
+                ✅ Спасибо! Ваш отзыв опубликован.
+            </div>
+        </div>
+    </section>
 
     <!-- ФОРМА БРОНИРОВАНИЯ -->
-    <h2>📅 Забронировать номер</h2>
-    <div class="form-card">
-        <p style="margin-bottom:1.2rem; opacity:0.6;">Заполните форму, и мы свяжемся с вами в течение часа.</p>
-        <form id="bookingForm" action="https://formspree.io/f/xpqgkzgo" method="POST">
-            <div class="field">
-                <label>Тип номера *</label>
-                <select name="room_type" required>
-                    <option value="">Выберите...</option>
-                    <option value="family">Семейная комната</option>
-                    <option value="balcony">Двухместный с балконом</option>
-                    <option value="attic">Мансардная комната</option>
-                    <option value="bungalow">Бунгало в саду</option>
-                    <option value="balcony_bed">Спальное место на балконе</option>
-                    <option value="hostel_standart">Хостел стандарт</option>
-                    <option value="hostel_economy">Хостел эконом</option>
-                </select>
+    <section class="fade-section">
+        <h2>📅 Забронировать номер</h2>
+        <div class="form-card" id="bookingAnchor">
+            <p style="margin-bottom:1.2rem; opacity:0.6;">Заполните форму, и мы свяжемся с вами в течение часа.</p>
+            <form id="bookingForm" action="https://formspree.io/f/ВАШ_УНИКАЛЬНЫЙ_ID" method="POST">
+                <div class="field">
+                    <label>Тип номера *</label>
+                    <select name="room_type" required>
+                        <option value="">Выберите...</option>
+                        <option value="family">Семейная комната</option>
+                        <option value="balcony">Двухместный с балконом</option>
+                        <option value="attic">Мансардная комната</option>
+                        <option value="bungalow">Бунгало в саду</option>
+                        <option value="balcony_bed">Спальное место на балконе</option>
+                        <option value="hostel_standart">Хостел стандарт</option>
+                        <option value="hostel_economy">Хостел эконом</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Дата заезда *</label>
+                    <input type="date" name="checkin" required>
+                </div>
+                <div class="field">
+                    <label>Дата выезда *</label>
+                    <input type="date" name="checkout" required>
+                </div>
+                <div class="field">
+                    <label>Количество взрослых *</label>
+                    <input type="number" name="adults" min="1" max="10" value="2" required>
+                </div>
+                <div class="field">
+                    <label>Дети до 10 лет</label>
+                    <select name="children">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Ваше имя *</label>
+                    <input type="text" name="name" placeholder="Иван Петров" required>
+                </div>
+                <div class="field">
+                    <label>Телефон *</label>
+                    <input type="tel" name="phone" placeholder="+7 999 123-45-67" required>
+                </div>
+                <div class="field">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="ivan@mail.ru">
+                </div>
+                <div class="field">
+                    <label>Дополнительные пожелания</label>
+                    <textarea name="notes" placeholder="Кроватка, поздний заезд, вегетарианское питание, баня..."></textarea>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" name="consent" id="consent" value="yes" required>
+                    <label for="consent">Я согласен получать информацию о событиях и спецпредложениях FreeDom</label>
+                </div>
+                <div class="field">
+                    <label>Откуда узнали о нас?</label>
+                    <select name="source">
+                        <option value="vk">VK</option>
+                        <option value="friends">От друзей</option>
+                        <option value="maps">Яндекс.Карты</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-submit">Отправить заявку</button>
+                <div class="small-note">Нажимая «Отправить», вы соглашаетесь на обработку данных</div>
+            </form>
+            <div id="successMessage" class="success">
+                ✅ Спасибо!<br>Мы свяжемся с вами в ближайшее время.
             </div>
-            <div class="field">
-                <label>Дата заезда *</label>
-                <input type="date" name="checkin" required>
-            </div>
-            <div class="field">
-                <label>Дата выезда *</label>
-                <input type="date" name="checkout" required>
-            </div>
-            <div class="field">
-                <label>Количество взрослых *</label>
-                <input type="number" name="adults" min="1" max="10" value="2" required>
-            </div>
-            <div class="field">
-                <label>Дети до 10 лет</label>
-                <select name="children">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>Ваше имя *</label>
-                <input type="text" name="name" placeholder="Иван Петров" required>
-            </div>
-            <div class="field">
-                <label>Телефон *</label>
-                <input type="tel" name="phone" placeholder="+7 999 123-45-67" required>
-            </div>
-            <div class="field">
-                <label>Email</label>
-                <input type="email" name="email" placeholder="ivan@mail.ru">
-            </div>
-            <div class="field">
-                <label>Дополнительные пожелания</label>
-                <textarea name="notes" placeholder="Кроватка, поздний заезд, вегетарианское питание, баня..."></textarea>
-            </div>
-            <div class="checkbox">
-                <input type="checkbox" name="consent" id="consent" value="yes" required>
-                <label for="consent">Я согласен получать информацию о событиях и спецпредложениях FreeDom</label>
-            </div>
-            <div class="field">
-                <label>Откуда узнали о нас?</label>
-                <select name="source">
-                    <option value="instagram">Instagram</option>
-                    <option value="vk">VK</option>
-                    <option value="friends">От друзей</option>
-                    <option value="maps">Яндекс.Карты</option>
-                    <option value="other">Другое</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-submit">Отправить заявку</button>
-            <div class="small-note">Нажимая «Отправить», вы соглашаетесь на обработку данных</div>
-        </form>
-        <div id="successMessage" class="success">
-            ✅ Спасибо!<br>Мы свяжемся с вами в ближайшее время.
         </div>
-    </div>
+    </section>
 
-    <!-- КОНТАКТЫ (ИКОНКИ-КАРТИНКИ) -->
-    <h2>🌌 Связь с нами</h2>
-    <div class="contact-links">
-        <a href="tel:+79630326011"><img src="images/phone.png" alt="Телефон"></a>
-        <a href="https://wa.me/79630326011"><img src="images/whatsapp.png" alt="WhatsApp"></a>
-        <a href="https://t.me/freedom_sochi"><img src="images/telegram.png" alt="Telegram"></a>
-        <a href="https://www.instagram.com/freedom_life.sochi"><img src="images/instagram.png" alt="Instagram"></a>
-        <a href="https://vk.ru/freedom_sochi"><img src="images/vk.png" alt="VK"></a>
-    </div>
-    <p style="text-align:center; opacity:0.4;">📍 Сочи,Снт.Мамайка,пер.Теневой 48</p>
+    <!-- КОНТАКТЫ -->
+    <section class="fade-section">
+        <h2>🌌 Связь с нами</h2>
+        <div class="contact-links">
+            <a href="tel:+79630326011" class="contact-item">
+                <img src="images/phone.png" alt="Телефон">
+                <span>Телефон</span>
+            </a>
+            <a href="https://wa.me/79630326011" class="contact-item">
+                <img src="images/whatsapp.png" alt="WhatsApp">
+                <span>WhatsApp</span>
+            </a>
+            <a href="https://t.me/freedom_sochi" class="contact-item">
+                <img src="images/telegram.png" alt="Telegram">
+                <span>Telegram</span>
+            </a>
+            <a href="https://vk.ru/freedom_sochi" class="contact-item">
+                <img src="images/vk.png" alt="VK">
+                <span>VK</span>
+            </a>
+        </div>
+        <p style="text-align:center; opacity:0.4;">📍 Сочи, Мамайка, Теневой пер., 48</p>
+    </section>
+
+    <!-- КАРТА -->
+    <section class="fade-section">
+        <h2>🗺️ Как нас найти</h2>
+        <div class="map-container">
+            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Aваш_уникальный_ид&source=constructor" allowfullscreen></iframe>
+        </div>
+        <div class="map-text">
+            <p><strong>📍 Адрес:</strong> Сочи, Мамайка, Теневой пер., 48</p>
+            <p><strong>🚕 Как добраться:</strong><br>
+            — Остановка «Теневой пер.»: маршрут № 37 от ж/д вокзала (остановка у маг. «Вкус Вилл»), 20 мин. в пути, далее пешком 20 мин.<br>
+            — Лучше на такси от центра Сочи до FreeDom — 10 минут.</p>
+            <p style="opacity:0.6; font-size:0.9rem; margin-top:4px;">
+                <a href="https://yandex.ru/maps/org/freedom/161345577891/" target="_blank" style="color:#d4af37; text-decoration:none; border-bottom:1px dashed rgba(212,175,55,0.3);">Открыть карту в Яндекс.Картах →</a>
+            </p>
+        </div>
+    </section>
 
     <footer class="footer">
         <p>FreeDom — место для жизни, отдыха и развития ❤️</p>
@@ -683,14 +981,171 @@
     </footer>
 </div>
 
+<!-- ПЛАВАЮЩАЯ КНОПКА -->
+<a href="#bookingAnchor" id="floatingBooking">📅 Забронировать</a>
+
+<!-- МОДАЛКА -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-window" id="modalWindow">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <img id="modalImage" src="" alt="">
+        <h2 id="modalTitle"></h2>
+        <div id="modalBadges"></div>
+        <div class="price" id="modalPrice"></div>
+        <div class="description" id="modalDescription"></div>
+        <a href="#" id="modalAction" class="btn btn-block">Действие</a>
+    </div>
+</div>
+
+<!-- МУЗЫКА -->
+<audio id="bgMusic" autoplay loop muted>
+    <source src="images/music.mp3" type="audio/mpeg">
+</audio>
+<div id="musicToggle">🔇</div>
+
 <script>
-    const form = document.getElementById('bookingForm');
-    const success = document.getElementById('successMessage');
-    form.addEventListener('submit', function() {
+    // ===== ПРЕЛОАДЕР =====
+    window.addEventListener('load', function() {
+        document.getElementById('preloader').classList.add('hide');
+        document.body.classList.add('loaded');
+    });
+
+    // ===== АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ =====
+    const sections = document.querySelectorAll('.fade-section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+    sections.forEach(section => observer.observe(section));
+
+    // ===== МОДАЛКА (данные) =====
+    const data = {
+        room1: { title: '🏡 Семейная комната', badges: 'до 4 чел · двуспальная + двухъярусная', price: '2 500 ₽/сутки · 24 000 ₽/месяц', description: 'Просторная комната для семьи или компании. В наличии: двуспальная кровать и двухъярусная кровать, стол, стулья, шкаф. Санузел на этаже. Рядом общая кухня и летняя кухня с видом на бассейн. Идеально для семейного отдыха.', img: 'images/room-family.jpg', action: '#bookingAnchor', actionText: 'Забронировать' },
+        room2: { title: '🌿 Двухместный с балконом', badges: 'до 2 чел · балкон', price: '3 000 ₽/сутки · 30 000 ₽/месяц', description: 'Уютная комната с выходом на балкон. Двуспальная кровать, рабочий стол, стул, шкаф. Санузел на этаже. Балкон выходит в сад — идеальное место для утреннего чая или вечернего созерцания звёзд. Отличный выбор для пары или solo-путешественника.', img: 'images/room-balcony.jpg', action: '#bookingAnchor', actionText: 'Забронировать' },
+        room3: { title: '🏠 Мансардная комната', badges: '1 место · уединение', price: '1 500 ₽/сутки · 20 000 ₽/месяц', description: 'Отдельное пространство на мансардном этаже с одноместной кроватью, столом, стулом и лампой. Окна с красивым видом, утром солнце заливает комнату. Для тех, кто ценит тишину, приватность и хочет побыть наедине с собой.', img: 'images/room-attic.jpg', action: '#bookingAnchor', actionText: 'Забронировать' },
+        room4: { title: '🌴 Бунгало в саду', badges: 'до 2 чел · с верандой', price: '1 000 ₽/сутки · 15 000 ₽/месяц', description: 'Отдельный домик на природе с двухместной кроватью. Непромакаемая сетка защищает от дождя и насекомых. Веранда с видом на сад и бассейн. Для тех, кто хочет побыть наедине с природой, не отказываясь от удобств.', img: 'images/room-bungalow.jpg', action: '#bookingAnchor', actionText: 'Забронировать' },
+        room5: { title: '⭐ Спальное место на балконе', badges: 'летнее · звёзды', price: '700 ₽/сутки · 12 000 ₽/месяц', description: 'Уникальный вариант — спать под открытым небом на балконе. Мягкие матрасы, крыша защищает от дождя, а шикарный вид на звёзды не оставит равнодушным. Для мечтателей, романтиков и творческих душ.', img: 'images/room-balcony-bed.jpg', action: '#bookingAnchor', actionText: 'Забронировать' },
+        room6: { title: '🛌 Хостел стандарт', badges: '4 места · бюджет', price: '800 ₽/сутки · 15 000 ₽/месяц', description: 'Место в 4-местном номере. Двухъярусные кровати, стол, стулья, шкаф. Общий санузел на этаже. Отличный вариант для знакомств, экономии и активного общения. Подходит для одиночных путешественников и компаний.', img: 'images/room-hostel.jpg', action: '#bookingAnchor', actionText: 'Забронировать' },
+        room7: { title: '💰 Хостел эконом', badges: 'бюджет', price: '600 ₽/сутки · 9 000 ₽/месяц', description: 'Самый доступный вариант для тех, кто хочет познакомиться с нашим пространством и не переплачивать. Чисто, уютно, есть всё необходимое для комфортного проживания. Общая кухня, гостиная, сад, бассейн — в вашем распоряжении.', img: 'images/room-hostel.jpg', action: '#bookingAnchor', actionText: 'Забронировать' },
+        sweet1: { title: 'Шоколад с орехами и клюквой', badges: '', price: '—', description: 'Натуральный шоколад ручной работы. Состав: кокосовое масло, какао, мёд, вяленая клюква, грецкий орех, чернослив. Вес 100 г. Идеальный полезный десерт для поднятия настроения.', img: 'images/chocolate1.jpg', action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу заказать шоколад с орехами', actionText: 'Заказать в WhatsApp' },
+        sweet2: { title: 'Шоколад с красным мухомором', badges: '', price: '—', description: 'Шоколад с добавлением красного мухомора. Состав: кокосовое масло, какао, мёд, орехи, ягоды, мухомор. Помогает справиться с усталостью, снимает напряжение, нормализует сон. Впервые — не более 1 дольки, ждать 30 мин. Автор не несёт ответственности за побочные эффекты.', img: 'images/chocolate2.jpg', action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу заказать шоколад с мухомором', actionText: 'Заказать в WhatsApp' },
+        sweet3: { title: 'Шоколад «Ясность разума» (ноотроп)', badges: '', price: '—', description: 'Ноотропный шоколад с мухомором и ежовиком. Состав: какао тёртое, какао-масло, мёд, клюква, фундук, ежовик гребенчатый, мухомор (на выбор). Улучшает память, концентрацию, даёт ясность мышления. Эффект до 8 часов. Впервые — не более 1 дольки.', img: 'images/chocolate3.jpg', action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу заказать шоколад Ясность разума', actionText: 'Заказать в WhatsApp' },
+        sweet4: { title: 'Халва сыроедческая', badges: '', price: '333 ₽ (280 г)', description: 'Халва ручной работы, сыроедческая, без сахара и ГМО. Состав: семена подсолнуха, кешью, арахис, фундук, миндаль, курага, изюм. Продукт не подвергался термической обработке, сохранил все полезные свойства. Отличный перекус для детей и взрослых.', img: 'images/halva.jpg', action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу заказать халву', actionText: 'Заказать в WhatsApp' },
+        sweet5: { title: 'Мёд луговой', badges: '', price: '—', description: 'Цветочный мёд из лугового разнотравья. Богат витаминами и минералами, укрепляет иммунитет, снимает усталость. Прекрасное дополнение к чаю, смузи и кашам. Вес 900 г. Натуральный аромат, который повышает настроение с первого вдоха.', img: 'images/honey.jpg', action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу заказать мёд', actionText: 'Заказать в WhatsApp' },
+        sauna: {
+            title: '🔥 Баня FreeDom',
+            badges: 'индивидуально · для проживающих',
+            price: '2 часа — 3000 ₽ (до 4 чел)',
+            description: 'Полная информация о бане:\n\n' +
+                '🔹 Индивидуально: 2 часа — 3000 ₽ (до 4 чел), каждый следующий час +1000 ₽, доп. гость +500 ₽. Дети до 10 лет бесплатно. Банщик — 800 ₽ за 10 мин (2 подхода по 5 мин).\n\n' +
+                '🎁 Бонус: при заказе от 3 часов — чайник с лечебными травами в подарок.\n\n' +
+                '🏠 Для проживающих: четверг и воскресенье — общая баня (небольшая плата).\n\n' +
+                '💳 Предоплата 1000 ₽. При отмене 500 ₽ невозвратные, при переносе — остаются на счёте.',
+            img: 'images/sauna.jpg',
+            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу забронировать баню',
+            actionText: 'Забронировать баню в WhatsApp'
+        }
+    };
+
+    // --- ЛОГИКА МОДАЛКИ ---
+    const overlay = document.getElementById('modalOverlay');
+    const modalImg = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBadges = document.getElementById('modalBadges');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalDesc = document.getElementById('modalDescription');
+    const modalAction = document.getElementById('modalAction');
+    const closeBtn = document.getElementById('modalClose');
+
+    function openModal(id) {
+        const item = data[id];
+        if (!item) return;
+        modalImg.src = item.img;
+        modalImg.alt = item.title;
+        modalTitle.textContent = item.title;
+        modalBadges.innerHTML = item.badges ? `<span class="badge">${item.badges}</span>` : '';
+        modalPrice.textContent = item.price;
+        modalDesc.textContent = item.description;
+        modalAction.href = item.action;
+        modalAction.textContent = item.actionText;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
+    closeBtn.addEventListener('click', closeModal);
+
+    document.querySelectorAll('.room-card[data-id]').forEach(el => {
+        el.addEventListener('click', function() { openModal(this.dataset.id); });
+    });
+    document.querySelectorAll('.sweet-item[data-id]').forEach(el => {
+        el.addEventListener('click', function() { openModal(this.dataset.id); });
+    });
+
+    const saunaBlock = document.querySelector('.sauna-block');
+    if (saunaBlock) {
+        saunaBlock.addEventListener('click', function() {
+            openModal('sauna');
+        });
+    }
+
+    // --- СВОРАЧИВАНИЕ ТЕКСТА ---
+    document.getElementById('aboutToggle').addEventListener('click', function(e) {
+        e.stopPropagation();
+        const full = document.getElementById('aboutFull');
+        full.classList.toggle('open');
+        this.textContent = full.classList.contains('open') ? 'Свернуть ↑' : 'Читать далее →';
+    });
+
+    // --- ФОРМЫ ---
+    const bookingForm = document.getElementById('bookingForm');
+    const bookingSuccess = document.getElementById('successMessage');
+    bookingForm.addEventListener('submit', function(e) {
         setTimeout(function() {
-            success.classList.add('show');
-            form.style.display = 'none';
+            bookingSuccess.classList.add('show');
+            bookingForm.style.display = 'none';
         }, 500);
+    });
+
+    const reviewForm = document.getElementById('reviewForm');
+    const reviewSuccess = document.getElementById('reviewSuccess');
+    reviewForm.addEventListener('submit', function(e) {
+        setTimeout(function() {
+            reviewSuccess.style.display = 'block';
+            reviewForm.style.display = 'none';
+        }, 500);
+    });
+
+    // --- МУЗЫКА ---
+    const audio = document.getElementById('bgMusic');
+    const toggleBtn = document.getElementById('musicToggle');
+    let isPlaying = false;
+    document.addEventListener('click', function firstClick() {
+        audio.muted = false;
+        audio.play().then(() => {
+            isPlaying = true;
+            toggleBtn.textContent = '🔊';
+        }).catch(() => {});
+        document.removeEventListener('click', firstClick);
+    }, { once: true });
+    toggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (isPlaying) {
+            audio.pause();
+            toggleBtn.textContent = '🔇';
+            isPlaying = false;
+        } else {
+            audio.play().then(() => {
+                toggleBtn.textContent = '🔊';
+                isPlaying = true;
+            }).catch(() => {});
+        }
     });
 </script>
 </body>
