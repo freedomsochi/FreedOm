@@ -610,6 +610,7 @@
             height: 200px;
             display: block;
             border: none;
+            border-radius: 16px;
         }
         .map-text {
             background: rgba(255,255,255,0.03);
@@ -781,7 +782,7 @@
         </div>
     </section>
 
-    <!-- ===== СОБЫТИЯ (только гонг и чай, без третьей вкладки) ===== -->
+    <!-- ===== СОБЫТИЯ ===== -->
     <section class="fade-section">
         <h2>📅 События</h2>
         <div class="events-carousel" id="eventsCarousel">
@@ -992,11 +993,17 @@
         <p style="text-align:center; opacity:0.4;">📍 Сочи, Мамайка, Теневой пер., 48</p>
     </section>
 
-    <!-- КАРТА -->
+    <!-- ===== КАРТА (ОБНОВЛЁННАЯ) ===== -->
     <section class="fade-section">
         <h2>🗺️ Как нас найти</h2>
         <div class="map-container">
-            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Aваш_уникальный_ид&source=constructor" allowfullscreen></iframe>
+            <iframe src="https://yandex.ru/map-widget/v1/org/freedom/161345577891/gallery/?ll=39.707703%2C43.651800&z=19.33" 
+                    width="100%" 
+                    height="200" 
+                    frameborder="0" 
+                    allowfullscreen="true" 
+                    style="border-radius: 16px; border: 1px solid rgba(255,255,255,0.06);">
+            </iframe>
         </div>
         <div class="map-text">
             <p><strong>📍 Адрес:</strong> Сочи, Мамайка, Теневой пер., 48</p>
@@ -1263,7 +1270,6 @@
 
     // Закрытие по клику на фон ИЛИ на крестик
     overlay.addEventListener('click', function(e) {
-        // Если кликнули именно по оверлею (тёмному фону), а не по содержимому модалки
         if (e.target === overlay) {
             closeModal();
         }
