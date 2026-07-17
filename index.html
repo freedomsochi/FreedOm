@@ -39,7 +39,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== БАЗОВЫЕ СТИЛИ (из старой рабочей версии) ===== */
+        /* ===== БАЗОВЫЕ СТИЛИ ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -102,36 +102,37 @@
         }
         .container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; position: relative; z-index: 1; }
 
-        /* ===== ВЕРХНЯЯ НАВИГАЦИЯ (НОВАЯ, МИНИМАЛИСТИЧНАЯ) ===== */
+        /* ===== ВЕРХНЯЯ НАВИГАЦИЯ ===== */
         .top-nav {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
-            padding: 10px 0 6px;
-            gap: 12px;
-            flex-wrap: wrap;
+            padding: 8px 0;
             border-bottom: 1px solid rgba(255,255,255,0.04);
             margin-bottom: 0.5rem;
+            flex-wrap: nowrap;
+            gap: 8px;
         }
         .top-nav .nav-links {
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             font-size: 0.7rem;
             letter-spacing: 0.3px;
         }
         .top-nav .nav-links a {
-            color: #b8a9d4;
+            color: #d4af37;
             text-decoration: none;
             padding: 4px 6px;
             border-radius: 4px;
             transition: 0.2s;
             font-weight: 500;
             border: 1px solid transparent;
+            white-space: nowrap;
         }
         .top-nav .nav-links a:hover {
-            color: #d4af37;
-            border-color: rgba(212,175,55,0.15);
+            color: #fff;
+            border-color: rgba(212,175,55,0.3);
         }
         .top-nav .nav-links a:active {
             background: rgba(212,175,55,0.1);
@@ -141,28 +142,25 @@
         .top-nav .login-icon {
             display: flex;
             align-items: center;
-            gap: 4px;
-            color: #b8a9d4;
+            color: #4a90d9;
             text-decoration: none;
-            font-size: 0.7rem;
-            font-weight: 500;
             padding: 4px 8px;
             border-radius: 30px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(74,144,217,0.2);
             transition: 0.2s;
-            background: rgba(255,255,255,0.02);
+            background: rgba(74,144,217,0.05);
+            flex-shrink: 0;
         }
         .top-nav .login-icon:hover {
-            color: #d4af37;
-            border-color: rgba(212,175,55,0.15);
+            background: rgba(74,144,217,0.12);
+            border-color: rgba(74,144,217,0.4);
         }
         .top-nav .login-icon:active {
-            background: rgba(212,175,55,0.08);
             transform: scale(0.95);
         }
         .top-nav .login-icon svg {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             fill: none;
             stroke: currentColor;
             stroke-width: 2;
@@ -170,7 +168,7 @@
             stroke-linejoin: round;
         }
 
-        /* ===== ШАПКА (без изменений) ===== */
+        /* ===== ШАПКА ===== */
         .header {
             position: relative;
             overflow: hidden;
@@ -732,6 +730,20 @@
         @media (max-width: 480px) {
             .modal-window { padding: 20px 16px; }
             .event-card { flex: 0 0 90%; }
+            .top-nav .nav-links {
+                font-size: 0.55rem;
+                gap: 6px;
+            }
+            .top-nav .nav-links a {
+                padding: 2px 4px;
+            }
+            .top-nav .login-icon {
+                padding: 2px 6px;
+            }
+            .top-nav .login-icon svg {
+                width: 16px;
+                height: 16px;
+            }
         }
     </style>
 </head>
@@ -744,7 +756,7 @@
 </div>
 
 <div class="container">
-    <!-- ВЕРХНЯЯ НАВИГАЦИЯ (НОВАЯ) -->
+    <!-- ВЕРХНЯЯ НАВИГАЦИЯ -->
     <div class="top-nav">
         <div class="nav-links">
             <a href="partners.html">Партнёрская программа</a>
@@ -757,7 +769,6 @@
                 <polyline points="10 17 15 12 10 7"/>
                 <line x1="15" y1="12" x2="3" y2="12"/>
             </svg>
-            <span>Вход</span>
         </a>
     </div>
 
@@ -1143,7 +1154,7 @@
 <script>
     // ===== ДАННЫЕ ДЛЯ МОДАЛЬНЫХ ОКОН =====
     const data = {
-        // Номера (полностью из старого кода)
+        // Номера
         room1: {
             title: '🏡 Семейная комната',
             badges: 'до 4 чел · двуспальная + двухъярусная',
@@ -1207,6 +1218,7 @@
             action: '#bookingAnchor',
             actionText: 'Забронировать'
         },
+        // Сладости
         sweet1: {
             title: 'Шоколад с орехами и клюквой',
             badges: '',
@@ -1252,6 +1264,7 @@
             action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу заказать мёд',
             actionText: 'Заказать в WhatsApp'
         },
+        // Баня
         service1: {
             title: '🔥 Баня FreeDom',
             badges: 'индивидуально · для проживающих',
@@ -1265,6 +1278,7 @@
             action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу забронировать баню',
             actionText: 'Забронировать баню в WhatsApp'
         },
+        // События
         event1: {
             title: '🔔 Гонг-медитация',
             badges: 'релаксация · звукотерапия',
@@ -1454,4 +1468,4 @@
     });
 </script>
 </body>
-</html>
+                                                               </html>
