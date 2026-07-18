@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Вход — FreeDom</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0d17;
+            color: #eae6f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 440px;
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .logo {
+            text-align: center;
+            font-size: 2.2rem;
+            color: #d4af37;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+        .logo span { color: #d4af37; }
+        .subtitle {
+            text-align: center;
+            opacity: 0.6;
+            margin-bottom: 1.8rem;
+            font-size: 0.9rem;
+        }
+        .field {
+            margin-bottom: 1rem;
+        }
+        .field label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #b8a9d4;
+            font-size: 0.9rem;
+        }
+        .field input {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 1rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            color: #eae6f0;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+        .field input:focus {
+            border-color: rgba(212,175,55,0.2);
+            outline: none;
+            background: rgba(255,255,255,0.06);
+        }
+        .field input::placeholder {
+            color: rgba(255,255,255,0.2);
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(145deg, #d4af37, #b8952a);
+            color: #0b0d17;
+            border: none;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 0.5rem;
+        }
+        .btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(212,175,55,0.3);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .error {
+            background: rgba(255,0,0,0.1);
+            border: 1px solid rgba(255,0,0,0.2);
+            color: #ff6b6b;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        .footer-link {
+            text-align: center;
+            margin-top: 1.2rem;
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
+        .footer-link a {
+            color: #d4af37;
+            text-decoration: none;
+        }
+        .footer-link a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: inline-block;
+            color: #b8a9d4;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            transition: 0.2s;
+        }
+        .back-link:hover {
+            color: #d4af37;
+        }
+        .success-msg {
+            background: rgba(37,211,102,0.08);
+            border: 1px solid rgba(37,211,102,0.15);
+            color: #25D366;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← На главную</a>
+        <div class="logo">🌿 <span>Free</span>Dom</div>
+        <div class="subtitle">Войдите в свой аккаунт</div>
+
+        <form id="loginForm">
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="ivan@mail.ru" required>
+            </div>
+            <div class="field">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" placeholder="••••••" required>
+            </div>
+
+            <div id="errorMsg" class="error"></div>
+            <div id="successMsg" class="success-msg">✅ Вход выполнен! Перенаправляем...</div>
+
+            <button type="submit" class="btn" id="submitBtn">Войти</button>
+        </form>
+
+        <div class="footer-link">
+            Нет аккаунта? <a href="register.html">Зарегистрироваться</a>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ===== КОНФИГУРАЦИЯ FIREBASE =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyAK5KcbIHHcOon-pK9nskM0AKL5pdhwwQQ",
+            authDomain: "freedom-referal.firebaseapp.com",
+            projectId: "freedom-referal",
+            storageBucket: "freedom-referal.firebasestorage.app",
+            messagingSenderId: "189555481286",
+            appId: "1:189555481286:web:870bc07acaa7d4c8b655c7"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Если пользователь уже авторизован — отправляем в профиль
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = 'profile.html';
+            }
+        });
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Вход...';
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                showError('Заполните все поля.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Войти';
+                return;
+            }
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                successMsg.style.display = 'block';
+                submitBtn.textContent = 'Готово!';
+                submitBtn.disabled = true;
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 1500);
+            } catch (error) {
+                console.error('Ошибка входа:', error);
+                let message = 'Неверный email или пароль.';
+                if (error.code === 'auth/user-not-found') {
+                    message = 'Пользователь с таким email не найден.';
+                } else if (error.code === 'auth/wrong-password') {
+                    message = 'Неверный пароль.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    message = 'Слишком много попыток. Попробуйте позже.';
+                }
+                showError(message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Войти';
+            }
+        });
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
