@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Личный кабинет — FreeDom</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0d17;
+            color: #eae6f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px 0 60px;
+        }
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Шапка */
+        .header {
+            background: linear-gradient(145deg, rgba(26,16,61,0.95), rgba(11,13,23,0.95));
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 0 0 40px 40px;
+            padding: 1.8rem 1rem;
+            text-align: center;
+            margin: 0 -16px 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/branches.png') center/cover no-repeat;
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .header .back-link {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            color: #b8a9d4;
+            text-decoration: none;
+            font-size: 0.9rem;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .header .back-link:hover { color: #d4af37; }
+        .header h1 {
+            font-weight: 300;
+            font-size: 1.8rem;
+            color: #d4af37;
+            position: relative;
+            z-index: 1;
+        }
+        .header p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Карточка профиля */
+        .profile-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .profile-card .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(212,175,55,0.15);
+            border: 2px solid rgba(212,175,55,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 0.5rem;
+        }
+        .profile-card .name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-align: center;
+            color: #eae6f0;
+        }
+        .profile-card .email {
+            text-align: center;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+        .profile-card .field {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .profile-card .field:last-child {
+            border-bottom: none;
+        }
+        .profile-card .field .label {
+            opacity: 0.6;
+        }
+        .profile-card .field .value {
+            color: #d4af37;
+            font-weight: 500;
+        }
+
+        /* Баланс */
+        .balance-block {
+            background: linear-gradient(145deg, rgba(212,175,55,0.08), rgba(212,175,55,0.02));
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 16px;
+            padding: 1.2rem;
+            text-align: center;
+            margin-bottom: 1.2rem;
+        }
+        .balance-block .amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #d4af37;
+        }
+        .balance-block .label {
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        /* Реферальная ссылка */
+        .ref-link-block {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+        .ref-link-block .ref-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            padding: 8px 12px;
+            word-break: break-all;
+            font-size: 0.85rem;
+            color: #b8a9d4;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+        .ref-link-block .ref-link .copy-btn {
+            background: rgba(212,175,55,0.12);
+            border: 1px solid rgba(212,175,55,0.2);
+            color: #d4af37;
+            padding: 4px 12px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 600;
+            transition: 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .ref-link-block .ref-link .copy-btn:hover {
+            background: rgba(212,175,55,0.2);
+        }
+        .ref-link-block .ref-link .copy-btn:active {
+            transform: scale(0.95);
+        }
+        .ref-link-block .ref-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 0.8rem;
+            text-align: center;
+        }
+        .ref-link-block .ref-stats .stat {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        .ref-link-block .ref-stats .stat span {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #d4af37;
+            opacity: 1;
+        }
+
+        /* Кнопки */
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-primary {
+            background: linear-gradient(145deg, #d4af37, #b8952a);
+            color: #0b0d17;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.3);
+        }
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 25px rgba(212,175,55,0.5);
+        }
+        .btn-danger {
+            background: rgba(255,0,0,0.1);
+            border: 1px solid rgba(255,0,0,0.2);
+            color: #ff6b6b;
+        }
+        .btn-danger:hover {
+            background: rgba(255,0,0,0.15);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #b8a9d4;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .logout-btn {
+            margin-top: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            opacity: 0.3;
+        }
+
+        /* Загрузка */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            opacity: 0.6;
+        }
+        .loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(212,175,55,0.1);
+            border-top: 3px solid #d4af37;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Адаптив */
+        @media (max-width: 480px) {
+            .profile-card .field {
+                flex-direction: column;
+                gap: 2px;
+            }
+            .profile-card .field .value {
+                font-size: 0.95rem;
+            }
+            .ref-link-block .ref-link {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- ШАПКА -->
+    <div class="header">
+        <a href="index.html" class="back-link">← На главную</a>
+        <h1>🌿 Личный кабинет</h1>
+        <p>Управляйте своим профилем и бонусами</p>
+    </div>
+
+    <!-- Основной контент -->
+    <div id="profileContent">
+        <!-- Состояние загрузки -->
+        <div id="loadingState" class="loading">
+            <div class="spinner"></div>
+            <p>Загрузка данных...</p>
+        </div>
+
+        <!-- Профиль (скрыт до загрузки) -->
+        <div id="profileData" style="display:none;">
+            <!-- Карточка профиля -->
+            <div class="profile-card">
+                <div class="avatar" id="userAvatar">👤</div>
+                <div class="name" id="userName">Имя пользователя</div>
+                <div class="email" id="userEmail">email@example.com</div>
+                <div style="height:16px;"></div>
+                <div class="field"><span class="label">Телефон</span><span class="value" id="userPhone">—</span></div>
+                <div class="field"><span class="label">Город</span><span class="value" id="userCity">—</span></div>
+                <div class="field"><span class="label">Дата рождения</span><span class="value" id="userBirth">—</span></div>
+                <div class="field"><span class="label">Дата регистрации</span><span class="value" id="userRegDate">—</span></div>
+                <div class="field"><span class="label">Реферальный код</span><span class="value" id="userRefCode">—</span></div>
+            </div>
+
+            <!-- Баланс -->
+            <div class="balance-block">
+                <div class="label">💰 Ваш баланс</div>
+                <div class="amount" id="userBalance">0 ₽</div>
+                <div style="font-size:0.8rem; opacity:0.4; margin-top:4px;">Начисляется за приглашённых друзей</div>
+            </div>
+
+            <!-- Реферальная ссылка -->
+            <div class="ref-link-block">
+                <div class="ref-link">
+                    <span style="flex:1; word-break:break-all;" id="refLinkText">Загрузка ссылки...</span>
+                    <button class="copy-btn" id="copyRefBtn">📋 Копировать</button>
+                </div>
+                <div class="ref-stats">
+                    <div class="stat"><span id="refLevel1">0</span>Уровень 1</div>
+                    <div class="stat"><span id="refLevel2">0</span>Уровень 2</div>
+                    <div class="stat"><span id="refLevel3">0</span>Уровень 3</div>
+                </div>
+            </div>
+
+            <!-- Кнопки действий -->
+            <a href="partners.html" class="btn btn-primary" style="margin-bottom:0.5rem;">🤝 Партнёрская программа</a>
+            <a href="purchases.html" class="btn btn-secondary" style="margin-bottom:0.5rem;">📋 Мои покупки</a>
+            <button class="btn btn-danger logout-btn" id="logoutBtn">🚪 Выйти из аккаунта</button>
+        </div>
+    </div>
+
+    <div class="footer">FreeDom — место для жизни, отдыха и развития ❤️</div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+    // ===== КОНФИГУРАЦИЯ FIREBASE (ваша) =====
+    const firebaseConfig = {
+        apiKey: "AIzaSyAK5KcbIHHcOon-pK9nskM0AKL5pdhwwQQ",
+        authDomain: "freedom-referal.firebaseapp.com",
+        projectId: "freedom-referal",
+        storageBucket: "freedom-referal.firebasestorage.app",
+        messagingSenderId: "189555481286",
+        appId: "1:189555481286:web:870bc07acaa7d4c8b655c7"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Элементы
+    const loadingState = document.getElementById('loadingState');
+    const profileData = document.getElementById('profileData');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Поля профиля
+    const userName = document.getElementById('userName');
+    const userEmail = document.getElementById('userEmail');
+    const userPhone = document.getElementById('userPhone');
+    const userCity = document.getElementById('userCity');
+    const userBirth = document.getElementById('userBirth');
+    const userRegDate = document.getElementById('userRegDate');
+    const userRefCode = document.getElementById('userRefCode');
+    const userBalance = document.getElementById('userBalance');
+    const refLinkText = document.getElementById('refLinkText');
+    const refLevel1 = document.getElementById('refLevel1');
+    const refLevel2 = document.getElementById('refLevel2');
+    const refLevel3 = document.getElementById('refLevel3');
+    const copyBtn = document.getElementById('copyRefBtn');
+
+    // Проверяем, авторизован ли пользователь
+    auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+            // Если не авторизован — перенаправляем на страницу входа
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Показываем загрузку
+        loadingState.style.display = 'block';
+        profileData.style.display = 'none';
+
+        try {
+            // Получаем данные пользователя из Firestore
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (!userDoc.exists) {
+                // Если документа нет — возможно, пользователь не завершил регистрацию
+                alert('Профиль не найден. Пожалуйста, зарегистрируйтесь заново.');
+                auth.signOut();
+                return;
+            }
+
+            const userData = userDoc.data();
+
+            // Заполняем профиль
+            userName.textContent = userData.displayName || 'Без имени';
+            userEmail.textContent = user.email || '—';
+            userPhone.textContent = userData.phone || '—';
+            userCity.textContent = userData.city || '—';
+            userBirth.textContent = userData.birthDate || '—';
+            userRefCode.textContent = userData.refCode || '—';
+
+            // Дата регистрации
+            if (userData.registeredAt) {
+                const date = userData.registeredAt.toDate ? userData.registeredAt.toDate() : new Date(userData.registeredAt);
+                userRegDate.textContent = date.toLocaleDateString('ru-RU');
+            } else {
+                userRegDate.textContent = '—';
+            }
+
+            // Баланс
+            const balance = userData.balance || 0;
+            userBalance.textContent = balance + ' ₽';
+
+            // Реферальная ссылка
+            const refCode = userData.refCode || user.uid.slice(0, 8);
+            const siteUrl = window.location.origin + window.location.pathname.replace(/profile\.html$/, '');
+            const refUrl = siteUrl + 'register.html?ref=' + refCode;
+            refLinkText.textContent = refUrl;
+
+            // Считаем количество приглашённых по уровням
+            const referralsSnapshot = await db.collection('referrals')
+                .where('referrerUid', '==', user.uid)
+                .get();
+
+            let count1 = 0, count2 = 0, count3 = 0;
+            referralsSnapshot.forEach(doc => {
+                const data = doc.data();
+                if (data.level === 1) count1++;
+                else if (data.level === 2) count2++;
+                else if (data.level === 3) count3++;
+            });
+            refLevel1.textContent = count1;
+            refLevel2.textContent = count2;
+            refLevel3.textContent = count3;
+
+            // Показываем данные
+            loadingState.style.display = 'none';
+            profileData.style.display = 'block';
+
+        } catch (error) {
+            console.error('Ошибка загрузки профиля:', error);
+            loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка загрузки данных. Попробуйте обновить страницу.</p>';
+        }
+    });
+
+    // Копирование ссылки
+    copyBtn.addEventListener('click', function() {
+        const text = refLinkText.textContent;
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+                const original = copyBtn.textContent;
+                copyBtn.textContent = '✅ Скопировано!';
+                setTimeout(() => copyBtn.textContent = original, 2000);
+            });
+        } else {
+            // fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            const original = copyBtn.textContent;
+            copyBtn.textContent = '✅ Скопировано!';
+            setTimeout(() => copyBtn.textContent = original, 2000);
+        }
+    });
+
+    // Выход из аккаунта
+    logoutBtn.addEventListener('click', function() {
+        if (confirm('Вы уверены, что хотите выйти?')) {
+            auth.signOut().then(() => {
+                window.location.href = 'index.html';
+            });
+        }
+    });
+</script>
+</body>
+</html>
