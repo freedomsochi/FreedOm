@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Партнёрская программа — FreeDom</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0d17;
+            color: #eae6f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px 0 60px;
+        }
+        .container { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+
+        .header {
+            background: linear-gradient(145deg, rgba(26,16,61,0.95), rgba(11,13,23,0.95));
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 0 0 40px 40px;
+            padding: 1.8rem 1rem;
+            text-align: center;
+            margin: 0 -16px 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/branches.png') center/cover no-repeat;
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .header .back-link {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            color: #b8a9d4;
+            text-decoration: none;
+            font-size: 0.9rem;
+            z-index: 1;
+        }
+        .header .back-link:hover { color: #d4af37; }
+        .header h1 {
+            font-weight: 300;
+            font-size: 1.8rem;
+            color: #d4af37;
+            position: relative;
+            z-index: 1;
+        }
+        .header p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .card h3 {
+            color: #d4af37;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+        .card .highlight {
+            color: #d4af37;
+            font-weight: 700;
+        }
+        .card ul {
+            padding-left: 1.2rem;
+            opacity: 0.8;
+        }
+        .card ul li { margin-bottom: 4px; }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-primary {
+            background: linear-gradient(145deg, #d4af37, #b8952a);
+            color: #0b0d17;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.3);
+        }
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 25px rgba(212,175,55,0.5);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #b8a9d4;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.08); }
+
+        .ref-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+        .ref-stats .stat span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #d4af37;
+        }
+        .ref-stats .stat { opacity: 0.7; font-size: 0.85rem; }
+
+        .ref-link-box {
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            padding: 10px 12px;
+            word-break: break-all;
+            font-size: 0.85rem;
+            color: #b8a9d4;
+            border: 1px solid rgba(255,255,255,0.04);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ref-link-box .copy-btn {
+            background: rgba(212,175,55,0.12);
+            border: 1px solid rgba(212,175,55,0.2);
+            color: #d4af37;
+            padding: 4px 12px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 600;
+            transition: 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .ref-link-box .copy-btn:hover { background: rgba(212,175,55,0.2); }
+        .ref-link-box .copy-btn:active { transform: scale(0.95); }
+
+        .footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; opacity: 0.3; }
+        .balance-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #d4af37;
+            text-align: center;
+        }
+        .flex-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .flex-buttons .btn { flex: 1; }
+
+        @media (max-width: 480px) {
+            .flex-buttons .btn { flex: 1 1 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-link">← На главную</a>
+            <h1>🤝 Партнёрская программа</h1>
+            <p>Приглашайте друзей и зарабатывайте</p>
+        </div>
+
+        <div class="card">
+            <h3>Как это работает</h3>
+            <p style="margin-bottom: 0.5rem;">Вы приглашаете друзей во FreeDom, а они приглашают своих друзей — вы получаете кэшбэк с их покупок.</p>
+            <ul>
+                <li>🔹 <span class="highlight">10%</span> от покупок друзей, которых пригласили вы</li>
+                <li>🔹 <span class="highlight">5%</span> от покупок друзей ваших друзей</li>
+                <li>🔹 <span class="highlight">2%</span> от покупок третьего уровня</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Ваша статистика</h3>
+            <div class="ref-stats">
+                <div class="stat"><span id="refLevel1">0</span>Уровень 1</div>
+                <div class="stat"><span id="refLevel2">0</span>Уровень 2</div>
+                <div class="stat"><span id="refLevel3">0</span>Уровень 3</div>
+            </div>
+            <p style="text-align:center; margin-top: 1rem;">💰 Ваш баланс</p>
+            <div class="balance-amount" id="refBalance">0 ₽</div>
+        </div>
+
+        <div class="card">
+            <h3>Ваша реферальная ссылка</h3>
+            <p style="font-size:0.9rem; opacity:0.6; margin-bottom: 0.5rem;">Делитесь ею с друзьями</p>
+            <div class="ref-link-box">
+                <span style="flex:1; word-break:break-all;" id="refLinkText">Загрузка ссылки...</span>
+                <button class="copy-btn" id="copyRefBtn">📋 Копировать</button>
+            </div>
+        </div>
+
+        <div class="flex-buttons">
+            <a href="profile.html" class="btn btn-secondary">← Личный кабинет</a>
+            <a href="purchases.html" class="btn btn-secondary">📋 Мои покупки</a>
+        </div>
+    </div>
+
+    <div class="footer">FreeDom — место для жизни, отдыха и развития ❤️</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1dG1iaHNjbG1jZnFxbHp4cWtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1ODY1OTEsImV4cCI6MjEwMDE2MjU5MX0.PxvaHbwqJjOlStrr0HQx8xulR3BLPxzm4EQWl2LFu2c';
+
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            const refLinkText = document.getElementById('refLinkText');
+            const copyBtn = document.getElementById('copyRefBtn');
+            const refLevel1 = document.getElementById('refLevel1');
+            const refLevel2 = document.getElementById('refLevel2');
+            const refLevel3 = document.getElementById('refLevel3');
+            const refBalance = document.getElementById('refBalance');
+
+            supabase.auth.getSession().then(async ({ data }) => {
+                if (!data.session) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const userId = data.session.user.id;
+
+                // Получаем данные пользователя
+                const { data: userData } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('id', userId)
+                    .maybeSingle();
+
+                if (userData) {
+                    refBalance.textContent = (userData.balance || 0) + ' ₽';
+                    const refCode = userData.ref_code || userId.slice(0, 8);
+                    const siteUrl = window.location.origin + window.location.pathname.replace(/partners\.html$/, '');
+                    refLinkText.textContent = siteUrl + 'register.html?ref=' + refCode;
+                }
+
+                // Считаем рефералов
+                const { data: referrals } = await supabase
+                    .from('referrals')
+                    .select('level')
+                    .eq('referrer_id', userId);
+
+                if (referrals) {
+                    let c1 = 0, c2 = 0, c3 = 0;
+                    referrals.forEach(r => {
+                        if (r.level === 1) c1++;
+                        else if (r.level === 2) c2++;
+                        else if (r.level === 3) c3++;
+                    });
+                    refLevel1.textContent = c1;
+                    refLevel2.textContent = c2;
+                    refLevel3.textContent = c3;
+                }
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const text = refLinkText.textContent;
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        const original = copyBtn.textContent;
+                        copyBtn.textContent = '✅ Скопировано!';
+                        setTimeout(() => copyBtn.textContent = original, 2000);
+                    });
+                } else {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    const original = copyBtn.textContent;
+                    copyBtn.textContent = '✅ Скопировано!';
+                    setTimeout(() => copyBtn.textContent = original, 2000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
