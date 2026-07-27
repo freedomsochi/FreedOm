@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Покупки — FreeDom</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0d17;
+            color: #eae6f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px 0 60px;
+        }
+        .container { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+
+        .header {
+            background: linear-gradient(145deg, rgba(26,16,61,0.95), rgba(11,13,23,0.95));
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 0 0 40px 40px;
+            padding: 1.8rem 1rem;
+            text-align: center;
+            margin: 0 -16px 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/branches.png') center/cover no-repeat;
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .header .back-link {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            color: #b8a9d4;
+            text-decoration: none;
+            font-size: 0.9rem;
+            z-index: 1;
+        }
+        .header .back-link:hover { color: #d4af37; }
+        .header h1 {
+            font-weight: 300;
+            font-size: 1.8rem;
+            color: #d4af37;
+            position: relative;
+            z-index: 1;
+        }
+        .header p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .card h3 {
+            color: #d4af37;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .purchase-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .purchase-item:last-child { border-bottom: none; }
+        .purchase-item .info .amount {
+            font-weight: 600;
+            color: #d4af37;
+        }
+        .purchase-item .info .date {
+            font-size: 0.8rem;
+            opacity: 0.4;
+        }
+        .purchase-item .badge {
+            background: rgba(212,175,55,0.1);
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.7rem;
+            color: #d4af37;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #b8a9d4;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.08); }
+
+        .footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; opacity: 0.3; }
+        .empty-state {
+            text-align: center;
+            opacity: 0.5;
+            padding: 1.5rem 0;
+        }
+        .flex-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .flex-buttons .btn { flex: 1; }
+
+        @media (max-width: 480px) {
+            .flex-buttons .btn { flex: 1 1 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-link">← На главную</a>
+            <h1>📋 Мои покупки</h1>
+            <p>История ваших покупок и начислений</p>
+        </div>
+
+        <div class="card">
+            <h3>История покупок</h3>
+            <div id="purchasesList">
+                <div class="empty-state">Загрузка...</div>
+            </div>
+        </div>
+
+        <div class="flex-buttons">
+            <a href="profile.html" class="btn btn-secondary">← Личный кабинет</a>
+            <a href="partners.html" class="btn btn-secondary">🤝 Партнёрская программа</a>
+        </div>
+    </div>
+
+    <div class="footer">FreeDom — место для жизни, отдыха и развития ❤️</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1dG1iaHNjbG1jZnFxbHp4cWtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1ODY1OTEsImV4cCI6MjEwMDE2MjU5MX0.PxvaHbwqJjOlStrr0HQx8xulR3BLPxzm4EQWl2LFu2c';
+
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            const purchasesList = document.getElementById('purchasesList');
+
+            supabase.auth.getSession().then(async ({ data }) => {
+                if (!data.session) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const userId = data.session.user.id;
+
+                // Получаем покупки пользователя
+                const { data: purchases, error } = await supabase
+                    .from('purchases')
+                    .select('*')
+                    .eq('buyer_id', userId)
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Ошибка загрузки покупок:', error);
+                    purchasesList.innerHTML = '<div class="empty-state">❌ Ошибка загрузки</div>';
+                    return;
+                }
+
+                if (!purchases || purchases.length === 0) {
+                    purchasesList.innerHTML = `
+                        <div class="empty-state">
+                            <p>😌 У вас пока нет покупок</p>
+                            <p style="font-size:0.8rem; opacity:0.5; margin-top:4px;">Как только вы совершите первую покупку, она появится здесь</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                purchases.forEach(p => {
+                    const date = p.created_at ? new Date(p.created_at).toLocaleDateString('ru-RU') : '—';
+                    html += `
+                        <div class="purchase-item">
+                            <div class="info">
+                                <div class="amount">${p.amount || 0} ₽</div>
+                                <div class="date">${date}</div>
+                            </div>
+                            <span class="badge">✅ Подтверждено</span>
+                        </div>
+                    `;
+                });
+                purchasesList.innerHTML = html;
+            });
+        });
+    </script>
+</body>
+</html>
