@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Личный кабинет — FreeDom</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -287,58 +287,63 @@
 </div>
 
 <script>
-    // ===== ПОДКЛЮЧЕНИЕ К SUPABASE (КЛЮЧИ УЖЕ ВСТАВЛЕНЫ) =====
-    const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1dG1iaHNjbG1jZnFxbHp4cWtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1ODY1OTEsImV4cCI6MjEwMDE2MjU5MX0.PxvaHbwqJjOlStrr0HQx8xulR3BLPxzm4EQWl2LFu2c';
+    document.addEventListener('DOMContentLoaded', function() {
+        // ===== ПОДКЛЮЧЕНИЕ К SUPABASE (ПРАВИЛЬНЫЕ КЛЮЧИ) =====
+        const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1dG1iaHNjbG1jZnFxbHp4cWtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1ODY1OTEsImV4cCI6MjEwMDE2MjU5MX0.PxvaHbwqJjOlStrr0HQx8xulR3BLPxzm4EQWl2LFu2c';
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const loadingState = document.getElementById('loadingState');
-    const profileData = document.getElementById('profileData');
-    const logoutBtn = document.getElementById('logoutBtn');
+        const loadingState = document.getElementById('loadingState');
+        const profileData = document.getElementById('profileData');
+        const logoutBtn = document.getElementById('logoutBtn');
 
-    const userName = document.getElementById('userName');
-    const userEmail = document.getElementById('userEmail');
-    const userPhone = document.getElementById('userPhone');
-    const userCity = document.getElementById('userCity');
-    const userBirth = document.getElementById('userBirth');
-    const userRegDate = document.getElementById('userRegDate');
-    const userRefCode = document.getElementById('userRefCode');
-    const userBalance = document.getElementById('userBalance');
-    const refLinkText = document.getElementById('refLinkText');
-    const refLevel1 = document.getElementById('refLevel1');
-    const refLevel2 = document.getElementById('refLevel2');
-    const refLevel3 = document.getElementById('refLevel3');
-    const copyBtn = document.getElementById('copyRefBtn');
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const userPhone = document.getElementById('userPhone');
+        const userCity = document.getElementById('userCity');
+        const userBirth = document.getElementById('userBirth');
+        const userRegDate = document.getElementById('userRegDate');
+        const userRefCode = document.getElementById('userRefCode');
+        const userBalance = document.getElementById('userBalance');
+        const refLinkText = document.getElementById('refLinkText');
+        const refLevel1 = document.getElementById('refLevel1');
+        const refLevel2 = document.getElementById('refLevel2');
+        const refLevel3 = document.getElementById('refLevel3');
+        const copyBtn = document.getElementById('copyRefBtn');
 
-    supabase.auth.onAuthStateChange(async (event, session) => {
-        if (event === 'SIGNED_OUT' || !session) {
-            window.location.href = 'login.html';
-            return;
-        }
+        // Проверяем сессию пользователя
+        supabase.auth.getSession().then(async ({ data: sessionData }) => {
+            if (!sessionData.session) {
+                window.location.href = 'login.html';
+                return;
+            }
 
-        if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
-            loadingState.style.display = 'block';
-            profileData.style.display = 'none';
+            const user = sessionData.session.user;
+            const userId = user.id;
 
             try {
-                const userId = session.user.id;
-                const userEmailText = session.user.email;
-
+                // Получаем данные пользователя из таблицы users
                 const { data: userData, error } = await supabase
                     .from('users')
                     .select('*')
                     .eq('id', userId)
                     .maybeSingle();
 
-                if (error || !userData) {
+                if (error) {
                     console.error('Ошибка загрузки профиля:', error);
                     loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка загрузки данных. Попробуйте обновить страницу.</p>';
                     return;
                 }
 
+                if (!userData) {
+                    loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Профиль не найден. Пожалуйста, зарегистрируйтесь заново.</p>';
+                    return;
+                }
+
+                // Заполняем профиль
                 userName.textContent = userData.display_name || 'Без имени';
-                userEmail.textContent = userEmailText || '—';
+                userEmail.textContent = user.email || '—';
                 userPhone.textContent = userData.phone || '—';
                 userCity.textContent = userData.city || '—';
                 userBirth.textContent = userData.birth_date || '—';
@@ -359,12 +364,13 @@
                 const refUrl = siteUrl + 'register.html?ref=' + refCode;
                 refLinkText.textContent = refUrl;
 
-                const { data: referrals, error: refError } = await supabase
+                // Считаем рефералов
+                const { data: referrals } = await supabase
                     .from('referrals')
                     .select('level')
                     .eq('referrer_id', userId);
 
-                if (!refError && referrals) {
+                if (referrals) {
                     let count1 = 0, count2 = 0, count3 = 0;
                     referrals.forEach(r => {
                         if (r.level === 1) count1++;
@@ -383,35 +389,37 @@
                 console.error('Ошибка:', error);
                 loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка загрузки данных. Попробуйте обновить страницу.</p>';
             }
-        }
-    });
+        });
 
-    copyBtn.addEventListener('click', function() {
-        const text = refLinkText.textContent;
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(text).then(() => {
+        // Копирование ссылки
+        copyBtn.addEventListener('click', function() {
+            const text = refLinkText.textContent;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = copyBtn.textContent;
+                    copyBtn.textContent = '✅ Скопировано!';
+                    setTimeout(() => copyBtn.textContent = original, 2000);
+                });
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
                 const original = copyBtn.textContent;
                 copyBtn.textContent = '✅ Скопировано!';
                 setTimeout(() => copyBtn.textContent = original, 2000);
-            });
-        } else {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            const original = copyBtn.textContent;
-            copyBtn.textContent = '✅ Скопировано!';
-            setTimeout(() => copyBtn.textContent = original, 2000);
-        }
-    });
+            }
+        });
 
-    logoutBtn.addEventListener('click', async function() {
-        if (confirm('Вы уверены, что хотите выйти?')) {
-            await supabase.auth.signOut();
-            window.location.href = 'index.html';
-        }
+        // Выход
+        logoutBtn.addEventListener('click', async function() {
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                await supabase.auth.signOut();
+                window.location.href = 'index.html';
+            }
+        });
     });
 </script>
 </body>
