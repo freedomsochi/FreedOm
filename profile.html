@@ -288,9 +288,9 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // ===== ПОДКЛЮЧЕНИЕ К SUPABASE (ПРАВИЛЬНЫЕ КЛЮЧИ) =====
+        // ===== ВАШИ ДАННЫЕ ИЗ SUPABASE =====
         const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1dG1iaHNjbG1jZnFxbHp4cWtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1ODY1OTEsImV4cCI6MjEwMDE2MjU5MX0.PxvaHbwqJjOlStrr0HQx8xulR3BLPxzm4EQWl2LFu2c';
+        const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
 
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -331,8 +331,8 @@
                     .maybeSingle();
 
                 if (error) {
-                    console.error('Ошибка загрузки профиля:', error);
-                    loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка загрузки данных. Попробуйте обновить страницу.</p>';
+                    console.error('❌ Ошибка Supabase:', error);
+                    loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка: ' + error.message + '</p>';
                     return;
                 }
 
@@ -386,8 +386,8 @@
                 profileData.style.display = 'block';
 
             } catch (error) {
-                console.error('Ошибка:', error);
-                loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка загрузки данных. Попробуйте обновить страницу.</p>';
+                console.error('❌ Критическая ошибка:', error);
+                loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка: ' + error.message + '</p>';
             }
         });
 
