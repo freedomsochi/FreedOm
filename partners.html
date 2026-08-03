@@ -227,7 +227,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
-            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1dG1iaHNjbG1jZnFxbHp4cWtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1ODY1OTEsImV4cCI6MjEwMDE2MjU5MX0.PxvaHbwqJjOlStrr0HQx8xulR3BLPxzm4EQWl2LFu2c';
+            const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
 
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -238,19 +238,18 @@
             const refLevel3 = document.getElementById('refLevel3');
             const refBalance = document.getElementById('refBalance');
 
-            supabase.auth.getSession().then(async ({ data }) => {
-                if (!data.session) {
+            supabase.auth.getSession().then(async ({ data: sessionData }) => {
+                if (!sessionData.session) {
                     window.location.href = 'login.html';
                     return;
                 }
 
-                const userId = data.session.user.id;
+                const userId = sessionData.session.user.id;
 
-                // Получаем данные пользователя
                 const { data: userData } = await supabase
                     .from('users')
                     .select('*')
-                    .eq('id', userId)
+                    .eq('user_id', userId)      // ✅ исправлено
                     .maybeSingle();
 
                 if (userData) {
@@ -260,7 +259,6 @@
                     refLinkText.textContent = siteUrl + 'register.html?ref=' + refCode;
                 }
 
-                // Считаем рефералов
                 const { data: referrals } = await supabase
                     .from('referrals')
                     .select('level')
