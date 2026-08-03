@@ -204,7 +204,6 @@
             color: #b8a9d4;
         }
         .btn-secondary:hover { background: rgba(255,255,255,0.08); }
-
         .logout-btn { margin-top: 0.5rem; }
         .footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; opacity: 0.3; }
 
@@ -232,195 +231,192 @@
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="header">
-        <a href="index.html" class="back-link">← На главную</a>
-        <h1>🌿 Личный кабинет</h1>
-        <p>Управляйте своим профилем и бонусами</p>
-    </div>
-
-    <div id="profileContent">
-        <div id="loadingState" class="loading">
-            <div class="spinner"></div>
-            <p>Загрузка данных...</p>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-link">← На главную</a>
+            <h1>🌿 Личный кабинет</h1>
+            <p>Управляйте своим профилем и бонусами</p>
         </div>
 
-        <div id="profileData" style="display:none;">
-            <div class="profile-card">
-                <div class="avatar" id="userAvatar">👤</div>
-                <div class="name" id="userName">Имя пользователя</div>
-                <div class="email" id="userEmail">email@example.com</div>
-                <div style="height:16px;"></div>
-                <div class="field"><span class="label">Телефон</span><span class="value" id="userPhone">—</span></div>
-                <div class="field"><span class="label">Город</span><span class="value" id="userCity">—</span></div>
-                <div class="field"><span class="label">Дата рождения</span><span class="value" id="userBirth">—</span></div>
-                <div class="field"><span class="label">Дата регистрации</span><span class="value" id="userRegDate">—</span></div>
-                <div class="field"><span class="label">Реферальный код</span><span class="value" id="userRefCode">—</span></div>
+        <div id="profileContent">
+            <div id="loadingState" class="loading">
+                <div class="spinner"></div>
+                <p>Загрузка данных...</p>
             </div>
 
-            <div class="balance-block">
-                <div class="label">💰 Ваш баланс</div>
-                <div class="amount" id="userBalance">0 ₽</div>
-                <div style="font-size:0.8rem; opacity:0.4; margin-top:4px;">Начисляется за приглашённых друзей</div>
-            </div>
-
-            <div class="ref-link-block">
-                <div class="ref-link">
-                    <span style="flex:1; word-break:break-all;" id="refLinkText">Загрузка ссылки...</span>
-                    <button class="copy-btn" id="copyRefBtn">📋 Копировать</button>
+            <div id="profileData" style="display:none;">
+                <div class="profile-card">
+                    <div class="avatar">👤</div>
+                    <div class="name" id="userName">Имя пользователя</div>
+                    <div class="email" id="userEmail">email@example.com</div>
+                    <div style="height:16px;"></div>
+                    <div class="field"><span class="label">Телефон</span><span class="value" id="userPhone">—</span></div>
+                    <div class="field"><span class="label">Город</span><span class="value" id="userCity">—</span></div>
+                    <div class="field"><span class="label">Дата рождения</span><span class="value" id="userBirth">—</span></div>
+                    <div class="field"><span class="label">Дата регистрации</span><span class="value" id="userRegDate">—</span></div>
+                    <div class="field"><span class="label">Реферальный код</span><span class="value" id="userRefCode">—</span></div>
                 </div>
-                <div class="ref-stats">
-                    <div class="stat"><span id="refLevel1">0</span>Уровень 1</div>
-                    <div class="stat"><span id="refLevel2">0</span>Уровень 2</div>
-                    <div class="stat"><span id="refLevel3">0</span>Уровень 3</div>
-                </div>
-            </div>
 
-            <a href="partners.html" class="btn btn-primary" style="margin-bottom:0.5rem;">🤝 Партнёрская программа</a>
-            <a href="purchases.html" class="btn btn-secondary" style="margin-bottom:0.5rem;">📋 Мои покупки</a>
-            <button class="btn btn-danger logout-btn" id="logoutBtn">🚪 Выйти из аккаунта</button>
+                <div class="balance-block">
+                    <div class="label">💰 Ваш баланс</div>
+                    <div class="amount" id="userBalance">0 ₽</div>
+                    <div style="font-size:0.8rem; opacity:0.4; margin-top:4px;">Начисляется за приглашённых друзей</div>
+                </div>
+
+                <div class="ref-link-block">
+                    <div class="ref-link">
+                        <span style="flex:1; word-break:break-all;" id="refLinkText">Загрузка ссылки...</span>
+                        <button class="copy-btn" id="copyRefBtn">📋 Копировать</button>
+                    </div>
+                    <div class="ref-stats">
+                        <div class="stat"><span id="refLevel1">0</span>Уровень 1</div>
+                        <div class="stat"><span id="refLevel2">0</span>Уровень 2</div>
+                        <div class="stat"><span id="refLevel3">0</span>Уровень 3</div>
+                    </div>
+                </div>
+
+                <a href="partners.html" class="btn btn-primary" style="margin-bottom:0.5rem;">🤝 Партнёрская программа</a>
+                <a href="purchases.html" class="btn btn-secondary" style="margin-bottom:0.5rem;">📋 Мои покупки</a>
+                <button class="btn btn-danger logout-btn" id="logoutBtn">🚪 Выйти из аккаунта</button>
+            </div>
         </div>
+
+        <div class="footer">FreeDom — место для жизни, отдыха и развития ❤️</div>
     </div>
 
-    <div class="footer">FreeDom — место для жизни, отдыха и развития ❤️</div>
-</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // ===== ВАШИ ДАННЫЕ ИЗ SUPABASE =====
-        const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
-
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        const loadingState = document.getElementById('loadingState');
-        const profileData = document.getElementById('profileData');
-        const logoutBtn = document.getElementById('logoutBtn');
-
-        const userName = document.getElementById('userName');
-        const userEmail = document.getElementById('userEmail');
-        const userPhone = document.getElementById('userPhone');
-        const userCity = document.getElementById('userCity');
-        const userBirth = document.getElementById('userBirth');
-        const userRegDate = document.getElementById('userRegDate');
-        const userRefCode = document.getElementById('userRefCode');
-        const userBalance = document.getElementById('userBalance');
-        const refLinkText = document.getElementById('refLinkText');
-        const refLevel1 = document.getElementById('refLevel1');
-        const refLevel2 = document.getElementById('refLevel2');
-        const refLevel3 = document.getElementById('refLevel3');
-        const copyBtn = document.getElementById('copyRefBtn');
-
-        // Проверяем сессию пользователя
-        supabase.auth.getSession().then(async ({ data: sessionData }) => {
-            if (!sessionData.session) {
-                window.location.href = 'login.html';
+            if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+                document.getElementById('loadingState').innerHTML = '<p style="color:#ff6b6b;">❌ Нет конфигурации Supabase. Проверьте код.</p>';
                 return;
             }
 
-            const user = sessionData.session.user;
-            const userId = user.id;
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            try {
-                // Получаем данные пользователя из таблицы users
-                const { data: userData, error } = await supabase
-                    .from('users')
-                    .select('*')
-                    .eq('id', userId)
-                    .maybeSingle();
+            const loadingState = document.getElementById('loadingState');
+            const profileData = document.getElementById('profileData');
+            const logoutBtn = document.getElementById('logoutBtn');
 
-                if (error) {
-                    console.error('❌ Ошибка Supabase:', error);
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+            const userPhone = document.getElementById('userPhone');
+            const userCity = document.getElementById('userCity');
+            const userBirth = document.getElementById('userBirth');
+            const userRegDate = document.getElementById('userRegDate');
+            const userRefCode = document.getElementById('userRefCode');
+            const userBalance = document.getElementById('userBalance');
+            const refLinkText = document.getElementById('refLinkText');
+            const refLevel1 = document.getElementById('refLevel1');
+            const refLevel2 = document.getElementById('refLevel2');
+            const refLevel3 = document.getElementById('refLevel3');
+            const copyBtn = document.getElementById('copyRefBtn');
+
+            supabase.auth.getSession().then(async ({ data: sessionData }) => {
+                if (!sessionData.session) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const user = sessionData.session.user;
+                const userId = user.id;
+
+                try {
+                    const { data: userData, error } = await supabase
+                        .from('users')
+                        .select('*')
+                        .eq('user_id', userId)  // ✅ исправлено
+                        .maybeSingle();
+
+                    if (error) {
+                        console.error('❌ Ошибка Supabase:', error);
+                        loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка: ' + error.message + '</p>';
+                        return;
+                    }
+
+                    if (!userData) {
+                        loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Профиль не найден. Проверьте таблицу users.</p>';
+                        return;
+                    }
+
+                    userName.textContent = userData.display_name || 'Без имени';
+                    userEmail.textContent = user.email || '—';
+                    userPhone.textContent = userData.phone || '—';
+                    userCity.textContent = userData.city || '—';
+                    userBirth.textContent = userData.birth_date || '—';
+                    userRefCode.textContent = userData.ref_code || '—';
+
+                    if (userData.created_at) {
+                        const date = new Date(userData.created_at);
+                        userRegDate.textContent = date.toLocaleDateString('ru-RU');
+                    } else {
+                        userRegDate.textContent = '—';
+                    }
+
+                    const balance = userData.balance || 0;
+                    userBalance.textContent = balance + ' ₽';
+
+                    const refCode = userData.ref_code || userId.slice(0, 8);
+                    const siteUrl = window.location.origin + window.location.pathname.replace(/profile\.html$/, '');
+                    const refUrl = siteUrl + 'register.html?ref=' + refCode;
+                    refLinkText.textContent = refUrl;
+
+                    const { data: referrals } = await supabase
+                        .from('referrals')
+                        .select('level')
+                        .eq('referrer_id', userId);
+
+                    if (referrals) {
+                        let count1 = 0, count2 = 0, count3 = 0;
+                        referrals.forEach(r => {
+                            if (r.level === 1) count1++;
+                            else if (r.level === 2) count2++;
+                            else if (r.level === 3) count3++;
+                        });
+                        refLevel1.textContent = count1;
+                        refLevel2.textContent = count2;
+                        refLevel3.textContent = count3;
+                    }
+
+                    loadingState.style.display = 'none';
+                    profileData.style.display = 'block';
+
+                } catch (error) {
+                    console.error('❌ Критическая ошибка:', error);
                     loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка: ' + error.message + '</p>';
-                    return;
                 }
+            });
 
-                if (!userData) {
-                    loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Профиль не найден. Пожалуйста, зарегистрируйтесь заново.</p>';
-                    return;
-                }
-
-                // Заполняем профиль
-                userName.textContent = userData.display_name || 'Без имени';
-                userEmail.textContent = user.email || '—';
-                userPhone.textContent = userData.phone || '—';
-                userCity.textContent = userData.city || '—';
-                userBirth.textContent = userData.birth_date || '—';
-                userRefCode.textContent = userData.ref_code || '—';
-
-                if (userData.created_at) {
-                    const date = new Date(userData.created_at);
-                    userRegDate.textContent = date.toLocaleDateString('ru-RU');
-                } else {
-                    userRegDate.textContent = '—';
-                }
-
-                const balance = userData.balance || 0;
-                userBalance.textContent = balance + ' ₽';
-
-                const refCode = userData.ref_code || userId.slice(0, 8);
-                const siteUrl = window.location.origin + window.location.pathname.replace(/profile\.html$/, '');
-                const refUrl = siteUrl + 'register.html?ref=' + refCode;
-                refLinkText.textContent = refUrl;
-
-                // Считаем рефералов
-                const { data: referrals } = await supabase
-                    .from('referrals')
-                    .select('level')
-                    .eq('referrer_id', userId);
-
-                if (referrals) {
-                    let count1 = 0, count2 = 0, count3 = 0;
-                    referrals.forEach(r => {
-                        if (r.level === 1) count1++;
-                        else if (r.level === 2) count2++;
-                        else if (r.level === 3) count3++;
+            copyBtn.addEventListener('click', function() {
+                const text = refLinkText.textContent;
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        const original = copyBtn.textContent;
+                        copyBtn.textContent = '✅ Скопировано!';
+                        setTimeout(() => copyBtn.textContent = original, 2000);
                     });
-                    refLevel1.textContent = count1;
-                    refLevel2.textContent = count2;
-                    refLevel3.textContent = count3;
-                }
-
-                loadingState.style.display = 'none';
-                profileData.style.display = 'block';
-
-            } catch (error) {
-                console.error('❌ Критическая ошибка:', error);
-                loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка: ' + error.message + '</p>';
-            }
-        });
-
-        // Копирование ссылки
-        copyBtn.addEventListener('click', function() {
-            const text = refLinkText.textContent;
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => {
+                } else {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
                     const original = copyBtn.textContent;
                     copyBtn.textContent = '✅ Скопировано!';
                     setTimeout(() => copyBtn.textContent = original, 2000);
-                });
-            } else {
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                const original = copyBtn.textContent;
-                copyBtn.textContent = '✅ Скопировано!';
-                setTimeout(() => copyBtn.textContent = original, 2000);
-            }
-        });
+                }
+            });
 
-        // Выход
-        logoutBtn.addEventListener('click', async function() {
-            if (confirm('Вы уверены, что хотите выйти?')) {
-                await supabase.auth.signOut();
-                window.location.href = 'index.html';
-            }
+            logoutBtn.addEventListener('click', async function() {
+                if (confirm('Вы уверены, что хотите выйти?')) {
+                    await supabase.auth.signOut();
+                    window.location.href = 'index.html';
+                }
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>
