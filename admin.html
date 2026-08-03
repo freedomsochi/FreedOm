@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Админ-панель — FreeDom</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -15,11 +16,7 @@
             min-height: 100vh;
             padding: 20px 0 60px;
         }
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 16px; }
 
         .header {
             background: linear-gradient(145deg, rgba(26,16,61,0.95), rgba(11,13,23,0.95));
@@ -66,7 +63,6 @@
             position: relative;
             z-index: 1;
         }
-
         .admin-badge {
             display: inline-block;
             background: rgba(212,175,55,0.12);
@@ -119,26 +115,20 @@
             border: 1px solid rgba(255,0,0,0.2);
             color: #ff6b6b;
         }
-        .btn-danger:hover {
-            background: rgba(255,0,0,0.15);
-        }
+        .btn-danger:hover { background: rgba(255,0,0,0.15); }
         .btn-secondary {
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.08);
             color: #b8a9d4;
         }
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.08);
-        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.08); }
         .btn-block {
             width: 100%;
             text-align: center;
             margin: 4px 0;
         }
 
-        .field {
-            margin-bottom: 1rem;
-        }
+        .field { margin-bottom: 1rem; }
         .field label {
             display: block;
             font-weight: 500;
@@ -198,7 +188,6 @@
         }
 
         .hidden { display: none; }
-
         .loading {
             text-align: center;
             padding: 2rem;
@@ -252,7 +241,6 @@
 <body>
 
 <div class="container">
-    <!-- ШАПКА -->
     <div class="header">
         <a href="index.html" class="back-link">← На главную</a>
         <h1>⚙️ Админ-панель</h1>
@@ -260,16 +248,12 @@
         <div class="admin-badge" id="adminBadge">🔒 Администратор</div>
     </div>
 
-    <!-- Состояние загрузки -->
     <div id="loadingState" class="loading">
         <div class="spinner"></div>
         <p>Загрузка данных...</p>
     </div>
 
-    <!-- Основной контент (скрыт до проверки) -->
     <div id="adminContent" style="display:none;">
-
-        <!-- ===== СТАТИСТИКА ===== -->
         <div class="card">
             <h3>📊 Статистика</h3>
             <div style="display:flex; gap:20px; flex-wrap:wrap;">
@@ -279,7 +263,6 @@
             </div>
         </div>
 
-        <!-- ===== ДОБАВИТЬ ПОКУПКУ ===== -->
         <div class="card">
             <h3>➕ Добавить покупку</h3>
             <p style="font-size:0.85rem; opacity:0.6; margin-bottom:1rem;">Выберите пользователя и введите сумму покупки. Бонусы начислятся автоматически.</p>
@@ -300,7 +283,6 @@
             </form>
         </div>
 
-        <!-- ===== СПИСОК ПОЛЬЗОВАТЕЛЕЙ ===== -->
         <div class="card">
             <h3>👥 Все пользователи</h3>
             <div class="user-list" id="userList">
@@ -308,7 +290,6 @@
             </div>
         </div>
 
-        <!-- ===== ПОСЛЕДНИЕ ТРАНЗАКЦИИ ===== -->
         <div class="card">
             <h3>📜 Последние транзакции</h3>
             <div id="transactionList" style="max-height:200px; overflow-y:auto;">
@@ -316,278 +297,255 @@
             </div>
         </div>
 
-        <!-- ===== ВЫХОД ===== -->
         <button class="btn btn-danger btn-block" id="logoutBtn">🚪 Выйти из админ-панели</button>
     </div>
 
     <div class="footer">FreeDom — место для жизни, отдыха и развития ❤️</div>
 </div>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
 <script>
-    // ===== КОНФИГУРАЦИЯ FIREBASE =====
-    const firebaseConfig = {
-        apiKey: "AIzaSyAK5KcbIHHcOon-pK9nskM0AKL5pdhwwQQ",
-        authDomain: "freedom-referal.firebaseapp.com",
-        projectId: "freedom-referal",
-        storageBucket: "freedom-referal.firebasestorage.app",
-        messagingSenderId: "189555481286",
-        appId: "1:189555481286:web:870bc07acaa7d4c8b655c7"
-    };
+    document.addEventListener('DOMContentLoaded', function() {
+        const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // ===== EMAIL АДМИНИСТРАТОРА (ЗАМЕНИТЕ НА СВОЙ!) =====
-    const ADMIN_EMAIL = "ваш_email@example.com"; // <-- ВСТАВЬТЕ СВОЙ EMAIL
+        const ADMIN_EMAIL = "ваш_email@example.com";
 
-    // Элементы
-    const loadingState = document.getElementById('loadingState');
-    const adminContent = document.getElementById('adminContent');
-    const totalUsers = document.getElementById('totalUsers');
-    const totalPurchases = document.getElementById('totalPurchases');
-    const totalRevenue = document.getElementById('totalRevenue');
-    const userList = document.getElementById('userList');
-    const transactionList = document.getElementById('transactionList');
-    const purchaseUser = document.getElementById('purchaseUser');
-    const purchaseAmount = document.getElementById('purchaseAmount');
-    const addPurchaseForm = document.getElementById('addPurchaseForm');
-    const purchaseError = document.getElementById('purchaseError');
-    const purchaseSuccess = document.getElementById('purchaseSuccess');
-    const addPurchaseBtn = document.getElementById('addPurchaseBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const adminBadge = document.getElementById('adminBadge');
+        const loadingState = document.getElementById('loadingState');
+        const adminContent = document.getElementById('adminContent');
+        const totalUsers = document.getElementById('totalUsers');
+        const totalPurchases = document.getElementById('totalPurchases');
+        const totalRevenue = document.getElementById('totalRevenue');
+        const userList = document.getElementById('userList');
+        const transactionList = document.getElementById('transactionList');
+        const purchaseUser = document.getElementById('purchaseUser');
+        const purchaseAmount = document.getElementById('purchaseAmount');
+        const addPurchaseForm = document.getElementById('addPurchaseForm');
+        const purchaseError = document.getElementById('purchaseError');
+        const purchaseSuccess = document.getElementById('purchaseSuccess');
+        const addPurchaseBtn = document.getElementById('addPurchaseBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminBadge = document.getElementById('adminBadge');
 
-    // Проверка авторизации и прав администратора
-    auth.onAuthStateChanged(async (user) => {
-        if (!user) {
-            // Не авторизован — перенаправляем на вход
-            window.location.href = 'login.html';
-            return;
-        }
-
-        // Проверяем, что email совпадает с администраторским
-        if (user.email !== ADMIN_EMAIL) {
-            // Если не администратор — показываем запрет
-            loadingState.innerHTML = `
-                <div style="text-align:center; padding:2rem;">
-                    <div style="font-size:3rem; margin-bottom:1rem;">⛔</div>
-                    <h2 style="color:#ff6b6b;">Доступ запрещён</h2>
-                    <p style="opacity:0.6;">У вас нет прав администратора.</p>
-                    <a href="profile.html" style="color:#d4af37; text-decoration:none;">← Вернуться в профиль</a>
-                </div>
-            `;
-            adminContent.style.display = 'none';
-            return;
-        }
-
-        // Администратор — показываем панель
-        adminBadge.textContent = '🔒 Администратор (' + user.email + ')';
-        loadingState.style.display = 'none';
-        adminContent.style.display = 'block';
-
-        // Загружаем данные
-        loadUsers();
-        loadTransactions();
-        loadStats();
-    });
-
-    // ===== ЗАГРУЗКА ПОЛЬЗОВАТЕЛЕЙ =====
-    async function loadUsers() {
-        try {
-            const snapshot = await db.collection('users').orderBy('displayName').get();
-            let html = '';
-            let count = 0;
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                count++;
-                html += `
-                    <div class="user-item">
-                        <div class="user-info">
-                            <div class="name">${data.displayName || 'Без имени'}</div>
-                            <div class="email">${data.email || '—'} · Код: ${data.refCode || '—'}</div>
-                        </div>
-                        <div class="user-balance">${data.balance || 0} ₽</div>
-                        <button class="select-btn" data-uid="${doc.id}" data-name="${data.displayName || 'Без имени'}">Выбрать</button>
-                    </div>
-                `;
-            });
-            userList.innerHTML = html || '<div style="text-align:center; opacity:0.4; padding:1rem;">Пользователей пока нет</div>';
-            totalUsers.textContent = count;
-
-            // Заполняем выпадающий список для покупок
-            const select = document.getElementById('purchaseUser');
-            select.innerHTML = '<option value="">Выберите пользователя...</option>';
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const option = document.createElement('option');
-                option.value = doc.id;
-                option.textContent = data.displayName || data.email || doc.id;
-                select.appendChild(option);
-            });
-
-            // Обработчики для кнопок "Выбрать"
-            document.querySelectorAll('.select-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const uid = this.dataset.uid;
-                    const name = this.dataset.name;
-                    const select = document.getElementById('purchaseUser');
-                    for (let option of select.options) {
-                        if (option.value === uid) {
-                            select.selectedIndex = option.index;
-                            break;
-                        }
-                    }
-                    document.getElementById('purchaseAmount').focus();
-                });
-            });
-
-        } catch (error) {
-            console.error('Ошибка загрузки пользователей:', error);
-            userList.innerHTML = '<div style="text-align:center; color:#ff6b6b;">Ошибка загрузки</div>';
-        }
-    }
-
-    // ===== ЗАГРУЗКА ТРАНЗАКЦИЙ =====
-    async function loadTransactions() {
-        try {
-            const snapshot = await db.collection('transactions')
-                .orderBy('createdAt', 'desc')
-                .limit(20)
-                .get();
-
-            let html = '';
-            let purchaseCount = 0;
-            let revenue = 0;
-
-            // Также считаем общее количество покупок и выручку
-            const purchasesSnapshot = await db.collection('purchases').get();
-            purchaseCount = purchasesSnapshot.size;
-            purchasesSnapshot.forEach(doc => {
-                revenue += doc.data().amount || 0;
-            });
-            totalPurchases.textContent = purchaseCount;
-            totalRevenue.textContent = revenue + ' ₽';
-
-            if (snapshot.empty) {
-                transactionList.innerHTML = '<div style="text-align:center; opacity:0.4; padding:1rem;">Транзакций пока нет</div>';
+        supabase.auth.getSession().then(async ({ data: sessionData }) => {
+            if (!sessionData.session) {
+                window.location.href = 'login.html';
                 return;
             }
 
-            // Получаем имена пользователей для транзакций
-            const userNames = {};
-            const userSnapshot = await db.collection('users').get();
-            userSnapshot.forEach(doc => {
-                userNames[doc.id] = doc.data().displayName || doc.data().email || doc.id;
-            });
-
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const userName = userNames[data.userUid] || data.userUid || 'Неизвестный';
-                const date = data.createdAt?.toDate?.() || new Date();
-                const levelLabel = data.level ? `Уровень ${data.level}` : '';
-                html += `
-                    <div class="user-item" style="font-size:0.85rem;">
-                        <div class="user-info">
-                            <div class="name">${userName}</div>
-                            <div style="opacity:0.4; font-size:0.7rem;">${date.toLocaleDateString('ru-RU')} ${date.toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}</div>
-                        </div>
-                        <div style="color:#25D366; font-weight:600;">+${data.amount || 0} ₽</div>
-                        <div style="opacity:0.4; font-size:0.7rem;">${levelLabel}</div>
+            const user = sessionData.session.user;
+            if (user.email !== ADMIN_EMAIL) {
+                loadingState.innerHTML = `
+                    <div style="text-align:center; padding:2rem;">
+                        <div style="font-size:3rem; margin-bottom:1rem;">⛔</div>
+                        <h2 style="color:#ff6b6b;">Доступ запрещён</h2>
+                        <p style="opacity:0.6;">У вас нет прав администратора.</p>
+                        <a href="profile.html" style="color:#d4af37; text-decoration:none;">← Вернуться в профиль</a>
                     </div>
                 `;
-            });
-            transactionList.innerHTML = html;
+                adminContent.style.display = 'none';
+                return;
+            }
 
-        } catch (error) {
-            console.error('Ошибка загрузки транзакций:', error);
-            transactionList.innerHTML = '<div style="text-align:center; color:#ff6b6b;">Ошибка загрузки</div>';
+            adminBadge.textContent = '🔒 Администратор (' + user.email + ')';
+            loadingState.style.display = 'none';
+            adminContent.style.display = 'block';
+
+            loadUsers();
+            loadTransactions();
+            loadStats();
+        });
+
+        async function loadUsers() {
+            try {
+                const snapshot = await supabase
+                    .from('users')
+                    .select('*')
+                    .order('display_name');
+
+                let html = '';
+                let count = 0;
+                snapshot.data.forEach(user => {
+                    count++;
+                    html += `
+                        <div class="user-item">
+                            <div class="user-info">
+                                <div class="name">${user.display_name || 'Без имени'}</div>
+                                <div class="email">${user.email || '—'} · Код: ${user.ref_code || '—'}</div>
+                            </div>
+                            <div class="user-balance">${user.balance || 0} ₽</div>
+                            <button class="select-btn" data-user_id="${user.user_id}" data-name="${user.display_name || 'Без имени'}">Выбрать</button>
+                        </div>
+                    `;
+                });
+                userList.innerHTML = html || '<div style="text-align:center; opacity:0.4; padding:1rem;">Пользователей пока нет</div>';
+                totalUsers.textContent = count;
+
+                const select = document.getElementById('purchaseUser');
+                select.innerHTML = '<option value="">Выберите пользователя...</option>';
+                snapshot.data.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.user_id;
+                    option.textContent = user.display_name || user.email || user.user_id;
+                    select.appendChild(option);
+                });
+
+                document.querySelectorAll('.select-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const uid = this.dataset.user_id;
+                        const select = document.getElementById('purchaseUser');
+                        for (let option of select.options) {
+                            if (option.value === uid) {
+                                select.selectedIndex = option.index;
+                                break;
+                            }
+                        }
+                        document.getElementById('purchaseAmount').focus();
+                    });
+                });
+
+            } catch (error) {
+                console.error('Ошибка загрузки пользователей:', error);
+                userList.innerHTML = '<div style="text-align:center; color:#ff6b6b;">Ошибка загрузки</div>';
+            }
         }
-    }
 
-    // ===== ЗАГРУЗКА СТАТИСТИКИ =====
-    async function loadStats() {
-        try {
-            const usersSnapshot = await db.collection('users').get();
-            totalUsers.textContent = usersSnapshot.size;
-        } catch (error) {
-            console.error('Ошибка статистики:', error);
+        async function loadTransactions() {
+            try {
+                const { data: transactions } = await supabase
+                    .from('transactions')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(20);
+
+                let purchaseCount = 0;
+                let revenue = 0;
+                const { data: purchases } = await supabase.from('purchases').select('*');
+                if (purchases) {
+                    purchaseCount = purchases.length;
+                    purchases.forEach(p => { revenue += p.amount || 0; });
+                }
+                totalPurchases.textContent = purchaseCount;
+                totalRevenue.textContent = revenue + ' ₽';
+
+                if (!transactions || transactions.length === 0) {
+                    transactionList.innerHTML = '<div style="text-align:center; opacity:0.4; padding:1rem;">Транзакций пока нет</div>';
+                    return;
+                }
+
+                const { data: users } = await supabase.from('users').select('user_id, display_name, email');
+                const userNames = {};
+                if (users) {
+                    users.forEach(u => {
+                        userNames[u.user_id] = u.display_name || u.email || u.user_id;
+                    });
+                }
+
+                let html = '';
+                transactions.forEach(t => {
+                    const userName = userNames[t.user_id] || t.user_id || 'Неизвестный';
+                    const date = t.created_at ? new Date(t.created_at) : new Date();
+                    const levelLabel = t.level ? `Уровень ${t.level}` : '';
+                    html += `
+                        <div class="user-item" style="font-size:0.85rem;">
+                            <div class="user-info">
+                                <div class="name">${userName}</div>
+                                <div style="opacity:0.4; font-size:0.7rem;">${date.toLocaleDateString('ru-RU')} ${date.toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}</div>
+                            </div>
+                            <div style="color:#25D366; font-weight:600;">+${t.amount || 0} ₽</div>
+                            <div style="opacity:0.4; font-size:0.7rem;">${levelLabel}</div>
+                        </div>
+                    `;
+                });
+                transactionList.innerHTML = html;
+
+            } catch (error) {
+                console.error('Ошибка загрузки транзакций:', error);
+                transactionList.innerHTML = '<div style="text-align:center; color:#ff6b6b;">Ошибка загрузки</div>';
+            }
         }
-    }
 
-    // ===== ДОБАВЛЕНИЕ ПОКУПКИ =====
-    addPurchaseForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        purchaseError.style.display = 'none';
-        purchaseSuccess.style.display = 'none';
-        addPurchaseBtn.disabled = true;
-        addPurchaseBtn.textContent = 'Добавление...';
-
-        const userUid = purchaseUser.value;
-        const amount = parseFloat(purchaseAmount.value);
-
-        if (!userUid) {
-            showPurchaseError('Выберите пользователя.');
-            addPurchaseBtn.disabled = false;
-            addPurchaseBtn.textContent = 'Добавить покупку';
-            return;
-        }
-        if (!amount || amount < 1) {
-            showPurchaseError('Введите сумму больше 0.');
-            addPurchaseBtn.disabled = false;
-            addPurchaseBtn.textContent = 'Добавить покупку';
-            return;
+        async function loadStats() {
+            try {
+                const { data: users } = await supabase.from('users').select('*');
+                totalUsers.textContent = users ? users.length : 0;
+            } catch (error) {
+                console.error('Ошибка статистики:', error);
+            }
         }
 
-        try {
-            // Добавляем покупку в Firestore
-            await db.collection('purchases').add({
-                buyerUid: userUid,
-                amount: amount,
-                date: firebase.firestore.FieldValue.serverTimestamp(),
-                confirmedBy: auth.currentUser.uid
-            });
+        addPurchaseForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            purchaseError.style.display = 'none';
+            purchaseSuccess.style.display = 'none';
+            addPurchaseBtn.disabled = true;
+            addPurchaseBtn.textContent = 'Добавление...';
 
-            purchaseSuccess.style.display = 'block';
-            addPurchaseBtn.textContent = '✅ Добавлено!';
-            purchaseAmount.value = '';
-            purchaseUser.value = '';
+            const userUid = purchaseUser.value;
+            const amount = parseFloat(purchaseAmount.value);
 
-            // Перезагружаем данные
-            setTimeout(() => {
-                loadUsers();
-                loadTransactions();
-                loadStats();
+            if (!userUid) {
+                showPurchaseError('Выберите пользователя.');
                 addPurchaseBtn.disabled = false;
                 addPurchaseBtn.textContent = 'Добавить покупку';
-            }, 1500);
+                return;
+            }
+            if (!amount || amount < 1) {
+                showPurchaseError('Введите сумму больше 0.');
+                addPurchaseBtn.disabled = false;
+                addPurchaseBtn.textContent = 'Добавить покупку';
+                return;
+            }
 
-        } catch (error) {
-            console.error('Ошибка добавления покупки:', error);
-            showPurchaseError('Ошибка добавления покупки. Попробуйте позже.');
-            addPurchaseBtn.disabled = false;
-            addPurchaseBtn.textContent = 'Добавить покупку';
+            try {
+                const { data: sessionData } = await supabase.auth.getSession();
+                const adminId = sessionData.session?.user?.id;
+
+                await supabase
+                    .from('purchases')
+                    .insert({
+                        buyer_id: userUid,
+                        amount: amount,
+                        confirmed_by: adminId,
+                        date: new Date().toISOString()
+                    });
+
+                purchaseSuccess.style.display = 'block';
+                addPurchaseBtn.textContent = '✅ Добавлено!';
+                purchaseAmount.value = '';
+                purchaseUser.value = '';
+
+                setTimeout(() => {
+                    loadUsers();
+                    loadTransactions();
+                    loadStats();
+                    addPurchaseBtn.disabled = false;
+                    addPurchaseBtn.textContent = 'Добавить покупку';
+                }, 1500);
+
+            } catch (error) {
+                console.error('Ошибка добавления покупки:', error);
+                showPurchaseError('Ошибка добавления покупки. Попробуйте позже.');
+                addPurchaseBtn.disabled = false;
+                addPurchaseBtn.textContent = 'Добавить покупку';
+            }
+        });
+
+        function showPurchaseError(msg) {
+            purchaseError.textContent = msg;
+            purchaseError.style.display = 'block';
         }
-    });
 
-    function showPurchaseError(msg) {
-        purchaseError.textContent = msg;
-        purchaseError.style.display = 'block';
-    }
-
-    // ===== ВЫХОД =====
-    logoutBtn.addEventListener('click', function() {
-        if (confirm('Выйти из админ-панели?')) {
-            auth.signOut().then(() => {
-                window.location.href = 'index.html';
-            });
-        }
+        logoutBtn.addEventListener('click', function() {
+            if (confirm('Выйти из админ-панели?')) {
+                supabase.auth.signOut().then(() => {
+                    window.location.href = 'index.html';
+                });
+            }
+        });
     });
 </script>
 </body>
+</html>
 </html>
