@@ -328,7 +328,7 @@
                     const { data: userData, error } = await supabase
                         .from('users')
                         .select('*')
-                        .eq('user_id', userId)  // ✅ исправлено
+                        .eq('Id', userId)  // ✅ исправлено
                         .maybeSingle();
 
                     if (error) {
