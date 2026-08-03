@@ -322,6 +322,7 @@
 
                 const user = sessionData.session.user;
                 const userId = user.id;
+                console.log('🔍 userId из сессии:', userId);
 
                 try {
                     const { data: userData, error } = await supabase
