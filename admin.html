@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
+        /* (стили такие же, как были) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -310,7 +311,7 @@
 
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        const ADMIN_EMAIL = "ваш_email@example.com";
+        const ADMIN_EMAIL = "ваш_email@example.com"; // замените на свой email
 
         const loadingState = document.getElementById('loadingState');
         const adminContent = document.getElementById('adminContent');
@@ -359,23 +360,25 @@
 
         async function loadUsers() {
             try {
-                const snapshot = await supabase
+                const { data, error } = await supabase
                     .from('users')
                     .select('*')
-                    .order('display_name');
+                    .order('Display_name');
+
+                if (error) throw error;
 
                 let html = '';
                 let count = 0;
-                snapshot.data.forEach(user => {
+                data.forEach(user => {
                     count++;
                     html += `
                         <div class="user-item">
                             <div class="user-info">
-                                <div class="name">${user.display_name || 'Без имени'}</div>
-                                <div class="email">${user.email || '—'} · Код: ${user.ref_code || '—'}</div>
+                                <div class="name">${user.Display_name || 'Без имени'}</div>
+                                <div class="email">${user.Email || '—'} · Код: ${user.Ref_code || '—'}</div>
                             </div>
                             <div class="user-balance">${user.balance || 0} ₽</div>
-                            <button class="select-btn" data-user_id="${user.user_id}" data-name="${user.display_name || 'Без имени'}">Выбрать</button>
+                            <button class="select-btn" data-user_id="${user.user_id}" data-name="${user.Display_name || 'Без имени'}">Выбрать</button>
                         </div>
                     `;
                 });
@@ -384,10 +387,10 @@
 
                 const select = document.getElementById('purchaseUser');
                 select.innerHTML = '<option value="">Выберите пользователя...</option>';
-                snapshot.data.forEach(user => {
+                data.forEach(user => {
                     const option = document.createElement('option');
                     option.value = user.user_id;
-                    option.textContent = user.display_name || user.email || user.user_id;
+                    option.textContent = user.Display_name || user.Email || user.user_id;
                     select.appendChild(option);
                 });
 
@@ -413,18 +416,20 @@
 
         async function loadTransactions() {
             try {
-                const { data: transactions } = await supabase
+                const { data: transactions, error } = await supabase
                     .from('transactions')
                     .select('*')
-                    .order('created_at', { ascending: false })
+                    .order('Created_at', { ascending: false })
                     .limit(20);
+
+                if (error) throw error;
 
                 let purchaseCount = 0;
                 let revenue = 0;
                 const { data: purchases } = await supabase.from('purchases').select('*');
                 if (purchases) {
                     purchaseCount = purchases.length;
-                    purchases.forEach(p => { revenue += p.amount || 0; });
+                    purchases.forEach(p => { revenue += p.Amount || 0; });
                 }
                 totalPurchases.textContent = purchaseCount;
                 totalRevenue.textContent = revenue + ' ₽';
@@ -434,26 +439,26 @@
                     return;
                 }
 
-                const { data: users } = await supabase.from('users').select('user_id, display_name, email');
+                const { data: users } = await supabase.from('users').select('user_id, Display_name, Email');
                 const userNames = {};
                 if (users) {
                     users.forEach(u => {
-                        userNames[u.user_id] = u.display_name || u.email || u.user_id;
+                        userNames[u.user_id] = u.Display_name || u.Email || u.user_id;
                     });
                 }
 
                 let html = '';
                 transactions.forEach(t => {
-                    const userName = userNames[t.user_id] || t.user_id || 'Неизвестный';
-                    const date = t.created_at ? new Date(t.created_at) : new Date();
-                    const levelLabel = t.level ? `Уровень ${t.level}` : '';
+                    const userName = userNames[t.User_id] || t.User_id || 'Неизвестный';
+                    const date = t.Created_at ? new Date(t.Created_at) : new Date();
+                    const levelLabel = t.Level ? `Уровень ${t.Level}` : '';
                     html += `
                         <div class="user-item" style="font-size:0.85rem;">
                             <div class="user-info">
                                 <div class="name">${userName}</div>
                                 <div style="opacity:0.4; font-size:0.7rem;">${date.toLocaleDateString('ru-RU')} ${date.toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}</div>
                             </div>
-                            <div style="color:#25D366; font-weight:600;">+${t.amount || 0} ₽</div>
+                            <div style="color:#25D366; font-weight:600;">+${t.Amount || 0} ₽</div>
                             <div style="opacity:0.4; font-size:0.7rem;">${levelLabel}</div>
                         </div>
                     `;
@@ -505,10 +510,10 @@
                 await supabase
                     .from('purchases')
                     .insert({
-                        buyer_id: userUid,
-                        amount: amount,
-                        confirmed_by: adminId,
-                        date: new Date().toISOString()
+                        Buyer_id: userUid,
+                        Amount: amount,
+                        Confirmed_by: adminId,
+                        Created_at: new Date().toISOString()
                     });
 
                 purchaseSuccess.style.display = 'block';
@@ -547,5 +552,4 @@
     });
 </script>
 </body>
-</html>
 </html>
