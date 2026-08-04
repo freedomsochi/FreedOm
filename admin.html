@@ -116,7 +116,7 @@
             </div>
         </div>
 
-        <!-- ==================== ВКЛАДКА: ГОСТИ ==================== -->
+        <!-- ==================== ВКЛАДКА: ГОСТИ (обновлена) ==================== -->
         <div id="tabGuests" class="tab-content">
             <div class="card">
                 <h3>👥 Гости</h3>
@@ -132,7 +132,19 @@
                     <button class="btn btn-secondary" id="cancelAddGuestBtn">Отмена</button>
                     <div id="guestMessage" class="error-msg"></div>
                 </div>
-                <div id="guestList" style="margin-top:1rem;"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
+
+                <!-- Подвкладки гостей -->
+                <div class="tab-nav" style="margin-top:1rem;">
+                    <span class="tab-link active" data-tab="guestCurrent">🏠 Проживающие сейчас</span>
+                    <span class="tab-link" data-tab="guestAll">👤 Все пользователи</span>
+                </div>
+
+                <div id="guestCurrent" class="tab-content active" style="margin-top:1rem;">
+                    <div id="currentGuestsList"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
+                </div>
+                <div id="guestAll" class="tab-content" style="margin-top:1rem;">
+                    <div id="guestList"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
+                </div>
             </div>
         </div>
 
@@ -383,6 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Загружаем все данные
         loadGuests();
+        loadCurrentGuests(); // <-- новая функция
         loadRooms();
         loadBookings();
         loadServicesList();
@@ -397,6 +410,19 @@ document.addEventListener('DOMContentLoaded', function() {
         populateUserSelect();
         populateServiceSelect();
         populateBookingSelect();
+
+        // Переключение подвкладок гостей
+        document.querySelectorAll('#tabGuests .tab-link').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('#tabGuests .tab-link').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const tabId = this.dataset.tab;
+                document.querySelectorAll('#tabGuests .tab-content').forEach(el => el.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                if (tabId === 'guestCurrent') loadCurrentGuests();
+                if (tabId === 'guestAll') loadGuests();
+            });
+        });
     });
 
     // ===== ПЕРЕКЛЮЧЕНИЕ ОСНОВНЫХ ВКЛАДОК =====
@@ -407,6 +433,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const tabId = this.dataset.tab;
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
+            // Загружаем данные при переключении на вкладку гостей
+            if (tabId === 'tabGuests') {
+                loadCurrentGuests();
+                loadGuests();
+            }
         });
     });
 
@@ -418,13 +449,63 @@ document.addEventListener('DOMContentLoaded', function() {
             const tabId = this.dataset.tab;
             document.querySelectorAll('#financeAdd, #financeDebts, #financePayments, #financeReports').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            // Перезагружаем данные при переходе на вкладку
             if (tabId === 'financeDebts') { loadDebtors(); }
             if (tabId === 'financePayments') { loadPayments(); }
         });
     });
 
-    // ===== ГОСТИ =====
+    // ===== ФУНКЦИЯ: Проживающие сейчас =====
+    async function loadCurrentGuests() {
+        try {
+            const today = new Date().toISOString().split('T')[0];
+            const { data: bookings, error } = await supabase
+                .from('bookings')
+                .select('user_id, guest_name, guest_phone, check_in_date, check_out_date')
+                .eq('status', 'подтверждено')
+                .lte('check_in_date', today)
+                .gte('check_out_date', today);
+
+            if (error) throw error;
+
+            const container = document.getElementById('currentGuestsList');
+            if (!bookings || bookings.length === 0) {
+                container.innerHTML = '<div style="text-align:center; opacity:0.5;">Сейчас никто не проживает</div>';
+                return;
+            }
+
+            let html = '';
+            const userIds = bookings.map(b => b.user_id).filter(id => id);
+            let usersMap = {};
+            if (userIds.length > 0) {
+                const { data: users } = await supabase
+                    .from('users')
+                    .select('user_id, Display_name, Phone')
+                    .in('user_id', userIds);
+                if (users) {
+                    users.forEach(u => { usersMap[u.user_id] = u; });
+                }
+            }
+
+            bookings.forEach(b => {
+                const name = b.guest_name || usersMap[b.user_id]?.Display_name || 'Гость';
+                const phone = b.guest_phone || usersMap[b.user_id]?.Phone || '—';
+                html += `
+                    <div class="list-item">
+                        <div class="info">
+                            <div class="name">${name}</div>
+                            <div class="detail">${phone} · ${b.check_in_date} → ${b.check_out_date}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        } catch (error) {
+            console.error('Ошибка загрузки проживающих:', error);
+            document.getElementById('currentGuestsList').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
+        }
+    }
+
+    // ===== ГОСТИ (все пользователи) =====
     async function loadGuests() {
         try {
             const { data, error } = await supabase.from('users').select('*').order('Display_name');
@@ -455,7 +536,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Добавление гостя
+    // Добавление гостя (без изменений)
     document.getElementById('showAddGuestFormBtn').addEventListener('click', function() {
         document.getElementById('addGuestForm').style.display = 'block';
         document.getElementById('guestDisplayName').value = '';
@@ -516,6 +597,7 @@ document.addEventListener('DOMContentLoaded', function() {
             msg.style.display = 'none';
             document.getElementById('addGuestForm').style.display = 'none';
             loadGuests();
+            loadCurrentGuests();
             loadStats();
             populateUserSelect();
             const success = document.createElement('div');
@@ -569,7 +651,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Редактирование комнат (модалка)
+    // Редактирование комнат (без изменений)
     window.openEditRoomModal = async function(roomId) {
         try {
             const { data: room, error } = await supabase
@@ -637,7 +719,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target === this) closeEditRoomModal();
     });
 
-    // ===== БРОНИРОВАНИЯ =====
+    // ===== БРОНИРОВАНИЯ (обновлённая версия) =====
     async function loadBookings() {
         try {
             const { data, error } = await supabase
@@ -655,17 +737,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 const guest = b.guest_name || b.user_id || 'Гость';
                 const status = b.status || 'новое';
                 const total = b.total_amount || '—';
+                const showButtons = (status === 'новое');
+                let statusColor = '#ffc107';
+                if (status === 'подтверждено') statusColor = '#25D366';
+                if (status === 'отменено') statusColor = '#ff6b6b';
+
                 html += `
-                    <div class="list-item">
+                    <div class="list-item" id="booking-${b.id}">
                         <div class="info">
                             <div class="name">${roomName} — ${guest}</div>
-                            <div class="detail">${b.check_in_date} → ${b.check_out_date} · Статус: ${status}</div>
+                            <div class="detail">${b.check_in_date} → ${b.check_out_date} · Статус: <strong style="color:${statusColor}">${status}</strong></div>
                             <div class="detail">Сумма: ${total} ₽</div>
                         </div>
-                        <div>
-                            <button class="btn btn-success" onclick="updateBookingStatus('${b.id}', 'подтверждено')">✅ Подтвердить</button>
-                            <button class="btn btn-danger" onclick="updateBookingStatus('${b.id}', 'отменено')">❌ Отклонить</button>
-                        </div>
+                        ${showButtons ? `
+                            <div>
+                                <button class="btn btn-success" onclick="updateBookingStatus('${b.id}', 'подтверждено')">✅ Подтвердить</button>
+                                <button class="btn btn-danger" onclick="updateBookingStatus('${b.id}', 'отменено')">❌ Отклонить</button>
+                            </div>
+                        : ''}
                     </div>
                 `;
             });
@@ -705,7 +794,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            loadBookings();
+            if (newStatus === 'отменено') {
+                const element = document.getElementById(`booking-${bookingId}`);
+                if (element) element.remove();
+            } else {
+                loadBookings();
+            }
+
             loadStats();
             const msg = document.createElement('div');
             msg.className = 'success-msg';
@@ -785,12 +880,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ===== ФИНАНСЫ: загрузка данных =====
+    // ===== ФИНАНСЫ =====
     async function loadOrdersAndFinance() {
-        // Здесь можно загрузить статистику, если нужно
+        // Можно оставить пустым или загружать статистику
     }
 
-    // Заполнение селектов
     async function populateUserSelect() {
         try {
             const { data, error } = await supabase.from('users').select('user_id, Display_name, Email, discount_rate').order('Display_name');
@@ -806,11 +900,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     select.appendChild(option);
                 });
             }
-            // Обновляем отображение скидки при выборе гостя
             select.addEventListener('change', function() {
                 const discount = this.options[this.selectedIndex]?.dataset?.discount || 0;
                 document.getElementById('userDiscountDisplay').textContent = discount + '%';
-                // Автоматически подставляем скидку в поле
                 const price = parseFloat(document.getElementById('orderPricePerUnit').value) || 0;
                 const quantity = parseInt(document.getElementById('orderQuantity').value) || 1;
                 const discountAmount = Math.round(price * quantity * discount / 100);
@@ -837,7 +929,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     select.appendChild(option);
                 });
             }
-            // Автоподстановка цены
             select.addEventListener('change', function() {
                 const price = this.options[this.selectedIndex]?.dataset?.price || 0;
                 document.getElementById('orderPricePerUnit').value = price;
@@ -871,7 +962,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Расчёт итога
     function calculateTotal() {
         const price = parseFloat(document.getElementById('orderPricePerUnit').value) || 0;
         const quantity = parseInt(document.getElementById('orderQuantity').value) || 1;
@@ -884,7 +974,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('orderPricePerUnit').addEventListener('input', calculateTotal);
     document.getElementById('orderDiscount').addEventListener('input', calculateTotal);
 
-    // Добавление услуги
     document.getElementById('addOrderForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const userId = document.getElementById('orderUserId').value;
@@ -913,7 +1002,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const totalAmount = pricePerUnit * quantity;
         const finalAmount = totalAmount - discount;
-
         if (finalAmount < 0) {
             msg.textContent = 'Скидка не может превышать сумму.';
             msg.style.display = 'block';
@@ -946,7 +1034,6 @@ document.addEventListener('DOMContentLoaded', function() {
             success.style.display = 'block';
             document.getElementById('addOrderForm').reset();
             document.getElementById('orderTotalAmount').textContent = '0';
-            // Перезагружаем списки
             loadDebtors();
             loadPayments();
             loadStats();
@@ -961,7 +1048,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ===== ФИНАНСЫ: ДОЛГИ =====
+    // ===== ДОЛГИ =====
     async function loadDebtors() {
         try {
             const { data: users, error } = await supabase
@@ -996,7 +1083,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             container.innerHTML = html;
 
-            // При клике на строку показываем детали долгов
             container.querySelectorAll('.list-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     if (e.target.closest('button')) return;
@@ -1005,7 +1091,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
 
-            // Показываем первого должника по умолчанию
             if (users.length > 0) {
                 loadDebtDetails(users[0].user_id);
             }
@@ -1052,7 +1137,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Погашение отдельного заказа
     window.paySingleOrder = async function(orderId) {
         if (!confirm('Отметить эту услугу как оплаченную?')) return;
         try {
@@ -1061,14 +1145,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 .update({
                     status: 'оплачено',
                     paid_at: new Date().toISOString(),
-                    payment_method: 'нал' // по умолчанию, можно уточнить
+                    payment_method: 'нал'
                 })
                 .eq('id', orderId);
             if (error) throw error;
 
-            // Обновляем долг через триггер, но можно и принудительно
             loadDebtors();
-            loadDebtDetails(await getUserIdByOrder(orderId));
+            const userId = await getUserIdByOrder(orderId);
+            if (userId) loadDebtDetails(userId);
             loadStats();
             alert('✅ Услуга оплачена!');
         } catch (error) {
@@ -1087,14 +1171,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return data?.user_id;
     }
 
-    // Модалка погашения долга (массовое)
     let currentDebtUserId = null;
     window.showPayDebtModal = async function(userId) {
         currentDebtUserId = userId;
         const modal = document.getElementById('payDebtModal');
         modal.style.display = 'flex';
 
-        // Загружаем информацию о пользователе
         const { data: user } = await supabase
             .from('users')
             .select('Display_name, Phone, total_debt')
@@ -1106,7 +1188,6 @@ document.addEventListener('DOMContentLoaded', function() {
             (${user?.Phone || '—'}) · Долг: ${user?.total_debt || 0} ₽
         `;
 
-        // Загружаем неоплаченные заказы
         const { data: orders } = await supabase
             .from('orders')
             .select('*, services(name)')
@@ -1138,7 +1219,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('confirmPayDebtBtn').style.display = 'block';
         document.getElementById('payDebtMessage').style.display = 'none';
 
-        // Обновляем сумму при выборе
         container.querySelectorAll('.pay-debt-checkbox').forEach(cb => {
             cb.addEventListener('change', function() {
                 const total = Array.from(document.querySelectorAll('.pay-debt-checkbox:checked'))
@@ -1146,7 +1226,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('payDebtTotal').textContent = total;
             });
         });
-        // Добавляем отображение итога
         if (!document.getElementById('payDebtTotal')) {
             const totalEl = document.createElement('div');
             totalEl.id = 'payDebtTotal';
@@ -1179,7 +1258,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .update({
                     status: 'оплачено',
                     paid_at: new Date().toISOString(),
-                    payment_method: 'нал' // можно уточнить
+                    payment_method: 'нал'
                 })
                 .in('id', orderIds);
             if (error) throw error;
@@ -1196,7 +1275,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ===== ФИНАНСЫ: ОПЛАТЫ =====
+    // ===== ОПЛАТЫ =====
     async function loadPayments(fromDate, toDate) {
         try {
             let query = supabase
@@ -1245,7 +1324,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loadPayments(from, to);
     });
 
-    // ===== ФИНАНСЫ: ОТЧЁТЫ =====
+    // ===== ОТЧЁТЫ =====
     document.getElementById('generateReportBtn').addEventListener('click', async function() {
         const from = document.getElementById('reportDateFrom').value;
         const to = document.getElementById('reportDateTo').value;
@@ -1256,7 +1335,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            // 1. Выручка
             const { data: revenueData, error: revError } = await supabase
                 .from('orders')
                 .select('final_amount, payment_method')
@@ -1266,11 +1344,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (revError) throw revError;
 
-            let totalRevenue = 0;
-            let cashRevenue = 0;
-            let nonCashRevenue = 0;
-            let totalOrders = 0;
-
+            let totalRevenue = 0, cashRevenue = 0, nonCashRevenue = 0, totalOrders = 0;
             if (revenueData) {
                 totalRevenue = revenueData.reduce((sum, o) => sum + o.final_amount, 0);
                 cashRevenue = revenueData.filter(o => o.payment_method === 'нал').reduce((sum, o) => sum + o.final_amount, 0);
@@ -1283,7 +1357,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('reportNonCashRevenue').textContent = nonCashRevenue + ' ₽';
             document.getElementById('reportTotalOrders').textContent = totalOrders;
 
-            // 2. Топ услуг
             const { data: topServices, error: topError } = await supabase
                 .from('orders')
                 .select('service_id, services(name), quantity')
@@ -1327,13 +1400,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const { count: roomsCount } = await supabase.from('rooms').select('*', { count: 'exact', head: true });
             const { count: bookingsCount } = await supabase.from('bookings').select('*', { count: 'exact', head: true });
 
-            // Общий долг
             const { data: debtData } = await supabase
                 .from('users')
                 .select('total_debt');
             const totalDebt = debtData ? debtData.reduce((sum, u) => sum + (u.total_debt || 0), 0) : 0;
 
-            // Выручка за месяц
             const monthAgo = new Date();
             monthAgo.setMonth(monthAgo.getMonth() - 1);
             const { data: revenueData } = await supabase
@@ -1349,7 +1420,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('totalDebt').textContent = totalDebt + ' ₽';
             document.getElementById('totalRevenue').textContent = totalRevenue + ' ₽';
 
-            // Топ-3 должников
             const { data: topDebtors } = await supabase
                 .from('users')
                 .select('Display_name, total_debt')
