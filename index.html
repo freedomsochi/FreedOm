@@ -605,6 +605,26 @@
             color: #eae6f0;
             font-family: inherit;
         }
+        .modal-window .service-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .modal-window .service-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #d4af37;
+        }
+        .modal-window .service-item input[type="number"] {
+            width: 60px;
+            padding: 4px 6px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            color: #eae6f0;
+        }
 
         #floatingBooking {
             position: fixed;
@@ -977,7 +997,7 @@
         </div>
     </section>
 
-    <!-- ФОРМА БРОНИРОВАНИЯ (ОСТАВЛЯЕМ НА СЛУЧАЙ, ЕСЛИ НУЖНА ОТДЕЛЬНАЯ ФОРМА) -->
+    <!-- СТАРАЯ ФОРМА БРОНИРОВАНИЯ (для совместимости) -->
     <section class="fade-section">
         <h2>📅 Забронировать номер</h2>
         <div class="form-card" id="bookingAnchor">
@@ -1107,6 +1127,21 @@
         <div class="description" id="bookingModalDesc"></div>
         <form id="bookingModalForm">
             <input type="hidden" id="bookingRoomId" name="room_id">
+            <input type="hidden" id="bookingRoomPrice" name="room_price">
+            <input type="hidden" id="bookingRoomName" name="room_name">
+
+            <div class="field">
+                <label for="bookingGuestCount">Количество гостей</label>
+                <input type="number" id="bookingGuestCount" min="1" max="10" value="1">
+            </div>
+
+            <div class="field">
+                <label>Дополнительные услуги</label>
+                <div id="servicesContainer">
+                    <!-- Загружаются из Supabase -->
+                </div>
+            </div>
+
             <div class="field">
                 <label for="bookingGuestNameModal">Ваше имя *</label>
                 <input type="text" id="bookingGuestNameModal" placeholder="Иван Петров" required>
@@ -1127,6 +1162,7 @@
                 <label for="bookingCheckOutModal">Дата выезда *</label>
                 <input type="date" id="bookingCheckOutModal" required>
             </div>
+
             <div id="bookingModalError" class="error-msg" style="display:none; color:#ff6b6b;"></div>
             <button type="submit" class="btn btn-block" id="bookingModalSubmit">Забронировать</button>
         </form>
@@ -1181,7 +1217,7 @@
             });
             container.innerHTML = html;
 
-            // Добавляем обработчики кликов
+            // Обработчики кликов
             document.querySelectorAll('.room-card-carousel').forEach(card => {
                 card.addEventListener('click', function(e) {
                     if (e.target.classList.contains('btn-detail')) return;
@@ -1201,7 +1237,55 @@
         }
     }
 
-    // ===== МОДАЛЬНОЕ ОКНО ДЛЯ БРОНИРОВАНИЯ =====
+    // ===== ЗАГРУЗКА УСЛУГ =====
+    async function loadServices() {
+        const container = document.getElementById('servicesContainer');
+        try {
+            const { data, error } = await supabase
+                .from('services')
+                .select('*')
+                .order('name');
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div style="opacity:0.4;">Услуги не добавлены</div>';
+                return;
+            }
+
+            let html = '';
+            data.forEach(service => {
+                html += `
+                    <div class="service-item">
+                        <input type="checkbox" class="service-checkbox" data-id="${service.id}" data-price="${service.price}" data-name="${service.name}">
+                        <label>${service.name} (${service.price} ₽)</label>
+                        <input type="number" class="service-quantity" data-id="${service.id}" min="0" max="10" value="0" style="width:60px; padding:4px; border:1px solid rgba(255,255,255,0.08); border-radius:8px; background:rgba(255,255,255,0.04); color:#eae6f0;">
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            // Синхронизация чекбоксов и количества
+            document.querySelectorAll('.service-checkbox').forEach(cb => {
+                cb.addEventListener('change', function() {
+                    const qty = this.closest('.service-item').querySelector('.service-quantity');
+                    qty.value = this.checked ? 1 : 0;
+                });
+            });
+            document.querySelectorAll('.service-quantity').forEach(qty => {
+                qty.addEventListener('input', function() {
+                    const cb = this.closest('.service-item').querySelector('.service-checkbox');
+                    cb.checked = parseInt(this.value) > 0;
+                });
+            });
+
+        } catch (error) {
+            console.error('Ошибка загрузки услуг:', error);
+            container.innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки услуг</div>';
+        }
+    }
+
+    // ===== МОДАЛЬНОЕ ОКНО =====
     const bookingModal = document.getElementById('bookingModal');
     const bookingModalClose = document.getElementById('bookingModalClose');
     const bookingModalImage = document.getElementById('bookingModalImage');
@@ -1209,6 +1293,9 @@
     const bookingModalPrice = document.getElementById('bookingModalPrice');
     const bookingModalDesc = document.getElementById('bookingModalDesc');
     const bookingRoomId = document.getElementById('bookingRoomId');
+    const bookingRoomPrice = document.getElementById('bookingRoomPrice');
+    const bookingRoomName = document.getElementById('bookingRoomName');
+    const bookingGuestCount = document.getElementById('bookingGuestCount');
     const bookingGuestName = document.getElementById('bookingGuestNameModal');
     const bookingGuestPhone = document.getElementById('bookingGuestPhoneModal');
     const bookingGuestEmail = document.getElementById('bookingGuestEmailModal');
@@ -1220,32 +1307,41 @@
     const bookingModalForm = document.getElementById('bookingModalForm');
 
     function openBookingModal(room) {
-        bookingModalImage.src = room.image_url || 'images/placeholder.jpg';
-        bookingModalTitle.textContent = room.name;
-        bookingModalPrice.textContent = room.price_per_night + ' ₽/ночь';
-        bookingModalDesc.textContent = room.description || '';
-        bookingRoomId.value = room.id;
+        supabase.auth.getSession().then(({ data }) => {
+            if (!data.session) {
+                alert('Для бронирования необходимо войти в аккаунт.');
+                window.location.href = 'login.html';
+                return;
+            }
+            bookingModalImage.src = room.image_url || 'images/placeholder.jpg';
+            bookingModalTitle.textContent = room.name;
+            bookingModalPrice.textContent = room.price_per_night + ' ₽/ночь';
+            bookingModalDesc.textContent = room.description || '';
+            bookingRoomId.value = room.id;
+            bookingRoomPrice.value = room.price_per_night;
+            bookingRoomName.value = room.name;
 
-        // Если пользователь залогинен, подставляем его данные
-        const user = supabase.auth.user();
-        if (user) {
-            // Попробуем получить имя из метаданных
+            // Подгружаем услуги, если не загружены
+            if (!document.getElementById('servicesContainer').children.length) {
+                loadServices();
+            }
+
+            // Подставляем данные пользователя
+            const user = data.session.user;
             const displayName = user.user_metadata?.display_name || '';
             if (displayName) bookingGuestName.value = displayName;
             if (user.email) bookingGuestEmail.value = user.email;
-        } else {
-            bookingGuestName.value = '';
-            bookingGuestEmail.value = '';
-        }
-        bookingGuestPhone.value = '';
-        bookingCheckIn.value = '';
-        bookingCheckOut.value = '';
-        bookingModalError.style.display = 'none';
-        bookingModalSuccess.style.display = 'none';
-        bookingModalForm.style.display = 'block';
-        bookingModalSubmit.style.display = 'block';
-        bookingModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+            bookingGuestPhone.value = '';
+            bookingGuestCount.value = 1;
+            bookingCheckIn.value = '';
+            bookingCheckOut.value = '';
+            bookingModalError.style.display = 'none';
+            bookingModalSuccess.style.display = 'none';
+            bookingModalForm.style.display = 'block';
+            bookingModalSubmit.style.display = 'block';
+            bookingModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
     }
 
     function closeBookingModal() {
@@ -1267,11 +1363,13 @@
         bookingModalSubmit.textContent = 'Отправка...';
 
         const roomId = bookingRoomId.value;
+        const roomPrice = parseInt(bookingRoomPrice.value);
         const guestName = bookingGuestName.value.trim();
         const guestPhone = bookingGuestPhone.value.trim();
         const guestEmail = bookingGuestEmail.value.trim();
         const checkIn = bookingCheckIn.value;
         const checkOut = bookingCheckOut.value;
+        const guestCount = parseInt(bookingGuestCount.value) || 1;
 
         if (!guestName || !guestPhone || !checkIn || !checkOut) {
             bookingModalError.textContent = 'Заполните имя, телефон и даты.';
@@ -1281,20 +1379,41 @@
             return;
         }
 
-        // Проверка, что выезд позже заезда
-        if (new Date(checkOut) <= new Date(checkIn)) {
+        const checkInDate = new Date(checkIn);
+        const checkOutDate = new Date(checkOut);
+        if (checkOutDate <= checkInDate) {
             bookingModalError.textContent = 'Дата выезда должна быть позже даты заезда.';
             bookingModalError.style.display = 'block';
             bookingModalSubmit.disabled = false;
             bookingModalSubmit.textContent = 'Забронировать';
             return;
         }
+        const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+
+        // Собираем услуги
+        const services = [];
+        document.querySelectorAll('.service-checkbox').forEach(cb => {
+            if (cb.checked) {
+                const qtyInput = cb.closest('.service-item').querySelector('.service-quantity');
+                const qty = parseInt(qtyInput.value) || 1;
+                services.push({
+                    service_id: cb.dataset.id,
+                    name: cb.dataset.name,
+                    price: parseInt(cb.dataset.price),
+                    quantity: qty
+                });
+            }
+        });
+
+        let totalAmount = roomPrice * nights;
+        services.forEach(s => {
+            totalAmount += s.price * s.quantity;
+        });
+
+        const session = await supabase.auth.getSession();
+        const userId = session.data.session?.user?.id || null;
 
         try {
-            // Получаем текущего пользователя (если есть)
-            const session = await supabase.auth.getSession();
-            const userId = session.data.session?.user?.id || null;
-
             const { error } = await supabase
                 .from('bookings')
                 .insert({
@@ -1303,22 +1422,22 @@
                     guest_name: guestName,
                     guest_phone: guestPhone,
                     guest_email: guestEmail || null,
+                    guest_count: guestCount,
                     check_in_date: checkIn,
                     check_out_date: checkOut,
+                    services: services,
+                    total_amount: totalAmount,
                     status: 'новое'
                 });
 
             if (error) throw error;
 
-            // Успех
             bookingModalForm.style.display = 'none';
             bookingModalSubmit.style.display = 'none';
             bookingModalSuccess.style.display = 'block';
 
-            // Через 2 секунды закрыть модалку
             setTimeout(() => {
                 closeBookingModal();
-                // Сбросить форму для следующего раза
                 bookingModalForm.style.display = 'block';
                 bookingModalSubmit.style.display = 'block';
                 bookingModalSuccess.style.display = 'none';
@@ -1335,22 +1454,13 @@
         }
     });
 
-    // ===== ОСТАЛЬНАЯ ЛОГИКА (анимации, музыка, формы) =====
-    // ... (весь код из предыдущих версий)
-
-    // Загружаем комнаты при загрузке страницы
-    document.addEventListener('DOMContentLoaded', function() {
-        loadRooms();
-        // ... остальные инициализации
-    });
-
-    // ПРЕЛОАДЕР
+    // ===== ПРЕЛОАДЕР =====
     window.addEventListener('load', function() {
         document.getElementById('preloader').classList.add('hide');
         document.body.classList.add('loaded');
     });
 
-    // АНИМАЦИЯ ПОЯВЛЕНИЯ
+    // ===== АНИМАЦИЯ ПОЯВЛЕНИЯ =====
     const sections = document.querySelectorAll('.fade-section');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -1361,7 +1471,7 @@
     }, { threshold: 0.1 });
     sections.forEach(section => observer.observe(section));
 
-    // СВОРАЧИВАНИЕ ТЕКСТА О НАС
+    // ===== СВОРАЧИВАНИЕ ТЕКСТА О НАС =====
     document.getElementById('aboutToggle').addEventListener('click', function(e) {
         e.stopPropagation();
         const full = document.getElementById('aboutFull');
@@ -1369,13 +1479,17 @@
         this.textContent = full.classList.contains('open') ? 'Свернуть ↑' : 'Читать далее →';
     });
 
-    // ФОРМЫ ОТЗЫВОВ И БРОНИРОВАНИЯ (старые)
-    // (оставляем для совместимости, но уже есть модалка)
-    document.getElementById('reviewForm').addEventListener('submit', function(e) {
-        // ... (оставляем как было)
+    // ===== ФОРМА ОТЗЫВОВ =====
+    const reviewForm = document.getElementById('reviewForm');
+    const reviewSuccess = document.getElementById('reviewSuccess');
+    reviewForm.addEventListener('submit', function(e) {
+        setTimeout(() => {
+            reviewSuccess.style.display = 'block';
+            reviewForm.style.display = 'none';
+        }, 500);
     });
 
-    // МУЗЫКА
+    // ===== МУЗЫКА =====
     const audio = document.getElementById('bgMusic');
     const toggleBtn = document.getElementById('musicToggle');
     let isPlaying = false;
@@ -1401,15 +1515,18 @@
         }
     });
 
-    // ===== ДОПОЛНИТЕЛЬНО: ПРОВЕРКА АВТОРИЗАЦИИ ДЛЯ ИКОНКИ ВХОДА =====
-    // (в простейшем случае иконка всегда ведёт на login.html)
-    // Но можно динамически менять на profile.html если залогинен
+    // ===== АВТОРИЗАЦИЯ ДЛЯ ИКОНКИ ВХОДА =====
     supabase.auth.getSession().then(({ data }) => {
         const loginIcon = document.getElementById('loginIcon');
         if (data.session) {
             loginIcon.href = 'profile.html';
-            // можно добавить подсказку
         }
+    });
+
+    // Загружаем комнаты при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        loadRooms();
+        loadServices();
     });
 </script>
 </body>
