@@ -146,6 +146,24 @@
     <div class="footer">FreeDom — место для жизни, отдыха и развития ❤️</div>
 </div>
 
+<!-- Модальное окно редактирования комнаты -->
+<div id="editRoomModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); z-index:1000; justify-content:center; align-items:center; padding:20px;">
+    <div style="background:#121626; border:1px solid rgba(212,175,55,0.15); border-radius:24px; max-width:500px; width:100%; padding:24px; position:relative;">
+        <button onclick="closeEditRoomModal()" style="position:absolute; top:12px; right:16px; background:none; border:none; color:#d4af37; font-size:28px; cursor:pointer;">&times;</button>
+        <h3 style="color:#d4af37; margin-bottom:20px;">✏️ Редактировать комнату</h3>
+        <form id="editRoomForm">
+            <input type="hidden" id="editRoomId">
+            <div class="field"><label>Название</label><input type="text" id="editRoomName" required></div>
+            <div class="field"><label>Описание</label><textarea id="editRoomDescription" rows="3"></textarea></div>
+            <div class="field"><label>Цена за ночь (₽)</label><input type="number" id="editRoomPrice" required></div>
+            <div class="field"><label>Вместимость (чел.)</label><input type="number" id="editRoomCapacity" required></div>
+            <div class="field"><label>URL изображения</label><input type="text" id="editRoomImage" placeholder="https://..."></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">💾 Сохранить изменения</button>
+        </form>
+        <div id="editRoomMessage" class="error-msg"></div>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
@@ -421,7 +439,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ===== КОМНАТЫ =====
+    // ===== КОМНАТЫ (с кнопкой редактирования) =====
     async function loadRooms() {
         try {
             const { data, error } = await supabase.from('rooms').select('*').order('name');
@@ -431,7 +449,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 html = '<div style="text-align:center; opacity:0.4;">Комнат пока нет</div>';
             } else {
                 data.forEach(room => {
-                    html += `<div class="list-item"><div class="info"><div class="name">${room.name}</div><div class="detail">${room.price_per_night} ₽/ночь · ${room.capacity} чел</div></div></div>`;
+                    html += `
+                        <div class="list-item">
+                            <div class="info">
+                                <div class="name">${room.name}</div>
+                                <div class="detail">${room.price_per_night} ₽/ночь · ${room.capacity} чел</div>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary" onclick="openEditRoomModal('${room.id}')">✏️</button>
+                            </div>
+                        </div>
+                    `;
                 });
             }
             document.getElementById('roomsList').innerHTML = html;
@@ -594,6 +622,76 @@ document.addEventListener('DOMContentLoaded', function() {
             supabase.auth.signOut().then(() => { window.location.href = 'index.html'; });
         }
     });
+
+    // === РЕДАКТИРОВАНИЕ КОМНАТ ===
+    window.openEditRoomModal = async function(roomId) {
+        try {
+            const { data: room, error } = await supabase
+                .from('rooms')
+                .select('*')
+                .eq('id', roomId)
+                .single();
+            if (error) throw error;
+
+            document.getElementById('editRoomId').value = room.id;
+            document.getElementById('editRoomName').value = room.name;
+            document.getElementById('editRoomDescription').value = room.description || '';
+            document.getElementById('editRoomPrice').value = room.price_per_night;
+            document.getElementById('editRoomCapacity').value = room.capacity;
+            document.getElementById('editRoomImage').value = room.image_url || '';
+            document.getElementById('editRoomModal').style.display = 'flex';
+            document.getElementById('editRoomMessage').style.display = 'none';
+        } catch (error) {
+            console.error('Ошибка загрузки комнаты:', error);
+            alert('Не удалось загрузить данные комнаты.');
+        }
+    };
+
+    window.closeEditRoomModal = function() {
+        document.getElementById('editRoomModal').style.display = 'none';
+    };
+
+    document.getElementById('editRoomForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const roomId = document.getElementById('editRoomId').value;
+        const updatedData = {
+            name: document.getElementById('editRoomName').value.trim(),
+            description: document.getElementById('editRoomDescription').value.trim(),
+            price_per_night: parseInt(document.getElementById('editRoomPrice').value),
+            capacity: parseInt(document.getElementById('editRoomCapacity').value),
+            image_url: document.getElementById('editRoomImage').value.trim() || null
+        };
+
+        const msg = document.getElementById('editRoomMessage');
+        if (!updatedData.name || !updatedData.price_per_night || !updatedData.capacity) {
+            msg.textContent = 'Заполните название, цену и вместимость.';
+            msg.style.display = 'block';
+            return;
+        }
+
+        try {
+            const { error } = await supabase
+                .from('rooms')
+                .update(updatedData)
+                .eq('id', roomId);
+            if (error) throw error;
+
+            msg.style.display = 'none';
+            closeEditRoomModal();
+            loadRooms(); // обновляем список
+            alert('✅ Комната обновлена!');
+        } catch (error) {
+            console.error('Ошибка обновления:', error);
+            msg.textContent = 'Ошибка: ' + error.message;
+            msg.style.display = 'block';
+        }
+    });
+
+    // Закрытие по клику на фон
+    document.getElementById('editRoomModal').addEventListener('click', function(e) {
+        if (e.target === this) closeEditRoomModal();
+    });
+
 });
 </script>
 </body>
