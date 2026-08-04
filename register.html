@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
+        /* (стили такие же, как были) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -213,7 +214,7 @@
                         const { data: referrerData, error: referrerError } = await supabase
                             .from('users')
                             .select('user_id')
-                            .eq('ref_code', refCode)
+                            .eq('Ref_code', refCode)
                             .maybeSingle();
 
                         if (!referrerError && referrerData) {
@@ -224,15 +225,15 @@
                     const { error: insertError } = await supabase
                         .from('users')
                         .insert({
-                            user_id: userId,          // ✅ исправлено
-                            email: email,
-                            display_name: displayName,
-                            phone: phone || null,
-                            city: city || null,
-                            birth_date: birthDate || null,
-                            ref_code: generatedRefCode,
-                            referred_by: referredBy,
-                            balance: 0
+                            user_id: userId,
+                            Email: email,
+                            Display_name: displayName,
+                            Phone: phone || null,
+                            City: city || null,
+                            Birth_date: birthDate || null,
+                            Ref_code: generatedRefCode,
+                            Referred_by: referredBy,
+                            balance: 0          // ✅ исправлено (строчные)
                         });
 
                     if (insertError) throw insertError;
@@ -241,9 +242,9 @@
                         await supabase
                             .from('referrals')
                             .insert({
-                                referrer_id: referredBy,
-                                referee_id: userId,
-                                level: 1
+                                Referrer_id: referredBy,
+                                Referee_id: userId,
+                                Level: 1
                             });
                     }
 
