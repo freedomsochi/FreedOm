@@ -7,13 +7,66 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
-        /* (полные стили как в предыдущей версии, без изменений) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0b0d17; color: #eae6f0; line-height: 1.6; min-height: 100vh; position: relative; overflow-x: hidden; padding-bottom: 80px; opacity: 0; transition: opacity 0.5s; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0d17;
+            color: #eae6f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
         body.loaded { opacity: 1; }
-        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(2px 2px at 10% 20%, #fff, transparent), radial-gradient(2px 2px at 30% 60%, #fff, transparent), radial-gradient(1px 1px at 50% 10%, #fff, transparent), radial-gradient(2px 2px at 70% 80%, #fff, transparent), radial-gradient(1px 1px at 90% 40%, #fff, transparent), radial-gradient(1px 1px at 15% 90%, #fff, transparent), radial-gradient(2px 2px at 45% 45%, #fff, transparent), radial-gradient(1px 1px at 80% 15%, #fff, transparent), radial-gradient(2px 2px at 5% 50%, #fff, transparent), radial-gradient(1px 1px at 60% 95%, #fff, transparent); background-size: 200px 200px; background-repeat: repeat; opacity: 0.4; pointer-events: none; z-index: 0; }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(2px 2px at 10% 20%, #fff, transparent),
+                radial-gradient(2px 2px at 30% 60%, #fff, transparent),
+                radial-gradient(1px 1px at 50% 10%, #fff, transparent),
+                radial-gradient(2px 2px at 70% 80%, #fff, transparent),
+                radial-gradient(1px 1px at 90% 40%, #fff, transparent),
+                radial-gradient(1px 1px at 15% 90%, #fff, transparent),
+                radial-gradient(2px 2px at 45% 45%, #fff, transparent),
+                radial-gradient(1px 1px at 80% 15%, #fff, transparent),
+                radial-gradient(2px 2px at 5% 50%, #fff, transparent),
+                radial-gradient(1px 1px at 60% 95%, #fff, transparent);
+            background-size: 200px 200px;
+            background-repeat: repeat;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
         @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 60% 70%, #fff, transparent), radial-gradient(1px 1px at 80% 50%, #fff, transparent), radial-gradient(1px 1px at 40% 80%, #fff, transparent), radial-gradient(1px 1px at 10% 60%, #fff, transparent); background-size: 300px 300px; background-repeat: repeat; opacity: 0.6; pointer-events: none; z-index: 0; animation: twinkle 4s ease-in-out infinite alternate; }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+                radial-gradient(1px 1px at 60% 70%, #fff, transparent),
+                radial-gradient(1px 1px at 80% 50%, #fff, transparent),
+                radial-gradient(1px 1px at 40% 80%, #fff, transparent),
+                radial-gradient(1px 1px at 10% 60%, #fff, transparent);
+            background-size: 300px 300px;
+            background-repeat: repeat;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 0;
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
         .container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; position: relative; z-index: 1; }
 
         .top-nav { display: flex; justify-content: flex-end; align-items: center; padding: 10px 0 6px; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.04); margin-bottom: 0.5rem; }
@@ -119,10 +172,6 @@
         .modal-window .field { margin-bottom: 14px; }
         .modal-window .field label { color: #b8a9d4; font-size: 0.9rem; }
         .modal-window .field input, .modal-window .field select { width: 100%; padding: 10px 14px; font-size: 1rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.04); color: #eae6f0; font-family: inherit; }
-
-        .modal-window .service-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
-        .modal-window .service-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #d4af37; }
-        .modal-window .service-item input[type="number"] { width: 60px; padding: 4px 6px; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; background: rgba(255,255,255,0.04); color: #eae6f0; }
 
         #floatingBooking { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 999; background: linear-gradient(145deg, #d4af37, #b8952a); color: #0b0d17; border: none; padding: 14px 32px; border-radius: 60px; font-size: 1.2rem; font-weight: 700; box-shadow: 0 8px 30px rgba(212,175,55,0.4); cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; letter-spacing: 0.5px; }
         #floatingBooking:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 8px 40px rgba(212,175,55,0.6); }
@@ -592,6 +641,32 @@
             }
             const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
             let totalAmount = roomPrice * nights;
+
+            // === ПРОВЕРКА НА ПЕРЕСЕЧЕНИЕ ДАТ ===
+            const { data: existingBookings, error: checkError } = await supabase
+                .from('bookings')
+                .select('check_in_date, check_out_date')
+                .eq('room_id', roomId)
+                .eq('status', 'подтверждено')
+                .or(`check_in_date.lte.${checkOut},check_out_date.gte.${checkIn}`);
+
+            if (checkError) {
+                console.error('Ошибка проверки дат:', checkError);
+                bookingModalError.textContent = 'Ошибка проверки доступности. Попробуйте позже.';
+                bookingModalError.style.display = 'block';
+                bookingModalSubmit.disabled = false;
+                bookingModalSubmit.textContent = 'Забронировать';
+                return;
+            }
+
+            if (existingBookings && existingBookings.length > 0) {
+                bookingModalError.textContent = '❌ Эта комната уже занята в выбранные даты. Пожалуйста, выберите другие даты.';
+                bookingModalError.style.display = 'block';
+                bookingModalSubmit.disabled = false;
+                bookingModalSubmit.textContent = 'Забронировать';
+                return;
+            }
+            // === КОНЕЦ ПРОВЕРКИ ===
 
             const session = await supabase.auth.getSession();
             const userId = session.data.session?.user?.id || null;
