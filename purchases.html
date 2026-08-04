@@ -183,16 +183,16 @@
                 const userId = sessionData.session.user.id;
 
                 const { data: purchases, error } = await supabase
-                    .from('purchases')
-                    .select('*')
-                    .eq('buyer_id', userId)
-                    .order('created_at', { ascending: false });
+    .from('purchases')
+    .select('*')
+    .eq('Buyer_id', userId)
+    .order('Created_at', { ascending: false });
 
-                if (error) {
-                    console.error('Ошибка загрузки покупок:', error);
-                    purchasesList.innerHTML = '<div class="empty-state">❌ Ошибка загрузки</div>';
-                    return;
-                }
+if (error) {
+    console.error('Ошибка загрузки покупок:', error);
+    purchasesList.innerHTML = '<div class="empty-state">❌ Ошибка: ' + error.message + '</div>';
+    return;
+}
 
                 if (!purchases || purchases.length === 0) {
                     purchasesList.innerHTML = `
