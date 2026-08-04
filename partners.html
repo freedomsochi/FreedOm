@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
+        /* (стили такие же, как были) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -249,27 +250,27 @@
                 const { data: userData } = await supabase
                     .from('users')
                     .select('*')
-                    .eq('user_id', userId)      // ✅ исправлено
+                    .eq('user_id', userId)
                     .maybeSingle();
 
                 if (userData) {
                     refBalance.textContent = (userData.balance || 0) + ' ₽';
-                    const refCode = userData.ref_code || userId.slice(0, 8);
+                    const refCode = userData.Ref_code || userId.slice(0, 8);
                     const siteUrl = window.location.origin + window.location.pathname.replace(/partners\.html$/, '');
                     refLinkText.textContent = siteUrl + 'register.html?ref=' + refCode;
                 }
 
                 const { data: referrals } = await supabase
                     .from('referrals')
-                    .select('level')
-                    .eq('referrer_id', userId);
+                    .select('Level')
+                    .eq('Referrer_id', userId);
 
                 if (referrals) {
                     let c1 = 0, c2 = 0, c3 = 0;
                     referrals.forEach(r => {
-                        if (r.level === 1) c1++;
-                        else if (r.level === 2) c2++;
-                        else if (r.level === 3) c3++;
+                        if (r.Level === 1) c1++;
+                        else if (r.Level === 2) c2++;
+                        else if (r.Level === 3) c3++;
                     });
                     refLevel1.textContent = c1;
                     refLevel2.textContent = c2;
