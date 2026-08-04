@@ -1,10 +1,3 @@
-Отлично! Я подготовил для вас **все ключевые файлы проекта**. Вы можете скопировать каждый из них по отдельности.
-
----
-
-## 📄 **1. `index.html`** (главная страница)
-
-```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -14,66 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
+        /* (полные стили как в предыдущей версии, без изменений) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0b0d17;
-            color: #eae6f0;
-            line-height: 1.6;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-            padding-bottom: 80px;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
+        body { font-family: 'Inter', sans-serif; background: #0b0d17; color: #eae6f0; line-height: 1.6; min-height: 100vh; position: relative; overflow-x: hidden; padding-bottom: 80px; opacity: 0; transition: opacity 0.5s; }
         body.loaded { opacity: 1; }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                radial-gradient(2px 2px at 10% 20%, #fff, transparent),
-                radial-gradient(2px 2px at 30% 60%, #fff, transparent),
-                radial-gradient(1px 1px at 50% 10%, #fff, transparent),
-                radial-gradient(2px 2px at 70% 80%, #fff, transparent),
-                radial-gradient(1px 1px at 90% 40%, #fff, transparent),
-                radial-gradient(1px 1px at 15% 90%, #fff, transparent),
-                radial-gradient(2px 2px at 45% 45%, #fff, transparent),
-                radial-gradient(1px 1px at 80% 15%, #fff, transparent),
-                radial-gradient(2px 2px at 5% 50%, #fff, transparent),
-                radial-gradient(1px 1px at 60% 95%, #fff, transparent);
-            background-size: 200px 200px;
-            background-repeat: repeat;
-            opacity: 0.4;
-            pointer-events: none;
-            z-index: 0;
-        }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(2px 2px at 10% 20%, #fff, transparent), radial-gradient(2px 2px at 30% 60%, #fff, transparent), radial-gradient(1px 1px at 50% 10%, #fff, transparent), radial-gradient(2px 2px at 70% 80%, #fff, transparent), radial-gradient(1px 1px at 90% 40%, #fff, transparent), radial-gradient(1px 1px at 15% 90%, #fff, transparent), radial-gradient(2px 2px at 45% 45%, #fff, transparent), radial-gradient(1px 1px at 80% 15%, #fff, transparent), radial-gradient(2px 2px at 5% 50%, #fff, transparent), radial-gradient(1px 1px at 60% 95%, #fff, transparent); background-size: 200px 200px; background-repeat: repeat; opacity: 0.4; pointer-events: none; z-index: 0; }
         @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                radial-gradient(1px 1px at 20% 30%, #fff, transparent),
-                radial-gradient(1px 1px at 60% 70%, #fff, transparent),
-                radial-gradient(1px 1px at 80% 50%, #fff, transparent),
-                radial-gradient(1px 1px at 40% 80%, #fff, transparent),
-                radial-gradient(1px 1px at 10% 60%, #fff, transparent);
-            background-size: 300px 300px;
-            background-repeat: repeat;
-            opacity: 0.6;
-            pointer-events: none;
-            z-index: 0;
-            animation: twinkle 4s ease-in-out infinite alternate;
-        }
+        body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 60% 70%, #fff, transparent), radial-gradient(1px 1px at 80% 50%, #fff, transparent), radial-gradient(1px 1px at 40% 80%, #fff, transparent), radial-gradient(1px 1px at 10% 60%, #fff, transparent); background-size: 300px 300px; background-repeat: repeat; opacity: 0.6; pointer-events: none; z-index: 0; animation: twinkle 4s ease-in-out infinite alternate; }
         .container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; position: relative; z-index: 1; }
 
         .top-nav { display: flex; justify-content: flex-end; align-items: center; padding: 10px 0 6px; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.04); margin-bottom: 0.5rem; }
@@ -82,6 +22,7 @@
         .top-nav .nav-links a:hover { color: #d4af37; border-color: rgba(212,175,55,0.15); }
         .top-nav .login-icon { display: flex; align-items: center; gap: 4px; color: #b8a9d4; text-decoration: none; font-size: 0.7rem; font-weight: 500; padding: 4px 8px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; background: rgba(255,255,255,0.02); }
         .top-nav .login-icon:hover { color: #d4af37; border-color: rgba(212,175,55,0.15); }
+        .top-nav .login-icon:active { background: rgba(212,175,55,0.08); transform: scale(0.95); }
         .top-nav .login-icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
         .header { position: relative; overflow: hidden; background: linear-gradient(145deg, rgba(26,16,61,0.95), rgba(11,13,23,0.95)); border: 1px solid rgba(212,175,55,0.2); box-shadow: 0 0 60px rgba(212,175,55,0.05); color: white; padding: 2.5rem 1rem 1.8rem; text-align: center; border-radius: 0 0 40px 40px; margin: 0 -16px 1.5rem; }
@@ -133,7 +74,6 @@
         .sauna-block:hover { border-color: rgba(212,175,55,0.4); transform: scale(1.01); }
         .sauna-block img { width: 100%; height: 160px; object-fit: cover; display: block; }
         .sauna-block .content { padding: 1rem 1.2rem; }
-
         .meditation-block { background: linear-gradient(145deg, rgba(180,169,212,0.08), rgba(11,13,23,0.9)); border: 1px solid rgba(180,169,212,0.15); border-radius: 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(180,169,212,0.05); position: relative; margin-bottom: 1.2rem; }
         .meditation-block::before { content: ''; position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; background: radial-gradient(ellipse at 30% 40%, rgba(180,169,212,0.06), transparent 60%); pointer-events: none; }
         .meditation-block img { width: 100%; height: 160px; object-fit: cover; display: block; }
@@ -179,6 +119,10 @@
         .modal-window .field { margin-bottom: 14px; }
         .modal-window .field label { color: #b8a9d4; font-size: 0.9rem; }
         .modal-window .field input, .modal-window .field select { width: 100%; padding: 10px 14px; font-size: 1rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.04); color: #eae6f0; font-family: inherit; }
+
+        .modal-window .service-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+        .modal-window .service-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #d4af37; }
+        .modal-window .service-item input[type="number"] { width: 60px; padding: 4px 6px; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; background: rgba(255,255,255,0.04); color: #eae6f0; }
 
         #floatingBooking { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 999; background: linear-gradient(145deg, #d4af37, #b8952a); color: #0b0d17; border: none; padding: 14px 32px; border-radius: 60px; font-size: 1.2rem; font-weight: 700; box-shadow: 0 8px 30px rgba(212,175,55,0.4); cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; letter-spacing: 0.5px; }
         #floatingBooking:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 8px 40px rgba(212,175,55,0.6); }
@@ -389,7 +333,7 @@
             </div>
         </section>
 
-        <!-- СТАРАЯ ФОРМА БРОНИРОВАНИЯ -->
+        <!-- СТАРАЯ ФОРМА БРОНИРОВАНИЯ (для совместимости) -->
         <section class="fade-section">
             <h2>📅 Забронировать номер</h2>
             <div class="form-card" id="bookingAnchor">
@@ -745,77 +689,3 @@
     </script>
 </body>
 </html>
-```
-
----
-
-## 📄 **2. `admin.html`** (админ-панель)
-
-```html
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Админ-панель — FreeDom</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0b0d17; color: #eae6f0; line-height: 1.6; min-height: 100vh; padding: 20px 0 60px; }
-        .container { max-width: 720px; margin: 0 auto; padding: 0 16px; }
-        .header { background: linear-gradient(145deg, rgba(26,16,61,0.95), rgba(11,13,23,0.95)); border: 1px solid rgba(212,175,55,0.2); border-radius: 0 0 40px 40px; padding: 1.8rem 1rem; text-align: center; margin: 0 -16px 1.5rem; position: relative; overflow: hidden; }
-        .header::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('images/branches.png') center/cover no-repeat; opacity: 0.4; z-index: 0; pointer-events: none; }
-        .header .back-link { position: absolute; top: 16px; left: 20px; color: #b8a9d4; text-decoration: none; font-size: 0.9rem; z-index: 1; }
-        .header .back-link:hover { color: #d4af37; }
-        .header h1 { font-weight: 300; font-size: 1.8rem; color: #d4af37; position: relative; z-index: 1; }
-        .header p { opacity: 0.7; font-size: 0.9rem; position: relative; z-index: 1; }
-        .admin-badge { display: inline-block; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.2); color: #d4af37; padding: 2px 14px; border-radius: 30px; font-size: 0.7rem; font-weight: 600; margin-top: 0.5rem; }
-        .card { background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
-        .card h3 { color: #d4af37; margin-bottom: 0.8rem; font-size: 1.2rem; }
-        .btn { display: inline-block; padding: 8px 16px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: 0.3s; border: none; margin: 4px 4px 0 0; }
-        .btn-primary { background: linear-gradient(145deg, #d4af37, #b8952a); color: #0b0d17; box-shadow: 0 4px 15px rgba(212,175,55,0.3); }
-        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 4px 25px rgba(212,175,55,0.5); }
-        .btn-danger { background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.2); color: #ff6b6b; }
-        .btn-danger:hover { background: rgba(255,0,0,0.15); }
-        .btn-secondary { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #b8a9d4; }
-        .btn-secondary:hover { background: rgba(255,255,255,0.08); }
-        .btn-success { background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.2); color: #25D366; }
-        .btn-success:hover { background: rgba(37,211,102,0.2); }
-        .btn-block { width: 100%; text-align: center; margin: 4px 0; }
-
-        .field { margin-bottom: 1rem; }
-        .field label { display: block; font-weight: 500; margin-bottom: 4px; color: #b8a9d4; font-size: 0.9rem; }
-        .field input, .field select, .field textarea { width: 100%; padding: 10px 14px; font-size: 1rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.04); color: #eae6f0; font-family: inherit; transition: 0.3s; }
-        .field input:focus, .field select:focus, .field textarea:focus { border-color: rgba(212,175,55,0.2); outline: none; background: rgba(255,255,255,0.06); }
-        .field input::placeholder { color: rgba(255,255,255,0.2); }
-
-        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-        .list-item:last-child { border-bottom: none; }
-        .list-item .info { flex: 1; }
-        .list-item .info .name { font-weight: 500; }
-        .list-item .info .detail { font-size: 0.8rem; opacity: 0.6; }
-
-        .error-msg { background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.2); color: #ff6b6b; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
-        .success-msg { background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.15); color: #25D366; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
-        .footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; opacity: 0.3; }
-        .loading { text-align:center; padding:2rem; opacity:0.6; }
-        .spinner { width:40px; height:40px; border:3px solid rgba(212,175,55,0.1); border-top:3px solid #d4af37; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 1rem; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        @media (max-width: 480px) { .list-item { flex-wrap: wrap; gap: 6px; } }
-    </style>
-</head>
-<body>
-<div class="container">
-    <div class="header">
-        <a href="index.html" class="back-link">← На главную</a>
-        <h1>⚙️ Админ-панель</h1>
-        <p>Управление гостями, комнатами, бронированиями</p>
-        <div class="admin-badge" id="adminBadge">🔒 Администратор</div>
-    </div>
-
-    <div id="loadingState" class="loading">
-        <div class="spinner"></div>
-        <p>Загрузка данных...</p>
-    </div>
