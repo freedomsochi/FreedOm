@@ -206,11 +206,11 @@ if (error) {
 
                 let html = '';
                 purchases.forEach(p => {
-                    const date = p.created_at ? new Date(p.created_at).toLocaleDateString('ru-RU') : '—';
+                    const date = p.Created_at ? new Date(p.Created_at).toLocaleDateString('ru-RU') : '—';
                     html += `
                         <div class="purchase-item">
                             <div class="info">
-                                <div class="amount">${p.amount || 0} ₽</div>
+                                <div class="amount">${p.Amount || 0} ₽</div>
                                 <div class="date">${date}</div>
                             </div>
                             <span class="badge">✅ Подтверждено</span>
