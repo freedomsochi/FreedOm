@@ -2,46 +2,19 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Админ-панель — FreeDom</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0b0d17; color: #eae6f0; line-height: 1.6; min-height: 100vh; padding: 20px 0 60px; }
-        .container { max-width: 720px; margin: 0 auto; padding: 0 16px; }
-        .header { background: linear-gradient(145deg, rgba(26,16,61,0.95), rgba(11,13,23,0.95)); border: 1px solid rgba(212,175,55,0.2); border-radius: 0 0 40px 40px; padding: 1.8rem 1rem; text-align: center; margin: 0 -16px 1.5rem; position: relative; overflow: hidden; }
-        .header::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('images/branches.png') center/cover no-repeat; opacity: 0.4; z-index: 0; pointer-events: none; }
-        .header .back-link { position: absolute; top: 16px; left: 20px; color: #b8a9d4; text-decoration: none; font-size: 0.9rem; z-index: 1; }
-        .header .back-link:hover { color: #d4af37; }
-        .header h1 { font-weight: 300; font-size: 1.8rem; color: #d4af37; position: relative; z-index: 1; }
-        .header p { opacity: 0.7; font-size: 0.9rem; position: relative; z-index: 1; }
-        .admin-badge { display: inline-block; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.2); color: #d4af37; padding: 2px 14px; border-radius: 30px; font-size: 0.7rem; font-weight: 600; margin-top: 0.5rem; }
-        .card { background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
-        .card h3 { color: #d4af37; margin-bottom: 0.8rem; font-size: 1.2rem; }
-        .btn { display: inline-block; padding: 8px 16px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: 0.3s; border: none; margin: 4px 4px 0 0; }
-        .btn-primary { background: linear-gradient(145deg, #d4af37, #b8952a); color: #0b0d17; box-shadow: 0 4px 15px rgba(212,175,55,0.3); }
-        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 4px 25px rgba(212,175,55,0.5); }
-        .btn-danger { background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.2); color: #ff6b6b; }
-        .btn-danger:hover { background: rgba(255,0,0,0.15); }
-        .btn-secondary { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #b8a9d4; }
-        .btn-secondary:hover { background: rgba(255,255,255,0.08); }
-        .btn-success { background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.2); color: #25D366; }
-        .btn-success:hover { background: rgba(37,211,102,0.2); }
-        .btn-block { width: 100%; text-align: center; margin: 4px 0; }
-        .field { margin-bottom: 1rem; }
-        .field label { display: block; font-weight: 500; margin-bottom: 4px; color: #b8a9d4; font-size: 0.9rem; }
-        .field input, .field select { width: 100%; padding: 10px 14px; font-size: 1rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.04); color: #eae6f0; font-family: inherit; transition: 0.3s; }
-        .field input:focus, .field select:focus { border-color: rgba(212,175,55,0.2); outline: none; background: rgba(255,255,255,0.06); }
-        .field input::placeholder { color: rgba(255,255,255,0.2); }
-        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        body { background: #0b0d17; color: #eae6f0; font-family: 'Inter', sans-serif; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.2rem; }
+        .card h3 { color: #d4af37; margin-bottom: 0.8rem; }
+        .btn { background: #d4af37; color: #0b0d17; border: none; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        .btn:hover { transform: scale(1.02); }
+        .list-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .list-item:last-child { border-bottom: none; }
-        .list-item .info { flex: 1; }
-        .list-item .info .name { font-weight: 500; }
-        .list-item .info .detail { font-size: 0.8rem; opacity: 0.6; }
-        .error-msg { background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.2); color: #ff6b6b; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
-        .success-msg { background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.15); color: #25D366; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
-        .footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; opacity: 0.3; }
         .loading { text-align:center; padding:2rem; opacity:0.6; }
         .spinner { width:40px; height:40px; border:3px solid rgba(212,175,55,0.1); border-top:3px solid #d4af37; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 1rem; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -49,28 +22,22 @@
         .stat-item { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px; text-align: center; }
         .stat-item .number { font-size: 1.8rem; font-weight: 700; color: #d4af37; }
         .stat-item .label { font-size: 0.75rem; opacity: 0.6; }
-        .tab-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem; }
+        .tab-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
         .tab-nav .tab-link { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 6px 16px; color: #b8a9d4; cursor: pointer; transition: 0.3s; font-size: 0.85rem; font-weight: 500; }
         .tab-nav .tab-link:hover { background: rgba(255,255,255,0.08); }
         .tab-nav .tab-link.active { background: rgba(212,175,55,0.12); border-color: rgba(212,175,55,0.3); color: #d4af37; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .modal.show { display: flex; }
-        .modal-content { background: #121626; border: 1px solid rgba(212,175,55,0.15); border-radius: 24px; max-width: 500px; width: 100%; padding: 24px; position: relative; max-height: 90vh; overflow-y: auto; }
-        .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: #d4af37; font-size: 28px; cursor: pointer; opacity: 0.6; transition: 0.2s; }
-        .modal-close:hover { opacity: 1; }
-        @media (max-width: 480px) { .list-item { flex-wrap: wrap; gap: 6px; } .tab-nav .tab-link { font-size: 0.7rem; padding: 4px 10px; } }
+        .field { margin-bottom: 1rem; }
+        .field label { display: block; font-weight: 500; margin-bottom: 4px; color: #b8a9d4; font-size: 0.9rem; }
+        .field input, .field select { width: 100%; padding: 10px 14px; font-size: 1rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.04); color: #eae6f0; }
+        .field input:focus, .field select:focus { border-color: rgba(212,175,55,0.2); outline: none; background: rgba(255,255,255,0.06); }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <a href="index.html" class="back-link">← На главную</a>
-        <h1>⚙️ Админ-панель</h1>
-        <p>Управление гостями и комнатами</p>
-        <div class="admin-badge" id="adminBadge">🔒 Администратор</div>
-    </div>
+    <h1 style="color:#d4af37; margin-bottom:0.5rem;">⚙️ Админ-панель</h1>
+    <p style="opacity:0.6; margin-bottom:1.5rem;">Управление гостями, комнатами и арендами</p>
 
     <div id="loadingState" class="loading">
         <div class="spinner"></div>
@@ -78,86 +45,46 @@
     </div>
 
     <div id="adminContent" style="display:none;">
-        <!-- СТАТИСТИКА -->
-        <div class="card">
-            <h3>📊 Статистика</h3>
-            <div class="stat-grid">
-                <div class="stat-item"><span class="number" id="totalUsers">0</span><div class="label">Гостей</div></div>
-                <div class="stat-item"><span class="number" id="totalRooms">0</span><div class="label">Комнат</div></div>
-                <div class="stat-item"><span class="number" id="totalCurrent">0</span><div class="label">Проживают сейчас</div></div>
+        <!-- ===== ВКЛАДКИ ===== -->
+        <div class="tab-nav" id="mainTabs">
+            <span class="tab-link active" data-tab="tabDashboard">📊 Дашборд</span>
+            <span class="tab-link" data-tab="tabRooms">🛏️ Комнаты</span>
+            <span class="tab-link" data-tab="tabGuests">👥 Гости</span>
+        </div>
+
+        <!-- ===== ДАШБОРД ===== -->
+        <div id="tabDashboard" class="tab-content active">
+            <div class="card">
+                <h3>📊 Статистика</h3>
+                <div class="stat-grid">
+                    <div class="stat-item"><span class="number" id="totalRooms">0</span><div class="label">Комнат</div></div>
+                    <div class="stat-item"><span class="number" id="totalUsers">0</span><div class="label">Гостей</div></div>
+                    <div class="stat-item"><span class="number" id="totalBookings">0</span><div class="label">Аренд</div></div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>📌 Последние аренды</h3>
+                <div id="recentBookings"><div style="text-align:center; opacity:0.4;">Нет аренд</div></div>
             </div>
         </div>
 
-        <!-- ГОСТИ -->
-        <div class="card">
-            <h3>👥 Гости</h3>
-            
-            <!-- Вкладки -->
-            <div class="tab-nav" id="guestTabs">
-                <span class="tab-link active" data-tab="currentGuests">🏠 Проживают сейчас</span>
-                <span class="tab-link" data-tab="allGuests">👤 Все пользователи</span>
+        <!-- ===== КОМНАТЫ ===== -->
+        <div id="tabRooms" class="tab-content">
+            <div class="card">
+                <h3>🛏️ Список комнат</h3>
+                <div id="roomsList"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
             </div>
+        </div>
 
-            <!-- Проживающие сейчас -->
-            <div id="currentGuests" class="tab-content active">
-                <div id="currentGuestsList"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
-            </div>
-
-            <!-- Все пользователи -->
-            <div id="allGuests" class="tab-content">
+        <!-- ===== ГОСТИ ===== -->
+        <div id="tabGuests" class="tab-content">
+            <div class="card">
+                <h3>👥 Гости</h3>
                 <div id="guestList"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
             </div>
-
-            <!-- Кнопка добавления -->
-            <button class="btn btn-primary" id="showAddGuestModalBtn" style="margin-top:1rem;">➕ Добавить гостя</button>
         </div>
 
-        <!-- КОМНАТЫ -->
-        <div class="card">
-            <h3>🛏️ Комнаты</h3>
-            <div id="roomsList"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
-        </div>
-
-        <button class="btn btn-danger btn-block" id="logoutBtn">🚪 Выйти из админ-панели</button>
-    </div>
-
-    <div class="footer">FreeDom — место для жизни, отдыха и развития ❤️</div>
-</div>
-
-<!-- МОДАЛЬНОЕ ОКНО ДЛЯ ДОБАВЛЕНИЯ ГОСТЯ -->
-<div id="addGuestModal" class="modal">
-    <div class="modal-content">
-        <button class="modal-close" onclick="closeAddGuestModal()">&times;</button>
-        <h3 style="color:#d4af37; margin-bottom:20px;">➕ Добавить гостя</h3>
-        
-        <div style="display:flex; gap:10px; margin-bottom:1rem;">
-            <button class="btn btn-secondary" id="chooseExistingBtn" style="flex:1;">Выбрать из зарегистрированных</button>
-            <button class="btn btn-primary" id="createNewBtn" style="flex:1;">Создать нового</button>
-        </div>
-
-        <!-- Форма для существующего пользователя -->
-        <div id="existingUserForm" style="display:none;">
-            <div class="field">
-                <label>Выберите пользователя</label>
-                <select id="existingUserSelect">
-                    <option value="">Загрузка...</option>
-                </select>
-            </div>
-            <button class="btn btn-success" id="addExistingUserBtn">➕ Добавить выбранного</button>
-        </div>
-
-        <!-- Форма для нового пользователя -->
-        <div id="newUserForm" style="display:none;">
-            <div class="field"><label>Имя и фамилия</label><input type="text" id="newUserName" placeholder="Иван Петров"></div>
-            <div class="field"><label>Email</label><input type="email" id="newUserEmail" placeholder="ivan@mail.ru"></div>
-            <div class="field"><label>Пароль (мин. 6 символов)</label><input type="password" id="newUserPassword" placeholder="••••••"></div>
-            <div class="field"><label>Телефон</label><input type="text" id="newUserPhone" placeholder="+7 999 123-45-67"></div>
-            <div class="field"><label>Город</label><input type="text" id="newUserCity" placeholder="Сочи"></div>
-            <button class="btn btn-primary" id="saveNewUserBtn">➕ Создать и добавить</button>
-        </div>
-
-        <div id="addGuestModalMessage" class="error-msg"></div>
-        <div id="addGuestModalSuccess" class="success-msg"></div>
+        <button class="btn" id="logoutBtn" style="margin-top:1rem; width:100%; padding:12px;">🚪 Выйти</button>
     </div>
 </div>
 
@@ -171,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadingState = document.getElementById('loadingState');
     const adminContent = document.getElementById('adminContent');
 
-    // === ПРОВЕРКА АДМИНИСТРАТОРА ===
+    // === ПРОВЕРКА АДМИНА ===
     supabase.auth.getSession().then(async ({ data: sessionData }) => {
         if (!sessionData.session) {
             window.location.href = 'login.html';
@@ -179,350 +106,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const user = sessionData.session.user;
         if (user.email !== ADMIN_EMAIL) {
-            loadingState.innerHTML = `
-                <div style="text-align:center; padding:2rem;">
-                    <div style="font-size:3rem;">⛔</div>
-                    <h2 style="color:#ff6b6b;">Доступ запрещён</h2>
-                    <p style="opacity:0.6;">У вас нет прав администратора.</p>
-                    <a href="profile.html" style="color:#d4af37;">← Вернуться в профиль</a>
-                </div>
-            `;
+            loadingState.innerHTML = '<h2 style="color:#ff6b6b;">⛔ Доступ запрещён</h2>';
             return;
         }
 
-        document.getElementById('adminBadge').textContent = '🔒 Администратор (' + user.email + ')';
         loadingState.style.display = 'none';
         adminContent.style.display = 'block';
 
-        // Загружаем данные
-        await loadCurrentGuests();
-        await loadAllGuests();
+        // Загружаем все данные
         await loadRooms();
+        await loadGuests();
         await loadStats();
-        await loadExistingUsersForModal();
+        await loadRecentBookings();
     });
 
-    // === ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ГОСТЕЙ ===
-    document.querySelectorAll('#guestTabs .tab-link').forEach(tab => {
+    // === ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ===
+    document.querySelectorAll('#mainTabs .tab-link').forEach(tab => {
         tab.addEventListener('click', function() {
-            document.querySelectorAll('#guestTabs .tab-link').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#mainTabs .tab-link').forEach(t => t.classList.remove('active'));
             this.classList.add('active');
             const tabId = this.dataset.tab;
-            document.querySelectorAll('#currentGuests, #allGuests').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            if (tabId === 'currentGuests') loadCurrentGuests();
-            if (tabId === 'allGuests') loadAllGuests();
         });
-    });
-
-    // === ПРОЖИВАЮЩИЕ СЕЙЧАС ===
-    async function loadCurrentGuests() {
-        try {
-            const today = new Date().toISOString().split('T')[0];
-            // Находим подтверждённые бронирования на сегодня
-            const { data: bookings, error } = await supabase
-                .from('bookings')
-                .select('user_id, guest_name, guest_phone, check_in_date, check_out_date')
-                .eq('status', 'подтверждено')
-                .lte('check_in_date', today)
-                .gte('check_out_date', today);
-
-            if (error) throw error;
-
-            const container = document.getElementById('currentGuestsList');
-            if (!bookings || bookings.length === 0) {
-                container.innerHTML = '<div style="text-align:center; opacity:0.5;">Сейчас никто не проживает</div>';
-                return;
-            }
-
-            // Получаем данные пользователей
-            const userIds = bookings.map(b => b.user_id).filter(id => id);
-            let usersMap = {};
-            if (userIds.length > 0) {
-                const { data: users } = await supabase
-                    .from('users')
-                    .select('user_id, Display_name, Phone')
-                    .in('user_id', userIds);
-                if (users) {
-                    users.forEach(u => { usersMap[u.user_id] = u; });
-                }
-            }
-
-            let html = '';
-            bookings.forEach(b => {
-                const name = b.guest_name || usersMap[b.user_id]?.Display_name || 'Гость';
-                const phone = b.guest_phone || usersMap[b.user_id]?.Phone || '—';
-                html += `
-                    <div class="list-item">
-                        <div class="info">
-                            <div class="name">${name}</div>
-                            <div class="detail">${phone} · ${b.check_in_date} → ${b.check_out_date}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        } catch (error) {
-            console.error('Ошибка загрузки проживающих:', error);
-            document.getElementById('currentGuestsList').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
-        }
-    }
-
-    // === ВСЕ ПОЛЬЗОВАТЕЛИ ===
-    async function loadAllGuests() {
-        try {
-            const { data, error } = await supabase.from('users').select('*').order('Display_name');
-            if (error) throw error;
-            let html = '';
-            if (!data || data.length === 0) {
-                html = '<div style="text-align:center; opacity:0.4;">Гостей пока нет</div>';
-            } else {
-                data.forEach(user => {
-                    html += `<div class="list-item">
-                        <div class="info">
-                            <div class="name">${user.Display_name || 'Без имени'}</div>
-                            <div class="detail">${user.Email || '—'} · Баланс: ${user.balance || 0} ₽</div>
-                        </div>
-                        <div>
-                            <button class="btn btn-secondary" onclick="editGuest('${user.user_id}')">✏️</button>
-                            <button class="btn btn-danger" onclick="deleteGuest('${user.user_id}')">🗑️</button>
-                        </div>
-                    </div>`;
-                });
-            }
-            document.getElementById('guestList').innerHTML = html;
-        } catch (error) {
-            console.error('Ошибка загрузки всех гостей:', error);
-            document.getElementById('guestList').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
-        }
-    }
-
-    // === МОДАЛЬНОЕ ОКНО ДОБАВЛЕНИЯ ГОСТЯ ===
-    const addGuestModal = document.getElementById('addGuestModal');
-    const existingUserForm = document.getElementById('existingUserForm');
-    const newUserForm = document.getElementById('newUserForm');
-    const chooseExistingBtn = document.getElementById('chooseExistingBtn');
-    const createNewBtn = document.getElementById('createNewBtn');
-    const existingUserSelect = document.getElementById('existingUserSelect');
-
-    window.openAddGuestModal = function() {
-        addGuestModal.classList.add('show');
-        existingUserForm.style.display = 'none';
-        newUserForm.style.display = 'none';
-        document.getElementById('addGuestModalMessage').style.display = 'none';
-        document.getElementById('addGuestModalSuccess').style.display = 'none';
-        loadExistingUsersForModal();
-    };
-
-    window.closeAddGuestModal = function() {
-        addGuestModal.classList.remove('show');
-    };
-
-    document.getElementById('showAddGuestModalBtn').addEventListener('click', openAddGuestModal);
-
-    // Переключение между формами
-    chooseExistingBtn.addEventListener('click', function() {
-        existingUserForm.style.display = 'block';
-        newUserForm.style.display = 'none';
-        document.getElementById('addGuestModalMessage').style.display = 'none';
-        document.getElementById('addGuestModalSuccess').style.display = 'none';
-        loadExistingUsersForModal();
-    });
-
-    createNewBtn.addEventListener('click', function() {
-        existingUserForm.style.display = 'none';
-        newUserForm.style.display = 'block';
-        document.getElementById('addGuestModalMessage').style.display = 'none';
-        document.getElementById('addGuestModalSuccess').style.display = 'none';
-        document.getElementById('newUserName').value = '';
-        document.getElementById('newUserEmail').value = '';
-        document.getElementById('newUserPassword').value = '';
-        document.getElementById('newUserPhone').value = '';
-        document.getElementById('newUserCity').value = '';
-    });
-
-    // Загрузка существующих пользователей для модалки
-    async function loadExistingUsersForModal() {
-        try {
-            const { data, error } = await supabase.from('users').select('user_id, Display_name, Email').order('Display_name');
-            if (error) throw error;
-            const select = document.getElementById('existingUserSelect');
-            select.innerHTML = '<option value="">Выберите пользователя...</option>';
-            if (data) {
-                data.forEach(user => {
-                    const option = document.createElement('option');
-                    option.value = user.user_id;
-                    option.textContent = `${user.Display_name || user.Email || user.user_id}`;
-                    select.appendChild(option);
-                });
-            }
-        } catch (error) {
-            console.error('Ошибка загрузки пользователей:', error);
-            document.getElementById('existingUserSelect').innerHTML = '<option value="">Ошибка загрузки</option>';
-        }
-    }
-
-    // === ДОБАВЛЕНИЕ СУЩЕСТВУЮЩЕГО ПОЛЬЗОВАТЕЛЯ (СОЗДАЁМ БРОНИРОВАНИЕ) ===
-    document.getElementById('addExistingUserBtn').addEventListener('click', async function() {
-        const userId = existingUserSelect.value;
-        const msg = document.getElementById('addGuestModalMessage');
-        const success = document.getElementById('addGuestModalSuccess');
-        msg.style.display = 'none';
-        success.style.display = 'none';
-
-        if (!userId) {
-            msg.textContent = 'Выберите пользователя.';
-            msg.style.display = 'block';
-            return;
-        }
-
-        try {
-            // Получаем данные пользователя
-            const { data: user, error: userError } = await supabase
-                .from('users')
-                .select('Display_name, Email, Phone')
-                .eq('user_id', userId)
-                .single();
-            if (userError) throw userError;
-
-            // Получаем первую комнату (или можно дать выбор)
-            const { data: rooms, error: roomsError } = await supabase
-                .from('rooms')
-                .select('id')
-                .limit(1);
-            if (roomsError) throw roomsError;
-            if (!rooms || rooms.length === 0) {
-                msg.textContent = 'Нет доступных комнат. Сначала создайте комнату.';
-                msg.style.display = 'block';
-                return;
-            }
-
-            // Сегодняшняя дата и дата через 1 день (для теста)
-            const today = new Date().toISOString().split('T')[0];
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const tomorrowStr = tomorrow.toISOString().split('T')[0];
-
-            // Создаём бронирование для этого пользователя
-            const { error: bookingError } = await supabase
-                .from('bookings')
-                .insert({
-                    room_id: rooms[0].id,
-                    user_id: userId,
-                    guest_name: user.Display_name || 'Гость',
-                    guest_phone: user.Phone || '',
-                    guest_email: user.Email || '',
-                    guest_count: 1,
-                    check_in_date: today,
-                    check_out_date: tomorrowStr,
-                    total_amount: 0,
-                    status: 'подтверждено'
-                });
-
-            if (bookingError) throw bookingError;
-
-            success.textContent = '✅ Гость добавлен в проживающие!';
-            success.style.display = 'block';
-            
-            setTimeout(() => {
-                closeAddGuestModal();
-                loadCurrentGuests();
-                loadAllGuests();
-                loadStats();
-            }, 1500);
-
-        } catch (error) {
-            console.error('Ошибка добавления гостя:', error);
-            msg.textContent = 'Ошибка: ' + error.message;
-            msg.style.display = 'block';
-        }
-    });
-
-    // === СОЗДАНИЕ НОВОГО ПОЛЬЗОВАТЕЛЯ ===
-    document.getElementById('saveNewUserBtn').addEventListener('click', async function() {
-        const displayName = document.getElementById('newUserName').value.trim();
-        const email = document.getElementById('newUserEmail').value.trim();
-        const password = document.getElementById('newUserPassword').value;
-        const phone = document.getElementById('newUserPhone').value.trim();
-        const city = document.getElementById('newUserCity').value.trim();
-
-        const msg = document.getElementById('addGuestModalMessage');
-        const success = document.getElementById('addGuestModalSuccess');
-        msg.style.display = 'none';
-        success.style.display = 'none';
-
-        if (!displayName || !email || !password) {
-            msg.textContent = 'Заполните имя, email и пароль.';
-            msg.style.display = 'block';
-            return;
-        }
-        if (password.length < 6) {
-            msg.textContent = 'Пароль должен быть не менее 6 символов.';
-            msg.style.display = 'block';
-            return;
-        }
-
-        try {
-            const { data: authData, error: authError } = await supabase.auth.signUp({
-                email: email,
-                password: password,
-                options: { data: { display_name: displayName, phone: phone, city: city } }
-            });
-            if (authError) throw authError;
-            const userId = authData.user.id;
-            const namePart = displayName.replace(/[^a-zA-Zа-яА-Я]/g, '').slice(0, 4).toUpperCase() || 'USER';
-            const randomPart = Math.floor(1000 + Math.random() * 9000);
-            const refCode = `FD-${namePart}${randomPart}`;
-            const { error: insertError } = await supabase
-                .from('users')
-                .insert({ user_id: userId, Email: email, Display_name: displayName, Phone: phone || null, City: city || null, Ref_code: refCode, balance: 0 });
-            if (insertError) throw insertError;
-
-            // Теперь создаём бронирование для нового пользователя
-            const { data: rooms, error: roomsError } = await supabase
-                .from('rooms')
-                .select('id')
-                .limit(1);
-            if (roomsError) throw roomsError;
-            if (rooms && rooms.length > 0) {
-                const today = new Date().toISOString().split('T')[0];
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                const tomorrowStr = tomorrow.toISOString().split('T')[0];
-                await supabase
-                    .from('bookings')
-                    .insert({
-                        room_id: rooms[0].id,
-                        user_id: userId,
-                        guest_name: displayName,
-                        guest_phone: phone || '',
-                        guest_email: email,
-                        guest_count: 1,
-                        check_in_date: today,
-                        check_out_date: tomorrowStr,
-                        total_amount: 0,
-                        status: 'подтверждено'
-                    });
-            }
-
-            success.textContent = '✅ Гость создан и добавлен в проживающие!';
-            success.style.display = 'block';
-            setTimeout(() => {
-                closeAddGuestModal();
-                loadAllGuests();
-                loadCurrentGuests();
-                loadStats();
-            }, 1500);
-        } catch (error) {
-            console.error('Ошибка создания гостя:', error);
-            msg.textContent = 'Ошибка: ' + error.message;
-            msg.style.display = 'block';
-        }
-    });
-
-    // Закрытие модалки по клику на фон
-    addGuestModal.addEventListener('click', function(e) {
-        if (e.target === this) closeAddGuestModal();
     });
 
     // === КОМНАТЫ ===
@@ -530,54 +136,119 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const { data, error } = await supabase.from('rooms').select('*').order('name');
             if (error) throw error;
-            let html = '';
+            
+            const container = document.getElementById('roomsList');
             if (!data || data.length === 0) {
-                html = '<div style="text-align:center; opacity:0.4;">Комнат пока нет</div>';
-            } else {
-                data.forEach(room => {
-                    html += `
-                        <div class="list-item">
-                            <div class="info">
-                                <div class="name">${room.name}</div>
-                                <div class="detail">${room.price_per_night} ₽/ночь · ${room.capacity} чел</div>
-                            </div>
-                            <div>
-                                <button class="btn btn-secondary" onclick="editRoom('${room.id}')">✏️</button>
-                            </div>
-                        </div>
-                    `;
-                });
+                container.innerHTML = '<div style="text-align:center; opacity:0.4;">Комнат пока нет</div>';
+                return;
             }
-            document.getElementById('roomsList').innerHTML = html;
+
+            let html = '';
+            data.forEach(room => {
+                html += `
+                    <div class="list-item">
+                        <div>
+                            <strong>${room.name}</strong>
+                            <div style="font-size:0.8rem; opacity:0.6;">${room.description || ''}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="color:#d4af37;">${room.price_per_night} ₽</div>
+                            <div style="font-size:0.75rem; opacity:0.5;">${room.capacity} чел.</div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
         } catch (error) {
             console.error('Ошибка загрузки комнат:', error);
             document.getElementById('roomsList').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
         }
     }
 
-    window.editRoom = function(roomId) {
-        alert('Функция редактирования комнаты будет доступна в следующей версии. ID: ' + roomId);
-    };
+    // === ГОСТИ ===
+    async function loadGuests() {
+        try {
+            const { data, error } = await supabase.from('users').select('*').order('Display_name');
+            if (error) throw error;
+            
+            const container = document.getElementById('guestList');
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div style="text-align:center; opacity:0.4;">Гостей пока нет</div>';
+                return;
+            }
+
+            let html = '';
+            data.forEach(user => {
+                html += `
+                    <div class="list-item">
+                        <div>
+                            <strong>${user.Display_name || 'Без имени'}</strong>
+                            <div style="font-size:0.8rem; opacity:0.6;">${user.Email || '—'}</div>
+                        </div>
+                        <div style="font-size:0.8rem; opacity:0.5;">
+                            Баланс: ${user.balance || 0} ₽
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        } catch (error) {
+            console.error('Ошибка загрузки гостей:', error);
+            document.getElementById('guestList').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
+        }
+    }
 
     // === СТАТИСТИКА ===
     async function loadStats() {
         try {
-            const { count: usersCount } = await supabase.from('users').select('*', { count: 'exact', head: true });
             const { count: roomsCount } = await supabase.from('rooms').select('*', { count: 'exact', head: true });
+            const { count: usersCount } = await supabase.from('users').select('*', { count: 'exact', head: true });
+            const { count: bookingsCount } = await supabase.from('bookings').select('*', { count: 'exact', head: true });
             
-            const today = new Date().toISOString().split('T')[0];
-            const { count: currentCount } = await supabase
-                .from('bookings')
-                .select('*', { count: 'exact', head: true })
-                .eq('status', 'подтверждено')
-                .lte('check_in_date', today)
-                .gte('check_out_date', today);
-
-            document.getElementById('totalUsers').textContent = usersCount || 0;
             document.getElementById('totalRooms').textContent = roomsCount || 0;
-            document.getElementById('totalCurrent').textContent = currentCount || 0;
+            document.getElementById('totalUsers').textContent = usersCount || 0;
+            document.getElementById('totalBookings').textContent = bookingsCount || 0;
         } catch (error) {
             console.error('Ошибка статистики:', error);
+        }
+    }
+
+    // === ПОСЛЕДНИЕ АРЕНДЫ ===
+    async function loadRecentBookings() {
+        try {
+            const { data, error } = await supabase
+                .from('bookings')
+                .select('*, rooms(name), users(Display_name)')
+                .order('created_at', { ascending: false })
+                .limit(5);
+            if (error) throw error;
+            
+            const container = document.getElementById('recentBookings');
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div style="text-align:center; opacity:0.4;">Нет аренд</div>';
+                return;
+            }
+
+            let html = '';
+            data.forEach(b => {
+                const guest = b.users?.Display_name || b.guest_name || 'Гость';
+                const room = b.rooms?.name || 'Комната';
+                html += `
+                    <div class="list-item">
+                        <div>
+                            <strong>${guest}</strong>
+                            <div style="font-size:0.8rem; opacity:0.6;">${room} · ${b.check_in_date} → ${b.check_out_date}</div>
+                        </div>
+                        <div style="font-size:0.8rem; color:#d4af37;">
+                            ${b.total_amount || 0} ₽
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        } catch (error) {
+            console.error('Ошибка загрузки аренд:', error);
+            document.getElementById('recentBookings').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
         }
     }
 
@@ -587,15 +258,6 @@ document.addEventListener('DOMContentLoaded', function() {
             supabase.auth.signOut().then(() => { window.location.href = 'index.html'; });
         }
     });
-
-    // === ВРЕМЕННЫЕ ФУНКЦИИ ===
-    window.deleteGuest = function(userId) {
-        if (!confirm('Удалить гостя? Это действие необратимо.')) return;
-        alert('Удаление гостя пока не реализовано.');
-    };
-    window.editGuest = function(userId) {
-        alert('Редактирование гостя будет доступно в следующей версии.');
-    };
 });
 </script>
 </body>
