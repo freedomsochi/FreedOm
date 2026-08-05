@@ -311,7 +311,6 @@ document.addEventListener('DOMContentLoaded', function() {
         newUserForm.style.display = 'none';
         document.getElementById('addGuestModalMessage').style.display = 'none';
         document.getElementById('addGuestModalSuccess').style.display = 'none';
-        // Загружаем список пользователей для выбора
         loadExistingUsersForModal();
     };
 
@@ -363,27 +362,83 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Добавление существующего пользователя
-    document.getElementById('addExistingUserBtn').addEventListener('click', function() {
+    // === ДОБАВЛЕНИЕ СУЩЕСТВУЮЩЕГО ПОЛЬЗОВАТЕЛЯ (СОЗДАЁМ БРОНИРОВАНИЕ) ===
+    document.getElementById('addExistingUserBtn').addEventListener('click', async function() {
         const userId = existingUserSelect.value;
+        const msg = document.getElementById('addGuestModalMessage');
+        const success = document.getElementById('addGuestModalSuccess');
+        msg.style.display = 'none';
+        success.style.display = 'none';
+
         if (!userId) {
-            document.getElementById('addGuestModalMessage').textContent = 'Выберите пользователя.';
-            document.getElementById('addGuestModalMessage').style.display = 'block';
+            msg.textContent = 'Выберите пользователя.';
+            msg.style.display = 'block';
             return;
         }
-        // Здесь можно добавить логику добавления пользователя в текущие гости
-        // Например, создать бронирование или просто отметить
-        document.getElementById('addGuestModalSuccess').textContent = '✅ Пользователь добавлен!';
-        document.getElementById('addGuestModalSuccess').style.display = 'block';
-        setTimeout(() => {
-            closeAddGuestModal();
-            loadCurrentGuests();
-            loadAllGuests();
-            loadStats();
-        }, 1500);
+
+        try {
+            // Получаем данные пользователя
+            const { data: user, error: userError } = await supabase
+                .from('users')
+                .select('Display_name, Email, Phone')
+                .eq('user_id', userId)
+                .single();
+            if (userError) throw userError;
+
+            // Получаем первую комнату (или можно дать выбор)
+            const { data: rooms, error: roomsError } = await supabase
+                .from('rooms')
+                .select('id')
+                .limit(1);
+            if (roomsError) throw roomsError;
+            if (!rooms || rooms.length === 0) {
+                msg.textContent = 'Нет доступных комнат. Сначала создайте комнату.';
+                msg.style.display = 'block';
+                return;
+            }
+
+            // Сегодняшняя дата и дата через 1 день (для теста)
+            const today = new Date().toISOString().split('T')[0];
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+            // Создаём бронирование для этого пользователя
+            const { error: bookingError } = await supabase
+                .from('bookings')
+                .insert({
+                    room_id: rooms[0].id,
+                    user_id: userId,
+                    guest_name: user.Display_name || 'Гость',
+                    guest_phone: user.Phone || '',
+                    guest_email: user.Email || '',
+                    guest_count: 1,
+                    check_in_date: today,
+                    check_out_date: tomorrowStr,
+                    total_amount: 0,
+                    status: 'подтверждено'
+                });
+
+            if (bookingError) throw bookingError;
+
+            success.textContent = '✅ Гость добавлен в проживающие!';
+            success.style.display = 'block';
+            
+            setTimeout(() => {
+                closeAddGuestModal();
+                loadCurrentGuests();
+                loadAllGuests();
+                loadStats();
+            }, 1500);
+
+        } catch (error) {
+            console.error('Ошибка добавления гостя:', error);
+            msg.textContent = 'Ошибка: ' + error.message;
+            msg.style.display = 'block';
+        }
     });
 
-    // Создание нового пользователя
+    // === СОЗДАНИЕ НОВОГО ПОЛЬЗОВАТЕЛЯ ===
     document.getElementById('saveNewUserBtn').addEventListener('click', async function() {
         const displayName = document.getElementById('newUserName').value.trim();
         const email = document.getElementById('newUserEmail').value.trim();
@@ -423,7 +478,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 .insert({ user_id: userId, Email: email, Display_name: displayName, Phone: phone || null, City: city || null, Ref_code: refCode, balance: 0 });
             if (insertError) throw insertError;
 
-            success.textContent = '✅ Гость создан и добавлен!';
+            // Теперь создаём бронирование для нового пользователя
+            const { data: rooms, error: roomsError } = await supabase
+                .from('rooms')
+                .select('id')
+                .limit(1);
+            if (roomsError) throw roomsError;
+            if (rooms && rooms.length > 0) {
+                const today = new Date().toISOString().split('T')[0];
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const tomorrowStr = tomorrow.toISOString().split('T')[0];
+                await supabase
+                    .from('bookings')
+                    .insert({
+                        room_id: rooms[0].id,
+                        user_id: userId,
+                        guest_name: displayName,
+                        guest_phone: phone || '',
+                        guest_email: email,
+                        guest_count: 1,
+                        check_in_date: today,
+                        check_out_date: tomorrowStr,
+                        total_amount: 0,
+                        status: 'подтверждено'
+                    });
+            }
+
+            success.textContent = '✅ Гость создан и добавлен в проживающие!';
             success.style.display = 'block';
             setTimeout(() => {
                 closeAddGuestModal();
@@ -483,7 +565,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const { count: usersCount } = await supabase.from('users').select('*', { count: 'exact', head: true });
             const { count: roomsCount } = await supabase.from('rooms').select('*', { count: 'exact', head: true });
             
-            // Считаем проживающих сейчас
             const today = new Date().toISOString().split('T')[0];
             const { count: currentCount } = await supabase
                 .from('bookings')
