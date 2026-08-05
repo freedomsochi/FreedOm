@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Тест Supabase</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <h1>Тест подключения</h1>
+    <div id="result">Проверка...</div>
+
+    <script>
+        const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function test() {
+            const div = document.getElementById('result');
+            try {
+                div.textContent = '🔍 Проверяем подключение...';
+                
+                // Тест 1: Проверяем, что Supabase отвечает
+                const { data, error } = await supabase.from('users').select('count', { count: 'exact', head: true });
+                
+                if (error) {
+                    div.textContent = '❌ Ошибка: ' + error.message;
+                    return;
+                }
+                
+                div.textContent = '✅ Подключение к Supabase работает! Количество пользователей: ' + data;
+                
+                // Тест 2: Проверяем сессию
+                const { data: session } = await supabase.auth.getSession();
+                if (session.session) {
+                    div.textContent += '\n✅ Вы авторизованы как: ' + session.session.user.email;
+                } else {
+                    div.textContent += '\n⚠️ Вы не авторизованы. Проверьте вход.';
+                }
+                
+            } catch (e) {
+                div.textContent = '❌ Критическая ошибка: ' + e.message;
+            }
+        }
+        
+        test();
+    </script>
+</body>
+</html>
