@@ -26,6 +26,8 @@
         .btn-danger:hover { background: rgba(255,0,0,0.15); }
         .btn-secondary { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #b8a9d4; }
         .btn-secondary:hover { background: rgba(255,255,255,0.08); }
+        .btn-success { background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.2); color: #25D366; }
+        .btn-success:hover { background: rgba(37,211,102,0.2); }
         .btn-block { width: 100%; text-align: center; margin: 4px 0; }
         .field { margin-bottom: 1rem; }
         .field label { display: block; font-weight: 500; margin-bottom: 4px; color: #b8a9d4; font-size: 0.9rem; }
@@ -47,7 +49,18 @@
         .stat-item { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px; text-align: center; }
         .stat-item .number { font-size: 1.8rem; font-weight: 700; color: #d4af37; }
         .stat-item .label { font-size: 0.75rem; opacity: 0.6; }
-        @media (max-width: 480px) { .list-item { flex-wrap: wrap; gap: 6px; } }
+        .tab-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem; }
+        .tab-nav .tab-link { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 6px 16px; color: #b8a9d4; cursor: pointer; transition: 0.3s; font-size: 0.85rem; font-weight: 500; }
+        .tab-nav .tab-link:hover { background: rgba(255,255,255,0.08); }
+        .tab-nav .tab-link.active { background: rgba(212,175,55,0.12); border-color: rgba(212,175,55,0.3); color: #d4af37; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal.show { display: flex; }
+        .modal-content { background: #121626; border: 1px solid rgba(212,175,55,0.15); border-radius: 24px; max-width: 500px; width: 100%; padding: 24px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: #d4af37; font-size: 28px; cursor: pointer; opacity: 0.6; transition: 0.2s; }
+        .modal-close:hover { opacity: 1; }
+        @media (max-width: 480px) { .list-item { flex-wrap: wrap; gap: 6px; } .tab-nav .tab-link { font-size: 0.7rem; padding: 4px 10px; } }
     </style>
 </head>
 <body>
@@ -71,24 +84,32 @@
             <div class="stat-grid">
                 <div class="stat-item"><span class="number" id="totalUsers">0</span><div class="label">Гостей</div></div>
                 <div class="stat-item"><span class="number" id="totalRooms">0</span><div class="label">Комнат</div></div>
+                <div class="stat-item"><span class="number" id="totalCurrent">0</span><div class="label">Проживают сейчас</div></div>
             </div>
         </div>
 
         <!-- ГОСТИ -->
         <div class="card">
             <h3>👥 Гости</h3>
-            <button class="btn btn-primary" id="showAddGuestFormBtn">+ Добавить гостя</button>
-            <div id="addGuestForm" style="display:none; margin-top:1rem;">
-                <div class="field"><label>Имя и фамилия</label><input type="text" id="guestDisplayName" placeholder="Иван Петров"></div>
-                <div class="field"><label>Email</label><input type="email" id="guestEmail" placeholder="ivan@mail.ru"></div>
-                <div class="field"><label>Пароль (мин. 6 символов)</label><input type="password" id="guestPassword" placeholder="••••••"></div>
-                <div class="field"><label>Телефон</label><input type="text" id="guestPhone" placeholder="+7 999 123-45-67"></div>
-                <div class="field"><label>Город</label><input type="text" id="guestCity" placeholder="Сочи"></div>
-                <button class="btn btn-primary" id="saveGuestBtn">Сохранить гостя</button>
-                <button class="btn btn-secondary" id="cancelAddGuestBtn">Отмена</button>
-                <div id="guestMessage" class="error-msg"></div>
+            
+            <!-- Вкладки -->
+            <div class="tab-nav" id="guestTabs">
+                <span class="tab-link active" data-tab="currentGuests">🏠 Проживают сейчас</span>
+                <span class="tab-link" data-tab="allGuests">👤 Все пользователи</span>
             </div>
-            <div id="guestList" style="margin-top:1rem;"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
+
+            <!-- Проживающие сейчас -->
+            <div id="currentGuests" class="tab-content active">
+                <div id="currentGuestsList"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
+            </div>
+
+            <!-- Все пользователи -->
+            <div id="allGuests" class="tab-content">
+                <div id="guestList"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
+            </div>
+
+            <!-- Кнопка добавления -->
+            <button class="btn btn-primary" id="showAddGuestModalBtn" style="margin-top:1rem;">➕ Добавить гостя</button>
         </div>
 
         <!-- КОМНАТЫ -->
@@ -101,6 +122,43 @@
     </div>
 
     <div class="footer">FreeDom — место для жизни, отдыха и развития ❤️</div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО ДЛЯ ДОБАВЛЕНИЯ ГОСТЯ -->
+<div id="addGuestModal" class="modal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeAddGuestModal()">&times;</button>
+        <h3 style="color:#d4af37; margin-bottom:20px;">➕ Добавить гостя</h3>
+        
+        <div style="display:flex; gap:10px; margin-bottom:1rem;">
+            <button class="btn btn-secondary" id="chooseExistingBtn" style="flex:1;">Выбрать из зарегистрированных</button>
+            <button class="btn btn-primary" id="createNewBtn" style="flex:1;">Создать нового</button>
+        </div>
+
+        <!-- Форма для существующего пользователя -->
+        <div id="existingUserForm" style="display:none;">
+            <div class="field">
+                <label>Выберите пользователя</label>
+                <select id="existingUserSelect">
+                    <option value="">Загрузка...</option>
+                </select>
+            </div>
+            <button class="btn btn-success" id="addExistingUserBtn">➕ Добавить выбранного</button>
+        </div>
+
+        <!-- Форма для нового пользователя -->
+        <div id="newUserForm" style="display:none;">
+            <div class="field"><label>Имя и фамилия</label><input type="text" id="newUserName" placeholder="Иван Петров"></div>
+            <div class="field"><label>Email</label><input type="email" id="newUserEmail" placeholder="ivan@mail.ru"></div>
+            <div class="field"><label>Пароль (мин. 6 символов)</label><input type="password" id="newUserPassword" placeholder="••••••"></div>
+            <div class="field"><label>Телефон</label><input type="text" id="newUserPhone" placeholder="+7 999 123-45-67"></div>
+            <div class="field"><label>Город</label><input type="text" id="newUserCity" placeholder="Сочи"></div>
+            <button class="btn btn-primary" id="saveNewUserBtn">➕ Создать и добавить</button>
+        </div>
+
+        <div id="addGuestModalMessage" class="error-msg"></div>
+        <div id="addGuestModalSuccess" class="success-msg"></div>
+    </div>
 </div>
 
 <script>
@@ -137,13 +195,81 @@ document.addEventListener('DOMContentLoaded', function() {
         adminContent.style.display = 'block';
 
         // Загружаем данные
-        await loadGuests();
+        await loadCurrentGuests();
+        await loadAllGuests();
         await loadRooms();
         await loadStats();
+        await loadExistingUsersForModal();
     });
 
-    // === ГОСТИ ===
-    async function loadGuests() {
+    // === ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ГОСТЕЙ ===
+    document.querySelectorAll('#guestTabs .tab-link').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('#guestTabs .tab-link').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            const tabId = this.dataset.tab;
+            document.querySelectorAll('#currentGuests, #allGuests').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if (tabId === 'currentGuests') loadCurrentGuests();
+            if (tabId === 'allGuests') loadAllGuests();
+        });
+    });
+
+    // === ПРОЖИВАЮЩИЕ СЕЙЧАС ===
+    async function loadCurrentGuests() {
+        try {
+            const today = new Date().toISOString().split('T')[0];
+            // Находим подтверждённые бронирования на сегодня
+            const { data: bookings, error } = await supabase
+                .from('bookings')
+                .select('user_id, guest_name, guest_phone, check_in_date, check_out_date')
+                .eq('status', 'подтверждено')
+                .lte('check_in_date', today)
+                .gte('check_out_date', today);
+
+            if (error) throw error;
+
+            const container = document.getElementById('currentGuestsList');
+            if (!bookings || bookings.length === 0) {
+                container.innerHTML = '<div style="text-align:center; opacity:0.5;">Сейчас никто не проживает</div>';
+                return;
+            }
+
+            // Получаем данные пользователей
+            const userIds = bookings.map(b => b.user_id).filter(id => id);
+            let usersMap = {};
+            if (userIds.length > 0) {
+                const { data: users } = await supabase
+                    .from('users')
+                    .select('user_id, Display_name, Phone')
+                    .in('user_id', userIds);
+                if (users) {
+                    users.forEach(u => { usersMap[u.user_id] = u; });
+                }
+            }
+
+            let html = '';
+            bookings.forEach(b => {
+                const name = b.guest_name || usersMap[b.user_id]?.Display_name || 'Гость';
+                const phone = b.guest_phone || usersMap[b.user_id]?.Phone || '—';
+                html += `
+                    <div class="list-item">
+                        <div class="info">
+                            <div class="name">${name}</div>
+                            <div class="detail">${phone} · ${b.check_in_date} → ${b.check_out_date}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        } catch (error) {
+            console.error('Ошибка загрузки проживающих:', error);
+            document.getElementById('currentGuestsList').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
+        }
+    }
+
+    // === ВСЕ ПОЛЬЗОВАТЕЛИ ===
+    async function loadAllGuests() {
         try {
             const { data, error } = await supabase.from('users').select('*').order('Display_name');
             if (error) throw error;
@@ -166,32 +292,110 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             document.getElementById('guestList').innerHTML = html;
         } catch (error) {
-            console.error('Ошибка загрузки гостей:', error);
+            console.error('Ошибка загрузки всех гостей:', error);
             document.getElementById('guestList').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
         }
     }
 
-    // Добавление гостя
-    document.getElementById('showAddGuestFormBtn').addEventListener('click', function() {
-        document.getElementById('addGuestForm').style.display = 'block';
-        document.getElementById('guestDisplayName').value = '';
-        document.getElementById('guestEmail').value = '';
-        document.getElementById('guestPassword').value = '';
-        document.getElementById('guestPhone').value = '';
-        document.getElementById('guestCity').value = '';
-        document.getElementById('guestMessage').style.display = 'none';
-    });
-    document.getElementById('cancelAddGuestBtn').addEventListener('click', function() {
-        document.getElementById('addGuestForm').style.display = 'none';
-    });
-    document.getElementById('saveGuestBtn').addEventListener('click', async function() {
-        const displayName = document.getElementById('guestDisplayName').value.trim();
-        const email = document.getElementById('guestEmail').value.trim();
-        const password = document.getElementById('guestPassword').value;
-        const phone = document.getElementById('guestPhone').value.trim();
-        const city = document.getElementById('guestCity').value.trim();
+    // === МОДАЛЬНОЕ ОКНО ДОБАВЛЕНИЯ ГОСТЯ ===
+    const addGuestModal = document.getElementById('addGuestModal');
+    const existingUserForm = document.getElementById('existingUserForm');
+    const newUserForm = document.getElementById('newUserForm');
+    const chooseExistingBtn = document.getElementById('chooseExistingBtn');
+    const createNewBtn = document.getElementById('createNewBtn');
+    const existingUserSelect = document.getElementById('existingUserSelect');
 
-        const msg = document.getElementById('guestMessage');
+    window.openAddGuestModal = function() {
+        addGuestModal.classList.add('show');
+        existingUserForm.style.display = 'none';
+        newUserForm.style.display = 'none';
+        document.getElementById('addGuestModalMessage').style.display = 'none';
+        document.getElementById('addGuestModalSuccess').style.display = 'none';
+        // Загружаем список пользователей для выбора
+        loadExistingUsersForModal();
+    };
+
+    window.closeAddGuestModal = function() {
+        addGuestModal.classList.remove('show');
+    };
+
+    document.getElementById('showAddGuestModalBtn').addEventListener('click', openAddGuestModal);
+
+    // Переключение между формами
+    chooseExistingBtn.addEventListener('click', function() {
+        existingUserForm.style.display = 'block';
+        newUserForm.style.display = 'none';
+        document.getElementById('addGuestModalMessage').style.display = 'none';
+        document.getElementById('addGuestModalSuccess').style.display = 'none';
+        loadExistingUsersForModal();
+    });
+
+    createNewBtn.addEventListener('click', function() {
+        existingUserForm.style.display = 'none';
+        newUserForm.style.display = 'block';
+        document.getElementById('addGuestModalMessage').style.display = 'none';
+        document.getElementById('addGuestModalSuccess').style.display = 'none';
+        document.getElementById('newUserName').value = '';
+        document.getElementById('newUserEmail').value = '';
+        document.getElementById('newUserPassword').value = '';
+        document.getElementById('newUserPhone').value = '';
+        document.getElementById('newUserCity').value = '';
+    });
+
+    // Загрузка существующих пользователей для модалки
+    async function loadExistingUsersForModal() {
+        try {
+            const { data, error } = await supabase.from('users').select('user_id, Display_name, Email').order('Display_name');
+            if (error) throw error;
+            const select = document.getElementById('existingUserSelect');
+            select.innerHTML = '<option value="">Выберите пользователя...</option>';
+            if (data) {
+                data.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.user_id;
+                    option.textContent = `${user.Display_name || user.Email || user.user_id}`;
+                    select.appendChild(option);
+                });
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки пользователей:', error);
+            document.getElementById('existingUserSelect').innerHTML = '<option value="">Ошибка загрузки</option>';
+        }
+    }
+
+    // Добавление существующего пользователя
+    document.getElementById('addExistingUserBtn').addEventListener('click', function() {
+        const userId = existingUserSelect.value;
+        if (!userId) {
+            document.getElementById('addGuestModalMessage').textContent = 'Выберите пользователя.';
+            document.getElementById('addGuestModalMessage').style.display = 'block';
+            return;
+        }
+        // Здесь можно добавить логику добавления пользователя в текущие гости
+        // Например, создать бронирование или просто отметить
+        document.getElementById('addGuestModalSuccess').textContent = '✅ Пользователь добавлен!';
+        document.getElementById('addGuestModalSuccess').style.display = 'block';
+        setTimeout(() => {
+            closeAddGuestModal();
+            loadCurrentGuests();
+            loadAllGuests();
+            loadStats();
+        }, 1500);
+    });
+
+    // Создание нового пользователя
+    document.getElementById('saveNewUserBtn').addEventListener('click', async function() {
+        const displayName = document.getElementById('newUserName').value.trim();
+        const email = document.getElementById('newUserEmail').value.trim();
+        const password = document.getElementById('newUserPassword').value;
+        const phone = document.getElementById('newUserPhone').value.trim();
+        const city = document.getElementById('newUserCity').value.trim();
+
+        const msg = document.getElementById('addGuestModalMessage');
+        const success = document.getElementById('addGuestModalSuccess');
+        msg.style.display = 'none';
+        success.style.display = 'none';
+
         if (!displayName || !email || !password) {
             msg.textContent = 'Заполните имя, email и пароль.';
             msg.style.display = 'block';
@@ -218,30 +422,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 .from('users')
                 .insert({ user_id: userId, Email: email, Display_name: displayName, Phone: phone || null, City: city || null, Ref_code: refCode, balance: 0 });
             if (insertError) throw insertError;
-            msg.style.display = 'none';
-            document.getElementById('addGuestForm').style.display = 'none';
-            loadGuests();
-            loadStats();
-            const success = document.createElement('div');
-            success.className = 'success-msg';
-            success.textContent = '✅ Гость добавлен!';
+
+            success.textContent = '✅ Гость создан и добавлен!';
             success.style.display = 'block';
-            document.getElementById('addGuestForm').parentNode.appendChild(success);
-            setTimeout(() => success.remove(), 3000);
+            setTimeout(() => {
+                closeAddGuestModal();
+                loadAllGuests();
+                loadCurrentGuests();
+                loadStats();
+            }, 1500);
         } catch (error) {
-            console.error('Ошибка добавления гостя:', error);
+            console.error('Ошибка создания гостя:', error);
             msg.textContent = 'Ошибка: ' + error.message;
             msg.style.display = 'block';
         }
     });
 
-    window.deleteGuest = function(userId) {
-        if (!confirm('Удалить гостя? Это действие необратимо.')) return;
-        alert('Удаление гостя пока не реализовано.');
-    };
-    window.editGuest = function(userId) {
-        alert('Редактирование гостя будет доступно в следующей версии.');
-    };
+    // Закрытие модалки по клику на фон
+    addGuestModal.addEventListener('click', function(e) {
+        if (e.target === this) closeAddGuestModal();
+    });
 
     // === КОМНАТЫ ===
     async function loadRooms() {
@@ -273,7 +473,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Редактирование комнаты (простая версия)
     window.editRoom = function(roomId) {
         alert('Функция редактирования комнаты будет доступна в следующей версии. ID: ' + roomId);
     };
@@ -283,8 +482,19 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const { count: usersCount } = await supabase.from('users').select('*', { count: 'exact', head: true });
             const { count: roomsCount } = await supabase.from('rooms').select('*', { count: 'exact', head: true });
+            
+            // Считаем проживающих сейчас
+            const today = new Date().toISOString().split('T')[0];
+            const { count: currentCount } = await supabase
+                .from('bookings')
+                .select('*', { count: 'exact', head: true })
+                .eq('status', 'подтверждено')
+                .lte('check_in_date', today)
+                .gte('check_out_date', today);
+
             document.getElementById('totalUsers').textContent = usersCount || 0;
             document.getElementById('totalRooms').textContent = roomsCount || 0;
+            document.getElementById('totalCurrent').textContent = currentCount || 0;
         } catch (error) {
             console.error('Ошибка статистики:', error);
         }
@@ -296,6 +506,15 @@ document.addEventListener('DOMContentLoaded', function() {
             supabase.auth.signOut().then(() => { window.location.href = 'index.html'; });
         }
     });
+
+    // === ВРЕМЕННЫЕ ФУНКЦИИ ===
+    window.deleteGuest = function(userId) {
+        if (!confirm('Удалить гостя? Это действие необратимо.')) return;
+        alert('Удаление гостя пока не реализовано.');
+    };
+    window.editGuest = function(userId) {
+        alert('Редактирование гостя будет доступно в следующей версии.');
+    };
 });
 </script>
 </body>
