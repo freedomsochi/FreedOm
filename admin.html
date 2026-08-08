@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
-        /* (все стили без изменений, такие же как в предыдущей версии) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0b0d17; color: #eae6f0; line-height: 1.6; min-height: 100vh; padding: 20px 0 60px; }
         .container { max-width: 820px; margin: 0 auto; padding: 0 16px; }
@@ -655,7 +654,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ================================================================
-    // ===== НОВАЯ АРЕНДА (исправлена перезагрузка) =====
+    // ===== НОВАЯ АРЕНДА (исправлена обработка ошибок) =====
     async function loadBookingUsersAndRooms() {
         try {
             const { data: users, error: userError } = await supabase
@@ -770,6 +769,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 .eq('user_id', userId)
                 .single();
 
+            console.log('Пользователь для аренды:', user);
+
             const { data: booking, error: bookingError } = await supabase
                 .from('bookings')
                 .insert({
@@ -789,7 +790,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .select();
 
-            if (bookingError) throw bookingError;
+            if (bookingError) {
+                console.error('Ошибка Supabase при вставке:', bookingError);
+                msg.textContent = 'Ошибка БД: ' + bookingError.message;
+                msg.style.display = 'block';
+                return;
+            }
+
+            console.log('Аренда создана:', booking);
 
             // Добавляем услуги
             const servicesSelect = document.getElementById('bookingServices');
@@ -819,7 +827,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('newBookingForm').reset();
             document.getElementById('bookingTotalAmount').textContent = '0';
 
-            // === ОБНОВЛЯЕМ ТОЛЬКО НУЖНЫЕ БЛОКИ ===
             setTimeout(async () => {
                 await loadBookings(document.getElementById('filterBookingStatus').value);
                 await loadRecentBookings();
@@ -830,7 +837,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 1000);
 
         } catch (error) {
-            console.error('Ошибка создания аренды:', error);
+            console.error('Критическая ошибка:', error);
             msg.textContent = 'Ошибка: ' + error.message;
             msg.style.display = 'block';
         }
