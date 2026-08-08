@@ -253,25 +253,36 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ===== ЗАГРУЗКА КОМНАТ (с прямыми ссылками на GitHub) =====
+        // ===== БЫСТРАЯ ЗАГРУЗКА КОМНАТ (с прямыми ссылками на GitHub) =====
         async function loadRooms() {
             const container = document.getElementById('roomsCarousel');
             try {
-                const { data, error } = await supabase.from('rooms').select('*').order('name');
-                if (error) throw error;
+                // Загружаем данные из кэша, если они есть
+                const cached = sessionStorage.getItem('roomsData');
+                let data;
+                
+                if (cached) {
+                    data = JSON.parse(cached);
+                } else {
+                    const { data: freshData, error } = await supabase.from('rooms').select('*').order('name');
+                    if (error) throw error;
+                    data = freshData;
+                    sessionStorage.setItem('roomsData', JSON.stringify(data));
+                }
+
                 if (!data || data.length === 0) {
                     container.innerHTML = '<div style="width:100%; text-align:center; padding:2rem; opacity:0.6;">Комнат пока нет</div>';
                     return;
                 }
+
+                // Готовим HTML для мгновенного рендеринга
                 let html = '';
                 data.forEach(room => {
-                    // БЕРЁМ ТОЛЬКО ИМЯ ФАЙЛА ИЗ ПУТИ
                     const fileName = room.image_url ? room.image_url.replace('images/', '') : 'placeholder.jpg';
-                    // ФОРМИРУЕМ ПРЯМУЮ ССЫЛКУ НА GITHUB
                     const imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
                     html += `
                         <div class="room-card-carousel" data-room='${JSON.stringify(room)}'>
-                            <img src="${imageUrl}" alt="${room.name}" onerror="this.src='https://placehold.co/600x400/1a1a2e/d4af37?text=${encodeURIComponent(room.name)}'">
+                            <img src="${imageUrl}" alt="${room.name}" loading="lazy" onerror="this.src='https://placehold.co/600x400/1a1a2e/d4af37?text=${encodeURIComponent(room.name)}'">
                             <div class="content">
                                 <h3>${room.name}</h3>
                                 <div class="price">${room.price_per_night} ₽/ночь</div>
@@ -282,6 +293,8 @@
                     `;
                 });
                 container.innerHTML = html;
+
+                // Обработчики кликов (один раз)
                 document.querySelectorAll('.room-card-carousel').forEach(card => {
                     card.addEventListener('click', function(e) {
                         if (e.target.classList.contains('btn-detail')) return;
@@ -300,7 +313,7 @@
             }
         }
 
-        // ===== МОДАЛЬНОЕ ОКНО =====
+        // ===== МОДАЛЬНОЕ ОКНО (оптимизированное) =====
         const bookingModal = document.getElementById('bookingModal');
         const bookingModalClose = document.getElementById('bookingModalClose');
         const bookingModalImage = document.getElementById('bookingModalImage');
@@ -328,9 +341,10 @@
                     window.location.href = 'login.html';
                     return;
                 }
-                // Используем прямую ссылку для модального окна
+                // Быстрая загрузка картинки
                 const fileName = room.image_url ? room.image_url.replace('images/', '') : 'placeholder.jpg';
-                bookingModalImage.src = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
+                const imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
+                bookingModalImage.src = imageUrl;
                 bookingModalImage.onerror = function() {
                     this.src = `https://placehold.co/600x400/1a1a2e/d4af37?text=${encodeURIComponent(room.name)}`;
                 };
@@ -402,7 +416,7 @@
             const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
             let totalAmount = roomPrice * nights;
 
-            // === ПРОВЕРКА НА ПЕРЕСЕЧЕНИЕ ДАТ ===
+            // === ПРОВЕРКА НА ПЕРЕСЕЧЕНИЕ ДАТ (только при отправке) ===
             const { data: existingBookings, error: checkError } = await supabase
                 .from('bookings')
                 .select('check_in_date, check_out_date')
