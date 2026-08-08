@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/umd/chart.min.js"></script>
     <style>
-        /* (стили без изменений, оставляем такие же как в предыдущей версии) */
+        /* (все стили без изменений — оставляем как в последней версии) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0b0d17; color: #eae6f0; line-height: 1.6; min-height: 100vh; padding: 20px 0 60px; }
         .container { max-width: 820px; margin: 0 auto; padding: 0 16px; }
@@ -349,6 +349,30 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }));
     }
 
+    // ===== ПРИНУДИТЕЛЬНАЯ ЗАГРУЗКА ДАННЫХ ДЛЯ ФОРМЫ =====
+    async function ensureFormData() {
+        const selectUser = document.getElementById('bookingUserId');
+        const selectRoom = document.getElementById('bookingRoomId');
+        
+        // Если в селектах нет опций (кроме "Выберите..."), загружаем данные
+        if (selectUser.options.length <= 1 || selectRoom.options.length <= 1) {
+            let guests = getCache('guests');
+            let rooms = getCache('rooms');
+            if (!guests) {
+                const { data } = await supabase.from('users').select('*').order('Display_name');
+                guests = data || [];
+                setCache('guests', guests);
+            }
+            if (!rooms) {
+                const { data } = await supabase.from('rooms').select('*').order('name');
+                rooms = data || [];
+                setCache('rooms', rooms);
+            }
+            populateUserSelect(guests);
+            populateRoomSelect(rooms);
+        }
+    }
+
     // ===== ПРОВЕРКА АДМИНА =====
     supabase.auth.getSession().then(async ({ data: sessionData }) => {
         if (!sessionData.session) {
@@ -373,6 +397,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Загружаем гостей и комнаты из кэша или из БД
         let guests = getCache('guests');
         let rooms = getCache('rooms');
+        
+        // Если кэш пуст, загружаем из БД
         if (!guests) {
             const { data } = await supabase.from('users').select('*').order('Display_name');
             guests = data || [];
@@ -384,24 +410,23 @@ document.addEventListener('DOMContentLoaded', function() {
             setCache('rooms', rooms);
         }
 
-        // Параллельно загружаем остальное
-        const [bookingsResult, statsResult, recentResult, departuresResult, calendarData] = await Promise.all([
-            supabase.from('bookings').select('*, rooms(name), users(Display_name, Email, Phone)').order('created_at', { ascending: false }),
-            loadStatsData(),
-            loadRecentBookingsData(),
-            loadDeparturesData(),
-            loadCalendarData(new Date())
-        ]);
-
-        // Отрисовываем всё
+        // Отрисовываем списки и заполняем формы
         renderGuests(guests);
         renderRooms(rooms);
         populateUserSelect(guests);
         populateRoomSelect(rooms);
 
+        // Параллельно загружаем остальные данные
+        const [bookingsResult, statsResult, recentResult, departuresResult, calendarData] = await Promise.all([
+            supabase.from('bookings').select('*, rooms(name), users(Display_name, Email, Phone)').order('created_at', { ascending: false }),
+            loadStatsData(),
+            loadRecentBookingsData(),
+            loadDeparturesData(),
+            loadCalendarData(calendarDate)
+        ]);
+
         allBookingsData = bookingsResult.data || [];
         applyFilters();
-
         updateStats(statsResult);
         renderRecentBookings(recentResult);
         renderDepartures(departuresResult);
@@ -963,6 +988,32 @@ document.addEventListener('DOMContentLoaded', function() {
             msg.textContent = 'Ошибка: ' + error.message;
             msg.style.display = 'block';
         }
+    });
+
+    // ===== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК (С ПРОВЕРКОЙ ФОРМЫ) =====
+    document.querySelectorAll('#mainTabs .tab-link').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('#mainTabs .tab-link').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            const tabId = this.dataset.tab;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            if (tabId === 'tabBookings') {
+                applyFilters();
+            }
+            if (tabId === 'tabCalendar') {
+                loadCalendarData(calendarDate).then(renderCalendar);
+            }
+            if (tabId === 'tabFinance') {
+                const from = document.getElementById('financeDateFrom').value;
+                const to = document.getElementById('financeDateTo').value;
+                if (from && to) loadFinance(from, to);
+            }
+            if (tabId === 'tabNewBooking') {
+                ensureFormData();
+            }
+        });
     });
 
     // ===== ВЫХОД =====
