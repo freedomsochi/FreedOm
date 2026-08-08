@@ -39,7 +39,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== БАЗОВЫЕ СТИЛИ ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -62,17 +61,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image:
-                radial-gradient(2px 2px at 10% 20%, #fff, transparent),
-                radial-gradient(2px 2px at 30% 60%, #fff, transparent),
-                radial-gradient(1px 1px at 50% 10%, #fff, transparent),
-                radial-gradient(2px 2px at 70% 80%, #fff, transparent),
-                radial-gradient(1px 1px at 90% 40%, #fff, transparent),
-                radial-gradient(1px 1px at 15% 90%, #fff, transparent),
-                radial-gradient(2px 2px at 45% 45%, #fff, transparent),
-                radial-gradient(1px 1px at 80% 15%, #fff, transparent),
-                radial-gradient(2px 2px at 5% 50%, #fff, transparent),
-                radial-gradient(1px 1px at 60% 95%, #fff, transparent);
+            background-image: radial-gradient(2px 2px at 10% 20%, #fff, transparent), radial-gradient(2px 2px at 30% 60%, #fff, transparent), radial-gradient(1px 1px at 50% 10%, #fff, transparent), radial-gradient(2px 2px at 70% 80%, #fff, transparent), radial-gradient(1px 1px at 90% 40%, #fff, transparent), radial-gradient(1px 1px at 15% 90%, #fff, transparent), radial-gradient(2px 2px at 45% 45%, #fff, transparent), radial-gradient(1px 1px at 80% 15%, #fff, transparent), radial-gradient(2px 2px at 5% 50%, #fff, transparent), radial-gradient(1px 1px at 60% 95%, #fff, transparent);
             background-size: 200px 200px;
             background-repeat: repeat;
             opacity: 0.4;
@@ -87,12 +76,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image:
-                radial-gradient(1px 1px at 20% 30%, #fff, transparent),
-                radial-gradient(1px 1px at 60% 70%, #fff, transparent),
-                radial-gradient(1px 1px at 80% 50%, #fff, transparent),
-                radial-gradient(1px 1px at 40% 80%, #fff, transparent),
-                radial-gradient(1px 1px at 10% 60%, #fff, transparent);
+            background-image: radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 60% 70%, #fff, transparent), radial-gradient(1px 1px at 80% 50%, #fff, transparent), radial-gradient(1px 1px at 40% 80%, #fff, transparent), radial-gradient(1px 1px at 10% 60%, #fff, transparent);
             background-size: 300px 300px;
             background-repeat: repeat;
             opacity: 0.6;
@@ -102,7 +86,6 @@
         }
         .container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; position: relative; z-index: 1; }
 
-        /* ===== ВЕРХНЯЯ НАВИГАЦИЯ ===== */
         .top-nav {
             display: flex;
             justify-content: space-between;
@@ -134,11 +117,6 @@
             color: #fff;
             border-color: rgba(212,175,55,0.3);
         }
-        .top-nav .nav-links a:active {
-            background: rgba(212,175,55,0.1);
-            border-color: rgba(212,175,55,0.3);
-            transform: scale(0.95);
-        }
         .top-nav .login-icon {
             display: flex;
             align-items: center;
@@ -155,9 +133,6 @@
             background: rgba(74,144,217,0.12);
             border-color: rgba(74,144,217,0.4);
         }
-        .top-nav .login-icon:active {
-            transform: scale(0.95);
-        }
         .top-nav .login-icon svg {
             width: 18px;
             height: 18px;
@@ -168,7 +143,6 @@
             stroke-linejoin: round;
         }
 
-        /* ===== ШАПКА ===== */
         .header {
             position: relative;
             overflow: hidden;
@@ -208,7 +182,6 @@
 
         h2 { font-size: 1.6rem; color: #d4af37; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 6px; margin: 2rem 0 1rem; text-shadow: 0 0 20px rgba(212,175,55,0.05); }
 
-        /* ===== КАРТОЧКИ НОМЕРОВ ===== */
         .room-card, .sweet-item {
             cursor: pointer;
             transition: 0.3s;
@@ -273,7 +246,6 @@
         .sweet-item img { height: 130px; }
         .sweet-item .name { font-weight: 500; font-size: 0.95rem; }
 
-        /* ===== КАРУСЕЛЬ СОБЫТИЙ ===== */
         .events-carousel {
             display: flex;
             gap: 16px;
@@ -334,7 +306,6 @@
             cursor: pointer;
         }
 
-        /* ===== БАНЯ ===== */
         .sauna-block {
             cursor: pointer;
             transition: 0.3s;
@@ -353,7 +324,6 @@
         .sauna-block img { width: 100%; height: 160px; object-fit: cover; display: block; }
         .sauna-block .content { padding: 1rem 1.2rem; }
 
-        /* ===== МЕДИТАЦИЯ ===== */
         .meditation-block {
             background: linear-gradient(145deg, rgba(180,169,212,0.08), rgba(11,13,23,0.9));
             border: 1px solid rgba(180,169,212,0.15);
@@ -386,7 +356,6 @@
         }
         .meditation-block .content p { opacity: 0.9; }
 
-        /* ===== ОБЩИЕ ЭЛЕМЕНТЫ ===== */
         .btn {
             display: inline-block;
             background: linear-gradient(145deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05));
@@ -472,7 +441,6 @@
 
         .footer { text-align: center; margin-top: 2.5rem; font-size: 0.9rem; color: rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.04); padding-top: 1.5rem; }
 
-        /* ===== МОДАЛЬНОЕ ОКНО С ГАЛЕРЕЕЙ ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -527,7 +495,6 @@
             max-height: 300px;
             object-fit: cover;
             display: block;
-            transition: opacity 0.3s;
         }
         .gallery-nav {
             position: absolute;
@@ -562,11 +529,9 @@
             margin: 0 0 6px 0;
         }
         .modal-window .price { font-size: 1.2rem; margin-bottom: 10px; }
-        .modal-window .badge { font-size: 0.8rem; }
         .modal-window .description { margin: 12px 0 16px; color: #c8c2d4; line-height: 1.7; white-space: pre-line; }
         .modal-window .btn { width: 100%; text-align: center; padding: 14px; font-size: 1.1rem; }
 
-        /* ===== ПЛАВАЮЩАЯ КНОПКА ===== */
         #floatingBooking {
             position: fixed;
             bottom: 20px;
@@ -614,7 +579,6 @@
         }
         #musicToggle:hover { transform: scale(1.05); background: rgba(212,175,55,0.25); }
 
-        /* ===== АНИМАЦИИ ===== */
         .fade-section {
             opacity: 0;
             transform: translateY(30px);
@@ -622,7 +586,6 @@
         }
         .fade-section.visible { opacity: 1; transform: translateY(0); }
 
-        /* ===== ПРЕЛОАДЕР ===== */
         #preloader {
             position: fixed;
             top: 0;
@@ -658,7 +621,6 @@
         }
         @keyframes pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
 
-        /* ===== ОСТАЛЬНЫЕ БЛОКИ ===== */
         .review-card {
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(4px);
@@ -730,20 +692,10 @@
         @media (max-width: 480px) {
             .modal-window { padding: 20px 16px; }
             .event-card { flex: 0 0 90%; }
-            .top-nav .nav-links {
-                font-size: 0.55rem;
-                gap: 6px;
-            }
-            .top-nav .nav-links a {
-                padding: 2px 4px;
-            }
-            .top-nav .login-icon {
-                padding: 2px 6px;
-            }
-            .top-nav .login-icon svg {
-                width: 16px;
-                height: 16px;
-            }
+            .top-nav .nav-links { font-size: 0.55rem; gap: 6px; }
+            .top-nav .nav-links a { padding: 2px 4px; }
+            .top-nav .login-icon { padding: 2px 6px; }
+            .top-nav .login-icon svg { width: 16px; height: 16px; }
         }
     </style>
 </head>
@@ -795,69 +747,11 @@
         </div>
     </section>
 
-    <!-- НОМЕРА -->
-    <section class="fade-section">
+    <!-- НОМЕРА (ДИНАМИЧЕСКАЯ ЗАГРУЗКА ИЗ SUPABASE) -->
+    <section class="fade-section" id="roomsSection">
         <h2>🚀 Наши номера</h2>
-
-        <div class="room-card" data-id="room1">
-            <img src="images/room-family.jpg" alt="Семейная комната">
-            <div class="content">
-                <h3>🏡 Семейная комната</h3>
-                <div><span class="badge">до 4 чел</span><span class="badge">двуспальная + двухъярусная</span></div>
-                <div class="price">2 500 ₽/сутки · 24 000 ₽/месяц</div>
-            </div>
-        </div>
-
-        <div class="room-card popular-glow" data-id="room2">
-            <img src="images/room-balcony.jpg" alt="Двухместный с балконом">
-            <div class="content">
-                <h3>🌿 Двухместный с балконом</h3>
-                <div><span class="badge">до 2 чел</span><span class="badge">балкон</span></div>
-                <div class="price">3 000 ₽/сутки · 30 000 ₽/месяц <span class="popular">🔥 Популярный</span></div>
-            </div>
-        </div>
-
-        <div class="room-card" data-id="room3">
-            <img src="images/room-attic.jpg" alt="Мансардная комната">
-            <div class="content">
-                <h3>🏠 Мансардная комната</h3>
-                <div><span class="badge">1 место</span><span class="badge">уединение</span></div>
-                <div class="price">1 500 ₽/сутки · 20 000 ₽/месяц</div>
-            </div>
-        </div>
-
-        <div class="room-card" data-id="room4">
-            <img src="images/room-bungalow.jpg" alt="Бунгало в саду">
-            <div class="content">
-                <h3>🌴 Бунгало в саду</h3>
-                <div><span class="badge">до 2 чел</span><span class="badge">с верандой</span></div>
-                <div class="price">1 000 ₽/сутки · 15 000 ₽/месяц</div>
-            </div>
-        </div>
-
-        <div class="room-card" data-id="room5">
-            <img src="images/room-balcony-bed.jpg" alt="Спальное место на балконе">
-            <div class="content">
-                <h3>⭐ Спальное место на балконе</h3>
-                <div><span class="badge">летнее</span><span class="badge">звёзды</span></div>
-                <div class="price">700 ₽/сутки · 12 000 ₽/месяц</div>
-            </div>
-        </div>
-
-        <div class="room-card" data-id="room6">
-            <img src="images/room-hostel.jpg" alt="Хостел стандарт">
-            <div class="content">
-                <h3>🛌 Хостел стандарт</h3>
-                <div><span class="badge">4 места</span><span class="badge">бюджет</span></div>
-                <div class="price">800 ₽/сутки · 15 000 ₽/месяц</div>
-            </div>
-        </div>
-
-        <div class="room-card" style="padding:1.2rem; cursor:default;" data-id="room7">
-            <h3>💰 Хостел эконом</h3>
-            <div><span class="badge">бюджет</span></div>
-            <div class="price">600 ₽/сутки · 9 000 ₽/месяц</div>
-            <p style="margin-top:8px;">Самый доступный вариант для тех, кто хочет познакомиться с пространством FreeDom.</p>
+        <div id="roomsContainer">
+            <div style="text-align:center; padding:2rem; opacity:0.6;">Загрузка номеров...</div>
         </div>
     </section>
 
@@ -1151,72 +1045,82 @@
 </audio>
 <div id="musicToggle">🔇</div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
 <script>
-    // ===== ДАННЫЕ ДЛЯ МОДАЛЬНЫХ ОКОН =====
+    const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ===== ЗАГРУЗКА КОМНАТ ИЗ SUPABASE (С ПРЯМЫМИ ССЫЛКАМИ НА КАРТИНКИ) =====
+    async function loadRooms() {
+        const container = document.getElementById('roomsContainer');
+        try {
+            const { data, error } = await supabase.from('rooms').select('*').order('name');
+            if (error) throw error;
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:2rem; opacity:0.6;">Комнат пока нет</div>';
+                return;
+            }
+            let html = '';
+            data.forEach(room => {
+                // Используем image_url из базы (например, "images/hostel_economy.jpg")
+                const imageUrl = room.image_url || 'images/placeholder.jpg';
+                html += `
+                    <div class="room-card" data-id="room_${room.id}">
+                        <img src="${imageUrl}" alt="${room.name}" onerror="this.src='images/placeholder.jpg'">
+                        <div class="content">
+                            <h3>${room.name}</h3>
+                            <div style="margin:4px 0;"><span class="badge">до ${room.capacity} чел</span></div>
+                            <div class="price">${room.price_per_night} ₽/сутки</div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            // Добавляем обработчики кликов для динамически созданных карточек
+            document.querySelectorAll('.room-card[data-id^="room_"]').forEach(el => {
+                el.addEventListener('click', function() {
+                    const roomId = this.dataset.id.replace('room_', '');
+                    openRoomModal(roomId);
+                });
+            });
+        } catch (error) {
+            console.error('Ошибка загрузки комнат:', error);
+            container.innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки комнат</div>';
+        }
+    }
+
+    // ===== ДАННЫЕ ДЛЯ МОДАЛЬНЫХ ОКОН (статичные) =====
     const data = {
-        // Номера
-        room1: {
-            title: '🏡 Семейная комната',
-            badges: 'до 4 чел · двуспальная + двухъярусная',
-            price: '2 500 ₽/сутки · 24 000 ₽/месяц',
-            description: 'Просторная комната для семьи или компании. В наличии: двуспальная кровать и двухъярусная кровать, стол, стулья, шкаф. Санузел на этаже. Рядом общая кухня и летняя кухня с видом на бассейн. Идеально для семейного отдыха.',
-            gallery: ['images/room-family.jpg', 'images/room-family-2.jpg'],
-            action: '#bookingAnchor',
-            actionText: 'Забронировать'
+        // Баня
+        service1: {
+            title: '🔥 Баня FreeDom',
+            badges: 'индивидуально · для проживающих',
+            price: '3000 ₽ / 2 часа (до 4 чел)',
+            description: 'Полная информация о бане:\n\n🔹 Индивидуально: 2 часа — 3000 ₽ (до 4 чел), каждый следующий час +1000 ₽, доп. гость +500 ₽. Дети до 10 лет бесплатно. Банщик — 800 ₽ за 10 мин (2 подхода по 5 мин).\n\n🎁 Бонус: при заказе от 3 часов — чайник с лечебными травами в подарок.\n\n🏠 Для проживающих: четверг и воскресенье — общая баня (небольшая плата).\n\n💳 Предоплата 1000 ₽. При отмене 500 ₽ невозвратные, при переносе — остаются на счёте.',
+            gallery: ['images/sauna.jpg'],
+            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу забронировать баню',
+            actionText: 'Забронировать баню в WhatsApp'
         },
-        room2: {
-            title: '🌿 Двухместный с балконом',
-            badges: 'до 2 чел · балкон',
-            price: '3 000 ₽/сутки · 30 000 ₽/месяц',
-            description: 'Уютная комната с выходом на балкон. Двуспальная кровать, рабочий стол, стул, шкаф. Санузел на этаже. Балкон выходит в сад — идеальное место для утреннего чая или вечернего созерцания звёзд. Отличный выбор для пары или solo-путешественника.',
-            gallery: ['images/room-balcony.jpg', 'images/room-balcony-2.jpg', 'images/room-balcony-3.jpg'],
-            action: '#bookingAnchor',
-            actionText: 'Забронировать'
+        // События
+        event1: {
+            title: '🔔 Гонг-медитация',
+            badges: 'релаксация · звукотерапия',
+            price: '1500 ₽ / сеанс (60 мин)',
+            description: 'Гонг-медитация — это древняя практика звукового исцеления. Под звуки гонга ваш мозг погружается в глубокое расслабление, снимаются мышечные зажимы, уходит тревога и стресс.\n\n🎶 Сеанс длится 60 минут. Вы лежите на коврике в тёплой, затемнённой комнате, а мастер проводит вас через волны звука.\n\n✨ Подходит для всех уровней подготовки. Рекомендуется надевать удобную одежду.\n\n📅 Проводится по предварительной записи. Ближайшая дата: 26 июля 2025, 19:00.',
+            gallery: ['images/gong-meditation.jpg'],
+            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу записаться на гонг-медитацию 26 июля',
+            actionText: 'Записаться на сеанс'
         },
-        room3: {
-            title: '🏠 Мансардная комната',
-            badges: '1 место · уединение',
-            price: '1 500 ₽/сутки · 20 000 ₽/месяц',
-            description: 'Отдельное пространство на мансардном этаже с одноместной кроватью, столом, стулом и лампой. Окна с красивым видом, утром солнце заливает комнату. Для тех, кто ценит тишину, приватность и хочет побыть наедине с собой.',
-            gallery: ['images/room-attic.jpg', 'images/room-attic.jpg', 'images/room-attic.jpg'],
-            action: '#bookingAnchor',
-            actionText: 'Забронировать'
-        },
-        room4: {
-            title: '🌴 Бунгало в саду',
-            badges: 'до 2 чел · с верандой',
-            price: '1 000 ₽/сутки · 15 000 ₽/месяц',
-            description: 'Отдельный домик на природе с двухместной кроватью. Непромакаемая сетка защищает от дождя и насекомых. Веранда с видом на сад и бассейн. Для тех, кто хочет побыть наедине с природой, не отказываясь от удобств.',
-            gallery: ['images/room-bungalow.jpg', 'images/room-bungalow-2.jpg', 'images/room-bungalow-3.jpg'],
-            action: '#bookingAnchor',
-            actionText: 'Забронировать'
-        },
-        room5: {
-            title: '⭐ Спальное место на балконе',
-            badges: 'летнее · звёзды',
-            price: '700 ₽/сутки · 12 000 ₽/месяц',
-            description: 'Уникальный вариант — спать под открытым небом на балконе. Мягкие матрасы, крыша защищает от дождя, а шикарный вид на звёзды не оставит равнодушным. Для мечтателей, романтиков и творческих душ.',
-            gallery: ['images/room-balcony-bed.jpg', 'images/room-balcony-bed.jpg', 'images/room-balcony-bed.jpg'],
-            action: '#bookingAnchor',
-            actionText: 'Забронировать'
-        },
-        room6: {
-            title: '🛌 Хостел стандарт',
-            badges: '4 места · бюджет',
-            price: '800 ₽/сутки · 15 000 ₽/месяц',
-            description: 'Место в 4-местном номере. Двухъярусные кровати, стол, стулья, шкаф. Общий санузел на этаже. Отличный вариант для знакомств, экономии и активного общения. Подходит для одиночных путешественников и компаний.',
-            gallery: ['images/room-hostel.jpg', 'images/room-hostel-2.jpg', 'images/room-hostel-3.jpg'],
-            action: '#bookingAnchor',
-            actionText: 'Забронировать'
-        },
-        room7: {
-            title: '💰 Хостел эконом',
-            badges: 'бюджет',
-            price: '600 ₽/сутки · 9 000 ₽/месяц',
-            description: 'Самый доступный вариант для тех, кто хочет познакомиться с нашим пространством и не переплачивать. Чисто, уютно, есть всё необходимое для комфортного проживания. Общая кухня, гостиная, сад, бассейн — в вашем распоряжении.',
-            gallery: ['images/room-hostel.jpg', 'images/room-hostel.jpg', 'images/room-hostel.jpg'],
-            action: '#bookingAnchor',
-            actionText: 'Забронировать'
+        event2: {
+            title: '🍵 Чайная церемония',
+            badges: 'традиции · душевность',
+            price: '1000 ₽ / перс. (в группе до 6 чел)',
+            description: 'Чайная церемония — это не просто чаепитие, а медитативный ритуал, объединяющий людей. Мы завариваем лучшие травяные сборы (ромашка, чабрец, мята, душица) по особым рецептам.\n\n🌿 Вас ждёт:\n— Знакомство с разными сортами трав\n— Медитативное заваривание в глиняной посуде\n— Медленное, осознанное чаепитие в кругу единомышленников\n— Обсуждение впечатлений, обмен энергией\n\n⏳ Длительность — около 1.5 часов. Проводится вечером в дни без бани. Ближайшая дата: 27 июля 2025, 18:00.',
+            gallery: ['images/tea-ceremony.jpg'],
+            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу записаться на чайную церемонию 27 июля',
+            actionText: 'Записаться на церемонию'
         },
         // Сладости
         sweet1: {
@@ -1263,48 +1167,6 @@
             gallery: ['images/honey.jpg'],
             action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу заказать мёд',
             actionText: 'Заказать в WhatsApp'
-        },
-        // Баня
-        service1: {
-            title: '🔥 Баня FreeDom',
-            badges: 'индивидуально · для проживающих',
-            price: '3000 ₽ / 2 часа (до 4 чел)',
-            description: 'Полная информация о бане:\n\n' +
-                '🔹 Индивидуально: 2 часа — 3000 ₽ (до 4 чел), каждый следующий час +1000 ₽, доп. гость +500 ₽. Дети до 10 лет бесплатно. Банщик — 800 ₽ за 10 мин (2 подхода по 5 мин).\n\n' +
-                '🎁 Бонус: при заказе от 3 часов — чайник с лечебными травами в подарок.\n\n' +
-                '🏠 Для проживающих: четверг и воскресенье — общая баня (небольшая плата).\n\n' +
-                '💳 Предоплата 1000 ₽. При отмене 500 ₽ невозвратные, при переносе — остаются на счёте.',
-            gallery: ['images/sauna.jpg'],
-            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу забронировать баню',
-            actionText: 'Забронировать баню в WhatsApp'
-        },
-        // События
-        event1: {
-            title: '🔔 Гонг-медитация',
-            badges: 'релаксация · звукотерапия',
-            price: '1500 ₽ / сеанс (60 мин)',
-            description: 'Гонг-медитация — это древняя практика звукового исцеления. Под звуки гонга ваш мозг погружается в глубокое расслабление, снимаются мышечные зажимы, уходит тревога и стресс.\n\n' +
-                '🎶 Сеанс длится 60 минут. Вы лежите на коврике в тёплой, затемнённой комнате, а мастер проводит вас через волны звука.\n\n' +
-                '✨ Подходит для всех уровней подготовки. Рекомендуется надевать удобную одежду.\n\n' +
-                '📅 Проводится по предварительной записи. Ближайшая дата: 26 июля 2025, 19:00.',
-            gallery: ['images/gong-meditation.jpg', 'images/gong-meditation-2.jpg', 'images/gong-meditation-3.jpg'],
-            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу записаться на гонг-медитацию 26 июля',
-            actionText: 'Записаться на сеанс'
-        },
-        event2: {
-            title: '🍵 Чайная церемония',
-            badges: 'традиции · душевность',
-            price: '1000 ₽ / перс. (в группе до 6 чел)',
-            description: 'Чайная церемония — это не просто чаепитие, а медитативный ритуал, объединяющий людей. Мы завариваем лучшие травяные сборы (ромашка, чабрец, мята, душица) по особым рецептам.\n\n' +
-                '🌿 Вас ждёт:\n' +
-                '— Знакомство с разными сортами трав\n' +
-                '— Медитативное заваривание в глиняной посуде\n' +
-                '— Медленное, осознанное чаепитие в кругу единомышленников\n' +
-                '— Обсуждение впечатлений, обмен энергией\n\n' +
-                '⏳ Длительность — около 1.5 часов. Проводится вечером в дни без бани. Ближайшая дата: 27 июля 2025, 18:00.',
-            gallery: ['images/tea-ceremony.jpg', 'images/tea-ceremony-2.jpg', 'images/tea-ceremony-3.jpg'],
-            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу записаться на чайную церемонию 27 июля',
-            actionText: 'Записаться на церемонию'
         }
     };
 
@@ -1321,14 +1183,16 @@
     const nextBtn = document.getElementById('nextBtn');
     let currentItem = null;
     let currentIndex = 0;
+    let currentId = null;
 
     function openModal(id) {
         const item = data[id];
         if (!item) return;
         currentItem = item;
+        currentId = id;
         currentIndex = 0;
         if (!item.gallery || item.gallery.length === 0) {
-            item.gallery = [item.img || 'images/placeholder.jpg'];
+            item.gallery = ['images/placeholder.jpg'];
         }
         updateGallery();
         modalTitle.textContent = item.title;
@@ -1354,6 +1218,7 @@
         overlay.classList.remove('active');
         document.body.style.overflow = '';
         currentItem = null;
+        currentId = null;
     }
 
     prevBtn.addEventListener('click', function(e) {
@@ -1375,7 +1240,50 @@
     });
     closeBtn.addEventListener('click', closeModal);
 
-    document.querySelectorAll('.room-card[data-id], .sweet-item[data-id]').forEach(el => {
+    // ===== ОТКРЫТИЕ МОДАЛКИ ДЛЯ КОМНАТ ИЗ SUPABASE =====
+    async function openRoomModal(roomId) {
+        try {
+            const { data, error } = await supabase
+                .from('rooms')
+                .select('*')
+                .eq('id', roomId)
+                .single();
+            if (error) throw error;
+            if (!data) {
+                alert('Комната не найдена');
+                return;
+            }
+            // Формируем временный объект для модалки
+            const item = {
+                title: data.name,
+                badges: `до ${data.capacity} чел`,
+                price: `${data.price_per_night} ₽/сутки`,
+                description: data.description || 'Уютная комната в FreeDom.',
+                gallery: [data.image_url || 'images/placeholder.jpg'],
+                action: '#bookingAnchor',
+                actionText: 'Забронировать'
+            };
+            // Открываем модалку с данными из базы
+            currentItem = item;
+            currentId = roomId;
+            currentIndex = 0;
+            updateGallery();
+            modalTitle.textContent = item.title;
+            modalBadges.innerHTML = `<span class="badge">${item.badges}</span>`;
+            modalPrice.textContent = item.price;
+            modalDesc.textContent = item.description;
+            modalAction.href = item.action;
+            modalAction.textContent = item.actionText;
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        } catch (error) {
+            console.error('Ошибка загрузки комнаты:', error);
+            alert('Не удалось загрузить данные комнаты');
+        }
+    }
+
+    // ===== ОБРАБОТЧИКИ ДЛЯ СТАТИЧНЫХ ЭЛЕМЕНТОВ =====
+    document.querySelectorAll('.sweet-item[data-id]').forEach(el => {
         el.addEventListener('click', function() {
             openModal(this.dataset.id);
         });
@@ -1402,6 +1310,7 @@
         }
     });
 
+    // ===== ОСТАЛЬНЫЕ СКРИПТЫ =====
     document.getElementById('aboutToggle').addEventListener('click', function(e) {
         e.stopPropagation();
         const full = document.getElementById('aboutFull');
@@ -1465,6 +1374,11 @@
                 isPlaying = true;
             }).catch(() => {});
         }
+    });
+
+    // ===== ЗАГРУЗКА КОМНАТ ПРИ СТАРТЕ =====
+    document.addEventListener('DOMContentLoaded', function() {
+        loadRooms();
     });
 </script>
 </body>
