@@ -6,9 +6,9 @@
     <title>Админ-панель — FreeDom</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/umd/chart.min.js"></script>
     <style>
-        /* ===== ОСНОВНЫЕ СТИЛИ ===== */
+        /* (стили без изменений, оставляем такие же как в предыдущей версии) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0b0d17; color: #eae6f0; line-height: 1.6; min-height: 100vh; padding: 20px 0 60px; }
         .container { max-width: 820px; margin: 0 auto; padding: 0 16px; }
@@ -41,7 +41,6 @@
         .field-row { display: flex; gap: 10px; flex-wrap: wrap; }
         .field-row .field { flex: 1; min-width: 120px; }
 
-        /* ===== СПИСКИ (адаптивные) ===== */
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); flex-wrap: wrap; gap: 6px; }
         .list-item:last-child { border-bottom: none; }
         .list-item .info { flex: 1; min-width: 150px; }
@@ -51,13 +50,11 @@
         .list-item.debt { background: rgba(255,0,0,0.05); border-left: 3px solid #ff6b6b; padding-left: 8px; }
         .list-item .debt-badge { background: #ff6b6b; color: #0b0d17; border-radius: 12px; padding: 0 8px; font-size: 0.7rem; font-weight: 700; margin-left: 6px; }
 
-        /* ===== СТАТИСТИКА ===== */
         .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 1rem; }
         .stat-item { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px; text-align: center; }
         .stat-item .number { font-size: 1.8rem; font-weight: 700; color: #d4af37; }
         .stat-item .label { font-size: 0.75rem; opacity: 0.6; }
 
-        /* ===== КАЛЕНДАРЬ-МАТРИЦА ===== */
         .calendar-matrix-wrapper { overflow-x: auto; overflow-y: auto; max-height: 70vh; position: relative; margin-top: 0.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); }
         .calendar-matrix { display: grid; grid-template-columns: 140px repeat(auto-fill, minmax(44px, 1fr)); gap: 2px; background: rgba(255,255,255,0.04); min-width: 600px; }
         .matrix-header, .matrix-cell { padding: 6px 4px; text-align: center; font-size: 0.75rem; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.04); }
@@ -75,7 +72,6 @@
         .filter-buttons .btn-filter:hover { background: rgba(255,255,255,0.08); }
         .filter-buttons .btn-filter.active { background: rgba(212,175,55,0.12); border-color: rgba(212,175,55,0.3); color: #d4af37; }
 
-        /* ===== ВКЛАДКИ ===== */
         .tab-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
         .tab-nav .tab-link { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 6px 16px; color: #b8a9d4; cursor: pointer; transition: 0.3s; font-size: 0.85rem; font-weight: 500; }
         .tab-nav .tab-link:hover { background: rgba(255,255,255,0.08); }
@@ -83,7 +79,6 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* ===== МОДАЛЬНЫЕ ОКНА ===== */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal.show { display: flex; }
         .modal-content { background: #121626; border: 1px solid rgba(212,175,55,0.15); border-radius: 24px; max-width: 560px; width: 100%; padding: 24px; position: relative; max-height: 90vh; overflow-y: auto; }
@@ -94,10 +89,9 @@
         .modal-booking-detail .guest { font-weight: 600; color: #d4af37; }
         .modal-booking-detail .dates { font-size: 0.85rem; opacity: 0.7; }
 
-        /* ===== ГРАФИК ===== */
         .chart-container { position: relative; height: 200px; margin-top: 1rem; }
+        .footer { text-align: center; margin: 2rem auto 0; padding: 1rem 0 0.5rem; border-top: 1px solid rgba(255,255,255,0.04); font-size: 0.8rem; color: rgba(255,255,255,0.15); opacity: 0.3; width: 100%; clear: both; }
 
-        /* ===== АДАПТИВНОСТЬ ===== */
         @media (max-width: 480px) {
             .list-item { flex-direction: column; align-items: stretch; }
             .list-item .actions { justify-content: center; }
@@ -127,8 +121,7 @@
     </div>
 
     <div id="adminContent" style="display:none;">
-
-        <!-- ===== НАВИГАЦИЯ ===== -->
+        <!-- НАВИГАЦИЯ -->
         <div class="tab-nav" id="mainTabs">
             <span class="tab-link active" data-tab="tabDashboard">📊 Дашборд</span>
             <span class="tab-link" data-tab="tabGuests">👥 Гости</span>
@@ -139,7 +132,7 @@
             <span class="tab-link" data-tab="tabFinance">💰 Финансы</span>
         </div>
 
-        <!-- ===== ДАШБОРД ===== -->
+        <!-- ДАШБОРД -->
         <div id="tabDashboard" class="tab-content active">
             <div class="card">
                 <h3>📊 Статистика</h3>
@@ -160,7 +153,7 @@
             </div>
         </div>
 
-        <!-- ===== ГОСТИ ===== -->
+        <!-- ГОСТИ -->
         <div id="tabGuests" class="tab-content">
             <div class="card">
                 <h3>👥 Список гостей</h3>
@@ -168,7 +161,7 @@
             </div>
         </div>
 
-        <!-- ===== КОМНАТЫ ===== -->
+        <!-- КОМНАТЫ -->
         <div id="tabRooms" class="tab-content">
             <div class="card">
                 <h3>🛏️ Список комнат</h3>
@@ -176,14 +169,14 @@
             </div>
         </div>
 
-        <!-- ===== БРОНИРОВАНИЯ (с быстрыми действиями) ===== -->
+        <!-- БРОНИРОВАНИЯ -->
         <div id="tabBookings" class="tab-content">
             <div class="card">
                 <h3>📅 Все бронирования</h3>
                 <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:1rem;">
-                    <input type="text" id="bookingSearch" placeholder="🔍 Поиск по гостю, телефону, комнате..." style="flex:1; min-width:150px; padding:8px 12px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04); color:#eae6f0;">
+                    <input type="text" id="bookingSearch" placeholder="🔍 Поиск..." style="flex:1; min-width:150px; padding:8px 12px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04); color:#eae6f0;">
                     <select id="filterBookingStatus" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:8px 12px; color:#eae6f0;">
-                        <option value="all">Все статусы</option>
+                        <option value="all">Все</option>
                         <option value="подтверждено" selected>Активные</option>
                         <option value="долг">С долгом</option>
                         <option value="отменена">Отменённые</option>
@@ -195,7 +188,7 @@
             </div>
         </div>
 
-        <!-- ===== НОВАЯ АРЕНДА ===== -->
+        <!-- НОВАЯ АРЕНДА -->
         <div id="tabNewBooking" class="tab-content">
             <div class="card">
                 <h3>➕ Новая аренда</h3>
@@ -242,7 +235,7 @@
             </div>
         </div>
 
-        <!-- ===== КАЛЕНДАРЬ (МАТРИЦА) ===== -->
+        <!-- КАЛЕНДАРЬ -->
         <div id="tabCalendar" class="tab-content">
             <div class="card">
                 <h3>📅 Календарь занятости (матрица)</h3>
@@ -267,7 +260,7 @@
             </div>
         </div>
 
-        <!-- ===== ФИНАНСЫ (с графиком и экспортом) ===== -->
+        <!-- ФИНАНСЫ -->
         <div id="tabFinance" class="tab-content">
             <div class="card">
                 <h3>💰 Финансовый отчёт</h3>
@@ -287,33 +280,30 @@
                         <input type="date" id="financeDateTo">
                     </div>
                     <button class="btn btn-primary" id="financeFilterBtn">Применить</button>
-                    <button class="btn btn-secondary" id="exportCsvBtn">📥 Скачать CSV</button>
+                    <button class="btn btn-secondary" id="exportCsvBtn">📥 CSV</button>
                 </div>
                 <div class="chart-container">
                     <canvas id="revenueChart"></canvas>
                 </div>
-                <div id="financeDetails" style="margin-top:1rem;"><div style="text-align:center; opacity:0.4;">Выберите период и нажмите «Применить»</div></div>
+                <div id="financeDetails" style="margin-top:1rem;"><div style="text-align:center; opacity:0.4;">Выберите период</div></div>
             </div>
         </div>
 
-        <button class="btn btn-danger btn-block" id="logoutBtn">🚪 Выйти из админ-панели</button>
+        <button class="btn btn-danger btn-block" id="logoutBtn">🚪 Выйти</button>
     </div>
 
     <div class="footer">FreeDom — место для жизни, отдыха и развития ❤️</div>
 </div>
 
-<!-- ===== МОДАЛЬНОЕ ОКНО ДЛЯ ДЕТАЛЕЙ БРОНИРОВАНИЯ ===== -->
+<!-- МОДАЛЬНЫЕ ОКНА -->
 <div id="detailModal" class="modal">
     <div class="modal-content">
         <button class="modal-close" id="detailModalClose">&times;</button>
-        <h3 style="color:#d4af37; margin-bottom:16px;">📋 Детали бронирования</h3>
-        <div id="detailModalBody">
-            <div style="text-align:center; opacity:0.6;">Загрузка...</div>
-        </div>
+        <h3 style="color:#d4af37; margin-bottom:16px;">📋 Детали</h3>
+        <div id="detailModalBody"><div style="text-align:center; opacity:0.6;">Загрузка...</div></div>
     </div>
 </div>
 
-<!-- ===== МОДАЛЬНОЕ ОКНО РЕДАКТИРОВАНИЯ КОМНАТЫ ===== -->
 <div id="editRoomModal" class="modal">
     <div class="modal-content">
         <button class="modal-close" id="editRoomModalClose">&times;</button>
@@ -341,19 +331,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadingState = document.getElementById('loadingState');
     const adminContent = document.getElementById('adminContent');
 
-    // Кэш для данных
-    let cache = {
-        guests: null,
-        rooms: null,
-        timestamp: 0,
-        ttl: 300000 // 5 минут
-    };
-
-    function isCacheValid() {
-        return cache.guests && cache.rooms && (Date.now() - cache.timestamp < cache.ttl);
+    // ===== КЭШИРОВАНИЕ =====
+    const CACHE_TTL = 300000; // 5 минут
+    function getCache(key) {
+        try {
+            const item = sessionStorage.getItem(key);
+            if (!item) return null;
+            const { data, timestamp } = JSON.parse(item);
+            if (Date.now() - timestamp > CACHE_TTL) {
+                sessionStorage.removeItem(key);
+                return null;
+            }
+            return data;
+        } catch { return null; }
+    }
+    function setCache(key, data) {
+        sessionStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }));
     }
 
-    // Проверка администратора
+    // ===== ПРОВЕРКА АДМИНА =====
     supabase.auth.getSession().then(async ({ data: sessionData }) => {
         if (!sessionData.session) {
             window.location.href = 'login.html';
@@ -361,177 +357,161 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const user = sessionData.session.user;
         if (user.email !== ADMIN_EMAIL) {
-            loadingState.innerHTML = `
-                <div style="text-align:center; padding:2rem;">
-                    <div style="font-size:3rem;">⛔</div>
-                    <h2 style="color:#ff6b6b;">Доступ запрещён</h2>
-                    <p style="opacity:0.6;">У вас нет прав администратора.</p>
-                    <a href="profile.html" style="color:#d4af37;">← Вернуться в профиль</a>
-                </div>
-            `;
+            loadingState.innerHTML = `<div style="text-align:center; padding:2rem;"><div style="font-size:3rem;">⛔</div><h2 style="color:#ff6b6b;">Доступ запрещён</h2><a href="profile.html" style="color:#d4af37;">← Вернуться</a></div>`;
             return;
         }
-
         document.getElementById('adminBadge').textContent = '🔒 Администратор (' + user.email + ')';
         loadingState.style.display = 'none';
         adminContent.style.display = 'block';
 
-        // Загружаем всё
-        await loadGuests();
-        await loadRooms();
-        await loadBookings('подтверждено');
-        await loadStats();
-        await loadRecentBookings();
-        await loadDepartures();
-        await loadUsersAndRoomsForForm();
-        await loadCalendarMatrix();
+        // Загружаем все данные параллельно
+        await loadAllData();
+    });
 
-        // Финансы: по умолчанию текущий месяц
+    // ===== ПАРАЛЛЕЛЬНАЯ ЗАГРУЗКА =====
+    async function loadAllData() {
+        // Загружаем гостей и комнаты из кэша или из БД
+        let guests = getCache('guests');
+        let rooms = getCache('rooms');
+        if (!guests) {
+            const { data } = await supabase.from('users').select('*').order('Display_name');
+            guests = data || [];
+            setCache('guests', guests);
+        }
+        if (!rooms) {
+            const { data } = await supabase.from('rooms').select('*').order('name');
+            rooms = data || [];
+            setCache('rooms', rooms);
+        }
+
+        // Параллельно загружаем остальное
+        const [bookingsResult, statsResult, recentResult, departuresResult, calendarData] = await Promise.all([
+            supabase.from('bookings').select('*, rooms(name), users(Display_name, Email, Phone)').order('created_at', { ascending: false }),
+            loadStatsData(),
+            loadRecentBookingsData(),
+            loadDeparturesData(),
+            loadCalendarData(new Date())
+        ]);
+
+        // Отрисовываем всё
+        renderGuests(guests);
+        renderRooms(rooms);
+        populateUserSelect(guests);
+        populateRoomSelect(rooms);
+
+        allBookingsData = bookingsResult.data || [];
+        applyFilters();
+
+        updateStats(statsResult);
+        renderRecentBookings(recentResult);
+        renderDepartures(departuresResult);
+        renderCalendar(calendarData);
+
+        // Финансы (по умолчанию текущий месяц)
         const now = new Date();
         const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
         const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
         document.getElementById('financeDateFrom').value = firstDay;
         document.getElementById('financeDateTo').value = lastDay;
         await loadFinance(firstDay, lastDay);
-    });
-
-    // ===== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК =====
-    document.querySelectorAll('#mainTabs .tab-link').forEach(tab => {
-        tab.addEventListener('click', function() {
-            document.querySelectorAll('#mainTabs .tab-link').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            const tabId = this.dataset.tab;
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            if (tabId === 'tabBookings') {
-                applyFilters();
-            }
-            if (tabId === 'tabCalendar') {
-                loadCalendarMatrix();
-            }
-            if (tabId === 'tabFinance') {
-                const from = document.getElementById('financeDateFrom').value;
-                const to = document.getElementById('financeDateTo').value;
-                if (from && to) loadFinance(from, to);
-            }
-        });
-    });
-
-    // ================================================================
-    // ===== ГОСТИ (с кэшем) =====
-    async function loadGuests() {
-        if (isCacheValid()) {
-            renderGuests(cache.guests);
-            return;
-        }
-        try {
-            const { data, error } = await supabase.from('users').select('*').order('Display_name');
-            if (error) throw error;
-            cache.guests = data || [];
-            cache.rooms = cache.rooms || []; // rooms уже могут быть загружены
-            cache.timestamp = Date.now();
-            renderGuests(data);
-        } catch (error) {
-            console.error('Ошибка загрузки гостей:', error);
-            document.getElementById('guestList').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
-        }
     }
 
-    function renderGuests(guests) {
-        const container = document.getElementById('guestList');
-        if (!guests || guests.length === 0) {
-            container.innerHTML = '<div style="text-align:center; opacity:0.4;">Гостей пока нет</div>';
-            return;
-        }
+    // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ДЛЯ ДАННЫХ =====
+    async function loadStatsData() {
+        const [users, rooms, active, debt] = await Promise.all([
+            supabase.from('users').select('*', { count: 'exact', head: true }),
+            supabase.from('rooms').select('*', { count: 'exact', head: true }),
+            supabase.from('bookings').select('*', { count: 'exact', head: true }).eq('status', 'подтверждено'),
+            supabase.from('bookings').select('total_amount, paid_amount, discount_amount').eq('status', 'долг')
+        ]);
+        return { users: users.count || 0, rooms: rooms.count || 0, active: active.count || 0, debt: debt.data || [] };
+    }
+
+    function updateStats(stats) {
+        document.getElementById('totalUsers').textContent = stats.users;
+        document.getElementById('totalRooms').textContent = stats.rooms;
+        document.getElementById('totalActive').textContent = stats.active;
+        let total = 0;
+        stats.debt.forEach(b => { total += (b.total_amount||0) - (b.paid_amount||0) - (b.discount_amount||0); });
+        document.getElementById('totalDebt').textContent = total + ' ₽';
+    }
+
+    async function loadRecentBookingsData() {
+        const { data } = await supabase.from('bookings').select('*, rooms(name), users(Display_name)').order('created_at', { ascending: false }).limit(5);
+        return data || [];
+    }
+
+    function renderRecentBookings(data) {
+        const container = document.getElementById('recentBookings');
+        if (!data || data.length === 0) { container.innerHTML = '<div style="text-align:center; opacity:0.5;">Нет бронирований</div>'; return; }
         let html = '';
-        guests.forEach(user => {
-            html += `<div class="list-item" onclick="showGuestCard('${user.user_id}')" style="cursor:pointer;">
-                <div class="info">
-                    <div class="name">${user.Display_name || 'Без имени'}</div>
-                    <div class="detail">${user.Email || '—'} · Баланс: ${user.balance || 0} ₽</div>
-                </div>
-                <div class="actions">
-                    <button class="btn btn-secondary" onclick="event.stopPropagation(); showGuestCard('${user.user_id}')">👁️</button>
-                </div>
-            </div>`;
+        data.forEach(b => {
+            const guest = b.users?.Display_name || b.guest_name || 'Гость';
+            const room = b.rooms?.name || 'Комната';
+            html += `<div class="list-item"><div class="info"><div class="name">${guest} — ${room}</div><div class="detail">${b.check_in_date} → ${b.check_out_date}</div></div></div>`;
         });
         container.innerHTML = html;
     }
 
-    // Карточка гостя (заготовка)
-    window.showGuestCard = async function(userId) {
-        try {
-            const { data: bookings, error } = await supabase
-                .from('bookings')
-                .select('*, rooms(name)')
-                .eq('user_id', userId)
-                .order('created_at', { ascending: false });
-            if (error) throw error;
-            const user = cache.guests.find(g => g.user_id === userId);
-            const name = user?.Display_name || 'Гость';
-            let html = `<div style="font-size:1.2rem; margin-bottom:0.5rem;">👤 ${name}</div>`;
-            if (!bookings || bookings.length === 0) {
-                html += '<div style="opacity:0.6;">Нет бронирований</div>';
-            } else {
-                let total = 0;
-                bookings.forEach(b => {
-                    total += b.total_amount || 0;
-                    html += `<div class="modal-booking-detail">
-                        <div class="guest">${b.rooms?.name || 'Комната'}</div>
-                        <div class="dates">${b.check_in_date} → ${b.check_out_date} · ${b.status}</div>
-                        <div style="font-size:0.8rem; opacity:0.6;">Сумма: ${b.total_amount || 0} ₽</div>
-                    </div>`;
-                });
-                html += `<div style="margin-top:0.5rem; font-weight:600;">Общая сумма: ${total} ₽</div>`;
-            }
-            document.getElementById('detailModalBody').innerHTML = html;
-            document.getElementById('detailModal').classList.add('show');
-        } catch (error) {
-            console.error('Ошибка загрузки карточки гостя:', error);
-            alert('Ошибка загрузки');
-        }
-    };
+    async function loadDeparturesData() {
+        const today = new Date().toISOString().split('T')[0];
+        const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+        const { data } = await supabase.from('bookings').select('*, rooms(name), users(Display_name)').eq('status', 'подтверждено').in('check_out_date', [today, tomorrow]).order('check_out_date');
+        return data || [];
+    }
 
-    // ================================================================
-    // ===== КОМНАТЫ (с кэшем и редактированием) =====
-    async function loadRooms() {
-        if (isCacheValid() && cache.rooms) {
-            renderRooms(cache.rooms);
-            return;
-        }
-        try {
-            const { data, error } = await supabase.from('rooms').select('*').order('name');
-            if (error) throw error;
-            cache.rooms = data || [];
-            cache.timestamp = Date.now();
-            renderRooms(data);
-        } catch (error) {
-            console.error('Ошибка загрузки комнат:', error);
-            document.getElementById('roomsList').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
-        }
+    function renderDepartures(data) {
+        const container = document.getElementById('departures');
+        if (!data || data.length === 0) { container.innerHTML = '<div style="text-align:center; opacity:0.5;">Нет выезжающих</div>'; return; }
+        const today = new Date().toISOString().split('T')[0];
+        let html = '';
+        data.forEach(b => {
+            const guest = b.users?.Display_name || b.guest_name || 'Гость';
+            const room = b.rooms?.name || 'Комната';
+            const date = b.check_out_date === today ? 'сегодня' : 'завтра';
+            html += `<div class="list-item"><div class="info"><div class="name">${guest} — ${room}</div><div class="detail">выезд ${date}</div></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    // ===== ГОСТИ И КОМНАТЫ (рендеринг) =====
+    function renderGuests(guests) {
+        const container = document.getElementById('guestList');
+        if (!guests || guests.length === 0) { container.innerHTML = '<div style="text-align:center; opacity:0.4;">Гостей пока нет</div>'; return; }
+        let html = '';
+        guests.forEach(user => {
+            html += `<div class="list-item" onclick="showGuestCard('${user.user_id}')" style="cursor:pointer;">
+                <div class="info"><div class="name">${user.Display_name || 'Без имени'}</div><div class="detail">${user.Email || '—'} · Баланс: ${user.balance || 0} ₽</div></div>
+                <div class="actions"><button class="btn btn-secondary" onclick="event.stopPropagation(); showGuestCard('${user.user_id}')">👁️</button></div>
+            </div>`;
+        });
+        container.innerHTML = html;
     }
 
     function renderRooms(rooms) {
         const container = document.getElementById('roomsList');
-        if (!rooms || rooms.length === 0) {
-            container.innerHTML = '<div style="text-align:center; opacity:0.4;">Комнат пока нет</div>';
-            return;
-        }
+        if (!rooms || rooms.length === 0) { container.innerHTML = '<div style="text-align:center; opacity:0.4;">Комнат пока нет</div>'; return; }
         let html = '';
         rooms.forEach(room => {
             html += `<div class="list-item">
-                <div class="info">
-                    <div class="name">${room.name}</div>
-                    <div class="detail">${room.price_per_night} ₽/ночь · ${room.capacity} чел</div>
-                </div>
-                <div class="actions">
-                    <button class="btn btn-secondary" onclick="openEditRoomModal('${room.id}')">✏️</button>
-                </div>
+                <div class="info"><div class="name">${room.name}</div><div class="detail">${room.price_per_night} ₽/ночь · ${room.capacity} чел</div></div>
+                <div class="actions"><button class="btn btn-secondary" onclick="openEditRoomModal('${room.id}')">✏️</button></div>
             </div>`;
         });
         container.innerHTML = html;
-        // Обновляем селекты в форме аренды
-        populateRoomSelect(rooms);
+    }
+
+    function populateUserSelect(users) {
+        const select = document.getElementById('bookingUserId');
+        select.innerHTML = '<option value="">Выберите гостя...</option>';
+        if (users) {
+            users.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.user_id;
+                option.textContent = `${user.Display_name || user.Email || user.user_id}`;
+                select.appendChild(option);
+            });
+        }
     }
 
     function populateRoomSelect(rooms) {
@@ -548,124 +528,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ===== РЕДАКТИРОВАНИЕ КОМНАТ =====
-    window.openEditRoomModal = async function(roomId) {
-        try {
-            const { data: room, error } = await supabase
-                .from('rooms')
-                .select('*')
-                .eq('id', roomId)
-                .single();
-            if (error) throw error;
-            document.getElementById('editRoomId').value = room.id;
-            document.getElementById('editRoomName').value = room.name;
-            document.getElementById('editRoomDescription').value = room.description || '';
-            document.getElementById('editRoomPrice').value = room.price_per_night;
-            document.getElementById('editRoomCapacity').value = room.capacity;
-            document.getElementById('editRoomImage').value = room.image_url || '';
-            document.getElementById('editRoomModal').classList.add('show');
-            document.getElementById('editRoomMessage').style.display = 'none';
-        } catch (error) {
-            console.error('Ошибка загрузки комнаты:', error);
-            alert('Не удалось загрузить комнату');
-        }
-    };
-
-    document.getElementById('editRoomModalClose').addEventListener('click', function() {
-        document.getElementById('editRoomModal').classList.remove('show');
-    });
-    document.getElementById('editRoomModal').addEventListener('click', function(e) {
-        if (e.target === this) this.classList.remove('show');
-    });
-
-    document.getElementById('editRoomForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const id = document.getElementById('editRoomId').value;
-        const data = {
-            name: document.getElementById('editRoomName').value.trim(),
-            description: document.getElementById('editRoomDescription').value.trim(),
-            price_per_night: parseInt(document.getElementById('editRoomPrice').value),
-            capacity: parseInt(document.getElementById('editRoomCapacity').value),
-            image_url: document.getElementById('editRoomImage').value.trim() || null
-        };
-        const msg = document.getElementById('editRoomMessage');
-        if (!data.name || !data.price_per_night || !data.capacity) {
-            msg.textContent = 'Заполните все обязательные поля';
-            msg.style.display = 'block';
-            return;
-        }
-        try {
-            const { error } = await supabase
-                .from('rooms')
-                .update(data)
-                .eq('id', id);
-            if (error) throw error;
-            document.getElementById('editRoomModal').classList.remove('show');
-            cache.rooms = null; // сброс кэша
-            await loadRooms();
-            alert('✅ Комната обновлена');
-        } catch (error) {
-            console.error('Ошибка обновления:', error);
-            msg.textContent = 'Ошибка: ' + error.message;
-            msg.style.display = 'block';
-        }
-    });
-
-    // ================================================================
-    // ===== БРОНИРОВАНИЯ (с быстрыми действиями, поиском, фильтрами) =====
+    // ===== БРОНИРОВАНИЯ =====
     let allBookingsData = [];
-
-    async function loadBookings(filterStatus) {
-        try {
-            let query = supabase
-                .from('bookings')
-                .select('*, rooms(name), users(Display_name, Email, Phone)')
-                .order('created_at', { ascending: false });
-
-            if (filterStatus && filterStatus !== 'all') {
-                query = query.eq('status', filterStatus);
-            }
-
-            const { data, error } = await query;
-            if (error) throw error;
-            allBookingsData = data || [];
-            applyFilters();
-        } catch (error) {
-            console.error('Ошибка загрузки бронирований:', error);
-            document.getElementById('bookingsList').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
-        }
-    }
 
     function applyFilters() {
         const search = document.getElementById('bookingSearch').value.toLowerCase().trim();
         const status = document.getElementById('filterBookingStatus').value;
         let filtered = allBookingsData;
-
-        if (status !== 'all') {
-            filtered = filtered.filter(b => b.status === status);
-        }
-
+        if (status !== 'all') filtered = filtered.filter(b => b.status === status);
         if (search) {
             filtered = filtered.filter(b => {
                 const guest = b.users?.Display_name || b.guest_name || '';
                 const phone = b.users?.Phone || b.guest_phone || '';
                 const room = b.rooms?.name || '';
-                return guest.toLowerCase().includes(search) ||
-                       phone.includes(search) ||
-                       room.toLowerCase().includes(search);
+                return guest.toLowerCase().includes(search) || phone.includes(search) || room.toLowerCase().includes(search);
             });
         }
-
         renderBookings(filtered);
     }
 
     function renderBookings(bookings) {
         const container = document.getElementById('bookingsList');
-        if (!bookings || bookings.length === 0) {
-            container.innerHTML = '<div style="text-align:center; opacity:0.4;">Бронирований пока нет</div>';
-            return;
-        }
-
+        if (!bookings || bookings.length === 0) { container.innerHTML = '<div style="text-align:center; opacity:0.4;">Бронирований пока нет</div>'; return; }
         let html = '';
         bookings.forEach(b => {
             const guest = b.users?.Display_name || b.guest_name || 'Гость';
@@ -686,94 +570,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const debtBadge = hasDebt ? `<span class="debt-badge">⚠️ Долг ${debt} ₽</span>` : '';
 
-            html += `
-                <div class="list-item ${hasDebt ? 'debt' : ''}">
-                    <div class="info">
-                        <div class="name">${guest} — ${room} ${debtBadge}</div>
-                        <div class="detail">${b.check_in_date} → ${b.check_out_date} · Статус: <strong style="color:${statusColor}">${status}</strong></div>
-                        <div class="detail">Сумма: ${total} ₽ · Оплачено: ${paid} ₽</div>
-                    </div>
-                    <div class="actions">${actionsHtml}</div>
-                </div>
-            `;
+            html += `<div class="list-item ${hasDebt ? 'debt' : ''}">
+                <div class="info"><div class="name">${guest} — ${room} ${debtBadge}</div>
+                <div class="detail">${b.check_in_date} → ${b.check_out_date} · Статус: <strong style="color:${statusColor}">${status}</strong></div>
+                <div class="detail">Сумма: ${total} ₽ · Оплачено: ${paid} ₽</div></div>
+                <div class="actions">${actionsHtml}</div>
+            </div>`;
         });
         container.innerHTML = html;
     }
 
-    // Быстрое обновление статуса
     window.quickUpdateBooking = async function(bookingId, newStatus) {
         if (!confirm(`Изменить статус на «${newStatus}»?`)) return;
         try {
-            const { error } = await supabase
-                .from('bookings')
-                .update({ status: newStatus })
-                .eq('id', bookingId);
-            if (error) throw error;
-            // Перезагружаем список с текущим фильтром
-            const status = document.getElementById('filterBookingStatus').value;
-            await loadBookings(status);
-            await loadStats();
-            await loadRecentBookings();
-            await loadDepartures();
+            await supabase.from('bookings').update({ status: newStatus }).eq('id', bookingId);
+            await loadAllData(); // перезагружаем всё
         } catch (error) {
-            console.error('Ошибка обновления статуса:', error);
             alert('Ошибка: ' + error.message);
         }
     };
 
-    // Редактирование бронирования (заготовка)
     window.editBooking = function(bookingId) {
-        alert('Редактирование бронирования будет доступно в следующей версии. ID: ' + bookingId);
+        alert('Редактирование будет доступно позже. ID: ' + bookingId);
     };
 
     document.getElementById('applyBookingFilters').addEventListener('click', applyFilters);
     document.getElementById('bookingSearch').addEventListener('input', applyFilters);
 
-    // ================================================================
     // ===== НОВАЯ АРЕНДА =====
-    async function loadUsersAndRoomsForForm() {
-        // Используем кэш
-        if (isCacheValid()) {
-            populateUserSelect(cache.guests);
-            populateRoomSelect(cache.rooms);
-            return;
-        }
-        try {
-            const { data: users, error: userError } = await supabase
-                .from('users')
-                .select('user_id, Display_name, Email')
-                .order('Display_name');
-            if (!userError && users) {
-                cache.guests = users;
-                populateUserSelect(users);
-            }
-            const { data: rooms, error: roomsError } = await supabase
-                .from('rooms')
-                .select('id, name, price_per_night')
-                .order('name');
-            if (!roomsError && rooms) {
-                cache.rooms = rooms;
-                populateRoomSelect(rooms);
-            }
-            cache.timestamp = Date.now();
-        } catch (error) {
-            console.error('Ошибка загрузки данных для формы:', error);
-        }
-    }
-
-    function populateUserSelect(users) {
-        const select = document.getElementById('bookingUserId');
-        select.innerHTML = '<option value="">Выберите гостя...</option>';
-        if (users) {
-            users.forEach(user => {
-                const option = document.createElement('option');
-                option.value = user.user_id;
-                option.textContent = `${user.Display_name || user.Email || user.user_id}`;
-                select.appendChild(option);
-            });
-        }
-    }
-
     document.getElementById('newBookingForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const userId = document.getElementById('bookingUserId').value;
@@ -815,377 +639,188 @@ document.addEventListener('DOMContentLoaded', function() {
         else if (paymentStatus === 'в долг') { status = 'долг'; paidAmount = 0; }
 
         try {
-            const { data: user, error: userError } = await supabase
-                .from('users')
-                .select('Display_name, Email, Phone')
-                .eq('user_id', userId)
-                .single();
-            if (userError) throw userError;
+            const { data: user } = await supabase.from('users').select('Display_name, Email, Phone').eq('user_id', userId).single();
+            await supabase.from('bookings').insert({
+                user_id: userId,
+                room_id: roomId,
+                guest_name: user?.Display_name || 'Гость',
+                guest_phone: user?.Phone || '',
+                guest_email: user?.Email || '',
+                guest_count: guestCount,
+                check_in_date: checkIn,
+                check_out_date: checkOut,
+                total_amount: totalAmount,
+                paid_amount: paidAmount,
+                discount_amount: 0,
+                status: status,
+                payment_method: paymentStatus === 'оплачено' ? 'нал' : null
+            });
 
-            const { error: bookingError } = await supabase
-                .from('bookings')
-                .insert({
-                    user_id: userId,
-                    room_id: roomId,
-                    guest_name: user?.Display_name || 'Гость',
-                    guest_phone: user?.Phone || '',
-                    guest_email: user?.Email || '',
-                    guest_count: guestCount,
-                    check_in_date: checkIn,
-                    check_out_date: checkOut,
-                    total_amount: totalAmount,
-                    paid_amount: paidAmount,
-                    discount_amount: 0,
-                    status: status,
-                    payment_method: paymentStatus === 'оплачено' ? 'нал' : null
-                });
-
-            if (bookingError) throw bookingError;
-
-            success.textContent = `✅ Гость заселён! Стоимость: ${totalAmount} ₽`;
+            success.textContent = `✅ Заселён! Стоимость: ${totalAmount} ₽`;
             success.style.display = 'block';
             document.getElementById('newBookingForm').reset();
-
             setTimeout(async () => {
-                await loadBookings(document.getElementById('filterBookingStatus').value);
-                await loadRecentBookings();
-                await loadStats();
-                await loadDepartures();
-                await loadCalendarMatrix();
+                await loadAllData();
                 success.style.display = 'none';
             }, 1000);
-
         } catch (error) {
-            console.error('Ошибка создания аренды:', error);
+            console.error(error);
             msg.textContent = 'Ошибка: ' + error.message;
             msg.style.display = 'block';
         }
     });
 
-    // ================================================================
-    // ===== СТАТИСТИКА =====
-    async function loadStats() {
-        try {
-            const { count: usersCount } = await supabase.from('users').select('*', { count: 'exact', head: true });
-            const { count: roomsCount } = await supabase.from('rooms').select('*', { count: 'exact', head: true });
-            const { count: activeCount } = await supabase
-                .from('bookings')
-                .select('*', { count: 'exact', head: true })
-                .eq('status', 'подтверждено');
-
-            // Общий долг
-            const { data: debtData } = await supabase
-                .from('bookings')
-                .select('total_amount, paid_amount, discount_amount')
-                .eq('status', 'долг');
-            let totalDebt = 0;
-            if (debtData) {
-                debtData.forEach(b => {
-                    totalDebt += (b.total_amount || 0) - (b.paid_amount || 0) - (b.discount_amount || 0);
-                });
-            }
-
-            document.getElementById('totalUsers').textContent = usersCount || 0;
-            document.getElementById('totalRooms').textContent = roomsCount || 0;
-            document.getElementById('totalActive').textContent = activeCount || 0;
-            document.getElementById('totalDebt').textContent = totalDebt + ' ₽';
-        } catch (error) {
-            console.error('Ошибка статистики:', error);
-        }
-    }
-
-    // ================================================================
-    // ===== ПОСЛЕДНИЕ БРОНИРОВАНИЯ =====
-    async function loadRecentBookings() {
-        try {
-            const { data, error } = await supabase
-                .from('bookings')
-                .select('*, rooms(name), users(Display_name)')
-                .order('created_at', { ascending: false })
-                .limit(5);
-            if (error) throw error;
-            const container = document.getElementById('recentBookings');
-            if (!data || data.length === 0) {
-                container.innerHTML = '<div style="text-align:center; opacity:0.4;">Нет бронирований</div>';
-                return;
-            }
-            let html = '';
-            data.forEach(b => {
-                const guest = b.users?.Display_name || b.guest_name || 'Гость';
-                const room = b.rooms?.name || 'Комната';
-                html += `
-                    <div class="list-item">
-                        <div class="info">
-                            <div class="name">${guest} — ${room}</div>
-                            <div class="detail">${b.check_in_date} → ${b.check_out_date}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        } catch (error) {
-            console.error('Ошибка загрузки последних бронирований:', error);
-            document.getElementById('recentBookings').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
-        }
-    }
-
-    // ================================================================
-    // ===== ВЫЕЗЖАЮТ СЕГОДНЯ / ЗАВТРА =====
-    async function loadDepartures() {
-        try {
-            const today = new Date().toISOString().split('T')[0];
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const tomorrowStr = tomorrow.toISOString().split('T')[0];
-
-            const { data, error } = await supabase
-                .from('bookings')
-                .select('*, rooms(name), users(Display_name)')
-                .eq('status', 'подтверждено')
-                .in('check_out_date', [today, tomorrowStr])
-                .order('check_out_date', { ascending: true });
-
-            if (error) throw error;
-            const container = document.getElementById('departures');
-            if (!data || data.length === 0) {
-                container.innerHTML = '<div style="text-align:center; opacity:0.5;">Нет выезжающих</div>';
-                return;
-            }
-            let html = '';
-            data.forEach(b => {
-                const guest = b.users?.Display_name || b.guest_name || 'Гость';
-                const room = b.rooms?.name || 'Комната';
-                const date = b.check_out_date === today ? 'сегодня' : 'завтра';
-                html += `
-                    <div class="list-item">
-                        <div class="info">
-                            <div class="name">${guest} — ${room}</div>
-                            <div class="detail">выезд ${date}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        } catch (error) {
-            console.error('Ошибка загрузки выезжающих:', error);
-            document.getElementById('departures').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
-        }
-    }
-
-    // ================================================================
-    // ===== КАЛЕНДАРЬ (МАТРИЦА) =====
+    // ===== КАЛЕНДАРЬ =====
     let calendarDate = new Date();
     let currentRoomFilter = 'all';
-    let allRoomsForCalendar = [];
-    let allBookingsForCalendar = [];
 
-    async function loadCalendarMatrix() {
-        try {
-            const year = calendarDate.getFullYear();
-            const month = calendarDate.getMonth();
-            const today = new Date();
-
-            document.getElementById('calendarMonthYear').textContent = 
-                new Date(year, month).toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' });
-
-            const { data: rooms, error: roomsError } = await supabase
-                .from('rooms')
-                .select('id, name, capacity')
-                .order('name');
-            if (roomsError) throw roomsError;
-            allRoomsForCalendar = rooms || [];
-
-            const startDate = new Date(year, month, 1).toISOString().split('T')[0];
-            const endDate = new Date(year, month + 1, 0).toISOString().split('T')[0];
-
-            const { data: bookings, error: bookingsError } = await supabase
-                .from('bookings')
-                .select('*, rooms(name), users(Display_name)')
-                .neq('status', 'отменена')
-                .gte('check_in_date', startDate)
-                .lte('check_out_date', endDate);
-
-            if (bookingsError) throw bookingsError;
-            allBookingsForCalendar = bookings || [];
-
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const days = [];
-            for (let d = 1; d <= daysInMonth; d++) {
-                const dateObj = new Date(year, month, d);
-                days.push({
-                    date: d,
-                    dayOfWeek: dateObj.getDay(),
-                    iso: dateObj.toISOString().split('T')[0],
-                    isToday: (d === today.getDate() && month === today.getMonth() && year === today.getFullYear())
-                });
-            }
-
-            const matrixContainer = document.getElementById('calendarMatrix');
-            const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-
-            const filteredRooms = currentRoomFilter === 'all' 
-                ? allRoomsForCalendar 
-                : allRoomsForCalendar.filter(r => r.id === currentRoomFilter);
-
-            let gridHtml = '';
-            gridHtml += `<div class="matrix-header" style="grid-column: 1 / 2;">Комната / Дата</div>`;
-            days.forEach(day => {
-                const isWeekend = (day.dayOfWeek === 0 || day.dayOfWeek === 6);
-                gridHtml += `<div class="matrix-header" style="grid-column: span 1; ${isWeekend ? 'color: #ff6b6b;' : ''}">
-                    <div>${day.date}</div>
-                    <div style="font-size:0.6rem; opacity:0.5;">${dayNames[day.dayOfWeek === 0 ? 6 : day.dayOfWeek - 1]}</div>
-                </div>`;
-            });
-
-            filteredRooms.forEach(room => {
-                gridHtml += `<div class="matrix-header matrix-header-room" style="grid-column: 1 / 2; position: sticky; left: 0;">
-                    ${room.name}
-                </div>`;
-
-                days.forEach(day => {
-                    const bookingsForDay = allBookingsForCalendar.filter(b => {
-                        if (b.room_id !== room.id) return false;
-                        const checkIn = new Date(b.check_in_date);
-                        const checkOut = new Date(b.check_out_date);
-                        const current = new Date(day.iso);
-                        return current >= checkIn && current <= checkOut;
-                    });
-
-                    let statusClass = 'free';
-                    let tooltip = '';
-
-                    if (bookingsForDay.length > 0) {
-                        const totalSpots = room.capacity || 1;
-                        const occupiedSpots = bookingsForDay.reduce((sum, b) => sum + (b.guest_count || 1), 0);
-                        if (occupiedSpots >= totalSpots) {
-                            statusClass = 'occupied';
-                        } else {
-                            statusClass = 'partial';
-                        }
-                        const guestNames = bookingsForDay.map(b => b.users?.Display_name || b.guest_name || 'Гость').join(', ');
-                        tooltip = `Занято: ${guestNames}`;
-                    }
-
-                    const isToday = day.isToday ? ' style="border:2px solid #d4af37;"' : '';
-
-                    gridHtml += `<div class="matrix-cell" data-room-id="${room.id}" data-date="${day.iso}" data-status="${statusClass}" title="${tooltip}"${isToday}>
-                        <span class="status-dot ${statusClass}"></span>
-                    </div>`;
-                });
-            });
-
-            matrixContainer.innerHTML = gridHtml;
-
-            matrixContainer.querySelectorAll('.matrix-cell').forEach(cell => {
-                cell.addEventListener('click', function() {
-                    const roomId = this.dataset.roomId;
-                    const date = this.dataset.date;
-                    showBookingDetails(roomId, date);
-                });
-            });
-
-            updateRoomFilters();
-
-        } catch (error) {
-            console.error('Ошибка загрузки матрицы:', error);
-            document.getElementById('calendarMatrix').innerHTML = '<div style="color:#ff6b6b; padding:1rem;">Ошибка загрузки</div>';
-        }
+    async function loadCalendarData(date) {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const startDate = new Date(year, month, 1).toISOString().split('T')[0];
+        const endDate = new Date(year, month + 1, 0).toISOString().split('T')[0];
+        const { data: rooms } = await supabase.from('rooms').select('id, name, capacity').order('name');
+        const { data: bookings } = await supabase.from('bookings')
+            .select('*, rooms(name), users(Display_name)')
+            .neq('status', 'отменена')
+            .gte('check_in_date', startDate)
+            .lte('check_out_date', endDate);
+        return { rooms: rooms || [], bookings: bookings || [], year, month };
     }
 
-    function updateRoomFilters() {
-        const container = document.getElementById('roomFilterContainer');
-        container.innerHTML = '<button class="btn-filter active" data-room="all">Все</button>';
-        allRoomsForCalendar.forEach(room => {
+    function renderCalendar(calData) {
+        const { rooms, bookings, year, month } = calData;
+        const today = new Date();
+        const container = document.getElementById('calendarMatrix');
+        if (!rooms || rooms.length === 0) {
+            container.innerHTML = '<div style="text-align:center; opacity:0.4;">Нет комнат</div>';
+            return;
+        }
+
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const days = [];
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateObj = new Date(year, month, d);
+            days.push({
+                date: d,
+                dayOfWeek: dateObj.getDay(),
+                iso: dateObj.toISOString().split('T')[0],
+                isToday: (d === today.getDate() && month === today.getMonth() && year === today.getFullYear())
+            });
+        }
+
+        const filteredRooms = currentRoomFilter === 'all' ? rooms : rooms.filter(r => r.id === currentRoomFilter);
+        const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+        let gridHtml = '';
+        gridHtml += `<div class="matrix-header" style="grid-column: 1 / 2;">Комната / Дата</div>`;
+        days.forEach(day => {
+            const isWeekend = (day.dayOfWeek === 0 || day.dayOfWeek === 6);
+            gridHtml += `<div class="matrix-header" style="grid-column: span 1; ${isWeekend ? 'color: #ff6b6b;' : ''}">
+                <div>${day.date}</div><div style="font-size:0.6rem; opacity:0.5;">${dayNames[day.dayOfWeek === 0 ? 6 : day.dayOfWeek - 1]}</div>
+            </div>`;
+        });
+
+        filteredRooms.forEach(room => {
+            gridHtml += `<div class="matrix-header matrix-header-room" style="grid-column: 1 / 2; position: sticky; left: 0;">${room.name}</div>`;
+            days.forEach(day => {
+                const bookingsForDay = bookings.filter(b => {
+                    if (b.room_id !== room.id) return false;
+                    const checkIn = new Date(b.check_in_date);
+                    const checkOut = new Date(b.check_out_date);
+                    const current = new Date(day.iso);
+                    return current >= checkIn && current <= checkOut;
+                });
+                let statusClass = 'free';
+                let tooltip = '';
+                if (bookingsForDay.length > 0) {
+                    const totalSpots = room.capacity || 1;
+                    const occupiedSpots = bookingsForDay.reduce((sum, b) => sum + (b.guest_count || 1), 0);
+                    statusClass = occupiedSpots >= totalSpots ? 'occupied' : 'partial';
+                    const names = bookingsForDay.map(b => b.users?.Display_name || b.guest_name || 'Гость').join(', ');
+                    tooltip = `Занято: ${names}`;
+                }
+                const isToday = day.isToday ? ' style="border:2px solid #d4af37;"' : '';
+                gridHtml += `<div class="matrix-cell" data-room-id="${room.id}" data-date="${day.iso}" title="${tooltip}"${isToday}>
+                    <span class="status-dot ${statusClass}"></span>
+                </div>`;
+            });
+        });
+
+        container.innerHTML = gridHtml;
+
+        // Обработчики кликов
+        container.querySelectorAll('.matrix-cell').forEach(cell => {
+            cell.addEventListener('click', function() {
+                const roomId = this.dataset.roomId;
+                const date = this.dataset.date;
+                const bookingsForDay = bookings.filter(b => {
+                    if (b.room_id !== roomId) return false;
+                    const checkIn = new Date(b.check_in_date);
+                    const checkOut = new Date(b.check_out_date);
+                    const current = new Date(date);
+                    return current >= checkIn && current <= checkOut;
+                });
+                showBookingDetailsModal(bookingsForDay, date);
+            });
+        });
+
+        // Обновляем фильтры
+        const filterContainer = document.getElementById('roomFilterContainer');
+        filterContainer.innerHTML = '<button class="btn-filter active" data-room="all">Все</button>';
+        rooms.forEach(room => {
             const btn = document.createElement('button');
             btn.className = 'btn-filter';
             btn.dataset.room = room.id;
             btn.textContent = room.name;
             if (currentRoomFilter === room.id) btn.classList.add('active');
-            container.appendChild(btn);
+            filterContainer.appendChild(btn);
         });
-
-        container.querySelectorAll('.btn-filter').forEach(btn => {
+        filterContainer.querySelectorAll('.btn-filter').forEach(btn => {
             btn.addEventListener('click', function() {
-                container.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+                filterContainer.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 currentRoomFilter = this.dataset.room;
-                loadCalendarMatrix();
+                loadCalendarData(calendarDate).then(renderCalendar);
             });
         });
+    }
+
+    function showBookingDetailsModal(bookings, date) {
+        const modalBody = document.getElementById('detailModalBody');
+        if (!bookings || bookings.length === 0) {
+            modalBody.innerHTML = '<div style="text-align:center; opacity:0.6;">Нет бронирований</div>';
+        } else {
+            let html = `<div style="margin-bottom:0.5rem;"><strong style="color:#d4af37;">Дата:</strong> ${date}</div>`;
+            bookings.forEach(b => {
+                const guest = b.users?.Display_name || b.guest_name || 'Гость';
+                const roomName = b.rooms?.name || 'Комната';
+                html += `<div class="modal-booking-detail"><div class="guest">${guest}</div><div class="dates">${b.check_in_date} → ${b.check_out_date} · ${roomName}</div><div style="font-size:0.8rem; opacity:0.6;">Гостей: ${b.guest_count || 1} · Сумма: ${b.total_amount || 0} ₽</div></div>`;
+            });
+            modalBody.innerHTML = html;
+        }
+        document.getElementById('detailModal').classList.add('show');
     }
 
     document.getElementById('calendarPrev').addEventListener('click', function() {
         calendarDate.setMonth(calendarDate.getMonth() - 1);
-        loadCalendarMatrix();
+        loadCalendarData(calendarDate).then(renderCalendar);
     });
     document.getElementById('calendarNext').addEventListener('click', function() {
         calendarDate.setMonth(calendarDate.getMonth() + 1);
-        loadCalendarMatrix();
+        loadCalendarData(calendarDate).then(renderCalendar);
     });
 
-    // ================================================================
-    // ===== МОДАЛЬНОЕ ОКНО ДЕТАЛЕЙ =====
-    const detailModal = document.getElementById('detailModal');
-    const detailModalClose = document.getElementById('detailModalClose');
-    const detailModalBody = document.getElementById('detailModalBody');
-
-    async function showBookingDetails(roomId, date) {
-        try {
-            const bookings = allBookingsForCalendar.filter(b => {
-                if (b.room_id !== roomId) return false;
-                const checkIn = new Date(b.check_in_date);
-                const checkOut = new Date(b.check_out_date);
-                const current = new Date(date);
-                return current >= checkIn && current <= checkOut;
-            });
-
-            if (bookings.length === 0) {
-                detailModalBody.innerHTML = '<div style="text-align:center; opacity:0.6;">Нет бронирований на эту дату</div>';
-            } else {
-                let html = `<div style="margin-bottom:0.5rem;"><strong style="color:#d4af37;">Дата:</strong> ${date}</div>`;
-                bookings.forEach(b => {
-                    const guest = b.users?.Display_name || b.guest_name || 'Гость';
-                    const roomName = b.rooms?.name || 'Комната';
-                    html += `
-                        <div class="modal-booking-detail">
-                            <div class="guest">${guest}</div>
-                            <div class="dates">${b.check_in_date} → ${b.check_out_date} · ${roomName}</div>
-                            <div style="font-size:0.8rem; opacity:0.6;">Гостей: ${b.guest_count || 1} · Сумма: ${b.total_amount || 0} ₽</div>
-                        </div>
-                    `;
-                });
-                detailModalBody.innerHTML = html;
-            }
-            detailModal.classList.add('show');
-        } catch (error) {
-            console.error('Ошибка загрузки деталей:', error);
-            detailModalBody.innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
-        }
-    }
-
-    detailModalClose.addEventListener('click', function() {
-        detailModal.classList.remove('show');
-    });
-    detailModal.addEventListener('click', function(e) {
-        if (e.target === this) detailModal.classList.remove('show');
-    });
-
-    // ================================================================
-    // ===== ФИНАНСЫ (с графиком и экспортом CSV) =====
+    // ===== ФИНАНСЫ =====
     let revenueChart = null;
 
     async function loadFinance(fromDate, toDate) {
         try {
-            let query = supabase
+            const { data } = await supabase
                 .from('bookings')
                 .select('paid_amount, payment_method, total_amount, discount_amount, status, guest_name, users(Display_name), rooms(name), created_at, check_in_date, check_out_date')
-                .neq('status', 'отменена');
-
-            if (fromDate) query = query.gte('created_at', fromDate);
-            if (toDate) query = query.lte('created_at', toDate + 'T23:59:59');
-
-            const { data, error } = await query;
-            if (error) throw error;
+                .neq('status', 'отменена')
+                .gte('created_at', fromDate)
+                .lte('created_at', toDate + 'T23:59:59');
 
             let totalRevenue = 0, cashRevenue = 0, nonCashRevenue = 0, debtTotal = 0;
             if (data) {
@@ -1203,7 +838,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('financeNonCashRevenue').textContent = nonCashRevenue + ' ₽';
             document.getElementById('financeDebtTotal').textContent = debtTotal + ' ₽';
 
-            // График (группировка по дням)
+            // График
             const dailyData = {};
             if (data) {
                 data.forEach(b => {
@@ -1211,113 +846,128 @@ document.addEventListener('DOMContentLoaded', function() {
                     dailyData[date] = (dailyData[date] || 0) + (b.paid_amount || 0);
                 });
             }
-            const sortedDates = Object.keys(dailyData).sort();
-            const labels = sortedDates.map(d => d.slice(5)); // MM-DD
-            const values = sortedDates.map(d => dailyData[d]);
+            const sorted = Object.keys(dailyData).sort();
+            const labels = sorted.map(d => d.slice(5));
+            const values = sorted.map(d => dailyData[d]);
 
-            if (revenueChart) {
-                revenueChart.destroy();
-            }
+            if (revenueChart) revenueChart.destroy();
             const ctx = document.getElementById('revenueChart').getContext('2d');
             revenueChart = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Доход (₽)',
-                        data: values,
-                        backgroundColor: 'rgba(212,175,55,0.6)',
-                        borderColor: '#d4af37',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#eae6f0' } }
-                    },
-                    scales: {
-                        x: { ticks: { color: '#b8a9d4' } },
-                        y: { ticks: { color: '#b8a9d4' }, beginAtZero: true }
-                    }
-                }
+                data: { labels, datasets: [{ label: 'Доход (₽)', data: values, backgroundColor: 'rgba(212,175,55,0.6)', borderColor: '#d4af37', borderWidth: 1 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#eae6f0' } } }, scales: { x: { ticks: { color: '#b8a9d4' } }, y: { ticks: { color: '#b8a9d4' }, beginAtZero: true } } }
             });
 
-            // Список аренд
+            // Список
             const container = document.getElementById('financeDetails');
             if (!data || data.length === 0) {
-                container.innerHTML = '<div style="text-align:center; opacity:0.4;">Нет данных за период</div>';
+                container.innerHTML = '<div style="text-align:center; opacity:0.4;">Нет данных</div>';
                 return;
             }
             const limited = data.slice(0, 20);
-            let html = '<div style="margin-top:0.5rem;"><strong>Последние аренды за период:</strong></div>';
+            let html = '<div style="margin-top:0.5rem;"><strong>Последние аренды:</strong></div>';
             limited.forEach(b => {
                 const guest = b.users?.Display_name || b.guest_name || 'Гость';
                 const room = b.rooms?.name || 'Комната';
                 const paid = b.paid_amount || 0;
                 const total = b.total_amount || 0;
                 const method = b.payment_method || '—';
-                html += `
-                    <div class="list-item">
-                        <div class="info">
-                            <div class="name">${guest} — ${room}</div>
-                            <div class="detail">Оплачено: ${paid} ₽ · Итого: ${total} ₽ · Метод: ${method}</div>
-                        </div>
-                    </div>
-                `;
+                html += `<div class="list-item"><div class="info"><div class="name">${guest} — ${room}</div><div class="detail">Оплачено: ${paid} ₽ · Итого: ${total} ₽ · Метод: ${method}</div></div></div>`;
             });
             container.innerHTML = html;
-
-            // Сохраняем данные для экспорта
             window.exportData = data;
-
         } catch (error) {
-            console.error('Ошибка загрузки финансов:', error);
-            document.getElementById('financeDetails').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
+            console.error(error);
+            document.getElementById('financeDetails').innerHTML = '<div style="color:#ff6b6b;">Ошибка</div>';
         }
     }
-
-    // Экспорт CSV
-    document.getElementById('exportCsvBtn').addEventListener('click', function() {
-        const data = window.exportData;
-        if (!data || data.length === 0) {
-            alert('Нет данных для экспорта');
-            return;
-        }
-        let csv = 'Гость,Комната,Дата заезда,Дата выезда,Сумма,Оплачено,Метод,Статус\n';
-        data.forEach(b => {
-            const guest = b.users?.Display_name || b.guest_name || 'Гость';
-            const room = b.rooms?.name || 'Комната';
-            const total = b.total_amount || 0;
-            const paid = b.paid_amount || 0;
-            const method = b.payment_method || '—';
-            const status = b.status || '—';
-            csv += `"${guest}","${room}","${b.check_in_date || ''}","${b.check_out_date || ''}",${total},${paid},"${method}","${status}"\n`;
-        });
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `finance_report_${new Date().toISOString().slice(0,10)}.csv`;
-        link.click();
-    });
 
     document.getElementById('financeFilterBtn').addEventListener('click', function() {
         const from = document.getElementById('financeDateFrom').value;
         const to = document.getElementById('financeDateTo').value;
-        if (from && to) {
-            loadFinance(from, to);
-        } else {
-            alert('Выберите обе даты');
+        if (from && to) loadFinance(from, to);
+        else alert('Выберите даты');
+    });
+
+    document.getElementById('exportCsvBtn').addEventListener('click', function() {
+        const data = window.exportData;
+        if (!data || data.length === 0) { alert('Нет данных'); return; }
+        let csv = 'Гость,Комната,Дата заезда,Дата выезда,Сумма,Оплачено,Метод,Статус\n';
+        data.forEach(b => {
+            const guest = b.users?.Display_name || b.guest_name || 'Гость';
+            const room = b.rooms?.name || 'Комната';
+            csv += `"${guest}","${room}","${b.check_in_date||''}","${b.check_out_date||''}",${b.total_amount||0},${b.paid_amount||0},"${b.payment_method||'—'}","${b.status||''}"\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `finance_${new Date().toISOString().slice(0,10)}.csv`;
+        link.click();
+    });
+
+    // ===== МОДАЛЬНЫЕ ОКНА =====
+    document.getElementById('detailModalClose').addEventListener('click', function() {
+        document.getElementById('detailModal').classList.remove('show');
+    });
+    document.getElementById('detailModal').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('show');
+    });
+
+    // ===== РЕДАКТИРОВАНИЕ КОМНАТ =====
+    window.openEditRoomModal = async function(roomId) {
+        try {
+            const { data: room } = await supabase.from('rooms').select('*').eq('id', roomId).single();
+            document.getElementById('editRoomId').value = room.id;
+            document.getElementById('editRoomName').value = room.name;
+            document.getElementById('editRoomDescription').value = room.description || '';
+            document.getElementById('editRoomPrice').value = room.price_per_night;
+            document.getElementById('editRoomCapacity').value = room.capacity;
+            document.getElementById('editRoomImage').value = room.image_url || '';
+            document.getElementById('editRoomModal').classList.add('show');
+            document.getElementById('editRoomMessage').style.display = 'none';
+        } catch (error) {
+            alert('Ошибка загрузки комнаты');
+        }
+    };
+
+    document.getElementById('editRoomModalClose').addEventListener('click', function() {
+        document.getElementById('editRoomModal').classList.remove('show');
+    });
+    document.getElementById('editRoomModal').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('show');
+    });
+
+    document.getElementById('editRoomForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const id = document.getElementById('editRoomId').value;
+        const data = {
+            name: document.getElementById('editRoomName').value.trim(),
+            description: document.getElementById('editRoomDescription').value.trim(),
+            price_per_night: parseInt(document.getElementById('editRoomPrice').value),
+            capacity: parseInt(document.getElementById('editRoomCapacity').value),
+            image_url: document.getElementById('editRoomImage').value.trim() || null
+        };
+        const msg = document.getElementById('editRoomMessage');
+        if (!data.name || !data.price_per_night || !data.capacity) {
+            msg.textContent = 'Заполните все поля';
+            msg.style.display = 'block';
+            return;
+        }
+        try {
+            await supabase.from('rooms').update(data).eq('id', id);
+            document.getElementById('editRoomModal').classList.remove('show');
+            setCache('rooms', null);
+            await loadAllData();
+            alert('✅ Обновлено');
+        } catch (error) {
+            msg.textContent = 'Ошибка: ' + error.message;
+            msg.style.display = 'block';
         }
     });
 
-    // ================================================================
     // ===== ВЫХОД =====
     document.getElementById('logoutBtn').addEventListener('click', function() {
-        if (confirm('Выйти из админ-панели?')) {
-            supabase.auth.signOut().then(() => { window.location.href = 'index.html'; });
-        }
+        if (confirm('Выйти?')) supabase.auth.signOut().then(() => window.location.href = 'index.html');
     });
 
 });
