@@ -38,7 +38,9 @@
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
+        /* ===== БАЗОВЫЕ СТИЛИ ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -86,6 +88,7 @@
         }
         .container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; position: relative; z-index: 1; }
 
+        /* ===== ВЕРХНЯЯ НАВИГАЦИЯ ===== */
         .top-nav {
             display: flex;
             justify-content: space-between;
@@ -143,6 +146,7 @@
             stroke-linejoin: round;
         }
 
+        /* ===== ШАПКА ===== */
         .header {
             position: relative;
             overflow: hidden;
@@ -182,7 +186,76 @@
 
         h2 { font-size: 1.6rem; color: #d4af37; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 6px; margin: 2rem 0 1rem; text-shadow: 0 0 20px rgba(212,175,55,0.05); }
 
-        .room-card, .sweet-item {
+        /* ===== ГОРИЗОНТАЛЬНАЯ КАРУСЕЛЬ КОМНАТ ===== */
+        .rooms-carousel {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 4px 2px 12px;
+            scrollbar-width: none;
+        }
+        .rooms-carousel::-webkit-scrollbar { display: none; }
+        .room-card {
+            flex: 0 0 85%;
+            max-width: 280px;
+            scroll-snap-align: start;
+            cursor: pointer;
+            transition: 0.3s;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            flex-shrink: 0;
+        }
+        .room-card:hover {
+            border-color: rgba(212,175,55,0.4);
+            transform: scale(1.01);
+        }
+        .room-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+        .room-card .content { padding: 1rem 1.2rem 1.2rem; }
+        .room-card .content h3 {
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        .room-card .content .badge {
+            background: rgba(212,175,55,0.12);
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 30px;
+            padding: 2px 14px;
+            font-size: 0.7rem;
+            color: #d4af37;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .room-card .content .price {
+            color: #d4af37;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 4px;
+            letter-spacing: 0.3px;
+        }
+        .room-card .content .price .popular {
+            background: rgba(212,175,55,0.15);
+            border-radius: 30px;
+            padding: 0 12px;
+            font-size: 0.8rem;
+            margin-left: 6px;
+            display: inline-block;
+            color: #d4af37;
+        }
+
+        /* ===== ОСТАЛЬНЫЕ БЛОКИ (сладости, события, баня, медитация) ===== */
+        .sweet-item {
             cursor: pointer;
             transition: 0.3s;
             background: rgba(255,255,255,0.03);
@@ -193,49 +266,22 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.4);
             margin-bottom: 1.2rem;
         }
-        .room-card:hover, .sweet-item:hover {
+        .sweet-item:hover {
             border-color: rgba(212,175,55,0.4);
             transform: scale(1.01);
         }
-        .room-card img, .sweet-item img {
+        .sweet-item img {
             width: 100%;
             height: 180px;
             object-fit: cover;
             display: block;
         }
-        .room-card .content, .sweet-item .content { padding: 1rem 1.2rem 1.2rem; }
-        .room-card h3, .sweet-item .name {
+        .sweet-item .content { padding: 1rem 1.2rem 1.2rem; }
+        .sweet-item .name {
             color: #eae6f0;
             margin-top: 0;
             font-size: 1.2rem;
         }
-        .badge {
-            background: rgba(212,175,55,0.12);
-            border: 1px solid rgba(212,175,55,0.15);
-            border-radius: 30px;
-            padding: 2px 14px;
-            font-size: 0.7rem;
-            color: #d4af37;
-            display: inline-block;
-            margin-right: 6px;
-        }
-        .price {
-            color: #d4af37;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-top: 4px;
-            letter-spacing: 0.3px;
-        }
-        .price .popular {
-            background: rgba(212,175,55,0.15);
-            border-radius: 30px;
-            padding: 0 12px;
-            font-size: 0.8rem;
-            margin-left: 6px;
-            display: inline-block;
-            color: #d4af37;
-        }
-        .sweet-item .price { font-size: 1rem; margin-top: 0; }
         .sweets-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -245,6 +291,7 @@
         .sweet-item { margin-bottom: 0; text-align: center; }
         .sweet-item img { height: 130px; }
         .sweet-item .name { font-weight: 500; font-size: 0.95rem; }
+        .sweet-item .price { color: #d4af37; font-weight: 700; font-size: 1rem; margin-top: 4px; }
 
         .events-carousel {
             display: flex;
@@ -441,6 +488,7 @@
 
         .footer { text-align: center; margin-top: 2.5rem; font-size: 0.9rem; color: rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.04); padding-top: 1.5rem; }
 
+        /* ===== МОДАЛЬНОЕ ОКНО С ГАЛЕРЕЕЙ ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -658,16 +706,6 @@
         }
         .map-text strong { color: #d4af37; }
 
-        .room-card.popular-glow {
-            border-color: rgba(212,175,55,0.6);
-            box-shadow: 0 0 40px rgba(212,175,55,0.15), 0 8px 32px rgba(0,0,0,0.4);
-            transition: 0.3s;
-        }
-        .room-card.popular-glow:hover {
-            border-color: rgba(212,175,55,0.8);
-            box-shadow: 0 0 60px rgba(212,175,55,0.2), 0 8px 32px rgba(0,0,0,0.4);
-        }
-
         .oil-tag {
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.06);
@@ -691,7 +729,7 @@
 
         @media (max-width: 480px) {
             .modal-window { padding: 20px 16px; }
-            .event-card { flex: 0 0 90%; }
+            .room-card, .event-card { flex: 0 0 90%; }
             .top-nav .nav-links { font-size: 0.55rem; gap: 6px; }
             .top-nav .nav-links a { padding: 2px 4px; }
             .top-nav .login-icon { padding: 2px 6px; }
@@ -735,7 +773,7 @@
     <!-- О НАС -->
     <section class="fade-section">
         <h2>✨ О нас</h2>
-        <div class="room-card" style="padding:1.2rem; cursor:default;">
+        <div class="room-card" style="padding:1.2rem; cursor:default; flex: none; max-width:100%;">
             <p>
                 Мы — команда единомышленников, стремящихся к здоровому образу жизни. 
                 <span class="about-toggle" id="aboutToggle">Читать далее →</span>
@@ -747,11 +785,11 @@
         </div>
     </section>
 
-    <!-- НОМЕРА (ДИНАМИЧЕСКАЯ ЗАГРУЗКА ИЗ SUPABASE) -->
-    <section class="fade-section" id="roomsSection">
+    <!-- ===== КАРУСЕЛЬ КОМНАТ (горизонтальная) ===== -->
+    <section class="fade-section">
         <h2>🚀 Наши номера</h2>
-        <div id="roomsContainer">
-            <div style="text-align:center; padding:2rem; opacity:0.6;">Загрузка номеров...</div>
+        <div class="rooms-carousel" id="roomsCarousel">
+            <!-- Карточки будут вставлены через JS (чтобы сохранить единообразие с модалками) -->
         </div>
     </section>
 
@@ -783,7 +821,6 @@
     <section class="fade-section">
         <h2>📅 События</h2>
         <div class="events-carousel" id="eventsCarousel">
-            <!-- Гонг-медитация -->
             <div class="event-card" data-id="event1">
                 <img src="images/gong-meditation.jpg" alt="Гонг-медитация">
                 <div class="content">
@@ -794,7 +831,6 @@
                     <span class="btn-detail">Подробнее →</span>
                 </div>
             </div>
-            <!-- Чайная церемония -->
             <div class="event-card" data-id="event2">
                 <img src="images/tea-ceremony.jpg" alt="Чайная церемония">
                 <div class="content">
@@ -902,7 +938,7 @@
         </div>
     </section>
 
-    <!-- ФОРМА БРОНИРОВАНИЯ -->
+    <!-- ФОРМА БРОНИРОВАНИЯ (Formspree + Supabase) -->
     <section class="fade-section">
         <h2>📅 Забронировать номер</h2>
         <div class="form-card" id="bookingAnchor">
@@ -910,7 +946,7 @@
             <form id="bookingForm" action="https://formspree.io/f/xpqgkzgo" method="POST">
                 <div class="field">
                     <label>Тип номера *</label>
-                    <select name="room_type" required>
+                    <select name="room_type" id="roomType" required>
                         <option value="">Выберите...</option>
                         <option value="family">Семейная комната</option>
                         <option value="balcony">Двухместный с балконом</option>
@@ -923,19 +959,19 @@
                 </div>
                 <div class="field">
                     <label>Дата заезда *</label>
-                    <input type="date" name="checkin" required>
+                    <input type="date" name="checkin" id="checkin" required>
                 </div>
                 <div class="field">
                     <label>Дата выезда *</label>
-                    <input type="date" name="checkout" required>
+                    <input type="date" name="checkout" id="checkout" required>
                 </div>
                 <div class="field">
                     <label>Количество взрослых *</label>
-                    <input type="number" name="adults" min="1" max="10" value="2" required>
+                    <input type="number" name="adults" id="adults" min="1" max="10" value="2" required>
                 </div>
                 <div class="field">
                     <label>Дети до 10 лет</label>
-                    <select name="children">
+                    <select name="children" id="children">
                         <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -944,19 +980,19 @@
                 </div>
                 <div class="field">
                     <label>Ваше имя *</label>
-                    <input type="text" name="name" placeholder="Иван Петров" required>
+                    <input type="text" name="name" id="guestName" placeholder="Иван Петров" required>
                 </div>
                 <div class="field">
                     <label>Телефон *</label>
-                    <input type="tel" name="phone" placeholder="+7 999 123-45-67" required>
+                    <input type="tel" name="phone" id="guestPhone" placeholder="+7 999 123-45-67" required>
                 </div>
                 <div class="field">
                     <label>Email</label>
-                    <input type="email" name="email" placeholder="ivan@mail.ru">
+                    <input type="email" name="email" id="guestEmail" placeholder="ivan@mail.ru">
                 </div>
                 <div class="field">
                     <label>Дополнительные пожелания</label>
-                    <textarea name="notes" placeholder="Кроватка, поздний заезд, вегетарианское питание, баня..."></textarea>
+                    <textarea name="notes" id="notes" placeholder="Кроватка, поздний заезд, вегетарианское питание, баня..."></textarea>
                 </div>
                 <div class="checkbox">
                     <input type="checkbox" name="consent" id="consent" value="yes" required>
@@ -964,14 +1000,14 @@
                 </div>
                 <div class="field">
                     <label>Откуда узнали о нас?</label>
-                    <select name="source">
+                    <select name="source" id="source">
                         <option value="vk">VK</option>
                         <option value="friends">От друзей</option>
                         <option value="maps">Яндекс.Карты</option>
                         <option value="other">Другое</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-submit">Отправить заявку</button>
+                <button type="submit" class="btn btn-submit" id="submitBooking">Отправить заявку</button>
                 <div class="small-note">Нажимая «Отправить», вы соглашаетесь на обработку данных</div>
             </form>
             <div id="successMessage" class="success">✅ Спасибо!<br>Мы свяжемся с вами в ближайшее время.</div>
@@ -1045,84 +1081,74 @@
 </audio>
 <div id="musicToggle">🔇</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
 <script>
-    const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // ===== ЗАГРУЗКА КОМНАТ ИЗ SUPABASE (С ПРЯМЫМИ ССЫЛКАМИ НА КАРТИНКИ) =====
-    async function loadRooms() {
-        const container = document.getElementById('roomsContainer');
-        try {
-            const { data, error } = await supabase.from('rooms').select('*').order('name');
-            if (error) throw error;
-            if (!data || data.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:2rem; opacity:0.6;">Комнат пока нет</div>';
-                return;
-            }
-            let html = '';
-            data.forEach(room => {
-                // Используем image_url из базы (например, "images/hostel_economy.jpg")
-                const imageUrl = room.image_url || 'images/placeholder.jpg';
-                html += `
-                    <div class="room-card" data-id="room_${room.id}">
-                        <img src="${imageUrl}" alt="${room.name}" onerror="this.src='images/placeholder.jpg'">
-                        <div class="content">
-                            <h3>${room.name}</h3>
-                            <div style="margin:4px 0;"><span class="badge">до ${room.capacity} чел</span></div>
-                            <div class="price">${room.price_per_night} ₽/сутки</div>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-
-            // Добавляем обработчики кликов для динамически созданных карточек
-            document.querySelectorAll('.room-card[data-id^="room_"]').forEach(el => {
-                el.addEventListener('click', function() {
-                    const roomId = this.dataset.id.replace('room_', '');
-                    openRoomModal(roomId);
-                });
-            });
-        } catch (error) {
-            console.error('Ошибка загрузки комнат:', error);
-            container.innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки комнат</div>';
-        }
-    }
-
-    // ===== ДАННЫЕ ДЛЯ МОДАЛЬНЫХ ОКОН (статичные) =====
+    // ===== ДАННЫЕ ДЛЯ МОДАЛЬНЫХ ОКОН =====
     const data = {
-        // Баня
-        service1: {
-            title: '🔥 Баня FreeDom',
-            badges: 'индивидуально · для проживающих',
-            price: '3000 ₽ / 2 часа (до 4 чел)',
-            description: 'Полная информация о бане:\n\n🔹 Индивидуально: 2 часа — 3000 ₽ (до 4 чел), каждый следующий час +1000 ₽, доп. гость +500 ₽. Дети до 10 лет бесплатно. Банщик — 800 ₽ за 10 мин (2 подхода по 5 мин).\n\n🎁 Бонус: при заказе от 3 часов — чайник с лечебными травами в подарок.\n\n🏠 Для проживающих: четверг и воскресенье — общая баня (небольшая плата).\n\n💳 Предоплата 1000 ₽. При отмене 500 ₽ невозвратные, при переносе — остаются на счёте.',
-            gallery: ['images/sauna.jpg'],
-            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу забронировать баню',
-            actionText: 'Забронировать баню в WhatsApp'
+        // --- Комнаты (7) ---
+        room1: {
+            title: '🏡 Семейная комната',
+            badges: 'до 4 чел · двуспальная + двухъярусная',
+            price: '2 500 ₽/сутки · 24 000 ₽/месяц',
+            description: 'Просторная комната для семьи или компании. В наличии: двуспальная кровать и двухъярусная кровать, стол, стулья, шкаф. Санузел на этаже. Рядом общая кухня и летняя кухня с видом на бассейн. Идеально для семейного отдыха.',
+            gallery: ['images/room-family.jpg', 'images/room-family-2.jpg'],
+            action: '#bookingAnchor',
+            actionText: 'Забронировать'
         },
-        // События
-        event1: {
-            title: '🔔 Гонг-медитация',
-            badges: 'релаксация · звукотерапия',
-            price: '1500 ₽ / сеанс (60 мин)',
-            description: 'Гонг-медитация — это древняя практика звукового исцеления. Под звуки гонга ваш мозг погружается в глубокое расслабление, снимаются мышечные зажимы, уходит тревога и стресс.\n\n🎶 Сеанс длится 60 минут. Вы лежите на коврике в тёплой, затемнённой комнате, а мастер проводит вас через волны звука.\n\n✨ Подходит для всех уровней подготовки. Рекомендуется надевать удобную одежду.\n\n📅 Проводится по предварительной записи. Ближайшая дата: 26 июля 2025, 19:00.',
-            gallery: ['images/gong-meditation.jpg'],
-            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу записаться на гонг-медитацию 26 июля',
-            actionText: 'Записаться на сеанс'
+        room2: {
+            title: '🌿 Двухместный с балконом',
+            badges: 'до 2 чел · балкон',
+            price: '3 000 ₽/сутки · 30 000 ₽/месяц',
+            description: 'Уютная комната с выходом на балкон. Двуспальная кровать, рабочий стол, стул, шкаф. Санузел на этаже. Балкон выходит в сад — идеальное место для утреннего чая или вечернего созерцания звёзд. Отличный выбор для пары или solo-путешественника.',
+            gallery: ['images/room-balcony.jpg', 'images/room-balcony-2.jpg', 'images/room-balcony-3.jpg'],
+            action: '#bookingAnchor',
+            actionText: 'Забронировать'
         },
-        event2: {
-            title: '🍵 Чайная церемония',
-            badges: 'традиции · душевность',
-            price: '1000 ₽ / перс. (в группе до 6 чел)',
-            description: 'Чайная церемония — это не просто чаепитие, а медитативный ритуал, объединяющий людей. Мы завариваем лучшие травяные сборы (ромашка, чабрец, мята, душица) по особым рецептам.\n\n🌿 Вас ждёт:\n— Знакомство с разными сортами трав\n— Медитативное заваривание в глиняной посуде\n— Медленное, осознанное чаепитие в кругу единомышленников\n— Обсуждение впечатлений, обмен энергией\n\n⏳ Длительность — около 1.5 часов. Проводится вечером в дни без бани. Ближайшая дата: 27 июля 2025, 18:00.',
-            gallery: ['images/tea-ceremony.jpg'],
-            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу записаться на чайную церемонию 27 июля',
-            actionText: 'Записаться на церемонию'
+        room3: {
+            title: '🏠 Мансардная комната',
+            badges: '1 место · уединение',
+            price: '1 500 ₽/сутки · 20 000 ₽/месяц',
+            description: 'Отдельное пространство на мансардном этаже с одноместной кроватью, столом, стулом и лампой. Окна с красивым видом, утром солнце заливает комнату. Для тех, кто ценит тишину, приватность и хочет побыть наедине с собой.',
+            gallery: ['images/room-attic.jpg', 'images/room-attic.jpg', 'images/room-attic.jpg'],
+            action: '#bookingAnchor',
+            actionText: 'Забронировать'
         },
-        // Сладости
+        room4: {
+            title: '🌴 Бунгало в саду',
+            badges: 'до 2 чел · с верандой',
+            price: '1 000 ₽/сутки · 15 000 ₽/месяц',
+            description: 'Отдельный домик на природе с двухместной кроватью. Непромакаемая сетка защищает от дождя и насекомых. Веранда с видом на сад и бассейн. Для тех, кто хочет побыть наедине с природой, не отказываясь от удобств.',
+            gallery: ['images/room-bungalow.jpg', 'images/room-bungalow-2.jpg', 'images/room-bungalow-3.jpg'],
+            action: '#bookingAnchor',
+            actionText: 'Забронировать'
+        },
+        room5: {
+            title: '⭐ Спальное место на балконе',
+            badges: 'летнее · звёзды',
+            price: '700 ₽/сутки · 12 000 ₽/месяц',
+            description: 'Уникальный вариант — спать под открытым небом на балконе. Мягкие матрасы, крыша защищает от дождя, а шикарный вид на звёзды не оставит равнодушным. Для мечтателей, романтиков и творческих душ.',
+            gallery: ['images/room-balcony-bed.jpg', 'images/room-balcony-bed.jpg', 'images/room-balcony-bed.jpg'],
+            action: '#bookingAnchor',
+            actionText: 'Забронировать'
+        },
+        room6: {
+            title: '🛌 Хостел стандарт',
+            badges: '4 места · бюджет',
+            price: '800 ₽/сутки · 15 000 ₽/месяц',
+            description: 'Место в 4-местном номере. Двухъярусные кровати, стол, стулья, шкаф. Общий санузел на этаже. Отличный вариант для знакомств, экономии и активного общения. Подходит для одиночных путешественников и компаний.',
+            gallery: ['images/room-hostel.jpg', 'images/room-hostel-2.jpg', 'images/room-hostel-3.jpg'],
+            action: '#bookingAnchor',
+            actionText: 'Забронировать'
+        },
+        room7: {
+            title: '💰 Хостел эконом',
+            badges: 'бюджет',
+            price: '600 ₽/сутки · 9 000 ₽/месяц',
+            description: 'Самый доступный вариант для тех, кто хочет познакомиться с нашим пространством и не переплачивать. Чисто, уютно, есть всё необходимое для комфортного проживания. Общая кухня, гостиная, сад, бассейн — в вашем распоряжении.',
+            gallery: ['images/room-hostel.jpg', 'images/room-hostel.jpg', 'images/room-hostel.jpg'],
+            action: '#bookingAnchor',
+            actionText: 'Забронировать'
+        },
+        // --- Сладости ---
         sweet1: {
             title: 'Шоколад с орехами и клюквой',
             badges: '',
@@ -1167,6 +1193,35 @@
             gallery: ['images/honey.jpg'],
             action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу заказать мёд',
             actionText: 'Заказать в WhatsApp'
+        },
+        // --- Баня ---
+        service1: {
+            title: '🔥 Баня FreeDom',
+            badges: 'индивидуально · для проживающих',
+            price: '3000 ₽ / 2 часа (до 4 чел)',
+            description: 'Полная информация о бане:\n\n🔹 Индивидуально: 2 часа — 3000 ₽ (до 4 чел), каждый следующий час +1000 ₽, доп. гость +500 ₽. Дети до 10 лет бесплатно. Банщик — 800 ₽ за 10 мин (2 подхода по 5 мин).\n\n🎁 Бонус: при заказе от 3 часов — чайник с лечебными травами в подарок.\n\n🏠 Для проживающих: четверг и воскресенье — общая баня (небольшая плата).\n\n💳 Предоплата 1000 ₽. При отмене 500 ₽ невозвратные, при переносе — остаются на счёте.',
+            gallery: ['images/sauna.jpg'],
+            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу забронировать баню',
+            actionText: 'Забронировать баню в WhatsApp'
+        },
+        // --- События ---
+        event1: {
+            title: '🔔 Гонг-медитация',
+            badges: 'релаксация · звукотерапия',
+            price: '1500 ₽ / сеанс (60 мин)',
+            description: 'Гонг-медитация — это древняя практика звукового исцеления. Под звуки гонга ваш мозг погружается в глубокое расслабление, снимаются мышечные зажимы, уходит тревога и стресс.\n\n🎶 Сеанс длится 60 минут. Вы лежите на коврике в тёплой, затемнённой комнате, а мастер проводит вас через волны звука.\n\n✨ Подходит для всех уровней подготовки. Рекомендуется надевать удобную одежду.\n\n📅 Проводится по предварительной записи. Ближайшая дата: 26 июля 2025, 19:00.',
+            gallery: ['images/gong-meditation.jpg', 'images/gong-meditation-2.jpg', 'images/gong-meditation-3.jpg'],
+            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу записаться на гонг-медитацию 26 июля',
+            actionText: 'Записаться на сеанс'
+        },
+        event2: {
+            title: '🍵 Чайная церемония',
+            badges: 'традиции · душевность',
+            price: '1000 ₽ / перс. (в группе до 6 чел)',
+            description: 'Чайная церемония — это не просто чаепитие, а медитативный ритуал, объединяющий людей. Мы завариваем лучшие травяные сборы (ромашка, чабрец, мята, душица) по особым рецептам.\n\n🌿 Вас ждёт:\n— Знакомство с разными сортами трав\n— Медитативное заваривание в глиняной посуде\n— Медленное, осознанное чаепитие в кругу единомышленников\n— Обсуждение впечатлений, обмен энергией\n\n⏳ Длительность — около 1.5 часов. Проводится вечером в дни без бани. Ближайшая дата: 27 июля 2025, 18:00.',
+            gallery: ['images/tea-ceremony.jpg', 'images/tea-ceremony-2.jpg', 'images/tea-ceremony-3.jpg'],
+            action: 'https://wa.me/79630326011?text=Здравствуйте! Хочу записаться на чайную церемонию 27 июля',
+            actionText: 'Записаться на церемонию'
         }
     };
 
@@ -1183,13 +1238,11 @@
     const nextBtn = document.getElementById('nextBtn');
     let currentItem = null;
     let currentIndex = 0;
-    let currentId = null;
 
     function openModal(id) {
         const item = data[id];
         if (!item) return;
         currentItem = item;
-        currentId = id;
         currentIndex = 0;
         if (!item.gallery || item.gallery.length === 0) {
             item.gallery = ['images/placeholder.jpg'];
@@ -1218,7 +1271,6 @@
         overlay.classList.remove('active');
         document.body.style.overflow = '';
         currentItem = null;
-        currentId = null;
     }
 
     prevBtn.addEventListener('click', function(e) {
@@ -1240,46 +1292,35 @@
     });
     closeBtn.addEventListener('click', closeModal);
 
-    // ===== ОТКРЫТИЕ МОДАЛКИ ДЛЯ КОМНАТ ИЗ SUPABASE =====
-    async function openRoomModal(roomId) {
-        try {
-            const { data, error } = await supabase
-                .from('rooms')
-                .select('*')
-                .eq('id', roomId)
-                .single();
-            if (error) throw error;
-            if (!data) {
-                alert('Комната не найдена');
-                return;
-            }
-            // Формируем временный объект для модалки
-            const item = {
-                title: data.name,
-                badges: `до ${data.capacity} чел`,
-                price: `${data.price_per_night} ₽/сутки`,
-                description: data.description || 'Уютная комната в FreeDom.',
-                gallery: [data.image_url || 'images/placeholder.jpg'],
-                action: '#bookingAnchor',
-                actionText: 'Забронировать'
-            };
-            // Открываем модалку с данными из базы
-            currentItem = item;
-            currentId = roomId;
-            currentIndex = 0;
-            updateGallery();
-            modalTitle.textContent = item.title;
-            modalBadges.innerHTML = `<span class="badge">${item.badges}</span>`;
-            modalPrice.textContent = item.price;
-            modalDesc.textContent = item.description;
-            modalAction.href = item.action;
-            modalAction.textContent = item.actionText;
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        } catch (error) {
-            console.error('Ошибка загрузки комнаты:', error);
-            alert('Не удалось загрузить данные комнаты');
-        }
+    // ===== ОТРИСОВКА КАРУСЕЛИ КОМНАТ =====
+    function renderRooms() {
+        const container = document.getElementById('roomsCarousel');
+        const roomIds = ['room1', 'room2', 'room3', 'room4', 'room5', 'room6', 'room7'];
+        let html = '';
+        roomIds.forEach(id => {
+            const room = data[id];
+            if (!room) return;
+            html += `
+                <div class="room-card" data-id="${id}">
+                    <img src="${room.gallery[0] || 'images/placeholder.jpg'}" alt="${room.title}">
+                    <div class="content">
+                        <h3>${room.title}</h3>
+                        <div>
+                            ${room.badges.split('·').map(b => `<span class="badge">${b.trim()}</span>`).join(' ')}
+                        </div>
+                        <div class="price">${room.price}</div>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+
+        // Добавляем обработчики кликов
+        container.querySelectorAll('.room-card[data-id]').forEach(el => {
+            el.addEventListener('click', function() {
+                openModal(this.dataset.id);
+            });
+        });
     }
 
     // ===== ОБРАБОТЧИКИ ДЛЯ СТАТИЧНЫХ ЭЛЕМЕНТОВ =====
@@ -1310,6 +1351,117 @@
         }
     });
 
+    // ===== ФОРМА БРОНИРОВАНИЯ (Formspree + Supabase) =====
+    const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const bookingForm = document.getElementById('bookingForm');
+    bookingForm.addEventListener('submit', async function(e) {
+        // Не отменяем отправку формы — она пойдёт в Formspree.
+        // Но мы добавим параллельную отправку в Supabase.
+        // Чтобы не дублировать уведомления, можно отправить в Supabase до отправки в Formspree.
+
+        // Собираем данные
+        const roomType = document.getElementById('roomType').value;
+        const checkin = document.getElementById('checkin').value;
+        const checkout = document.getElementById('checkout').value;
+        const adults = parseInt(document.getElementById('adults').value) || 0;
+        const children = parseInt(document.getElementById('children').value) || 0;
+        const guestName = document.getElementById('guestName').value.trim();
+        const guestPhone = document.getElementById('guestPhone').value.trim();
+        const guestEmail = document.getElementById('guestEmail').value.trim();
+        const notes = document.getElementById('notes').value.trim();
+        const consent = document.getElementById('consent').checked;
+        const source = document.getElementById('source').value;
+
+        // Валидация
+        if (!guestName || !guestPhone || !checkin || !checkout || !roomType) {
+            alert('Заполните все обязательные поля.');
+            e.preventDefault(); // останавливаем отправку в Formspree
+            return;
+        }
+
+        // Преобразуем название комнаты в ID
+        const roomNameMap = {
+            'family': 'Семейная комната',
+            'balcony': 'Двухместный с балконом',
+            'attic': 'Мансардная комната',
+            'bungalow': 'Бунгало в саду',
+            'balcony_bed': 'Спальное место на балконе',
+            'hostel_standart': 'Хостел стандарт',
+            'hostel_economy': 'Хостел эконом'
+        };
+        const roomName = roomNameMap[roomType] || roomType;
+
+        // Получаем room_id и цену из Supabase
+        try {
+            const { data: roomData, error: roomError } = await supabase
+                .from('rooms')
+                .select('id, price_per_night')
+                .eq('name', roomName)
+                .maybeSingle();
+
+            if (roomError) throw roomError;
+
+            let roomId = null;
+            let pricePerNight = 0;
+
+            if (roomData) {
+                roomId = roomData.id;
+                pricePerNight = roomData.price_per_night;
+            } else {
+                console.warn('Комната не найдена в Supabase, но форма продолжит отправку в Formspree.');
+            }
+
+            if (roomId) {
+                // Вычисляем количество ночей и сумму
+                const checkinDate = new Date(checkin);
+                const checkoutDate = new Date(checkout);
+                const nights = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+                if (nights > 0) {
+                    const totalAmount = pricePerNight * nights;
+
+                    // Вставляем бронирование в Supabase
+                    const { error: insertError } = await supabase
+                        .from('bookings')
+                        .insert({
+                            room_id: roomId,
+                            user_id: null,
+                            guest_name: guestName,
+                            guest_phone: guestPhone,
+                            guest_email: guestEmail || null,
+                            guest_count: adults + children,
+                            check_in_date: checkin,
+                            check_out_date: checkout,
+                            total_amount: totalAmount,
+                            status: 'новое'
+                        });
+
+                    if (insertError) {
+                        console.error('Ошибка Supabase:', insertError);
+                        // Не показываем ошибку пользователю, чтобы не мешать отправке в Formspree
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Ошибка при обращении к Supabase:', error);
+            // Не прерываем отправку формы в Formspree
+        }
+
+        // Разрешаем отправку в Formspree — она произойдёт после этого обработчика
+        // Но мы покажем сообщение об успехе только после отправки формы (через onsubmit не перехватываем)
+        // Покажем локальное сообщение об успехе через пару секунд, чтобы не дублировать.
+        setTimeout(() => {
+            // Если форма не была отправлена (например, ошибка), мы не показываем успех.
+            // Но Formspree обычно отправляет, поэтому показываем успех.
+            document.getElementById('bookingForm').style.display = 'none';
+            document.getElementById('successMessage').classList.add('show');
+        }, 1000);
+
+        // ВАЖНО: не вызываем e.preventDefault() — форма отправится в Formspree.
+    });
+
     // ===== ОСТАЛЬНЫЕ СКРИПТЫ =====
     document.getElementById('aboutToggle').addEventListener('click', function(e) {
         e.stopPropagation();
@@ -1321,6 +1473,7 @@
     window.addEventListener('load', function() {
         document.getElementById('preloader').classList.add('hide');
         document.body.classList.add('loaded');
+        renderRooms(); // отрисовываем карусель комнат
     });
 
     const sections = document.querySelectorAll('.fade-section');
@@ -1332,15 +1485,6 @@
         });
     }, { threshold: 0.1 });
     sections.forEach(section => observer.observe(section));
-
-    const bookingForm = document.getElementById('bookingForm');
-    const bookingSuccess = document.getElementById('successMessage');
-    bookingForm.addEventListener('submit', function(e) {
-        setTimeout(function() {
-            bookingSuccess.classList.add('show');
-            bookingForm.style.display = 'none';
-        }, 500);
-    });
 
     const reviewForm = document.getElementById('reviewForm');
     const reviewSuccess = document.getElementById('reviewSuccess');
@@ -1374,11 +1518,6 @@
                 isPlaying = true;
             }).catch(() => {});
         }
-    });
-
-    // ===== ЗАГРУЗКА КОМНАТ ПРИ СТАРТЕ =====
-    document.addEventListener('DOMContentLoaded', function() {
-        loadRooms();
     });
 </script>
 </body>
