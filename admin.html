@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
+        /* ===== БАЗОВЫЕ СТИЛИ ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0b0d17; color: #eae6f0; line-height: 1.6; min-height: 100vh; padding: 20px 0 60px; }
         .container { max-width: 820px; margin: 0 auto; padding: 0 16px; }
@@ -18,6 +19,7 @@
         .header p { opacity: 0.7; font-size: 0.9rem; position: relative; z-index: 1; }
         .admin-badge { display: inline-block; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.2); color: #d4af37; padding: 2px 14px; border-radius: 30px; font-size: 0.7rem; font-weight: 600; margin-top: 0.5rem; }
 
+        /* ===== КАРТЫ И КНОПКИ ===== */
         .card { background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
         .card h3 { color: #d4af37; margin-bottom: 0.8rem; font-size: 1.2rem; }
         .btn { display: inline-block; padding: 8px 16px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: 0.3s; border: none; margin: 4px 4px 0 0; }
@@ -33,6 +35,7 @@
         .btn-warning:hover { background: rgba(255,193,7,0.2); }
         .btn-block { width: 100%; text-align: center; margin: 4px 0; }
 
+        /* ===== ПОЛЯ ===== */
         .field { margin-bottom: 1rem; }
         .field label { display: block; font-weight: 500; margin-bottom: 4px; color: #b8a9d4; font-size: 0.9rem; }
         .field input, .field select, .field textarea { width: 100%; padding: 10px 14px; font-size: 1rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.04); color: #eae6f0; font-family: inherit; transition: 0.3s; }
@@ -41,6 +44,7 @@
         .field-row { display: flex; gap: 10px; flex-wrap: wrap; }
         .field-row .field { flex: 1; min-width: 120px; }
 
+        /* ===== СПИСКИ ===== */
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .list-item:last-child { border-bottom: none; }
         .list-item .info { flex: 1; }
@@ -48,11 +52,13 @@
         .list-item .info .detail { font-size: 0.8rem; opacity: 0.6; }
         .list-item .actions { display: flex; gap: 6px; flex-wrap: wrap; }
 
+        /* ===== СТАТИСТИКА ===== */
         .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 1rem; }
         .stat-item { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px; text-align: center; }
         .stat-item .number { font-size: 1.8rem; font-weight: 700; color: #d4af37; }
         .stat-item .label { font-size: 0.75rem; opacity: 0.6; }
 
+        /* ===== КАЛЕНДАРЬ ===== */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 0.5rem; }
         .calendar-grid .day { background: rgba(255,255,255,0.04); border-radius: 8px; padding: 4px 2px; text-align: center; font-size: 0.7rem; min-height: 40px; display: flex; flex-direction: column; justify-content: center; }
         .calendar-grid .day.free { background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.1); }
@@ -61,6 +67,7 @@
         .calendar-grid .day .room-name { font-size: 0.55rem; opacity: 0.6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .calendar-grid .day-header { font-size: 0.65rem; font-weight: 600; color: #b8a9d4; text-align: center; padding: 4px 0; }
 
+        /* ===== ВКЛАДКИ ===== */
         .tab-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
         .tab-nav .tab-link { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 6px 16px; color: #b8a9d4; cursor: pointer; transition: 0.3s; font-size: 0.85rem; font-weight: 500; }
         .tab-nav .tab-link:hover { background: rgba(255,255,255,0.08); }
@@ -68,12 +75,14 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
+        /* ===== МОДАЛЬНЫЕ ОКНА ===== */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal.show { display: flex; }
         .modal-content { background: #121626; border: 1px solid rgba(212,175,55,0.15); border-radius: 24px; max-width: 560px; width: 100%; padding: 24px; position: relative; max-height: 90vh; overflow-y: auto; }
         .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: #d4af37; font-size: 28px; cursor: pointer; opacity: 0.6; transition: 0.2s; }
         .modal-close:hover { opacity: 1; }
 
+        /* ===== УТИЛИТЫ ===== */
         .error-msg { background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.2); color: #ff6b6b; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
         .success-msg { background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.15); color: #25D366; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
         .footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; opacity: 0.3; }
@@ -81,7 +90,7 @@
         .spinner { width:40px; height:40px; border:3px solid rgba(212,175,55,0.1); border-top:3px solid #d4af37; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 1rem; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        @media (max-width: 480px) { .list-item { flex-wrap: wrap; gap: 6px; } .field-row { flex-direction: column; } .stat-grid { grid-template-columns: repeat(2, 1fr); } .calendar-grid .day { font-size: 0.6rem; min-height: 30px; } }
+        @media (max-width: 480px) { .list-item { flex-wrap: wrap; gap: 6px; } .field-row { flex-direction: column; } .stat-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
@@ -99,6 +108,7 @@
     </div>
 
     <div id="adminContent" style="display:none;">
+
         <!-- ===== НАВИГАЦИЯ ===== -->
         <div class="tab-nav" id="mainTabs">
             <span class="tab-link active" data-tab="tabDashboard">📊 Дашборд</span>
@@ -110,6 +120,7 @@
             <span class="tab-link" data-tab="tabServices">🛒 Услуги</span>
         </div>
 
+        <!-- ============================================================ -->
         <!-- ===== ДАШБОРД ===== -->
         <div id="tabDashboard" class="tab-content active">
             <div class="card">
@@ -117,7 +128,7 @@
                 <div class="stat-grid">
                     <div class="stat-item"><span class="number" id="totalUsers">0</span><div class="label">Всего гостей</div></div>
                     <div class="stat-item"><span class="number" id="totalCurrent">0</span><div class="label">Проживают сейчас</div></div>
-                    <div class="stat-item"><span class="number" id="totalRooms">0</span><div class="label">Комнат</div></div>
+                    <div class="stat-item"><span class="number" id="totalRooms">0</span><div class="label">Комнат / мест</div></div>
                     <div class="stat-item"><span class="number" id="totalDebt">0 ₽</span><div class="label">Общий долг</div></div>
                     <div class="stat-item"><span class="number" id="monthRevenue">0 ₽</span><div class="label">Доход за месяц</div></div>
                     <div class="stat-item"><span class="number" id="occupancyRate">0%</span><div class="label">Загрузка</div></div>
@@ -133,6 +144,7 @@
             </div>
         </div>
 
+        <!-- ============================================================ -->
         <!-- ===== ГОСТИ ===== -->
         <div id="tabGuests" class="tab-content">
             <div class="card">
@@ -151,6 +163,7 @@
             </div>
         </div>
 
+        <!-- ============================================================ -->
         <!-- ===== АРЕНДЫ ===== -->
         <div id="tabBookings" class="tab-content">
             <div class="card">
@@ -158,7 +171,7 @@
                 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:1rem;">
                     <select id="filterBookingStatus" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:8px 12px; color:#eae6f0;">
                         <option value="all">Все статусы</option>
-                        <option value="активна">Активные</option>
+                        <option value="подтверждено">Активные</option>
                         <option value="завершена">Завершённые</option>
                         <option value="долг">С долгом</option>
                         <option value="отменена">Отменённые</option>
@@ -169,6 +182,7 @@
             </div>
         </div>
 
+        <!-- ============================================================ -->
         <!-- ===== НОВАЯ АРЕНДА ===== -->
         <div id="tabNewBooking" class="tab-content">
             <div class="card">
@@ -237,6 +251,7 @@
             </div>
         </div>
 
+        <!-- ============================================================ -->
         <!-- ===== КАЛЕНДАРЬ ===== -->
         <div id="tabCalendar" class="tab-content">
             <div class="card">
@@ -254,6 +269,7 @@
             </div>
         </div>
 
+        <!-- ============================================================ -->
         <!-- ===== ФИНАНСЫ ===== -->
         <div id="tabFinance" class="tab-content">
             <div class="card">
@@ -279,6 +295,7 @@
             </div>
         </div>
 
+        <!-- ============================================================ -->
         <!-- ===== УСЛУГИ ===== -->
         <div id="tabServices" class="tab-content">
             <div class="card">
@@ -341,7 +358,7 @@
             <div class="field">
                 <label>Статус</label>
                 <select id="editBookingStatus">
-                    <option value="активна">Активна</option>
+                    <option value="подтверждено">Активна</option>
                     <option value="завершена">Завершена</option>
                     <option value="долг">Долг</option>
                     <option value="отменена">Отменена</option>
@@ -369,9 +386,11 @@
     </div>
 </div>
 
+<!-- ============================================================ -->
+<!-- ===== SCRIPT ===== -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // ===== ПОДКЛЮЧЕНИЕ =====
+    // ===== ПОДКЛЮЧЕНИЕ SUPABASE =====
     const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -381,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadingState = document.getElementById('loadingState');
     const adminContent = document.getElementById('adminContent');
 
-    // ===== ПРОВЕРКА АДМИНА =====
+    // ===== ПРОВЕРКА АДМИНИСТРАТОРА =====
     supabase.auth.getSession().then(async ({ data: sessionData }) => {
         if (!sessionData.session) {
             window.location.href = 'login.html';
@@ -393,6 +412,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div style="text-align:center; padding:2rem;">
                     <div style="font-size:3rem;">⛔</div>
                     <h2 style="color:#ff6b6b;">Доступ запрещён</h2>
+                    <p style="opacity:0.6;">У вас нет прав администратора.</p>
+                    <a href="profile.html" style="color:#d4af37;">← Вернуться в профиль</a>
                 </div>
             `;
             return;
@@ -402,6 +423,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loadingState.style.display = 'none';
         adminContent.style.display = 'block';
 
+        // ===== ЗАГРУЗКА ВСЕХ ДАННЫХ =====
         await loadAllData();
     });
 
@@ -421,7 +443,8 @@ document.addEventListener('DOMContentLoaded', function() {
         await loadCalendar();
     }
 
-    // ===== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК =====
+    // ================================================================
+    // ===== ПЕРЕКЛЮЧЕНИЕ ОСНОВНЫХ ВКЛАДОК =====
     document.querySelectorAll('#mainTabs .tab-link').forEach(tab => {
         tab.addEventListener('click', function() {
             document.querySelectorAll('#mainTabs .tab-link').forEach(t => t.classList.remove('active'));
@@ -431,19 +454,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById(tabId).classList.add('active');
             if (tabId === 'tabCalendar') loadCalendar();
             if (tabId === 'tabFinance') loadFinance();
-        });
-    });
-
-    // ===== ПЕРЕКЛЮЧЕНИЕ ПОДВКЛАДОК ГОСТЕЙ =====
-    document.querySelectorAll('#guestTabs .tab-link').forEach(tab => {
-        tab.addEventListener('click', function() {
-            document.querySelectorAll('#guestTabs .tab-link').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            const tabId = this.dataset.tab;
-            document.querySelectorAll('#guestTabs .tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            if (tabId === 'currentGuests') loadCurrentGuests();
-            if (tabId === 'allGuests') loadGuests();
         });
     });
 
@@ -477,13 +487,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // ===== ПРОЖИВАЮЩИЕ СЕЙЧАС (исправлено: статус "подтверждено") =====
     async function loadCurrentGuests() {
         try {
             const today = new Date().toISOString().split('T')[0];
             const { data: bookings, error } = await supabase
                 .from('bookings')
                 .select('user_id, guest_name, guest_phone, check_in_date, check_out_date, room_id, rooms(name)')
-                .eq('status', 'активна')
+                .eq('status', 'подтверждено')
                 .lte('check_in_date', today)
                 .gte('check_out_date', today);
 
@@ -548,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ================================================================
-    // ===== АРЕНДЫ =====
+    // ===== АРЕНДЫ (исправлен фильтр) =====
     async function loadBookings(filterStatus) {
         try {
             let query = supabase
@@ -573,11 +584,11 @@ document.addEventListener('DOMContentLoaded', function() {
             data.forEach(b => {
                 const guestName = b.users?.Display_name || b.guest_name || 'Гость';
                 const roomName = b.rooms?.name || 'Комната удалена';
-                const status = b.status || 'активна';
+                const status = b.status || 'подтверждено';
                 const total = b.total_amount || 0;
                 const paid = b.paid_amount || 0;
                 const debt = total - paid - (b.discount_amount || 0);
-                const statusColor = status === 'активна' ? '#25D366' : status === 'завершена' ? '#b8a9d4' : status === 'долг' ? '#ff6b6b' : '#ffc107';
+                const statusColor = status === 'подтверждено' ? '#25D366' : status === 'завершена' ? '#b8a9d4' : status === 'долг' ? '#ff6b6b' : '#ffc107';
 
                 html += `
                     <div class="list-item" id="booking-${b.id}">
@@ -624,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .single();
             if (error) throw error;
 
-            document.getElementById('editBookingStatus').value = data.status || 'активна';
+            document.getElementById('editBookingStatus').value = data.status || 'подтверждено';
             document.getElementById('editBookingPaid').value = data.paid_amount || 0;
             document.getElementById('editBookingDiscount').value = data.discount_amount || 0;
             document.getElementById('editBookingPaymentMethod').value = data.payment_method || '';
@@ -781,7 +792,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalAmount = Math.max(0, pricePerNight * nights);
         const finalAmount = Math.max(0, totalAmount - discount);
 
-        let status = 'активна';
+        let status = 'подтверждено';
         let paidAmount = 0;
         if (paymentStatus === 'оплачено') paidAmount = finalAmount;
         else if (paymentStatus === 'частично') paidAmount = Math.floor(finalAmount * 0.5);
@@ -856,7 +867,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ================================================================
-    // ===== КАЛЕНДАРЬ =====
+    // ===== КАЛЕНДАРЬ (исправлен) =====
     let calendarDate = new Date();
 
     async function loadCalendar() {
@@ -874,20 +885,27 @@ document.addEventListener('DOMContentLoaded', function() {
             const { data: bookings, error } = await supabase
                 .from('bookings')
                 .select('check_in_date, check_out_date, room_id, rooms(name)')
-                .eq('status', 'активна')
-                .or(`check_in_date.lte.${endDate},check_out_date.gte.${startDate}`);
+                .eq('status', 'подтверждено')
+                .gte('check_in_date', startDate)
+                .lte('check_out_date', endDate);
 
             if (error) throw error;
 
+            // Группируем по дням
             const roomBookings = {};
             if (bookings) {
                 bookings.forEach(b => {
-                    const dateStr = b.check_in_date;
-                    if (!roomBookings[dateStr]) roomBookings[dateStr] = [];
-                    roomBookings[dateStr].push(b.rooms?.name || 'Комната');
+                    const start = new Date(b.check_in_date);
+                    const end = new Date(b.check_out_date);
+                    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                        const dateStr = d.toISOString().split('T')[0];
+                        if (!roomBookings[dateStr]) roomBookings[dateStr] = [];
+                        roomBookings[dateStr].push(b.rooms?.name || 'Комната');
+                    }
                 });
             }
 
+            // Строим сетку
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -946,7 +964,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const { count: currentCount } = await supabase
                 .from('bookings')
                 .select('*', { count: 'exact', head: true })
-                .eq('status', 'активна')
+                .eq('status', 'подтверждено')
                 .lte('check_in_date', today)
                 .gte('check_out_date', today);
 
@@ -966,7 +984,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const { data: revenueData } = await supabase
                 .from('bookings')
                 .select('paid_amount')
-                .gte('updated_at', monthAgo.toISOString());
+                .gte('created_at', monthAgo.toISOString());
             let monthRevenue = 0;
             if (revenueData) {
                 monthRevenue = revenueData.reduce((sum, b) => sum + (b.paid_amount || 0), 0);
@@ -991,7 +1009,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ================================================================
-    // ===== ПОСЛЕДНИЕ АРЕНДЫ И ДОЛЖНИКИ =====
+    // ===== ПОСЛЕДНИЕ АРЕНДЫ =====
     async function loadRecentBookings() {
         try {
             const { data, error } = await supabase
@@ -999,12 +1017,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 .select('*, rooms(name), users(Display_name)')
                 .order('created_at', { ascending: false })
                 .limit(5);
+
             if (error) throw error;
             const container = document.getElementById('recentBookings');
             if (!data || data.length === 0) {
                 container.innerHTML = '<div style="text-align:center; opacity:0.4;">Нет аренд</div>';
                 return;
             }
+
             let html = '';
             data.forEach(b => {
                 const guest = b.users?.Display_name || b.guest_name || 'Гость';
@@ -1025,6 +1045,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // ================================================================
+    // ===== ДОЛЖНИКИ =====
     async function loadTopDebtors() {
         try {
             const { data, error } = await supabase
@@ -1033,12 +1055,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 .eq('status', 'долг')
                 .order('created_at', { ascending: false })
                 .limit(5);
+
             if (error) throw error;
             const container = document.getElementById('topDebtors');
             if (!data || data.length === 0) {
                 container.innerHTML = '<div style="text-align:center; opacity:0.5;">🎉 Нет должников</div>';
                 return;
             }
+
             let html = '';
             data.forEach(b => {
                 const guest = b.users?.Display_name || b.guest_name || 'Гость';
@@ -1060,7 +1084,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ================================================================
-    // ===== ФИНАНСЫ =====
+    // ===== ФИНАНСЫ (исправлено: created_at) =====
     async function loadFinance(fromDate, toDate) {
         try {
             let query = supabase
@@ -1068,8 +1092,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 .select('paid_amount, payment_method, total_amount, discount_amount')
                 .neq('status', 'отменена');
 
-            if (fromDate) query = query.gte('updated_at', fromDate);
-            if (toDate) query = query.lte('updated_at', toDate + 'T23:59:59');
+            if (fromDate) query = query.gte('created_at', fromDate);
+            if (toDate) query = query.lte('created_at', toDate + 'T23:59:59');
 
             const { data, error } = await query;
             if (error) throw error;
@@ -1256,6 +1280,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // ===== ДОБАВЛЕНИЕ СУЩЕСТВУЮЩЕГО ПОЛЬЗОВАТЕЛЯ =====
     document.getElementById('addExistingUserBtn').addEventListener('click', async function() {
         const userId = document.getElementById('existingUserSelect').value;
         const msg = document.getElementById('addGuestModalMessage');
@@ -1276,7 +1301,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .eq('user_id', userId)
                 .single();
 
-            // Переключаемся на вкладку "Новая аренда"
+            // Переключаемся на вкладку "Новая аренда" и заполняем поля
             document.querySelectorAll('#mainTabs .tab-link').forEach(t => t.classList.remove('active'));
             document.querySelector('[data-tab="tabNewBooking"]').classList.add('active');
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -1302,6 +1327,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // ===== СОЗДАНИЕ НОВОГО ПОЛЬЗОВАТЕЛЯ =====
     document.getElementById('saveNewUserBtn').addEventListener('click', async function() {
         const displayName = document.getElementById('newUserName').value.trim();
         const email = document.getElementById('newUserEmail').value.trim();
