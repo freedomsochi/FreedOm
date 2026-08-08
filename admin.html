@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Админ-панель — FreeDom (минимальная)</title>
+    <title>Админ-панель — FreeDom</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
@@ -45,6 +45,13 @@
         .stat-item { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px; text-align: center; }
         .stat-item .number { font-size: 1.8rem; font-weight: 700; color: #d4af37; }
         .stat-item .label { font-size: 0.75rem; opacity: 0.6; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 0.5rem; }
+        .calendar-grid .day { background: rgba(255,255,255,0.04); border-radius: 8px; padding: 4px 2px; text-align: center; font-size: 0.7rem; min-height: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .calendar-grid .day.free { background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.1); }
+        .calendar-grid .day.occupied { background: rgba(255,107,107,0.08); border: 1px solid rgba(255,107,107,0.1); }
+        .calendar-grid .day .date { font-weight: 600; font-size: 0.8rem; }
+        .calendar-grid .day .room-name { font-size: 0.55rem; opacity: 0.6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .calendar-grid .day-header { font-size: 0.65rem; font-weight: 600; color: #b8a9d4; text-align: center; padding: 4px 0; }
         .tab-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
         .tab-nav .tab-link { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 6px 16px; color: #b8a9d4; cursor: pointer; transition: 0.3s; font-size: 0.85rem; font-weight: 500; }
         .tab-nav .tab-link:hover { background: rgba(255,255,255,0.08); }
@@ -57,7 +64,7 @@
         .loading { text-align:center; padding:2rem; opacity:0.6; }
         .spinner { width:40px; height:40px; border:3px solid rgba(212,175,55,0.1); border-top:3px solid #d4af37; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 1rem; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        @media (max-width: 480px) { .list-item { flex-wrap: wrap; gap: 6px; } .field-row { flex-direction: column; } .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .list-item { flex-wrap: wrap; gap: 6px; } .field-row { flex-direction: column; } .stat-grid { grid-template-columns: repeat(2, 1fr); } .calendar-grid .day { font-size: 0.6rem; min-height: 30px; } }
     </style>
 </head>
 <body>
@@ -83,6 +90,7 @@
             <span class="tab-link" data-tab="tabRooms">🛏️ Комнаты</span>
             <span class="tab-link" data-tab="tabBookings">📅 Бронирования</span>
             <span class="tab-link" data-tab="tabNewBooking">➕ Новая аренда</span>
+            <span class="tab-link" data-tab="tabCalendar">📅 Календарь</span> <!-- НОВАЯ ВКЛАДКА -->
         </div>
 
         <!-- ===== ДАШБОРД ===== -->
@@ -182,6 +190,23 @@
             </div>
         </div>
 
+        <!-- ===== КАЛЕНДАРЬ ===== -->
+        <div id="tabCalendar" class="tab-content">
+            <div class="card">
+                <h3>📅 Календарь занятости</h3>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:1rem;">
+                    <button class="btn btn-secondary" id="calendarPrev">◀</button>
+                    <span id="calendarMonthYear" style="font-weight:600; min-width:150px; text-align:center;">Май 2026</span>
+                    <button class="btn btn-secondary" id="calendarNext">▶</button>
+                </div>
+                <div id="calendarGrid"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
+                <div style="display:flex; gap:15px; margin-top:1rem; flex-wrap:wrap; font-size:0.8rem;">
+                    <span><span style="background:rgba(37,211,102,0.2); padding:2px 10px; border-radius:4px;">🟢</span> Свободно</span>
+                    <span><span style="background:rgba(255,107,107,0.2); padding:2px 10px; border-radius:4px;">🔴</span> Занято</span>
+                </div>
+            </div>
+        </div>
+
         <button class="btn btn-danger btn-block" id="logoutBtn">🚪 Выйти из админ-панели</button>
     </div>
 
@@ -228,6 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
         await loadStats();
         await loadRecentBookings();
         await loadUsersAndRoomsForForm();
+        await loadCalendar(); // загружаем календарь при старте
     });
 
     // ===== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК =====
@@ -241,6 +267,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (tabId === 'tabBookings') {
                 const status = document.getElementById('filterBookingStatus').value;
                 loadBookings(status);
+            }
+            if (tabId === 'tabCalendar') {
+                loadCalendar(); // при переключении обновляем календарь
             }
         });
     });
@@ -528,6 +557,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 await loadBookings(document.getElementById('filterBookingStatus').value);
                 await loadRecentBookings();
                 await loadStats();
+                await loadCalendar(); // обновляем календарь
                 success.style.display = 'none';
             }, 1000);
 
@@ -536,6 +566,94 @@ document.addEventListener('DOMContentLoaded', function() {
             msg.textContent = 'Ошибка: ' + error.message;
             msg.style.display = 'block';
         }
+    });
+
+    // ================================================================
+    // ===== КАЛЕНДАРЬ (НОВАЯ ФУНКЦИЯ) =====
+    let calendarDate = new Date();
+
+    async function loadCalendar() {
+        try {
+            const year = calendarDate.getFullYear();
+            const month = calendarDate.getMonth();
+            const today = new Date();
+
+            document.getElementById('calendarMonthYear').textContent = 
+                new Date(year, month).toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' });
+
+            const startDate = new Date(year, month, 1).toISOString().split('T')[0];
+            const endDate = new Date(year, month + 1, 0).toISOString().split('T')[0];
+
+            // Получаем все подтверждённые бронирования за месяц
+            const { data: bookings, error } = await supabase
+                .from('bookings')
+                .select('check_in_date, check_out_date, room_id, rooms(name)')
+                .eq('status', 'подтверждено')
+                .gte('check_in_date', startDate)
+                .lte('check_out_date', endDate);
+
+            if (error) throw error;
+
+            // Группируем по дням
+            const roomBookings = {};
+            if (bookings) {
+                bookings.forEach(b => {
+                    const start = new Date(b.check_in_date);
+                    const end = new Date(b.check_out_date);
+                    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                        const dateStr = d.toISOString().split('T')[0];
+                        if (!roomBookings[dateStr]) roomBookings[dateStr] = [];
+                        roomBookings[dateStr].push(b.rooms?.name || 'Комната');
+                    }
+                });
+            }
+
+            // Строим сетку календаря
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let html = '<div class="calendar-grid">';
+            const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            dayNames.forEach(d => {
+                html += `<div class="day-header">${d}</div>`;
+            });
+
+            const offset = (firstDay === 0) ? 6 : firstDay - 1;
+            for (let i = 0; i < offset; i++) {
+                html += '<div class="day"></div>';
+            }
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                const isToday = (d === today.getDate() && month === today.getMonth() && year === today.getFullYear());
+                
+                const rooms = roomBookings[dateStr] || [];
+                const occupied = rooms.length > 0;
+                const statusClass = occupied ? 'occupied' : 'free';
+                const todayClass = isToday ? ' style="border:2px solid #d4af37;"' : '';
+
+                html += `<div class="day ${statusClass}"${todayClass}>
+                    <div class="date">${d}</div>
+                    ${rooms.length > 0 ? `<div class="room-name">${rooms.slice(0,2).join(', ')}</div>` : ''}
+                </div>`;
+            }
+
+            html += '</div>';
+            document.getElementById('calendarGrid').innerHTML = html;
+
+        } catch (error) {
+            console.error('Ошибка загрузки календаря:', error);
+            document.getElementById('calendarGrid').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
+        }
+    }
+
+    document.getElementById('calendarPrev').addEventListener('click', function() {
+        calendarDate.setMonth(calendarDate.getMonth() - 1);
+        loadCalendar();
+    });
+    document.getElementById('calendarNext').addEventListener('click', function() {
+        calendarDate.setMonth(calendarDate.getMonth() + 1);
+        loadCalendar();
     });
 
     // ================================================================
