@@ -3,285 +3,1531 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>FreeDom — космический центр развития</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- ===== SEO ===== -->
+    <title>FreeDom — космический центр развития в Сочи</title>
+    <meta name="description" content="Гостевой дом FreeDom в Сочи на Мамайке: номера от 600 ₽/сутки, сыроедческая кухня, баня, медитации.">
+    <link rel="canonical" href="https://freedomsochi.github.io/FreedOm/">
+
+    <meta property="og:title" content="FreeDom — космический центр развития в Сочи" />
+    <meta property="og:description" content="Уютные номера, баня, сыроедческая кухня, медитации. Бронируйте отдых в гармонии с собой." />
+    <meta property="og:image" content="https://freedomsochi.github.io/FreedOm/images/logo.png" />
+    <meta property="og:url" content="https://freedomsochi.github.io/FreedOm/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "GuestHouse",
+        "name": "FreeDom",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Теневой пер., 48",
+            "addressLocality": "Сочи",
+            "addressRegion": "Краснодарский край",
+            "addressCountry": "Россия"
+        },
+        "telephone": "+79630326011",
+        "url": "https://freedomsochi.github.io/FreedOm/",
+        "priceRange": "600 ₽ – 3000 ₽",
+        "amenities": ["Бассейн", "Сауна", "Баня", "Бесплатный Wi-Fi", "Вегетарианская кухня", "Йога-зал", "Сад"],
+        "image": "https://freedomsochi.github.io/FreedOm/images/logo.png"
+    }
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
+        /* ===== БАЗОВЫЕ СТИЛИ ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0b0d17; color: #eae6f0; line-height: 1.6; min-height: 100vh; padding-bottom: 80px; opacity: 0; transition: opacity 0.5s; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0d17;
+            color: #eae6f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
         body.loaded { opacity: 1; }
-        .container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; }
-        .top-nav { display: flex; justify-content: flex-end; align-items: center; padding: 10px 0 6px; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.04); margin-bottom: 0.5rem; }
-        .top-nav .nav-links { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.7rem; }
-        .top-nav .nav-links a { color: #b8a9d4; text-decoration: none; padding: 4px 6px; border-radius: 4px; transition: 0.2s; font-weight: 500; border: 1px solid transparent; }
-        .top-nav .nav-links a:hover { color: #d4af37; border-color: rgba(212,175,55,0.15); }
-        .top-nav .login-icon { display: flex; align-items: center; gap: 4px; color: #b8a9d4; text-decoration: none; font-size: 0.7rem; font-weight: 500; padding: 4px 8px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; background: rgba(255,255,255,0.02); }
-        .top-nav .login-icon:hover { color: #d4af37; border-color: rgba(212,175,55,0.15); }
-        .top-nav .login-icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .header { background: linear-gradient(145deg, rgba(26,16,61,0.95), rgba(11,13,23,0.95)); border: 1px solid rgba(212,175,55,0.2); padding: 2.5rem 1rem 1.8rem; text-align: center; border-radius: 0 0 40px 40px; margin: 0 -16px 1.5rem; }
-        .header .logo { width: 160px; height: auto; border-radius: 50%; border: 2px solid rgba(212,175,55,0.4); margin-bottom: 0.5rem; }
-        .header h1 { font-weight: 300; font-size: 2.2rem; }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(2px 2px at 10% 20%, #fff, transparent),
+                radial-gradient(2px 2px at 30% 60%, #fff, transparent),
+                radial-gradient(1px 1px at 50% 10%, #fff, transparent),
+                radial-gradient(2px 2px at 70% 80%, #fff, transparent),
+                radial-gradient(1px 1px at 90% 40%, #fff, transparent),
+                radial-gradient(1px 1px at 15% 90%, #fff, transparent),
+                radial-gradient(2px 2px at 45% 45%, #fff, transparent),
+                radial-gradient(1px 1px at 80% 15%, #fff, transparent),
+                radial-gradient(2px 2px at 5% 50%, #fff, transparent),
+                radial-gradient(1px 1px at 60% 95%, #fff, transparent);
+            background-size: 200px 200px;
+            background-repeat: repeat;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+                radial-gradient(1px 1px at 60% 70%, #fff, transparent),
+                radial-gradient(1px 1px at 80% 50%, #fff, transparent),
+                radial-gradient(1px 1px at 40% 80%, #fff, transparent),
+                radial-gradient(1px 1px at 10% 60%, #fff, transparent);
+            background-size: 300px 300px;
+            background-repeat: repeat;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 0;
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
+        .container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; position: relative; z-index: 1; }
+
+        /* ===== ВЕРХНЯЯ НАВИГАЦИЯ ===== */
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 0 6px;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 0.5rem;
+        }
+        .top-nav .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 0.7rem;
+            letter-spacing: 0.3px;
+        }
+        .top-nav .nav-links a {
+            color: #b8a9d4;
+            text-decoration: none;
+            padding: 4px 6px;
+            border-radius: 4px;
+            transition: 0.2s;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+        .top-nav .nav-links a:hover {
+            color: #d4af37;
+            border-color: rgba(212,175,55,0.15);
+        }
+        .top-nav .nav-links a:active {
+            background: rgba(212,175,55,0.1);
+            border-color: rgba(212,175,55,0.3);
+            transform: scale(0.95);
+        }
+        .top-nav .login-icon {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #b8a9d4;
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.2s;
+            background: rgba(255,255,255,0.02);
+        }
+        .top-nav .login-icon:hover {
+            color: #d4af37;
+            border-color: rgba(212,175,55,0.15);
+        }
+        .top-nav .login-icon:active {
+            background: rgba(212,175,55,0.08);
+            transform: scale(0.95);
+        }
+        .top-nav .login-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ===== ШАПКА ===== */
+        .header {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(145deg, rgba(26,16,61,0.95), rgba(11,13,23,0.95));
+            border: 1px solid rgba(212,175,55,0.2);
+            box-shadow: 0 0 60px rgba(212,175,55,0.05);
+            color: white;
+            padding: 2.5rem 1rem 1.8rem;
+            text-align: center;
+            border-radius: 0 0 40px 40px;
+            margin: 0 -16px 1.5rem;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/branches.png') center/cover no-repeat;
+            opacity: 0.5;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .header .logo, .header h1, .header p { position: relative; z-index: 1; }
+        .header .logo {
+            width: 160px;
+            height: auto;
+            border-radius: 50%;
+            border: 2px solid rgba(212,175,55,0.4);
+            box-shadow: 0 0 30px rgba(212,175,55,0.1);
+            margin-bottom: 0.5rem;
+        }
+        .header h1 { font-weight: 300; font-size: 2.2rem; text-shadow: 0 0 40px rgba(212,175,55,0.1); }
         .header h1 span { color: #d4af37; }
-        h2 { font-size: 1.6rem; color: #d4af37; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 6px; margin: 2rem 0 1rem; }
-        .rooms-carousel { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 12px; scrollbar-width: none; }
+        .header p { opacity: 0.7; font-weight: 300; }
+
+        h2 { font-size: 1.6rem; color: #d4af37; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 6px; margin: 2rem 0 1rem; text-shadow: 0 0 20px rgba(212,175,55,0.05); }
+
+        /* ===== КАРУСЕЛЬ КОМНАТ ===== */
+        .rooms-carousel {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 4px 2px 12px;
+            scrollbar-width: none;
+        }
         .rooms-carousel::-webkit-scrollbar { display: none; }
-        .room-card-carousel { flex: 0 0 85%; max-width: 280px; scroll-snap-align: start; background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.4); cursor: pointer; transition: 0.3s; flex-shrink: 0; }
+        .room-card-carousel {
+            flex: 0 0 85%;
+            max-width: 280px;
+            scroll-snap-align: start;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: 0.3s;
+            flex-shrink: 0;
+        }
         .room-card-carousel:hover { border-color: rgba(212,175,55,0.4); transform: scale(1.01); }
-        .room-card-carousel img { width: 100%; height: 160px; object-fit: cover; display: block; }
+        .room-card-carousel img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
         .room-card-carousel .content { padding: 1rem 1.2rem 1.2rem; }
-        .room-card-carousel .content h3 { color: #d4af37; font-size: 1.2rem; margin-bottom: 0.3rem; }
-        .room-card-carousel .content .price { color: #d4af37; font-weight: 600; font-size: 1rem; }
-        .room-card-carousel .content .desc { font-size: 0.9rem; color: #c8c2d4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .room-card-carousel .content .btn-detail { display: inline-block; margin-top: 8px; color: #d4af37; text-decoration: none; font-weight: 600; border-bottom: 1px dashed rgba(212,175,55,0.3); cursor: pointer; }
-        .btn { display: inline-block; background: linear-gradient(145deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05)); border: 1px solid rgba(212,175,55,0.3); color: #d4af37; padding: 10px 24px; border-radius: 40px; font-size: 1rem; text-decoration: none; cursor: pointer; transition: 0.3s; font-weight: 600; }
-        .btn:hover { background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.5); transform: scale(1.02); }
-        .contact-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin: 1rem 0; }
-        .contact-item { display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; opacity: 0.6; transition: 0.3s; }
+        .room-card-carousel .content h3 {
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        .room-card-carousel .content .price {
+            color: #d4af37;
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 0.3rem 0;
+        }
+        .room-card-carousel .content .desc {
+            font-size: 0.9rem;
+            color: #c8c2d4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .room-card-carousel .content .btn-detail {
+            display: inline-block;
+            margin-top: 8px;
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dashed rgba(212,175,55,0.3);
+            cursor: pointer;
+        }
+
+        /* ===== ОСТАЛЬНЫЕ СТИЛИ (сохраняем как было) ===== */
+        .room-card, .sweet-item {
+            cursor: pointer;
+            transition: 0.3s;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            margin-bottom: 1.2rem;
+        }
+        .room-card:hover, .sweet-item:hover {
+            border-color: rgba(212,175,55,0.4);
+            transform: scale(1.01);
+        }
+        .room-card img, .sweet-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+        .room-card .content, .sweet-item .content { padding: 1rem 1.2rem 1.2rem; }
+        .room-card h3, .sweet-item .name {
+            color: #eae6f0;
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+        .badge {
+            background: rgba(212,175,55,0.12);
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 30px;
+            padding: 2px 14px;
+            font-size: 0.7rem;
+            color: #d4af37;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .price {
+            color: #d4af37;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 4px;
+            letter-spacing: 0.3px;
+        }
+        .price .popular {
+            background: rgba(212,175,55,0.15);
+            border-radius: 30px;
+            padding: 0 12px;
+            font-size: 0.8rem;
+            margin-left: 6px;
+            display: inline-block;
+            color: #d4af37;
+        }
+        .sweet-item .price { font-size: 1rem; margin-top: 0; }
+        .sweets-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 0.5rem;
+        }
+        .sweet-item { margin-bottom: 0; text-align: center; }
+        .sweet-item img { height: 130px; }
+        .sweet-item .name { font-weight: 500; font-size: 0.95rem; }
+
+        .events-carousel {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 4px 2px 12px;
+            scrollbar-width: none;
+        }
+        .events-carousel::-webkit-scrollbar { display: none; }
+        .event-card {
+            flex: 0 0 85%;
+            max-width: 280px;
+            scroll-snap-align: start;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: 0.3s;
+            flex-shrink: 0;
+        }
+        .event-card:hover { border-color: rgba(212,175,55,0.4); transform: scale(1.01); }
+        .event-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+        .event-card .content { padding: 1rem 1.2rem 1.2rem; }
+        .event-card .content .date {
+            font-size: 0.8rem;
+            color: #b8a9d4;
+            margin-bottom: 4px;
+        }
+        .event-card .content h3 {
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        .event-card .content .price {
+            font-size: 1rem;
+            margin: 0.3rem 0;
+        }
+        .event-card .content .desc {
+            font-size: 0.95rem;
+            color: #c8c2d4;
+        }
+        .event-card .content .btn-detail {
+            display: inline-block;
+            margin-top: 8px;
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dashed rgba(212,175,55,0.3);
+            cursor: pointer;
+        }
+
+        .sauna-block {
+            cursor: pointer;
+            transition: 0.3s;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            margin-bottom: 1.2rem;
+        }
+        .sauna-block:hover {
+            border-color: rgba(212,175,55,0.4);
+            transform: scale(1.01);
+        }
+        .sauna-block img { width: 100%; height: 160px; object-fit: cover; display: block; }
+        .sauna-block .content { padding: 1rem 1.2rem; }
+
+        .meditation-block {
+            background: linear-gradient(145deg, rgba(180,169,212,0.08), rgba(11,13,23,0.9));
+            border: 1px solid rgba(180,169,212,0.15);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(180,169,212,0.05);
+            position: relative;
+            margin-bottom: 1.2rem;
+        }
+        .meditation-block::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(ellipse at 30% 40%, rgba(180,169,212,0.06), transparent 60%);
+            pointer-events: none;
+        }
+        .meditation-block img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+        .meditation-block .content {
+            padding: 1rem 1.2rem 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .meditation-block .content p { opacity: 0.9; }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(145deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05));
+            border: 1px solid rgba(212,175,55,0.3);
+            color: #d4af37;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 1rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.1);
+        }
+        .btn:hover {
+            background: rgba(212,175,55,0.15);
+            border-color: rgba(212,175,55,0.5);
+            box-shadow: 0 4px 25px rgba(212,175,55,0.2);
+            transform: scale(1.02);
+        }
+        .btn-wa { background: rgba(37,211,102,0.15); border-color: rgba(37,211,102,0.3); color: #25D366; }
+        .btn-wa:hover { background: rgba(37,211,102,0.2); border-color: rgba(37,211,102,0.5); }
+        .btn-block { display: block; width: 100%; text-align: center; margin: 8px 0; }
+
+        .form-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px;
+            padding: 1.5rem 1.2rem;
+        }
+        .field { margin-bottom: 16px; }
+        .field label { display: block; font-weight: 500; margin-bottom: 4px; color: #b8a9d4; }
+        .field input, .field select, .field textarea {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 1rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            color: #eae6f0;
+            font-family: inherit;
+        }
+        .field input:focus, .field select:focus, .field textarea:focus {
+            border-color: rgba(212,175,55,0.2);
+            outline: none;
+            background: rgba(255,255,255,0.06);
+        }
+        .checkbox { display: flex; align-items: flex-start; gap: 10px; margin: 12px 0; }
+        .checkbox input { width: 20px; height: 20px; accent-color: #d4af37; }
+        .checkbox label { color: #b8a9d4; }
+        .btn-submit { width: 100%; padding: 14px; font-size: 1.15rem; }
+        .success { display: none; background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.15); border-radius: 16px; padding: 20px; text-align: center; color: #25D366; margin-top: 10px; }
+        .success.show { display: block; }
+        .small-note { font-size: 0.8rem; color: rgba(255,255,255,0.2); text-align: center; margin-top: 10px; }
+
+        .contact-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            opacity: 0.6;
+            transition: 0.3s;
+        }
         .contact-item:hover { opacity: 1; transform: translateY(-3px); }
-        .contact-item img { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); padding: 4px; }
-        .contact-item span { font-size: 0.65rem; color: #b8a9d4; }
+        .contact-item img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.03);
+            padding: 4px;
+        }
+        .contact-item span { font-size: 0.65rem; color: #b8a9d4; letter-spacing: 0.3px; }
+
         .footer { text-align: center; margin-top: 2.5rem; font-size: 0.9rem; color: rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.04); padding-top: 1.5rem; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+
+        /* ===== МОДАЛЬНОЕ ОКНО (для бронирования) ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
         .modal-overlay.active { display: flex; }
-        .modal-window { background: #121626; border: 1px solid rgba(212,175,55,0.15); border-radius: 24px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px 20px 20px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
-        .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: #d4af37; font-size: 28px; cursor: pointer; opacity: 0.6; transition: 0.2s; line-height: 1; z-index: 10; }
+        .modal-window {
+            background: #121626;
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px 20px 20px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #d4af37;
+            font-size: 28px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: 0.2s;
+            line-height: 1;
+            z-index: 10;
+        }
         .modal-close:hover { opacity: 1; }
-        .modal-window img { width: 100%; max-height: 200px; object-fit: cover; border-radius: 16px; margin-bottom: 16px; }
-        .modal-window h2 { font-size: 1.6rem; color: #eae6f0; border-bottom: none; margin: 0 0 6px 0; }
+        .modal-window img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+        .modal-window h2 {
+            font-size: 1.6rem;
+            color: #eae6f0;
+            border-bottom: none;
+            margin: 0 0 6px 0;
+        }
         .modal-window .price { font-size: 1.2rem; margin-bottom: 10px; }
+        .modal-window .badge { font-size: 0.8rem; }
         .modal-window .description { margin: 12px 0 16px; color: #c8c2d4; line-height: 1.7; white-space: pre-line; }
         .modal-window .btn { width: 100%; text-align: center; padding: 14px; font-size: 1.1rem; }
         .modal-window .field { margin-bottom: 14px; }
         .modal-window .field label { color: #b8a9d4; font-size: 0.9rem; }
-        .modal-window .field input, .modal-window .field select { width: 100%; padding: 10px 14px; font-size: 1rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.04); color: #eae6f0; font-family: inherit; }
-        #floatingBooking { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 999; background: linear-gradient(145deg, #d4af37, #b8952a); color: #0b0d17; border: none; padding: 14px 32px; border-radius: 60px; font-size: 1.2rem; font-weight: 700; box-shadow: 0 8px 30px rgba(212,175,55,0.4); cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; letter-spacing: 0.5px; }
-        #floatingBooking:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 8px 40px rgba(212,175,55,0.6); }
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0d17; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.8s ease, visibility 0.8s; }
+        .modal-window .field input, .modal-window .field select {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 1rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            color: #eae6f0;
+            font-family: inherit;
+        }
+        .modal-window .service-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .modal-window .service-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #d4af37;
+        }
+        .modal-window .service-item input[type="number"] {
+            width: 60px;
+            padding: 4px 6px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            color: #eae6f0;
+        }
+
+        #floatingBooking {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            background: linear-gradient(145deg, #d4af37, #b8952a);
+            color: #0b0d17;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            box-shadow: 0 8px 30px rgba(212,175,55,0.4);
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+        #floatingBooking:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 8px 40px rgba(212,175,55,0.6);
+        }
+
+        #musicToggle {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            z-index: 999;
+            background: rgba(212,175,55,0.15);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            color: #d4af37;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            transition: 0.3s;
+        }
+        #musicToggle:hover { transform: scale(1.05); background: rgba(212,175,55,0.25); }
+
+        .fade-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .fade-section.visible { opacity: 1; transform: translateY(0); }
+
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0b0d17;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
         #preloader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-        .loader-ring { width: 80px; height: 80px; border-radius: 50%; border: 3px solid rgba(212,175,55,0.1); border-top: 3px solid #d4af37; animation: spin 1s linear infinite; }
+        .loader-ring {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid rgba(212,175,55,0.1);
+            border-top: 3px solid #d4af37;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 30px rgba(212,175,55,0.1);
+        }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .loader-logo { margin-top: 20px; font-size: 1.5rem; color: #d4af37; font-weight: 300; letter-spacing: 3px; animation: pulse 1.5s ease-in-out infinite; }
+        .loader-logo {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #d4af37;
+            font-weight: 300;
+            letter-spacing: 3px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
         @keyframes pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
-        @media (max-width: 480px) { .modal-window { padding: 20px 16px; } .room-card-carousel { flex: 0 0 90%; } .top-nav .nav-links { font-size: 0.55rem; gap: 6px; } .top-nav .nav-links a { padding: 2px 4px; } .top-nav .login-icon { padding: 2px 6px; } }
+
+        .review-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .review-card .author { font-weight: 600; color: #d4af37; }
+        .review-card .text { margin-top: 4px; font-style: italic; color: #c8c2d4; }
+        .review-card .date { font-size: 0.7rem; opacity: 0.4; margin-top: 4px; }
+
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            margin-bottom: 1.2rem;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 200px;
+            display: block;
+            border: none;
+            border-radius: 16px;
+        }
+        .map-text {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            border-radius: 16px;
+            padding: 0.8rem 1.2rem;
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            color: #c8c2d4;
+        }
+        .map-text strong { color: #d4af37; }
+
+        .room-card.popular-glow {
+            border-color: rgba(212,175,55,0.6);
+            box-shadow: 0 0 40px rgba(212,175,55,0.15), 0 8px 32px rgba(0,0,0,0.4);
+            transition: 0.3s;
+        }
+        .room-card.popular-glow:hover {
+            border-color: rgba(212,175,55,0.8);
+            box-shadow: 0 0 60px rgba(212,175,55,0.2), 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        .oil-tag {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 30px;
+            padding: 2px 14px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin: 4px 4px 0 0;
+            color: #b8a9d4;
+        }
+
+        .about-toggle {
+            color: #d4af37;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 4px;
+            border-bottom: 1px dashed rgba(212,175,55,0.3);
+        }
+        .about-full { display: none; margin-top: 8px; }
+        .about-full.open { display: block; }
+
+        @media (max-width: 480px) {
+            .modal-window { padding: 20px 16px; }
+            .room-card-carousel, .event-card { flex: 0 0 90%; }
+            .top-nav .nav-links { font-size: 0.55rem; gap: 6px; }
+            .top-nav .nav-links a { padding: 2px 4px; }
+            .top-nav .login-icon { padding: 2px 6px; }
+            .top-nav .login-icon svg { width: 16px; height: 16px; }
+        }
     </style>
 </head>
 <body>
-    <div id="preloader"><div class="loader-ring"></div><div class="loader-logo">FreeDom</div></div>
-    <div class="container">
-        <div class="top-nav">
-            <div class="nav-links">
-                <a href="partners.html">Партнёрская программа</a>
-                <a href="profile.html">Личный кабинет</a>
-                <a href="purchases.html">Покупки</a>
-                <a href="admin.html">Админ-панель</a>
-            </div>
-            <a href="login.html" class="login-icon" id="loginIcon">
-                <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-            </a>
+
+<!-- ПРЕЛОАДЕР -->
+<div id="preloader">
+    <div class="loader-ring"></div>
+    <div class="loader-logo">FreeDom</div>
+</div>
+
+<div class="container">
+    <!-- ВЕРХНЯЯ НАВИГАЦИЯ -->
+    <div class="top-nav">
+        <div class="nav-links">
+            <a href="partners.html">Партнёрская программа</a>
+            <a href="profile.html">Личный кабинет</a>
+            <a href="purchases.html">Покупки</a>
         </div>
-        <div class="header">
-            <img src="images/logo.png" alt="FreeDom" class="logo">
-            <h1>🌿 <span>Free</span>Dom</h1>
-            <p>Космический центр развития · ЗОЖ · Сыроедение</p>
-        </div>
-        <section>
-            <h2>🚀 Наши номера</h2>
-            <div id="roomsCarousel" class="rooms-carousel"><div style="width:100%; text-align:center; padding:2rem; opacity:0.6;">Загрузка...</div></div>
-        </section>
-        <section>
-            <h2>🌌 Связь с нами</h2>
-            <div class="contact-links">
-                <a href="tel:+79630326011" class="contact-item"><img src="images/phone.png" alt="Телефон"><span>Телефон</span></a>
-                <a href="https://wa.me/79630326011" class="contact-item"><img src="images/whatsapp.png" alt="WhatsApp"><span>WhatsApp</span></a>
-                <a href="https://t.me/freedom_sochi" class="contact-item"><img src="images/telegram.png" alt="Telegram"><span>Telegram</span></a>
-                <a href="https://vk.ru/freedom_sochi" class="contact-item"><img src="images/vk.png" alt="VK"><span>VK</span></a>
-            </div>
-            <p style="text-align:center; opacity:0.4;">📍 Сочи, Мамайка, Теневой пер., 48</p>
-        </section>
-        <footer class="footer"><p>FreeDom — место для жизни, отдыха и развития ❤️</p></footer>
+        <a href="login.html" class="login-icon" id="loginIcon">
+            <svg viewBox="0 0 24 24">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                <polyline points="10 17 15 12 10 7"/>
+                <line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+        </a>
     </div>
-    <a href="#" id="floatingBooking">📅 Забронировать</a>
-    <div class="modal-overlay" id="bookingModal">
-        <div class="modal-window">
-            <button class="modal-close" id="bookingModalClose">&times;</button>
-            <img id="bookingModalImage" src="" alt="">
-            <h2 id="bookingModalTitle"></h2>
-            <div class="price" id="bookingModalPrice"></div>
-            <div class="description" id="bookingModalDesc"></div>
-            <form id="bookingModalForm">
-                <input type="hidden" id="bookingRoomId">
-                <input type="hidden" id="bookingRoomPrice">
-                <div class="field"><label>Количество гостей</label><input type="number" id="bookingGuestCount" min="1" max="10" value="1"></div>
-                <div class="field"><label>Ваше имя *</label><input type="text" id="bookingGuestNameModal" placeholder="Иван Петров" required></div>
-                <div class="field"><label>Телефон *</label><input type="tel" id="bookingGuestPhoneModal" placeholder="+7 999 123-45-67" required></div>
-                <div class="field"><label>Email</label><input type="email" id="bookingGuestEmailModal" placeholder="ivan@mail.ru"></div>
-                <div class="field"><label>Дата заезда *</label><input type="date" id="bookingCheckInModal" required></div>
-                <div class="field"><label>Дата выезда *</label><input type="date" id="bookingCheckOutModal" required></div>
-                <div id="bookingModalError" style="display:none; color:#ff6b6b;"></div>
-                <button type="submit" class="btn" id="bookingModalSubmit" style="width:100%; padding:14px; font-size:1.1rem;">Забронировать</button>
+
+    <!-- ШАПКА -->
+    <div class="header">
+        <img src="images/logo.png" alt="FreeDom" class="logo">
+        <h1>🌿 <span>Free</span>Dom</h1>
+        <p>Космический центр развития · ЗОЖ · Сыроедение</p>
+        <p style="font-size:0.9rem; opacity:0.5;">Живём одной семьёй, рады каждому</p>
+    </div>
+
+    <!-- О НАС -->
+    <section class="fade-section">
+        <h2>✨ О нас</h2>
+        <div class="room-card" style="padding:1.2rem; cursor:default;">
+            <p>
+                Мы — команда единомышленников, стремящихся к здоровому образу жизни. 
+                <span class="about-toggle" id="aboutToggle">Читать далее →</span>
+            </p>
+            <div class="about-full" id="aboutFull">
+                <p>На территории не едим мясо, не употребляем алкоголь, не курим, ограничиваем сахар. Ежедневно: кулинарные, спортивные, интеллектуальные и развлекательные мероприятия. Сад, бассейн, йога-зал, музыка, караоке, PlayStation, чайная. Есть баня (индивидуально или по четвергам/воскресеньям для проживающих).</p>
+                <p style="margin-top:0.5rem; font-style:italic; color:rgba(212,175,55,0.5);">«Относись к другим так, как хочешь, чтобы относились к тебе».</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== КАРУСЕЛЬ КОМНАТ ===== -->
+    <section class="fade-section">
+        <h2>🚀 Наши номера</h2>
+        <div id="roomsContainer">
+            <div class="rooms-carousel" id="roomsCarousel">
+                <!-- Комнаты будут загружены из Supabase -->
+                <div style="width:100%; text-align:center; padding:2rem; opacity:0.6;">Загрузка комнат...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== БАНЯ ===== -->
+    <section class="fade-section">
+        <h2>🔥 Баня</h2>
+        <div class="sauna-block" data-id="service1">
+            <img src="images/sauna.jpg" alt="Баня FreeDom">
+            <div class="content">
+                <p><strong style="color:#d4af37;">Индивидуально</strong> и <strong style="color:#d4af37;">для проживающих</strong> — баня доступна в любое время.</p>
+                <p style="margin-top:0.5rem; opacity:0.7;">Нажмите, чтобы узнать подробности →</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== МЕДИТАЦИЯ ===== -->
+    <section class="fade-section">
+        <h2>🧘 Медитация и осознанность</h2>
+        <div class="meditation-block">
+            <img src="images/meditation.jpg" alt="Медитация FreeDom">
+            <div class="content">
+                <p>Практики каждую неделю. 30 минут тишины помогают снять напряжение, улучшить сон и ясность ума. Для проживающих — раз в неделю <strong style="color:#d4af37;">бесплатно</strong>.</p>
+                <p style="margin-top:0.3rem; opacity:0.6;">Присоединяйтесь к нам в саду или йога-зале.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== СОБЫТИЯ ===== -->
+    <section class="fade-section">
+        <h2>📅 События</h2>
+        <div class="events-carousel" id="eventsCarousel">
+            <div class="event-card" data-id="event1">
+                <img src="images/gong-meditation.jpg" alt="Гонг-медитация">
+                <div class="content">
+                    <div class="date">📆 26 июля 2025 · 19:00</div>
+                    <h3>🔔 Гонг-медитация</h3>
+                    <div class="price">1500 ₽ / сеанс</div>
+                    <div class="desc">Глубокое расслабление под звуки гонга</div>
+                    <span class="btn-detail">Подробнее →</span>
+                </div>
+            </div>
+            <div class="event-card" data-id="event2">
+                <img src="images/tea-ceremony.jpg" alt="Чайная церемония">
+                <div class="content">
+                    <div class="date">📆 27 июля 2025 · 18:00</div>
+                    <h3>🍵 Чайная церемония</h3>
+                    <div class="price">1000 ₽ / перс.</div>
+                    <div class="desc">Душевные беседы за чашкой травяного чая</div>
+                    <span class="btn-detail">Подробнее →</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- СЛАДОСТИ -->
+    <section class="fade-section">
+        <h2>🍫 Наши сладости</h2>
+        <div class="sweets-grid">
+            <div class="sweet-item" data-id="sweet1">
+                <img src="images/chocolate1.jpg" alt="Шоколад с орехами">
+                <div class="name">Шоколад с орехами и клюквой</div>
+                <div class="price">—</div>
+            </div>
+            <div class="sweet-item" data-id="sweet2">
+                <img src="images/chocolate2.jpg" alt="Шоколад с мухомором">
+                <div class="name">Шоколад с красным мухомором</div>
+                <div class="price">—</div>
+            </div>
+            <div class="sweet-item" data-id="sweet3">
+                <img src="images/chocolate3.jpg" alt="Шоколад Ясность разума">
+                <div class="name">Шоколад «Ясность разума»</div>
+                <div class="price">—</div>
+            </div>
+            <div class="sweet-item" data-id="sweet4">
+                <img src="images/halva.jpg" alt="Халва">
+                <div class="name">Халва сыроедческая</div>
+                <div class="price">333 ₽</div>
+            </div>
+            <div class="sweet-item" data-id="sweet5">
+                <img src="images/honey.jpg" alt="Мёд">
+                <div class="name">Мёд луговой</div>
+                <div class="price">—</div>
+            </div>
+        </div>
+        <div style="font-size:0.9rem; opacity:0.4; margin-top:0.5rem;">* Нажмите на карточку для подробного описания</div>
+    </section>
+
+    <!-- МАСЛА -->
+    <section class="fade-section">
+        <div style="margin:1.5rem 0;">
+            <h3>Масла холодного отжима</h3>
+            <div>
+                <span class="oil-tag">Лён коричневый 700 ₽</span>
+                <span class="oil-tag">Лён золотой 800 ₽</span>
+                <span class="oil-tag">Подсолнечник 500 ₽</span>
+                <span class="oil-tag">Кунжут белый 800 ₽</span>
+                <span class="oil-tag">Чёрный тмин 800 ₽</span>
+                <span class="oil-tag">Миндальное 700 ₽</span>
+                <span class="oil-tag">Абрикос 700 ₽</span>
+                <span class="oil-tag">Расторопша 800 ₽</span>
+                <span class="oil-tag">Тыквенное 800 ₽</span>
+                <span class="oil-tag">Конопляное 750 ₽</span>
+            </div>
+        </div>
+        <a href="https://wa.me/79630326011?text=Здравствуйте! Хочу заказать еду из вашего меню" class="btn btn-wa btn-block">📱 Заказать еду в WhatsApp</a>
+    </section>
+
+    <!-- ОТЗЫВЫ -->
+    <section class="fade-section">
+        <h2>💬 Отзывы</h2>
+        <div class="review-card">
+            <div class="author">Сергей Огородник</div>
+            <div class="text">«Отличное место! Живу тут уже 2 недели и рад, что нашел единомышленников. Очень душевное и уникальное место!»</div>
+            <div class="date">июнь 2025</div>
+        </div>
+        <div class="review-card">
+            <div class="author">Алёна Белослудцева</div>
+            <div class="text">«Хорошее место, где можно помедитировать и отдохнуть, есть баня. Так же проходит чайная церемония и есть возможность уединиться.»</div>
+            <div class="date">май 2025</div>
+        </div>
+        <div class="review-card">
+            <div class="author">Ринкус Мария</div>
+            <div class="text">«Обожаю Фридом! Всегда туда приезжаю. Мое место восстановления! Если хотите баню, бассейн, практики, релакс, оздоровление, интересные беседы за камином — рекомендую обязательно. За такие цены лучше не найдете.»</div>
+            <div class="date">май 2025</div>
+        </div>
+        <div class="review-card">
+            <div class="author">Максим Р.</div>
+            <div class="text">«FreeDom по-настоящему Дом Свободы... Любовь окрыляет, музыка вечна, вибрации бесконечны.»</div>
+            <div class="date">май 2025</div>
+        </div>
+
+        <div class="form-card review-form">
+            <p style="margin-bottom:1rem; opacity:0.6;">Оставьте свой отзыв о FreeDom — он появится на сайте!</p>
+            <form id="reviewForm" action="https://formspree.io/f/xpqgkzgo" method="POST">
+                <div class="field">
+                    <label>Ваше имя</label>
+                    <input type="text" name="name" placeholder="Анна" required>
+                </div>
+                <div class="field">
+                    <label>Текст отзыва</label>
+                    <textarea name="review" rows="3" placeholder="Поделитесь впечатлениями..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-block">Отправить отзыв</button>
             </form>
-            <div id="bookingModalSuccess" style="display:none; text-align:center; padding:1rem; color:#25D366;">✅ Бронирование создано!</div>
+            <div id="reviewSuccess" class="success" style="display:none;">✅ Спасибо! Ваш отзыв опубликован.</div>
+        </div>
+    </section>
+
+    <!-- СТАРАЯ ФОРМА БРОНИРОВАНИЯ (для совместимости) -->
+    <section class="fade-section">
+        <h2>📅 Забронировать номер</h2>
+        <div class="form-card" id="bookingAnchor">
+            <p style="margin-bottom:1.2rem; opacity:0.6;">Заполните форму, и мы свяжемся с вами в течение часа.</p>
+            <form id="bookingForm" action="https://formspree.io/f/xpqgkzgo" method="POST">
+                <div class="field">
+                    <label>Тип номера *</label>
+                    <select name="room_type" required>
+                        <option value="">Выберите...</option>
+                        <option value="family">Семейная комната</option>
+                        <option value="balcony">Двухместный с балконом</option>
+                        <option value="attic">Мансардная комната</option>
+                        <option value="bungalow">Бунгало в саду</option>
+                        <option value="balcony_bed">Спальное место на балконе</option>
+                        <option value="hostel_standart">Хостел стандарт</option>
+                        <option value="hostel_economy">Хостел эконом</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Дата заезда *</label>
+                    <input type="date" name="checkin" required>
+                </div>
+                <div class="field">
+                    <label>Дата выезда *</label>
+                    <input type="date" name="checkout" required>
+                </div>
+                <div class="field">
+                    <label>Количество взрослых *</label>
+                    <input type="number" name="adults" min="1" max="10" value="2" required>
+                </div>
+                <div class="field">
+                    <label>Дети до 10 лет</label>
+                    <select name="children">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Ваше имя *</label>
+                    <input type="text" name="name" placeholder="Иван Петров" required>
+                </div>
+                <div class="field">
+                    <label>Телефон *</label>
+                    <input type="tel" name="phone" placeholder="+7 999 123-45-67" required>
+                </div>
+                <div class="field">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="ivan@mail.ru">
+                </div>
+                <div class="field">
+                    <label>Дополнительные пожелания</label>
+                    <textarea name="notes" placeholder="Кроватка, поздний заезд, вегетарианское питание, баня..."></textarea>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" name="consent" id="consent" value="yes" required>
+                    <label for="consent">Я согласен получать информацию о событиях и спецпредложениях FreeDom</label>
+                </div>
+                <div class="field">
+                    <label>Откуда узнали о нас?</label>
+                    <select name="source">
+                        <option value="vk">VK</option>
+                        <option value="friends">От друзей</option>
+                        <option value="maps">Яндекс.Карты</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-submit">Отправить заявку</button>
+                <div class="small-note">Нажимая «Отправить», вы соглашаетесь на обработку данных</div>
+            </form>
+            <div id="successMessage" class="success">✅ Спасибо!<br>Мы свяжемся с вами в ближайшее время.</div>
+        </div>
+    </section>
+
+    <!-- КОНТАКТЫ -->
+    <section class="fade-section">
+        <h2>🌌 Связь с нами</h2>
+        <div class="contact-links">
+            <a href="tel:+79630326011" class="contact-item"><img src="images/phone.png" alt="Телефон"><span>Телефон</span></a>
+            <a href="https://wa.me/79630326011" class="contact-item"><img src="images/whatsapp.png" alt="WhatsApp"><span>WhatsApp</span></a>
+            <a href="https://t.me/freedom_sochi" class="contact-item"><img src="images/telegram.png" alt="Telegram"><span>Telegram</span></a>
+            <a href="https://vk.ru/freedom_sochi" class="contact-item"><img src="images/vk.png" alt="VK"><span>VK</span></a>
+        </div>
+        <p style="text-align:center; opacity:0.4;">📍 Сочи, Мамайка, Теневой пер., 48</p>
+    </section>
+
+    <!-- КАРТА -->
+    <section class="fade-section">
+        <h2>🗺️ Как нас найти</h2>
+        <div class="map-container">
+            <iframe src="https://yandex.ru/map-widget/v1/org/freedom/161345577891/gallery/?ll=39.707703%2C43.651800&z=19.33" 
+                    width="100%" 
+                    height="200" 
+                    frameborder="0" 
+                    allowfullscreen="true" 
+                    style="border-radius: 16px; border: 1px solid rgba(255,255,255,0.06);">
+            </iframe>
+        </div>
+        <div class="map-text">
+            <p><strong>📍 Адрес:</strong> Сочи, Мамайка, Теневой пер., 48</p>
+            <p><strong>🚕 Как добраться:</strong><br>
+            — Остановка «Теневой пер.»: маршрут № 37 от ж/д вокзала (остановка у маг. «Вкус Вилл»), 20 мин. в пути, далее пешком 20 мин.<br>
+            — Лучше на такси от центра Сочи до FreeDom — 10 минут.</p>
+            <p style="opacity:0.6; font-size:0.9rem; margin-top:4px;">
+                <a href="https://yandex.ru/maps/org/freedom/161345577891/" target="_blank" style="color:#d4af37; text-decoration:none; border-bottom:1px dashed rgba(212,175,55,0.3);">Открыть карту в Яндекс.Картах →</a>
+            </p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>FreeDom — место для жизни, отдыха и развития ❤️</p>
+        <p style="font-size:0.8rem; opacity:0.3;">На территории действуют правила ЗОЖ: без мяса, алкоголя, курения.</p>
+    </footer>
+</div>
+
+<!-- ПЛАВАЮЩАЯ КНОПКА БРОНИРОВАНИЯ -->
+<a href="#bookingAnchor" id="floatingBooking">📅 Забронировать</a>
+
+<!-- МОДАЛЬНОЕ ОКНО (для бронирования комнаты) -->
+<div class="modal-overlay" id="bookingModal">
+    <div class="modal-window">
+        <button class="modal-close" id="bookingModalClose">&times;</button>
+        <img id="bookingModalImage" src="" alt="">
+        <h2 id="bookingModalTitle"></h2>
+        <div class="price" id="bookingModalPrice"></div>
+        <div class="description" id="bookingModalDesc"></div>
+        <form id="bookingModalForm">
+            <input type="hidden" id="bookingRoomId" name="room_id">
+            <input type="hidden" id="bookingRoomPrice" name="room_price">
+            <input type="hidden" id="bookingRoomName" name="room_name">
+
+            <div class="field">
+                <label for="bookingGuestCount">Количество гостей</label>
+                <input type="number" id="bookingGuestCount" min="1" max="10" value="1">
+            </div>
+
+            <div class="field">
+                <label>Дополнительные услуги</label>
+                <div id="servicesContainer">
+                    <!-- Загружаются из Supabase -->
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="bookingGuestNameModal">Ваше имя *</label>
+                <input type="text" id="bookingGuestNameModal" placeholder="Иван Петров" required>
+            </div>
+            <div class="field">
+                <label for="bookingGuestPhoneModal">Телефон *</label>
+                <input type="tel" id="bookingGuestPhoneModal" placeholder="+7 999 123-45-67" required>
+            </div>
+            <div class="field">
+                <label for="bookingGuestEmailModal">Email</label>
+                <input type="email" id="bookingGuestEmailModal" placeholder="ivan@mail.ru">
+            </div>
+            <div class="field">
+                <label for="bookingCheckInModal">Дата заезда *</label>
+                <input type="date" id="bookingCheckInModal" required>
+            </div>
+            <div class="field">
+                <label for="bookingCheckOutModal">Дата выезда *</label>
+                <input type="date" id="bookingCheckOutModal" required>
+            </div>
+
+            <div id="bookingModalError" class="error-msg" style="display:none; color:#ff6b6b;"></div>
+            <button type="submit" class="btn btn-block" id="bookingModalSubmit">Забронировать</button>
+        </form>
+        <div id="bookingModalSuccess" style="display:none; text-align:center; padding:1rem; color:#25D366;">
+            ✅ Бронирование создано! Мы свяжемся с вами.
         </div>
     </div>
-    <script>
-        const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</div>
 
-        // ===== ЗАГРУЗКА КОМНАТ (ПРЯМЫЕ ССЫЛКИ НА GITHUB) =====
-        async function loadRooms() {
-            const container = document.getElementById('roomsCarousel');
-            try {
-                const { data, error } = await supabase.from('rooms').select('*').order('name');
-                if (error) throw error;
-                if (!data || data.length === 0) {
-                    container.innerHTML = '<div style="width:100%; text-align:center; padding:2rem; opacity:0.6;">Комнат пока нет</div>';
-                    return;
-                }
-                let html = '';
-                data.forEach(room => {
-                    let imageUrl = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(room.name);
-                    if (room.image_url) {
-                        const fileName = room.image_url.replace('images/', '');
-                        imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
-                    }
-                    html += `
-                        <div class="room-card-carousel" data-room='${JSON.stringify(room)}'>
-                            <img src="${imageUrl}" alt="${room.name}" onerror="this.src='https://placehold.co/600x400/1a1a2e/d4af37?text=${encodeURIComponent(room.name)}'">
-                            <div class="content">
-                                <h3>${room.name}</h3>
-                                <div class="price">${room.price_per_night} ₽/ночь</div>
-                                <div class="desc">${room.description || ''}</div>
-                                <span class="btn-detail">Подробнее →</span>
-                            </div>
+<!-- МУЗЫКА -->
+<audio id="bgMusic" autoplay loop muted>
+    <source src="images/music.mp3" type="audio/mpeg">
+</audio>
+<div id="musicToggle">🔇</div>
+
+<script>
+    // ===== ПОДКЛЮЧЕНИЕ К SUPABASE =====
+    const SUPABASE_URL = 'https://vutmbhsclmcfqqlzxqkc.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ===== ЗАГРУЗКА КОМНАТ =====
+    async function loadRooms() {
+        const container = document.getElementById('roomsCarousel');
+        try {
+            const { data, error } = await supabase
+                .from('rooms')
+                .select('*')
+                .order('name');
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div style="width:100%; text-align:center; padding:2rem; opacity:0.6;">Комнат пока нет</div>';
+                return;
+            }
+
+            let html = '';
+            data.forEach(room => {
+                const imageUrl = room.image_url || 'images/placeholder.jpg';
+                html += `
+                    <div class="room-card-carousel" data-room='${JSON.stringify(room)}'>
+                        <img src="${imageUrl}" alt="${room.name}">
+                        <div class="content">
+                            <h3>${room.name}</h3>
+                            <div class="price">${room.price_per_night} ₽/ночь</div>
+                            <div class="desc">${room.description || ''}</div>
+                            <span class="btn-detail">Подробнее →</span>
                         </div>
-                    `;
-                });
-                container.innerHTML = html;
-                document.querySelectorAll('.room-card-carousel').forEach(card => {
-                    card.addEventListener('click', function(e) {
-                        if (e.target.classList.contains('btn-detail')) return;
-                        const room = JSON.parse(this.dataset.room);
-                        openBookingModal(room);
-                    });
-                    card.querySelector('.btn-detail').addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const room = JSON.parse(card.dataset.room);
-                        openBookingModal(room);
-                    });
-                });
-            } catch (error) {
-                console.error('Ошибка загрузки комнат:', error);
-                container.innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
-            }
-        }
-
-        // ===== МОДАЛЬНОЕ ОКНО =====
-        function openBookingModal(room) {
-            supabase.auth.getSession().then(({ data }) => {
-                if (!data.session) {
-                    alert('Для бронирования необходимо войти в аккаунт.');
-                    window.location.href = 'login.html';
-                    return;
-                }
-                let imageUrl = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(room.name);
-                if (room.image_url) {
-                    const fileName = room.image_url.replace('images/', '');
-                    imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
-                }
-                document.getElementById('bookingModalImage').src = imageUrl;
-                document.getElementById('bookingModalImage').onerror = function() {
-                    this.src = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(room.name);
-                };
-                document.getElementById('bookingModalTitle').textContent = room.name;
-                document.getElementById('bookingModalPrice').textContent = room.price_per_night + ' ₽/ночь';
-                document.getElementById('bookingModalDesc').textContent = room.description || '';
-                document.getElementById('bookingRoomId').value = room.id;
-                document.getElementById('bookingRoomPrice').value = room.price_per_night;
-                const user = data.session.user;
-                const displayName = user.user_metadata?.display_name || '';
-                if (displayName) document.getElementById('bookingGuestNameModal').value = displayName;
-                if (user.email) document.getElementById('bookingGuestEmailModal').value = user.email;
-                document.getElementById('bookingGuestPhoneModal').value = '';
-                document.getElementById('bookingGuestCount').value = 1;
-                document.getElementById('bookingCheckInModal').value = '';
-                document.getElementById('bookingCheckOutModal').value = '';
-                document.getElementById('bookingModalError').style.display = 'none';
-                document.getElementById('bookingModalSuccess').style.display = 'none';
-                document.getElementById('bookingModal').classList.add('active');
-                document.body.style.overflow = 'hidden';
+                    </div>
+                `;
             });
-        }
+            container.innerHTML = html;
 
-        function closeBookingModal() {
-            document.getElementById('bookingModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        document.getElementById('bookingModalClose').addEventListener('click', closeBookingModal);
-        document.getElementById('bookingModal').addEventListener('click', function(e) { if (e.target === this) closeBookingModal(); });
-
-        document.getElementById('bookingModalForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const roomId = document.getElementById('bookingRoomId').value;
-            const roomPrice = parseInt(document.getElementById('bookingRoomPrice').value);
-            const guestName = document.getElementById('bookingGuestNameModal').value.trim();
-            const guestPhone = document.getElementById('bookingGuestPhoneModal').value.trim();
-            const guestEmail = document.getElementById('bookingGuestEmailModal').value.trim();
-            const checkIn = document.getElementById('bookingCheckInModal').value;
-            const checkOut = document.getElementById('bookingCheckOutModal').value;
-            const guestCount = parseInt(document.getElementById('bookingGuestCount').value) || 1;
-
-            if (!guestName || !guestPhone || !checkIn || !checkOut) {
-                document.getElementById('bookingModalError').textContent = 'Заполните все поля.';
-                document.getElementById('bookingModalError').style.display = 'block';
-                return;
-            }
-            const checkInDate = new Date(checkIn);
-            const checkOutDate = new Date(checkOut);
-            if (checkOutDate <= checkInDate) {
-                document.getElementById('bookingModalError').textContent = 'Дата выезда должна быть позже.';
-                document.getElementById('bookingModalError').style.display = 'block';
-                return;
-            }
-            const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
-            const totalAmount = roomPrice * nights;
-
-            // Проверка дат
-            const { data: existing, error: checkError } = await supabase
-                .from('bookings')
-                .select('check_in_date, check_out_date')
-                .eq('room_id', roomId)
-                .eq('status', 'активна')
-                .or(`check_in_date.lte.${checkOut},check_out_date.gte.${checkIn}`);
-            if (!checkError && existing && existing.length > 0) {
-                document.getElementById('bookingModalError').textContent = '❌ Комната занята в эти даты.';
-                document.getElementById('bookingModalError').style.display = 'block';
-                return;
-            }
-
-            const session = await supabase.auth.getSession();
-            const userId = session.data.session?.user?.id || null;
-            try {
-                await supabase.from('bookings').insert({
-                    room_id: roomId, user_id: userId, guest_name: guestName, guest_phone: guestPhone,
-                    guest_email: guestEmail || null, guest_count: guestCount, check_in_date: checkIn,
-                    check_out_date: checkOut, total_amount: totalAmount, status: 'новое'
+            // Обработчики кликов
+            document.querySelectorAll('.room-card-carousel').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('btn-detail')) return;
+                    const room = JSON.parse(this.dataset.room);
+                    openBookingModal(room);
                 });
-                document.getElementById('bookingModalForm').style.display = 'none';
-                document.getElementById('bookingModalSuccess').style.display = 'block';
-                setTimeout(() => { closeBookingModal(); document.getElementById('bookingModalForm').style.display = 'block'; }, 3000);
-            } catch (error) {
-                document.getElementById('bookingModalError').textContent = 'Ошибка: ' + error.message;
-                document.getElementById('bookingModalError').style.display = 'block';
+                card.querySelector('.btn-detail').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const room = JSON.parse(card.dataset.room);
+                    openBookingModal(room);
+                });
+            });
+
+        } catch (error) {
+            console.error('Ошибка загрузки комнат:', error);
+            container.innerHTML = '<div style="width:100%; text-align:center; padding:2rem; color:#ff6b6b;">Ошибка загрузки комнат</div>';
+        }
+    }
+
+    // ===== ЗАГРУЗКА УСЛУГ =====
+    async function loadServices() {
+        const container = document.getElementById('servicesContainer');
+        try {
+            const { data, error } = await supabase
+                .from('services')
+                .select('*')
+                .order('name');
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div style="opacity:0.4;">Услуги не добавлены</div>';
+                return;
+            }
+
+            let html = '';
+            data.forEach(service => {
+                html += `
+                    <div class="service-item">
+                        <input type="checkbox" class="service-checkbox" data-id="${service.id}" data-price="${service.price}" data-name="${service.name}">
+                        <label>${service.name} (${service.price} ₽)</label>
+                        <input type="number" class="service-quantity" data-id="${service.id}" min="0" max="10" value="0" style="width:60px; padding:4px; border:1px solid rgba(255,255,255,0.08); border-radius:8px; background:rgba(255,255,255,0.04); color:#eae6f0;">
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            // Синхронизация чекбоксов и количества
+            document.querySelectorAll('.service-checkbox').forEach(cb => {
+                cb.addEventListener('change', function() {
+                    const qty = this.closest('.service-item').querySelector('.service-quantity');
+                    qty.value = this.checked ? 1 : 0;
+                });
+            });
+            document.querySelectorAll('.service-quantity').forEach(qty => {
+                qty.addEventListener('input', function() {
+                    const cb = this.closest('.service-item').querySelector('.service-checkbox');
+                    cb.checked = parseInt(this.value) > 0;
+                });
+            });
+
+        } catch (error) {
+            console.error('Ошибка загрузки услуг:', error);
+            container.innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки услуг</div>';
+        }
+    }
+
+    // ===== МОДАЛЬНОЕ ОКНО =====
+    const bookingModal = document.getElementById('bookingModal');
+    const bookingModalClose = document.getElementById('bookingModalClose');
+    const bookingModalImage = document.getElementById('bookingModalImage');
+    const bookingModalTitle = document.getElementById('bookingModalTitle');
+    const bookingModalPrice = document.getElementById('bookingModalPrice');
+    const bookingModalDesc = document.getElementById('bookingModalDesc');
+    const bookingRoomId = document.getElementById('bookingRoomId');
+    const bookingRoomPrice = document.getElementById('bookingRoomPrice');
+    const bookingRoomName = document.getElementById('bookingRoomName');
+    const bookingGuestCount = document.getElementById('bookingGuestCount');
+    const bookingGuestName = document.getElementById('bookingGuestNameModal');
+    const bookingGuestPhone = document.getElementById('bookingGuestPhoneModal');
+    const bookingGuestEmail = document.getElementById('bookingGuestEmailModal');
+    const bookingCheckIn = document.getElementById('bookingCheckInModal');
+    const bookingCheckOut = document.getElementById('bookingCheckOutModal');
+    const bookingModalSubmit = document.getElementById('bookingModalSubmit');
+    const bookingModalError = document.getElementById('bookingModalError');
+    const bookingModalSuccess = document.getElementById('bookingModalSuccess');
+    const bookingModalForm = document.getElementById('bookingModalForm');
+
+    function openBookingModal(room) {
+        supabase.auth.getSession().then(({ data }) => {
+            if (!data.session) {
+                alert('Для бронирования необходимо войти в аккаунт.');
+                window.location.href = 'login.html';
+                return;
+            }
+            bookingModalImage.src = room.image_url || 'images/placeholder.jpg';
+            bookingModalTitle.textContent = room.name;
+            bookingModalPrice.textContent = room.price_per_night + ' ₽/ночь';
+            bookingModalDesc.textContent = room.description || '';
+            bookingRoomId.value = room.id;
+            bookingRoomPrice.value = room.price_per_night;
+            bookingRoomName.value = room.name;
+
+            // Подгружаем услуги, если не загружены
+            if (!document.getElementById('servicesContainer').children.length) {
+                loadServices();
+            }
+
+            // Подставляем данные пользователя
+            const user = data.session.user;
+            const displayName = user.user_metadata?.display_name || '';
+            if (displayName) bookingGuestName.value = displayName;
+            if (user.email) bookingGuestEmail.value = user.email;
+            bookingGuestPhone.value = '';
+            bookingGuestCount.value = 1;
+            bookingCheckIn.value = '';
+            bookingCheckOut.value = '';
+            bookingModalError.style.display = 'none';
+            bookingModalSuccess.style.display = 'none';
+            bookingModalForm.style.display = 'block';
+            bookingModalSubmit.style.display = 'block';
+            bookingModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    function closeBookingModal() {
+        bookingModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    bookingModalClose.addEventListener('click', closeBookingModal);
+    bookingModal.addEventListener('click', function(e) {
+        if (e.target === bookingModal) closeBookingModal();
+    });
+
+    // ===== ОТПРАВКА БРОНИРОВАНИЯ =====
+    bookingModalForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        bookingModalError.style.display = 'none';
+        bookingModalSuccess.style.display = 'none';
+        bookingModalSubmit.disabled = true;
+        bookingModalSubmit.textContent = 'Отправка...';
+
+        const roomId = bookingRoomId.value;
+        const roomPrice = parseInt(bookingRoomPrice.value);
+        const guestName = bookingGuestName.value.trim();
+        const guestPhone = bookingGuestPhone.value.trim();
+        const guestEmail = bookingGuestEmail.value.trim();
+        const checkIn = bookingCheckIn.value;
+        const checkOut = bookingCheckOut.value;
+        const guestCount = parseInt(bookingGuestCount.value) || 1;
+
+        if (!guestName || !guestPhone || !checkIn || !checkOut) {
+            bookingModalError.textContent = 'Заполните имя, телефон и даты.';
+            bookingModalError.style.display = 'block';
+            bookingModalSubmit.disabled = false;
+            bookingModalSubmit.textContent = 'Забронировать';
+            return;
+        }
+
+        const checkInDate = new Date(checkIn);
+        const checkOutDate = new Date(checkOut);
+        if (checkOutDate <= checkInDate) {
+            bookingModalError.textContent = 'Дата выезда должна быть позже даты заезда.';
+            bookingModalError.style.display = 'block';
+            bookingModalSubmit.disabled = false;
+            bookingModalSubmit.textContent = 'Забронировать';
+            return;
+        }
+        const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+
+        // Собираем услуги
+        const services = [];
+        document.querySelectorAll('.service-checkbox').forEach(cb => {
+            if (cb.checked) {
+                const qtyInput = cb.closest('.service-item').querySelector('.service-quantity');
+                const qty = parseInt(qtyInput.value) || 1;
+                services.push({
+                    service_id: cb.dataset.id,
+                    name: cb.dataset.name,
+                    price: parseInt(cb.dataset.price),
+                    quantity: qty
+                });
             }
         });
 
-        window.addEventListener('load', function() {
-            document.getElementById('preloader').classList.add('hide');
-            document.body.classList.add('loaded');
+        let totalAmount = roomPrice * nights;
+        services.forEach(s => {
+            totalAmount += s.price * s.quantity;
         });
-        document.addEventListener('DOMContentLoaded', loadRooms);
-    </script>
+
+        const session = await supabase.auth.getSession();
+        const userId = session.data.session?.user?.id || null;
+
+        try {
+            const { error } = await supabase
+                .from('bookings')
+                .insert({
+                    room_id: roomId,
+                    user_id: userId,
+                    guest_name: guestName,
+                    guest_phone: guestPhone,
+                    guest_email: guestEmail || null,
+                    guest_count: guestCount,
+                    check_in_date: checkIn,
+                    check_out_date: checkOut,
+                    services: services,
+                    total_amount: totalAmount,
+                    status: 'новое'
+                });
+
+            if (error) throw error;
+
+            bookingModalForm.style.display = 'none';
+            bookingModalSubmit.style.display = 'none';
+            bookingModalSuccess.style.display = 'block';
+
+            setTimeout(() => {
+                closeBookingModal();
+                bookingModalForm.style.display = 'block';
+                bookingModalSubmit.style.display = 'block';
+                bookingModalSuccess.style.display = 'none';
+                bookingModalSubmit.disabled = false;
+                bookingModalSubmit.textContent = 'Забронировать';
+            }, 3000);
+
+        } catch (error) {
+            console.error('Ошибка бронирования:', error);
+            bookingModalError.textContent = 'Ошибка: ' + error.message;
+            bookingModalError.style.display = 'block';
+            bookingModalSubmit.disabled = false;
+            bookingModalSubmit.textContent = 'Забронировать';
+        }
+    });
+
+    // ===== ПРЕЛОАДЕР =====
+    window.addEventListener('load', function() {
+        document.getElementById('preloader').classList.add('hide');
+        document.body.classList.add('loaded');
+    });
+
+    // ===== АНИМАЦИЯ ПОЯВЛЕНИЯ =====
+    const sections = document.querySelectorAll('.fade-section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+    sections.forEach(section => observer.observe(section));
+
+    // ===== СВОРАЧИВАНИЕ ТЕКСТА О НАС =====
+    document.getElementById('aboutToggle').addEventListener('click', function(e) {
+        e.stopPropagation();
+        const full = document.getElementById('aboutFull');
+        full.classList.toggle('open');
+        this.textContent = full.classList.contains('open') ? 'Свернуть ↑' : 'Читать далее →';
+    });
+
+    // ===== ФОРМА ОТЗЫВОВ =====
+    const reviewForm = document.getElementById('reviewForm');
+    const reviewSuccess = document.getElementById('reviewSuccess');
+    reviewForm.addEventListener('submit', function(e) {
+        setTimeout(() => {
+            reviewSuccess.style.display = 'block';
+            reviewForm.style.display = 'none';
+        }, 500);
+    });
+
+    // ===== МУЗЫКА =====
+    const audio = document.getElementById('bgMusic');
+    const toggleBtn = document.getElementById('musicToggle');
+    let isPlaying = false;
+    document.addEventListener('click', function firstClick() {
+        audio.muted = false;
+        audio.play().then(() => {
+            isPlaying = true;
+            toggleBtn.textContent = '🔊';
+        }).catch(() => {});
+        document.removeEventListener('click', firstClick);
+    }, { once: true });
+    toggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (isPlaying) {
+            audio.pause();
+            toggleBtn.textContent = '🔇';
+            isPlaying = false;
+        } else {
+            audio.play().then(() => {
+                toggleBtn.textContent = '🔊';
+                isPlaying = true;
+            }).catch(() => {});
+        }
+    });
+
+    // ===== АВТОРИЗАЦИЯ ДЛЯ ИКОНКИ ВХОДА =====
+    supabase.auth.getSession().then(({ data }) => {
+        const loginIcon = document.getElementById('loginIcon');
+        if (data.session) {
+            loginIcon.href = 'profile.html';
+        }
+    });
+
+    // Загружаем комнаты при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        loadRooms();
+        loadServices();
+    });
+</script>
 </body>
 </html>
