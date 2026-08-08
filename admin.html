@@ -135,7 +135,7 @@
                 </div>
             </div>
             <div class="card">
-                <h3>📌 Последние аренды</h3>
+                <h3>📌 Активные аренды</h3> <!-- изменён заголовок -->
                 <div id="recentBookings"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
             </div>
             <div class="card">
@@ -171,7 +171,7 @@
                 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:1rem;">
                     <select id="filterBookingStatus" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:8px 12px; color:#eae6f0;">
                         <option value="all">Все статусы</option>
-                        <option value="подтверждено">Активные</option>
+                        <option value="подтверждено" selected>Активные</option> <!-- selected по умолчанию -->
                         <option value="завершена">Завершённые</option>
                         <option value="долг">С долгом</option>
                         <option value="отменена">Отменённые</option>
@@ -432,7 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
         await loadGuests();
         await loadCurrentGuests();
         await loadRooms();
-        await loadBookings('all');
+        await loadBookings('подтверждено'); // ← по умолчанию активные
         await loadServicesList();
         await loadStats();
         await loadRecentBookings();
@@ -454,6 +454,11 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById(tabId).classList.add('active');
             if (tabId === 'tabCalendar') loadCalendar();
             if (tabId === 'tabFinance') loadFinance();
+            // При переключении на вкладку "Аренды" загружаем данные с текущим фильтром
+            if (tabId === 'tabBookings') {
+                const status = document.getElementById('filterBookingStatus').value;
+                loadBookings(status);
+            }
         });
     });
 
@@ -487,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ===== ПРОЖИВАЮЩИЕ СЕЙЧАС (исправлено: статус "подтверждено") =====
+    // ===== ПРОЖИВАЮЩИЕ СЕЙЧАС =====
     async function loadCurrentGuests() {
         try {
             const today = new Date().toISOString().split('T')[0];
@@ -541,7 +546,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const { data, error } = await supabase.from('rooms').select('*').order('name');
             if (error) throw error;
             
-            // Заполняем селект для аренды
             const select = document.getElementById('bookingRoomId');
             select.innerHTML = '<option value="">Выберите...</option>';
             if (data) {
@@ -559,7 +563,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ================================================================
-    // ===== АРЕНДЫ (исправлен фильтр) =====
+    // ===== АРЕНДЫ =====
     async function loadBookings(filterStatus) {
         try {
             let query = supabase
@@ -690,7 +694,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== НОВАЯ АРЕНДА =====
     async function loadBookingUsersAndRooms() {
         try {
-            // Загружаем пользователей
             const { data: users, error: userError } = await supabase
                 .from('users')
                 .select('user_id, Display_name, Email')
@@ -706,7 +709,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
 
-            // Загружаем услуги
             const { data: services, error: serviceError } = await supabase
                 .from('services')
                 .select('id, name, price')
@@ -727,7 +729,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Авто-расчёт стоимости
     document.getElementById('bookingRoomId').addEventListener('change', function() {
         const price = this.options[this.selectedIndex]?.dataset?.price || 0;
         document.getElementById('bookingPricePerNight').value = price;
@@ -826,7 +827,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (bookingError) throw bookingError;
 
-            // Добавляем услуги
             const servicesSelect = document.getElementById('bookingServices');
             const selectedServices = Array.from(servicesSelect.selectedOptions);
             if (selectedServices.length > 0 && booking && booking.length > 0) {
@@ -867,7 +867,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ================================================================
-    // ===== КАЛЕНДАРЬ (исправлен) =====
+    // ===== КАЛЕНДАРЬ =====
     let calendarDate = new Date();
 
     async function loadCalendar() {
@@ -891,7 +891,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (error) throw error;
 
-            // Группируем по дням
             const roomBookings = {};
             if (bookings) {
                 bookings.forEach(b => {
@@ -905,7 +904,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
 
-            // Строим сетку
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -1009,19 +1007,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ================================================================
-    // ===== ПОСЛЕДНИЕ АРЕНДЫ =====
+    // ===== АКТИВНЫЕ АРЕНДЫ (блок на дашборде) =====
     async function loadRecentBookings() {
         try {
             const { data, error } = await supabase
                 .from('bookings')
                 .select('*, rooms(name), users(Display_name)')
+                .eq('status', 'подтверждено')   // только активные
                 .order('created_at', { ascending: false })
                 .limit(5);
 
             if (error) throw error;
             const container = document.getElementById('recentBookings');
             if (!data || data.length === 0) {
-                container.innerHTML = '<div style="text-align:center; opacity:0.4;">Нет аренд</div>';
+                container.innerHTML = '<div style="text-align:center; opacity:0.4;">Нет активных аренд</div>';
                 return;
             }
 
@@ -1040,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             container.innerHTML = html;
         } catch (error) {
-            console.error('Ошибка загрузки последних аренд:', error);
+            console.error('Ошибка загрузки активных аренд:', error);
             document.getElementById('recentBookings').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
         }
     }
@@ -1084,7 +1083,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ================================================================
-    // ===== ФИНАНСЫ (исправлено: created_at) =====
+    // ===== ФИНАНСЫ =====
     async function loadFinance(fromDate, toDate) {
         try {
             let query = supabase
@@ -1280,7 +1279,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ===== ДОБАВЛЕНИЕ СУЩЕСТВУЮЩЕГО ПОЛЬЗОВАТЕЛЯ =====
     document.getElementById('addExistingUserBtn').addEventListener('click', async function() {
         const userId = document.getElementById('existingUserSelect').value;
         const msg = document.getElementById('addGuestModalMessage');
@@ -1301,7 +1299,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 .eq('user_id', userId)
                 .single();
 
-            // Переключаемся на вкладку "Новая аренда" и заполняем поля
             document.querySelectorAll('#mainTabs .tab-link').forEach(t => t.classList.remove('active'));
             document.querySelector('[data-tab="tabNewBooking"]').classList.add('active');
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -1327,7 +1324,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ===== СОЗДАНИЕ НОВОГО ПОЛЬЗОВАТЕЛЯ =====
     document.getElementById('saveNewUserBtn').addEventListener('click', async function() {
         const displayName = document.getElementById('newUserName').value.trim();
         const email = document.getElementById('newUserEmail').value.trim();
