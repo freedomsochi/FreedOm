@@ -70,7 +70,7 @@
     <div class="header">
         <a href="index.html" class="back-link">← На главную</a>
         <h1>⚙️ Админ-панель</h1>
-        <p>Управление гостями, комнатами и бронированиями</p>
+        <p>Управление гостями и комнатами</p>
         <div class="admin-badge" id="adminBadge">🔒 Администратор</div>
     </div>
 
@@ -80,60 +80,36 @@
     </div>
 
     <div id="adminContent" style="display:none;">
-
-        <!-- НАВИГАЦИЯ ПО ВКЛАДКАМ -->
-        <div class="tab-nav" id="mainTabs">
-            <span class="tab-link active" data-tab="tabDashboard">📊 Обзор</span>
-            <span class="tab-link" data-tab="tabGuests">👥 Гости</span>
-            <span class="tab-link" data-tab="tabRooms">🛏️ Комнаты</span>
-            <span class="tab-link" data-tab="tabBookings">📅 Бронирования</span>
-        </div>
-
-        <!-- ===== ОБЗОР ===== -->
-        <div id="tabDashboard" class="tab-content active">
-            <div class="card">
-                <h3>📊 Статистика</h3>
-                <div class="stat-grid">
-                    <div class="stat-item"><span class="number" id="totalUsers">0</span><div class="label">Гостей</div></div>
-                    <div class="stat-item"><span class="number" id="totalRooms">0</span><div class="label">Комнат</div></div>
-                    <div class="stat-item"><span class="number" id="totalBookings">0</span><div class="label">Бронирований</div></div>
-                </div>
+        <!-- СТАТИСТИКА -->
+        <div class="card">
+            <h3>📊 Статистика</h3>
+            <div class="stat-grid">
+                <div class="stat-item"><span class="number" id="totalUsers">0</span><div class="label">Гостей</div></div>
+                <div class="stat-item"><span class="number" id="totalRooms">0</span><div class="label">Комнат</div></div>
             </div>
         </div>
 
-        <!-- ===== ГОСТИ ===== -->
-        <div id="tabGuests" class="tab-content">
-            <div class="card">
-                <h3>👥 Гости</h3>
-                <button class="btn btn-primary" id="showAddGuestFormBtn">+ Добавить гостя</button>
-                <div id="addGuestForm" style="display:none; margin-top:1rem;">
-                    <div class="field"><label>Имя и фамилия</label><input type="text" id="guestDisplayName" placeholder="Иван Петров"></div>
-                    <div class="field"><label>Email</label><input type="email" id="guestEmail" placeholder="ivan@mail.ru"></div>
-                    <div class="field"><label>Пароль (мин. 6 символов)</label><input type="password" id="guestPassword" placeholder="••••••"></div>
-                    <div class="field"><label>Телефон</label><input type="text" id="guestPhone" placeholder="+7 999 123-45-67"></div>
-                    <div class="field"><label>Город</label><input type="text" id="guestCity" placeholder="Сочи"></div>
-                    <button class="btn btn-primary" id="saveGuestBtn">Сохранить гостя</button>
-                    <button class="btn btn-secondary" id="cancelAddGuestBtn">Отмена</button>
-                    <div id="guestMessage" class="error-msg"></div>
-                </div>
-                <div id="guestList" style="margin-top:1rem;"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
+        <!-- ГОСТИ -->
+        <div class="card">
+            <h3>👥 Гости</h3>
+            <button class="btn btn-primary" id="showAddGuestFormBtn">+ Добавить гостя</button>
+            <div id="addGuestForm" style="display:none; margin-top:1rem;">
+                <div class="field"><label>Имя и фамилия</label><input type="text" id="guestDisplayName" placeholder="Иван Петров"></div>
+                <div class="field"><label>Email</label><input type="email" id="guestEmail" placeholder="ivan@mail.ru"></div>
+                <div class="field"><label>Пароль (мин. 6 символов)</label><input type="password" id="guestPassword" placeholder="••••••"></div>
+                <div class="field"><label>Телефон</label><input type="text" id="guestPhone" placeholder="+7 999 123-45-67"></div>
+                <div class="field"><label>Город</label><input type="text" id="guestCity" placeholder="Сочи"></div>
+                <button class="btn btn-primary" id="saveGuestBtn">Сохранить гостя</button>
+                <button class="btn btn-secondary" id="cancelAddGuestBtn">Отмена</button>
+                <div id="guestMessage" class="error-msg"></div>
             </div>
+            <div id="guestList" style="margin-top:1rem;"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
         </div>
 
-        <!-- ===== КОМНАТЫ ===== -->
-        <div id="tabRooms" class="tab-content">
-            <div class="card">
-                <h3>🛏️ Комнаты</h3>
-                <div id="roomsList"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
-            </div>
-        </div>
-
-        <!-- ===== БРОНИРОВАНИЯ ===== -->
-        <div id="tabBookings" class="tab-content">
-            <div class="card">
-                <h3>📅 Бронирования</h3>
-                <div id="bookingsList"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
-            </div>
+        <!-- КОМНАТЫ -->
+        <div class="card">
+            <h3>🛏️ Комнаты</h3>
+            <div id="roomsList"><div style="text-align:center; opacity:0.4;">Загрузка...</div></div>
         </div>
 
         <button class="btn btn-danger btn-block" id="logoutBtn">🚪 Выйти из админ-панели</button>
@@ -179,19 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         loadGuests();
         loadRooms();
-        loadBookings();
         loadStats();
-    });
-
-    // ===== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК =====
-    document.querySelectorAll('#mainTabs .tab-link').forEach(tab => {
-        tab.addEventListener('click', function() {
-            document.querySelectorAll('#mainTabs .tab-link').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            const tabId = this.dataset.tab;
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-        });
     });
 
     // ===== ГОСТИ =====
@@ -322,110 +286,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ===== БРОНИРОВАНИЯ =====
-    async function loadBookings() {
-        try {
-            const { data, error } = await supabase
-                .from('bookings')
-                .select('*, rooms(name, price_per_night)')
-                .order('created_at', { ascending: false });
-            if (error) throw error;
-            if (!data || data.length === 0) {
-                document.getElementById('bookingsList').innerHTML = '<div style="text-align:center; opacity:0.4;">Бронирований пока нет</div>';
-                return;
-            }
-            let html = '';
-            data.forEach(b => {
-                const roomName = b.rooms ? b.rooms.name : 'Комната удалена';
-                const guest = b.guest_name || b.user_id || 'Гость';
-                const status = b.status || 'новое';
-                const total = b.total_amount || '—';
-                const showButtons = (status === 'новое');
-                let statusColor = '#ffc107';
-                if (status === 'подтверждено') statusColor = '#25D366';
-                if (status === 'отменено') statusColor = '#ff6b6b';
-
-                html += `
-                    <div class="list-item" id="booking-${b.id}">
-                        <div class="info">
-                            <div class="name">${roomName} — ${guest}</div>
-                            <div class="detail">${b.check_in_date} → ${b.check_out_date} · Статус: <strong style="color:${statusColor}">${status}</strong></div>
-                            <div class="detail">Сумма: ${total} ₽</div>
-                        </div>
-                        ${showButtons ? `
-                            <div>
-                                <button class="btn btn-success" onclick="updateBookingStatus('${b.id}', 'подтверждено')">✅ Подтвердить</button>
-                                <button class="btn btn-danger" onclick="updateBookingStatus('${b.id}', 'отменено')">❌ Отклонить</button>
-                            </div>
-                        : ''}
-                    </div>
-                `;
-            });
-            document.getElementById('bookingsList').innerHTML = html;
-        } catch (error) {
-            console.error('Ошибка загрузки бронирований:', error);
-            document.getElementById('bookingsList').innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
-        }
-    }
-
-    window.updateBookingStatus = async function(bookingId, newStatus) {
-        if (!confirm(`Изменить статус бронирования на «${newStatus}»?`)) return;
-        try {
-            const { error } = await supabase
-                .from('bookings')
-                .update({ status: newStatus })
-                .eq('id', bookingId);
-            if (error) throw error;
-
-            if (newStatus === 'подтверждено') {
-                const { data: booking, error: fetchError } = await supabase
-                    .from('bookings')
-                    .select('user_id, total_amount')
-                    .eq('id', bookingId)
-                    .single();
-                if (!fetchError && booking && booking.user_id) {
-                    const session = await supabase.auth.getSession();
-                    const adminId = session.data.session?.user?.id;
-                    await supabase
-                        .from('purchases')
-                        .insert({
-                            Buyer_id: booking.user_id,
-                            Amount: booking.total_amount || 0,
-                            Confirmed_by: adminId,
-                            Created_at: new Date().toISOString()
-                        });
-                }
-            }
-
-            if (newStatus === 'отменено') {
-                const element = document.getElementById(`booking-${bookingId}`);
-                if (element) element.remove();
-            } else {
-                loadBookings();
-            }
-
-            loadStats();
-            const msg = document.createElement('div');
-            msg.className = 'success-msg';
-            msg.textContent = `✅ Статус изменён на «${newStatus}»`;
-            msg.style.display = 'block';
-            document.getElementById('bookingsList').prepend(msg);
-            setTimeout(() => msg.remove(), 3000);
-        } catch (error) {
-            console.error('Ошибка обновления статуса:', error);
-            alert('Ошибка обновления статуса: ' + error.message);
-        }
-    };
-
     // ===== СТАТИСТИКА =====
     async function loadStats() {
         try {
             const { count: usersCount } = await supabase.from('users').select('*', { count: 'exact', head: true });
             const { count: roomsCount } = await supabase.from('rooms').select('*', { count: 'exact', head: true });
-            const { count: bookingsCount } = await supabase.from('bookings').select('*', { count: 'exact', head: true });
             document.getElementById('totalUsers').textContent = usersCount || 0;
             document.getElementById('totalRooms').textContent = roomsCount || 0;
-            document.getElementById('totalBookings').textContent = bookingsCount || 0;
         } catch (error) {
             console.error('Ошибка статистики:', error);
         }
