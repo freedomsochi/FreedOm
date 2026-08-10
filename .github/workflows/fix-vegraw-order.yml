@@ -21,57 +21,62 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
+          import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          start = "    document.getElementById('orderForm').addEventListener('submit',async function(e){"
-          end = "    window.addEventListener('load',function(){"
+          start = "document.getElementById('orderForm').addEventListener('submit',async function(e){"
+          end = "window.addEventListener('load',function(){"
           a = s.find(start)
           b = s.find(end, a)
           if a < 0 or b < 0:
-              raise SystemExit('Order handler boundaries not found')
-          new_handler = '''    document.getElementById('orderForm').addEventListener('submit',async function(e){
-        e.preventDefault();
-        const form=this;
-        const submitBtn=form.querySelector('button[type="submit"]');
-        const errorDiv=document.getElementById('orderError');
-        const successDiv=document.getElementById('orderSuccess');
-        errorDiv.style.display='none';
-        successDiv.style.display='none';
-        submitBtn.disabled=true;
-        submitBtn.textContent='Отправка...';
-        const name=document.getElementById('orderName').value.trim();
-        const price=parseInt(document.getElementById('orderPrice').value)||0;
-        const guestName=document.getElementById('orderGuestName').value.trim();
-        const guestPhone=document.getElementById('orderGuestPhone').value.trim();
-        const guestEmail=document.getElementById('orderGuestEmail').value.trim();
-        const quantity=parseInt(document.getElementById('orderQuantity').value)||1;
-        const comment=document.getElementById('orderComment').value.trim();
-        if(!guestName||!guestPhone){errorDiv.textContent='Заполните имя и телефон.';errorDiv.style.display='block';submitBtn.disabled=false;submitBtn.textContent='✅ Заказать';return}
-        const totalAmount=price*quantity;
-        const items=[{name,quantity,price,comment}];
-        try{
-            const session=await supabase.auth.getSession();
-            const userId=session.data.session?.user?.id||null;
-            const {error}=await supabase.from('orders').insert({user_id:userId,guest_name:guestName,guest_phone:guestPhone,guest_email:guestEmail||null,items,total_amount:totalAmount,status:'новый',payment_status:'не выбрано'});
-            if(error)throw error;
-            const formspreeForm=document.createElement('form');
-            formspreeForm.method='POST';
-            formspreeForm.action='https://formspree.io/f/xpqgqkzgo';
-            formspreeForm.style.display='none';
-            const fields={type:'Новый заказ Veg-raw кухни',item:name,quantity:String(quantity),total:String(totalAmount)+' ₽',guest_name:guestName,guest_phone:guestPhone,guest_email:guestEmail||'не указан',comment:comment||'нет'};
-            Object.entries(fields).forEach(([key,value])=>{const input=document.createElement('input');input.type='hidden';input.name=key;input.value=value;formspreeForm.appendChild(input)});
-            document.body.appendChild(formspreeForm);
-            formspreeForm.submit();
-        }catch(error){
-            console.error('Ошибка заказа:',error);
-            errorDiv.textContent='Ошибка: '+error.message;
-            errorDiv.style.display='block';
-            submitBtn.disabled=false;
-            submitBtn.textContent='✅ Заказать';
-        }
-    });
+              raise SystemExit(f'Order handler boundaries not found: start={a}, end={b}')
+          line_start = s.rfind('\n', 0, a) + 1
+          new_handler = '''document.getElementById('orderForm').addEventListener('submit',async function(e){
+    e.preventDefault();
+    const form=this;
+    const submitBtn=form.querySelector('button[type="submit"]');
+    const errorDiv=document.getElementById('orderError');
+    const successDiv=document.getElementById('orderSuccess');
+    errorDiv.style.display='none';
+    successDiv.style.display='none';
+    submitBtn.disabled=true;
+    submitBtn.textContent='Отправка...';
+    const name=document.getElementById('orderName').value.trim();
+    const price=parseInt(document.getElementById('orderPrice').value)||0;
+    const guestName=document.getElementById('orderGuestName').value.trim();
+    const guestPhone=document.getElementById('orderGuestPhone').value.trim();
+    const guestEmail=document.getElementById('orderGuestEmail').value.trim();
+    const quantity=parseInt(document.getElementById('orderQuantity').value)||1;
+    const comment=document.getElementById('orderComment').value.trim();
+    if(!guestName||!guestPhone){errorDiv.textContent='Заполните имя и телефон.';errorDiv.style.display='block';submitBtn.disabled=false;submitBtn.textContent='✅ Заказать';return}
+    const totalAmount=price*quantity;
+    const items=[{name,quantity,price,comment}];
+    try{
+        const session=await supabase.auth.getSession();
+        const userId=session.data.session?.user?.id||null;
+        const {error}=await supabase.from('orders').insert({user_id:userId,guest_name:guestName,guest_phone:guestPhone,guest_email:guestEmail||null,items,total_amount:totalAmount,status:'новый',payment_status:'не выбрано'});
+        if(error)throw error;
+        const formspreeForm=document.createElement('form');
+        formspreeForm.method='POST';
+        formspreeForm.action='https://formspree.io/f/xpqgqkzgo';
+        formspreeForm.style.display='none';
+        const fields={type:'Новый заказ Veg-raw кухни',item:name,quantity:String(quantity),total:String(totalAmount)+' ₽',guest_name:guestName,guest_phone:guestPhone,guest_email:guestEmail||'не указан',comment:comment||'нет'};
+        Object.entries(fields).forEach(([key,value])=>{const input=document.createElement('input');input.type='hidden';input.name=key;input.value=value;formspreeForm.appendChild(input)});
+        document.body.appendChild(formspreeForm);
+        formspreeForm.submit();
+    }catch(error){
+        console.error('Ошибка заказа:',error);
+        errorDiv.textContent='Ошибка: '+error.message;
+        errorDiv.style.display='block';
+        submitBtn.disabled=false;
+        submitBtn.textContent='✅ Заказать';
+    }
+});
 '''
-          p.write_text(s[:a] + new_handler + s[b:], encoding='utf-8')
+          # Preserve the indentation of the original handler's line.
+          indent = s[line_start:a]
+          new_handler = indent + new_handler.replace('\n', '\n' + indent).rstrip() + '\n'
+          p.write_text(s[:line_start] + new_handler + s[b:], encoding='utf-8')
       - name: Commit patched index.html
         run: |
           git config user.name "github-actions[bot]"
