@@ -333,7 +333,7 @@
         </div>
     </section>
 
-    <!-- ===== VEG-RAW КУХНЯ (НОВЫЙ БЛОК) ===== -->
+    <!-- ===== VEG-RAW КУХНЯ ===== -->
     <section class="fade-section">
         <h2>🥗 Veg-raw кухня</h2>
         <p style="margin-bottom:1.2rem; opacity:0.7;">Свежие, живые блюда от Джефа. Заказывайте с доставкой в номер.</p>
@@ -371,7 +371,7 @@
         </div>
     </section>
 
-    <!-- СОБЫТИЯ (динамические) -->
+    <!-- ===== СОБЫТИЯ (исправленная загрузка) ===== -->
     <section class="fade-section">
         <h2>📅 События</h2>
         <div class="events-carousel" id="eventsCarousel">
@@ -701,7 +701,7 @@
         }
     }
 
-    // ===== ЗАГРУЗКА АКТИВНОГО СОБЫТИЯ =====
+    // ===== ЗАГРУЗКА АКТИВНОГО СОБЫТИЯ (исправлено) =====
     async function loadActiveEvent() {
         const container = document.getElementById('eventsCarousel');
         try {
@@ -710,11 +710,22 @@
                 .select('*')
                 .eq('is_active', true)
                 .maybeSingle();
-            if (error) throw error;
+
+            if (error) {
+                console.error('Ошибка загрузки события:', error);
+                if (error.code === '42P01') {
+                    container.innerHTML = '<div style="width:100%; text-align:center; padding:2rem; opacity:0.4;">События пока не добавлены</div>';
+                    return;
+                }
+                container.innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки события</div>';
+                return;
+            }
+
             if (!data) {
                 container.innerHTML = '<div style="width:100%; text-align:center; padding:2rem; opacity:0.4;">Нет активных событий</div>';
                 return;
             }
+
             const imageUrl = data.image_url || 'images/placeholder.jpg';
             container.innerHTML = `
                 <div class="event-card" data-id="${data.id}">
@@ -742,8 +753,8 @@
                 }
             }
         } catch (error) {
-            console.error('Ошибка загрузки события:', error);
-            container.innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки</div>';
+            console.error('Критическая ошибка загрузки события:', error);
+            container.innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки события</div>';
         }
     }
 
@@ -969,7 +980,6 @@
 
             if (error) throw error;
 
-            // Успех
             document.getElementById('orderForm').style.display = 'none';
             successDiv.style.display = 'block';
             submitBtn.disabled = false;
