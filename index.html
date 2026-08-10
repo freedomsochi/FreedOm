@@ -123,18 +123,26 @@
         .about-full{display:none;margin-top:8px}
         .about-full.open{display:block}
         @media(max-width:480px){.modal-window{padding:20px 16px}.room-card-carousel,.event-card{flex:0 0 90%}.top-nav .nav-links{font-size:.55rem;gap:6px}.top-nav .nav-links a{padding:2px 4px}.top-nav .login-icon{padding:2px 6px}.top-nav .login-icon svg{width:16px;height:16px}.menu-grid{grid-template-columns:1fr 1fr;gap:8px}}
-    </style>
+    
+/* FreeDom: compact guest navigation for phones */
+.top-nav{display:flex!important;justify-content:center!important;align-items:center!important;padding:7px 0!important;gap:4px!important;flex-wrap:nowrap!important;overflow:hidden!important}
+.top-nav .nav-links{display:flex!important;align-items:center!important;justify-content:center!important;gap:3px!important;flex-wrap:nowrap!important;min-width:0!important}
+.top-nav .nav-links a,.top-nav .login-icon{font-size:.62rem!important;padding:5px 6px!important;white-space:nowrap!important;border-radius:10px!important;line-height:1.2!important}
+.top-nav .login-icon{flex:0 0 auto!important}
+.top-nav .login-icon svg{width:13px!important;height:13px!important}
+@media (max-width:380px){.top-nav{gap:2px!important}.top-nav .nav-links{gap:2px!important}.top-nav .nav-links a,.top-nav .login-icon{font-size:.56rem!important;padding:4px 5px!important}.top-nav .login-icon svg{width:12px!important;height:12px!important}}
+
+</style>
 </head>
 <body>
 <div id="preloader"><div class="loader-ring"></div><div class="loader-logo">FreeDom</div></div>
 <div class="container">
     <div class="top-nav">
         <div class="nav-links">
-            <a href="partners.html">Партнёрская программа</a>
-            <a href="profile.html">Личный кабинет</a>
-            <a href="purchases.html">Покупки</a>
-            <a href="admin.html">Админ-панель</a>
-        </div>
+    <a href="partners.html">🤝 Партнёрка</a>
+    <a href="purchases.html">🛍 Покупки</a>
+    <a href="profile.html">👤 Личный кабинет</a>
+</div>
         <a href="login.html" class="login-icon" id="loginIcon">
             <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
         </a>
