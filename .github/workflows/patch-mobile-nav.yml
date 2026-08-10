@@ -1,0 +1,72 @@
+name: Patch mobile navigation
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: "!contains(github.event.head_commit.message, '[mobile-nav-patched]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch index.html
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          # Make the top navigation compact enough for a phone and keep only
+          # guest-facing links (partner program, purchases, personal account).
+          css = '''
+          /* Compact guest navigation */
+          .top-nav{display:flex;justify-content:center;align-items:center;padding:8px 0 7px;gap:5px;flex-wrap:nowrap;border-bottom:1px solid rgba(255,255,255,.04);margin-bottom:.5rem;overflow:hidden}
+          .top-nav .nav-links{display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:nowrap;min-width:0}
+          .top-nav .nav-links a{color:#b8a9d4;text-decoration:none;padding:5px 7px;border-radius:10px;transition:.2s;font-weight:600;font-size:.64rem;letter-spacing:0;white-space:nowrap;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02)}
+          .top-nav .nav-links a:hover{color:#d4af37;border-color:rgba(212,175,55,.15)}
+          .top-nav .login-icon{display:flex;align-items:center;justify-content:center;gap:3px;flex:0 0 auto;color:#b8a9d4;text-decoration:none;font-size:.64rem;font-weight:600;padding:5px 7px;border-radius:10px;border:1px solid rgba(255,255,255,.05);transition:.2s;background:rgba(255,255,255,.02);white-space:nowrap}
+          .top-nav .login-icon:hover{color:#d4af37;border-color:rgba(212,175,55,.15)}
+          .top-nav .login-icon svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+          @media (max-width:380px){
+            .top-nav{gap:3px;padding-top:6px;padding-bottom:6px}
+            .top-nav .nav-links{gap:3px}
+            .top-nav .nav-links a,.top-nav .login-icon{font-size:.58rem;padding:4px 5px}
+            .top-nav .login-icon svg{width:13px;height:13px}
+          }
+          '''
+          # Remove the existing top-nav CSS rules and insert the compact version.
+          s = re.sub(r'\\s*\.top-nav\\{.*?\.top-nav \.login-icon svg\\{.*?\\}', '', s, count=1, flags=re.S)
+          s = s.replace('</style>', css + '\n    </style>', 1)
+
+          nav = '''<div class="top-nav">
+              <div class="nav-links">
+                  <a href="partners.html">🤝 Партнёрка</a>
+                  <a href="purchases.html">🛍 Покупки</a>
+                  <a href="profile.html">👤 Личный кабинет</a>
+              </div>
+              <a href="login.html" class="login-icon" aria-label="Войти">
+                  <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+                  Войти
+              </a>
+          </div>
+          '''
+          s, n = re.subn(r'<div class="top-nav">.*?</div>\\s*(?=<header)', nav, s, count=1, flags=re.S)
+          if n != 1:
+              raise SystemExit('Top navigation block was not found exactly once')
+
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit patched page
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/patch-mobile-nav.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix mobile guest navigation [mobile-nav-patched]"
+          git push
