@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
-        /* ===== БАЗОВЫЕ СТИЛИ ===== */
+        /* ===== СТИЛИ (полностью из предыдущей рабочей версии) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -121,21 +121,8 @@
         .room-card-carousel .content .desc { font-size: 0.9rem; color: #c8c2d4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .room-card-carousel .content .btn-detail { display: inline-block; margin-top: 8px; color: #d4af37; text-decoration: none; font-weight: 600; border-bottom: 1px dashed rgba(212,175,55,0.3); cursor: pointer; }
 
-        .room-card, .sweet-item, .menu-item { cursor: pointer; transition: 0.3s; background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.4); margin-bottom: 1.2rem; }
-        .room-card:hover, .sweet-item:hover, .menu-item:hover { border-color: rgba(212,175,55,0.4); transform: scale(1.01); }
-        .room-card img, .sweet-item img { width: 100%; height: 180px; object-fit: cover; display: block; }
-        .room-card .content, .sweet-item .content, .menu-item .content { padding: 1rem 1.2rem 1.2rem; }
-        .room-card h3, .sweet-item .name, .menu-item .name { color: #eae6f0; margin-top: 0; font-size: 1.2rem; }
-        .badge { background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.15); border-radius: 30px; padding: 2px 14px; font-size: 0.7rem; color: #d4af37; display: inline-block; margin-right: 6px; }
-        .price { color: #d4af37; font-weight: 700; font-size: 1.2rem; margin-top: 4px; letter-spacing: 0.3px; }
-        .sweet-item .price { font-size: 1rem; margin-top: 0; }
-        .sweets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 0.5rem; }
-        .sweet-item { margin-bottom: 0; text-align: center; }
-        .sweet-item img { height: 130px; }
-        .sweet-item .name { font-weight: 500; font-size: 0.95rem; }
-
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 0.5rem; }
-        .menu-item { margin-bottom: 0; text-align: center; cursor: pointer; background: rgba(255,255,255,0.03); border-radius: 20px; padding: 0.8rem 0.5rem; transition: 0.3s; }
+        .menu-item { cursor: pointer; transition: 0.3s; background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 0.8rem 0.5rem; text-align: center; }
         .menu-item:hover { background: rgba(255,255,255,0.06); transform: scale(1.02); }
         .menu-item .menu-item-name { font-weight: 600; font-size: 0.95rem; }
         .menu-item .menu-item-price { color: #d4af37; font-weight: 600; }
@@ -368,7 +355,7 @@
         </div>
     </section>
 
-    <!-- СОБЫТИЯ (ЗАГРУЗКА ИЗ SUPABASE) -->
+    <!-- СОБЫТИЯ (ЗАГРУЗКА ИЗ SUPABASE + КАРТИНКИ С GITHUB) -->
     <section class="fade-section">
         <h2>📅 События</h2>
         <div class="events-carousel" id="eventsCarousel">
@@ -567,7 +554,6 @@
             }
             let html = '';
             data.forEach(room => {
-                // Берём имя файла из базы, если есть, иначе заглушка
                 let imageUrl = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(room.name);
                 if (room.image_url) {
                     const fileName = room.image_url.replace('images/', '');
@@ -604,7 +590,7 @@
         }
     }
 
-    // ===== ЗАГРУЗКА АКТИВНОГО СОБЫТИЯ (Supabase) =====
+    // ===== ЗАГРУЗКА АКТИВНОГО СОБЫТИЯ (Supabase + фото с GitHub) =====
     async function loadActiveEvent() {
         const container = document.getElementById('eventsCarousel');
         try {
@@ -629,7 +615,13 @@
                 return;
             }
 
-            const imageUrl = data.image_url || 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(data.title);
+            // Картинка события — если есть, берём с GitHub, иначе заглушка
+            let imageUrl = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(data.title);
+            if (data.image_url) {
+                const fileName = data.image_url.replace('images/', '');
+                imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
+            }
+
             container.innerHTML = `
                 <div class="event-card" data-id="${data.id}">
                     <img src="${imageUrl}" alt="${data.title}" onerror="this.src='https://placehold.co/600x400/1a1a2e/d4af37?text=${encodeURIComponent(data.title)}'">
@@ -693,7 +685,6 @@
                 window.location.href = 'login.html';
                 return;
             }
-            // Фото для модалки тоже с GitHub
             let imageUrl = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(room.name);
             if (room.image_url) {
                 const fileName = room.image_url.replace('images/', '');
