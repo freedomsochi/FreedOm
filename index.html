@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
-        /* ===== СТИЛИ (полностью из предыдущей рабочей версии) ===== */
+        /* (стили без изменений — такие же, как в предыдущей версии) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -283,7 +283,7 @@
         </div>
     </section>
 
-    <!-- КАРУСЕЛЬ КОМНАТ (ФОТО С GITHUB) -->
+    <!-- КАРУСЕЛЬ КОМНАТ (ФОТО С GITHUB ПО НАЗВАНИЮ) -->
     <section class="fade-section">
         <h2>🚀 Наши номера</h2>
         <div id="roomsContainer">
@@ -355,7 +355,7 @@
         </div>
     </section>
 
-    <!-- СОБЫТИЯ (ЗАГРУЗКА ИЗ SUPABASE + КАРТИНКИ С GITHUB) -->
+    <!-- СОБЫТИЯ (ЗАГРУЗКА ИЗ SUPABASE + КАРТИНКИ ИЗ ПАПКИ) -->
     <section class="fade-section">
         <h2>📅 События</h2>
         <div class="events-carousel" id="eventsCarousel">
@@ -542,22 +542,44 @@
     const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // ===== ЗАГРУЗКА КОМНАТ (ФОТО С GITHUB) =====
+    // ===== ЗАГРУЗКА КОМНАТ (ФОТО С GITHUB ПО НАЗВАНИЮ) =====
     async function loadRooms() {
         const container = document.getElementById('roomsCarousel');
         try {
+            // Загружаем комнаты из Supabase
             const { data, error } = await supabase.from('rooms').select('*').order('name');
             if (error) throw error;
             if (!data || data.length === 0) {
                 container.innerHTML = '<div style="width:100%; text-align:center; padding:2rem; opacity:0.6;">Комнат пока нет</div>';
                 return;
             }
+            
+            // Маппинг названий комнат к именам файлов (жёстко задаём для надёжности)
+            const roomImageMap = {
+                'Хостел эконом': 'hostel_economy.jpg',
+                'Хостел стандарт': 'hostel_standart.jpg',
+                'Семейная комната': 'family_room.jpg',
+                'Мансардная комната №1': 'attic_room1.jpg',
+                'Мансардная комната №2': 'attic_room2.jpg',
+                'Бунгало в саду': 'bungalow.jpg',
+                'Спальное место на балконе': 'balcony_bed.jpg',
+                'Двухместный с балконом №1': 'balcony_room1.jpg',
+                'Двухместный с балконом №2': 'balcony_room2.jpg'
+            };
+
             let html = '';
             data.forEach(room => {
                 let imageUrl = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(room.name);
-                if (room.image_url) {
-                    const fileName = room.image_url.replace('images/', '');
+                // Пытаемся найти картинку по названию
+                const fileName = roomImageMap[room.name];
+                if (fileName) {
                     imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
+                } else if (room.image_url) {
+                    // fallback: если в базе есть свой путь
+                    const fallbackFile = room.image_url.replace('images/', '');
+                    if (fallbackFile) {
+                        imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fallbackFile}`;
+                    }
                 }
                 html += `
                     <div class="room-card-carousel" data-room='${JSON.stringify(room)}'>
@@ -572,6 +594,8 @@
                 `;
             });
             container.innerHTML = html;
+            
+            // Обработчики кликов
             document.querySelectorAll('.room-card-carousel').forEach(card => {
                 card.addEventListener('click', function(e) {
                     if (e.target.classList.contains('btn-detail')) return;
@@ -590,7 +614,7 @@
         }
     }
 
-    // ===== ЗАГРУЗКА АКТИВНОГО СОБЫТИЯ (Supabase + фото с GitHub) =====
+    // ===== ЗАГРУЗКА АКТИВНОГО СОБЫТИЯ (Supabase + картинка по имени) =====
     async function loadActiveEvent() {
         const container = document.getElementById('eventsCarousel');
         try {
@@ -615,10 +639,14 @@
                 return;
             }
 
-            // Картинка события — если есть, берём с GitHub, иначе заглушка
+            // Маппинг названий событий к картинкам
+            const eventImageMap = {
+                'Гонг-медитация': 'gong-meditation.jpg',
+                'Чайная церемония': 'tea-ceremony.jpg'
+            };
             let imageUrl = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(data.title);
-            if (data.image_url) {
-                const fileName = data.image_url.replace('images/', '');
+            const fileName = eventImageMap[data.title] || (data.image_url ? data.image_url.replace('images/', '') : null);
+            if (fileName) {
                 imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
             }
 
@@ -686,8 +714,19 @@
                 return;
             }
             let imageUrl = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(room.name);
-            if (room.image_url) {
-                const fileName = room.image_url.replace('images/', '');
+            const roomImageMap = {
+                'Хостел эконом': 'hostel_economy.jpg',
+                'Хостел стандарт': 'hostel_standart.jpg',
+                'Семейная комната': 'family_room.jpg',
+                'Мансардная комната №1': 'attic_room1.jpg',
+                'Мансардная комната №2': 'attic_room2.jpg',
+                'Бунгало в саду': 'bungalow.jpg',
+                'Спальное место на балконе': 'balcony_bed.jpg',
+                'Двухместный с балконом №1': 'balcony_room1.jpg',
+                'Двухместный с балконом №2': 'balcony_room2.jpg'
+            };
+            const fileName = roomImageMap[room.name] || (room.image_url ? room.image_url.replace('images/', '') : null);
+            if (fileName) {
                 imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
             }
             bookingModalImage.src = imageUrl;
