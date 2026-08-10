@@ -22,8 +22,6 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Make the top navigation compact enough for a phone and keep only
-          # guest-facing links (partner program, purchases, personal account).
           css = '''
           /* Compact guest navigation */
           .top-nav{display:flex;justify-content:center;align-items:center;padding:8px 0 7px;gap:5px;flex-wrap:nowrap;border-bottom:1px solid rgba(255,255,255,.04);margin-bottom:.5rem;overflow:hidden}
@@ -40,8 +38,9 @@ jobs:
             .top-nav .login-icon svg{width:13px;height:13px}
           }
           '''
-          # Remove the existing top-nav CSS rules and insert the compact version.
-          s = re.sub(r'\\s*\.top-nav\\{.*?\.top-nav \.login-icon svg\\{.*?\\}', '', s, count=1, flags=re.S)
+
+          # Replace only the existing compact nav CSS declarations.
+          s = re.sub(r'\s*\.top-nav\{.*?\.top-nav \.login-icon svg\{.*?\}', '', s, count=1, flags=re.S)
           s = s.replace('</style>', css + '\n    </style>', 1)
 
           nav = '''<div class="top-nav">
@@ -56,17 +55,17 @@ jobs:
               </a>
           </div>
           '''
-          s, n = re.subn(r'<div class="top-nav">.*?</div>\\s*(?=<header)', nav, s, count=1, flags=re.S)
+          s, n = re.subn(r'<div class="top-nav">.*?</div>\s*(?=<header)', nav, s, count=1, flags=re.S)
           if n != 1:
               raise SystemExit('Top navigation block was not found exactly once')
 
           p.write_text(s, encoding='utf-8')
           PY
-      - name: Commit patched page
+      - name: Commit patched page and remove temporary workflow
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f .github/workflows/patch-mobile-nav.yml
           git add index.html .github/workflows/patch-mobile-nav.yml
-          git diff --cached --quiet && exit 0
           git commit -m "Fix mobile guest navigation [mobile-nav-patched]"
           git push
