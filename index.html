@@ -7,243 +7,129 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <style>
-        /* (стили без изменений — такие же, как в предыдущей версии) */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0b0d17;
-            color: #eae6f0;
-            line-height: 1.6;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-            padding-bottom: 80px;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-        body.loaded { opacity: 1; }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                radial-gradient(2px 2px at 10% 20%, #fff, transparent),
-                radial-gradient(2px 2px at 30% 60%, #fff, transparent),
-                radial-gradient(1px 1px at 50% 10%, #fff, transparent),
-                radial-gradient(2px 2px at 70% 80%, #fff, transparent),
-                radial-gradient(1px 1px at 90% 40%, #fff, transparent),
-                radial-gradient(1px 1px at 15% 90%, #fff, transparent),
-                radial-gradient(2px 2px at 45% 45%, #fff, transparent),
-                radial-gradient(1px 1px at 80% 15%, #fff, transparent),
-                radial-gradient(2px 2px at 5% 50%, #fff, transparent),
-                radial-gradient(1px 1px at 60% 95%, #fff, transparent);
-            background-size: 200px 200px;
-            background-repeat: repeat;
-            opacity: 0.4;
-            pointer-events: none;
-            z-index: 0;
-        }
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                radial-gradient(1px 1px at 20% 30%, #fff, transparent),
-                radial-gradient(1px 1px at 60% 70%, #fff, transparent),
-                radial-gradient(1px 1px at 80% 50%, #fff, transparent),
-                radial-gradient(1px 1px at 40% 80%, #fff, transparent),
-                radial-gradient(1px 1px at 10% 60%, #fff, transparent);
-            background-size: 300px 300px;
-            background-repeat: repeat;
-            opacity: 0.6;
-            pointer-events: none;
-            z-index: 0;
-            animation: twinkle 4s ease-in-out infinite alternate;
-        }
-        .container { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; position: relative; z-index: 1; }
-
-        .top-nav { display: flex; justify-content: flex-end; align-items: center; padding: 10px 0 6px; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.04); margin-bottom: 0.5rem; }
-        .top-nav .nav-links { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.7rem; letter-spacing: 0.3px; }
-        .top-nav .nav-links a { color: #b8a9d4; text-decoration: none; padding: 4px 6px; border-radius: 4px; transition: 0.2s; font-weight: 500; border: 1px solid transparent; }
-        .top-nav .nav-links a:hover { color: #d4af37; border-color: rgba(212,175,55,0.15); }
-        .top-nav .login-icon { display: flex; align-items: center; gap: 4px; color: #b8a9d4; text-decoration: none; font-size: 0.7rem; font-weight: 500; padding: 4px 8px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; background: rgba(255,255,255,0.02); }
-        .top-nav .login-icon:hover { color: #d4af37; border-color: rgba(212,175,55,0.15); }
-        .top-nav .login-icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-        .header {
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(145deg, rgba(26,16,61,0.95), rgba(11,13,23,0.95));
-            border: 1px solid rgba(212,175,55,0.2);
-            box-shadow: 0 0 60px rgba(212,175,55,0.05);
-            color: white;
-            padding: 2.5rem 1rem 1.8rem;
-            text-align: center;
-            border-radius: 0 0 40px 40px;
-            margin: 0 -16px 1.5rem;
-        }
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('images/branches.png') center/cover no-repeat;
-            opacity: 0.5;
-            z-index: 0;
-            pointer-events: none;
-        }
-        .header .logo, .header h1, .header p { position: relative; z-index: 1; }
-        .header .logo { width: 160px; height: auto; border-radius: 50%; border: 2px solid rgba(212,175,55,0.4); box-shadow: 0 0 30px rgba(212,175,55,0.1); margin-bottom: 0.5rem; }
-        .header h1 { font-weight: 300; font-size: 2.2rem; text-shadow: 0 0 40px rgba(212,175,55,0.1); }
-        .header h1 span { color: #d4af37; }
-        .header p { opacity: 0.7; font-weight: 300; }
-
-        h2 { font-size: 1.6rem; color: #d4af37; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 6px; margin: 2rem 0 1rem; text-shadow: 0 0 20px rgba(212,175,55,0.05); }
-
-        .rooms-carousel { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 4px 2px 12px; scrollbar-width: none; }
-        .rooms-carousel::-webkit-scrollbar { display: none; }
-        .room-card-carousel { flex: 0 0 85%; max-width: 280px; scroll-snap-align: start; background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.4); cursor: pointer; transition: 0.3s; flex-shrink: 0; }
-        .room-card-carousel:hover { border-color: rgba(212,175,55,0.4); transform: scale(1.01); }
-        .room-card-carousel img { width: 100%; height: 160px; object-fit: cover; display: block; }
-        .room-card-carousel .content { padding: 1rem 1.2rem 1.2rem; }
-        .room-card-carousel .content h3 { color: #d4af37; font-size: 1.2rem; margin-bottom: 0.3rem; }
-        .room-card-carousel .content .price { color: #d4af37; font-weight: 600; font-size: 1rem; margin: 0.3rem 0; }
-        .room-card-carousel .content .desc { font-size: 0.9rem; color: #c8c2d4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .room-card-carousel .content .btn-detail { display: inline-block; margin-top: 8px; color: #d4af37; text-decoration: none; font-weight: 600; border-bottom: 1px dashed rgba(212,175,55,0.3); cursor: pointer; }
-
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 0.5rem; }
-        .menu-item { cursor: pointer; transition: 0.3s; background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 0.8rem 0.5rem; text-align: center; }
-        .menu-item:hover { background: rgba(255,255,255,0.06); transform: scale(1.02); }
-        .menu-item .menu-item-name { font-weight: 600; font-size: 0.95rem; }
-        .menu-item .menu-item-price { color: #d4af37; font-weight: 600; }
-
-        .events-carousel { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 4px 2px 12px; scrollbar-width: none; }
-        .events-carousel::-webkit-scrollbar { display: none; }
-        .event-card { flex: 0 0 85%; max-width: 280px; scroll-snap-align: start; background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.4); cursor: pointer; transition: 0.3s; flex-shrink: 0; }
-        .event-card:hover { border-color: rgba(212,175,55,0.4); transform: scale(1.01); }
-        .event-card img { width: 100%; height: 150px; object-fit: cover; display: block; }
-        .event-card .content { padding: 1rem 1.2rem 1.2rem; }
-        .event-card .content .date { font-size: 0.8rem; color: #b8a9d4; margin-bottom: 4px; }
-        .event-card .content h3 { color: #d4af37; font-size: 1.2rem; margin-bottom: 0.3rem; }
-        .event-card .content .price { font-size: 1rem; margin: 0.3rem 0; }
-        .event-card .content .desc { font-size: 0.95rem; color: #c8c2d4; }
-        .event-card .content .btn-detail { display: inline-block; margin-top: 8px; color: #d4af37; text-decoration: none; font-weight: 600; border-bottom: 1px dashed rgba(212,175,55,0.3); cursor: pointer; }
-
-        .sauna-block { cursor: pointer; transition: 0.3s; background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.4); margin-bottom: 1.2rem; }
-        .sauna-block:hover { border-color: rgba(212,175,55,0.4); transform: scale(1.01); }
-        .sauna-block img { width: 100%; height: 160px; object-fit: cover; display: block; }
-        .sauna-block .content { padding: 1rem 1.2rem; }
-
-        .meditation-block { background: linear-gradient(145deg, rgba(180,169,212,0.08), rgba(11,13,23,0.9)); border: 1px solid rgba(180,169,212,0.15); border-radius: 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(180,169,212,0.05); position: relative; margin-bottom: 1.2rem; }
-        .meditation-block::before { content: ''; position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; background: radial-gradient(ellipse at 30% 40%, rgba(180,169,212,0.06), transparent 60%); pointer-events: none; }
-        .meditation-block img { width: 100%; height: 160px; object-fit: cover; display: block; }
-        .meditation-block .content { padding: 1rem 1.2rem 1.2rem; position: relative; z-index: 1; }
-        .meditation-block .content p { opacity: 0.9; }
-
-        .btn { display: inline-block; background: linear-gradient(145deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05)); border: 1px solid rgba(212,175,55,0.3); color: #d4af37; padding: 10px 24px; border-radius: 40px; font-size: 1rem; text-decoration: none; cursor: pointer; transition: 0.3s; font-weight: 600; box-shadow: 0 4px 15px rgba(212,175,55,0.1); }
-        .btn:hover { background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.5); box-shadow: 0 4px 25px rgba(212,175,55,0.2); transform: scale(1.02); }
-        .btn-wa { background: rgba(37,211,102,0.15); border-color: rgba(37,211,102,0.3); color: #25D366; }
-        .btn-wa:hover { background: rgba(37,211,102,0.2); border-color: rgba(37,211,102,0.5); }
-        .btn-block { display: block; width: 100%; text-align: center; margin: 8px 0; }
-
-        .form-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 1.5rem 1.2rem; }
-        .field { margin-bottom: 16px; }
-        .field label { display: block; font-weight: 500; margin-bottom: 4px; color: #b8a9d4; }
-        .field input, .field select, .field textarea { width: 100%; padding: 10px 14px; font-size: 1rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.04); color: #eae6f0; font-family: inherit; }
-        .field input:focus, .field select:focus, .field textarea:focus { border-color: rgba(212,175,55,0.2); outline: none; background: rgba(255,255,255,0.06); }
-        .checkbox { display: flex; align-items: flex-start; gap: 10px; margin: 12px 0; }
-        .checkbox input { width: 20px; height: 20px; accent-color: #d4af37; }
-        .checkbox label { color: #b8a9d4; }
-        .btn-submit { width: 100%; padding: 14px; font-size: 1.15rem; }
-        .success { display: none; background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.15); border-radius: 16px; padding: 20px; text-align: center; color: #25D366; margin-top: 10px; }
-        .success.show { display: block; }
-        .small-note { font-size: 0.8rem; color: rgba(255,255,255,0.2); text-align: center; margin-top: 10px; }
-
-        .contact-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin: 1rem 0; }
-        .contact-item { display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; opacity: 0.6; transition: 0.3s; }
-        .contact-item:hover { opacity: 1; transform: translateY(-3px); }
-        .contact-item img { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); padding: 4px; }
-        .contact-item span { font-size: 0.65rem; color: #b8a9d4; letter-spacing: 0.3px; }
-
-        .footer { text-align: center; margin-top: 2.5rem; font-size: 0.9rem; color: rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.04); padding-top: 1.5rem; }
-
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-overlay.active { display: flex; }
-        .modal-window { background: #121626; border: 1px solid rgba(212,175,55,0.15); border-radius: 24px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px 20px 20px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
-        .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: #d4af37; font-size: 28px; cursor: pointer; opacity: 0.6; transition: 0.2s; line-height: 1; z-index: 10; }
-        .modal-close:hover { opacity: 1; }
-        .modal-window img { width: 100%; max-height: 200px; object-fit: cover; border-radius: 16px; margin-bottom: 16px; }
-        .modal-window h2 { font-size: 1.6rem; color: #eae6f0; border-bottom: none; margin: 0 0 6px 0; }
-        .modal-window .price { font-size: 1.2rem; margin-bottom: 10px; }
-        .modal-window .description { margin: 12px 0 16px; color: #c8c2d4; line-height: 1.7; white-space: pre-line; }
-        .modal-window .btn { width: 100%; text-align: center; padding: 14px; font-size: 1.1rem; }
-        .modal-window .field { margin-bottom: 14px; }
-        .modal-window .field label { color: #b8a9d4; font-size: 0.9rem; }
-        .modal-window .field input, .modal-window .field select { width: 100%; padding: 10px 14px; font-size: 1rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.04); color: #eae6f0; font-family: inherit; }
-
-        #floatingBooking { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 999; background: linear-gradient(145deg, #d4af37, #b8952a); color: #0b0d17; border: none; padding: 14px 32px; border-radius: 60px; font-size: 1.2rem; font-weight: 700; box-shadow: 0 8px 30px rgba(212,175,55,0.4); cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; letter-spacing: 0.5px; }
-        #floatingBooking:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 8px 40px rgba(212,175,55,0.6); }
-
-        #musicToggle { position: fixed; bottom: 90px; right: 20px; z-index: 999; background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3); border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; font-size: 26px; cursor: pointer; backdrop-filter: blur(4px); color: #d4af37; box-shadow: 0 4px 20px rgba(0,0,0,0.6); transition: 0.3s; }
-        #musicToggle:hover { transform: scale(1.05); background: rgba(212,175,55,0.25); }
-
-        .fade-section { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
-        .fade-section.visible { opacity: 1; transform: translateY(0); }
-
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0d17; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.8s ease, visibility 0.8s; }
-        #preloader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-        .loader-ring { width: 80px; height: 80px; border-radius: 50%; border: 3px solid rgba(212,175,55,0.1); border-top: 3px solid #d4af37; animation: spin 1s linear infinite; box-shadow: 0 0 30px rgba(212,175,55,0.1); }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .loader-logo { margin-top: 20px; font-size: 1.5rem; color: #d4af37; font-weight: 300; letter-spacing: 3px; animation: pulse 1.5s ease-in-out infinite; }
-        @keyframes pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
-
-        .review-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1rem 1.2rem; margin-bottom: 1rem; }
-        .review-card .author { font-weight: 600; color: #d4af37; }
-        .review-card .text { margin-top: 4px; font-style: italic; color: #c8c2d4; }
-        .review-card .date { font-size: 0.7rem; opacity: 0.4; margin-top: 4px; }
-
-        .map-container { border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 8px 32px rgba(0,0,0,0.4); margin-bottom: 1.2rem; }
-        .map-container iframe { width: 100%; height: 200px; display: block; border: none; border-radius: 16px; }
-        .map-text { background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); border-radius: 16px; padding: 0.8rem 1.2rem; margin-top: 0.5rem; font-size: 0.95rem; color: #c8c2d4; }
-        .map-text strong { color: #d4af37; }
-
-        .oil-tag { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 2px 14px; font-size: 0.8rem; display: inline-block; margin: 4px 4px 0 0; color: #b8a9d4; }
-
-        .about-toggle { color: #d4af37; cursor: pointer; font-weight: 600; margin-left: 4px; border-bottom: 1px dashed rgba(212,175,55,0.3); }
-        .about-full { display: none; margin-top: 8px; }
-        .about-full.open { display: block; }
-
-        @media (max-width: 480px) {
-            .modal-window { padding: 20px 16px; }
-            .room-card-carousel, .event-card { flex: 0 0 90%; }
-            .top-nav .nav-links { font-size: 0.55rem; gap: 6px; }
-            .top-nav .nav-links a { padding: 2px 4px; }
-            .top-nav .login-icon { padding: 2px 6px; }
-            .top-nav .login-icon svg { width: 16px; height: 16px; }
-            .menu-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:#0b0d17;color:#eae6f0;line-height:1.6;min-height:100vh;position:relative;overflow-x:hidden;padding-bottom:80px;opacity:0;transition:opacity .5s}
+        body.loaded{opacity:1}
+        body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(2px 2px at 10% 20%,#fff,transparent),radial-gradient(2px 2px at 30% 60%,#fff,transparent),radial-gradient(1px 1px at 50% 10%,#fff,transparent),radial-gradient(2px 2px at 70% 80%,#fff,transparent),radial-gradient(1px 1px at 90% 40%,#fff,transparent),radial-gradient(1px 1px at 15% 90%,#fff,transparent),radial-gradient(2px 2px at 45% 45%,#fff,transparent),radial-gradient(1px 1px at 80% 15%,#fff,transparent),radial-gradient(2px 2px at 5% 50%,#fff,transparent),radial-gradient(1px 1px at 60% 95%,#fff,transparent);background-size:200px 200px;background-repeat:repeat;opacity:.4;pointer-events:none;z-index:0}
+        @keyframes twinkle{0%,100%{opacity:.3}50%{opacity:1}}
+        body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(1px 1px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 60% 70%,#fff,transparent),radial-gradient(1px 1px at 80% 50%,#fff,transparent),radial-gradient(1px 1px at 40% 80%,#fff,transparent),radial-gradient(1px 1px at 10% 60%,#fff,transparent);background-size:300px 300px;background-repeat:repeat;opacity:.6;pointer-events:none;z-index:0;animation:twinkle 4s ease-in-out infinite alternate}
+        .container{max-width:640px;margin:0 auto;padding:0 16px 40px;position:relative;z-index:1}
+        .top-nav{display:flex;justify-content:flex-end;align-items:center;padding:10px 0 6px;gap:12px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.04);margin-bottom:.5rem}
+        .top-nav .nav-links{display:flex;gap:10px;flex-wrap:wrap;font-size:.7rem;letter-spacing:.3px}
+        .top-nav .nav-links a{color:#b8a9d4;text-decoration:none;padding:4px 6px;border-radius:4px;transition:.2s;font-weight:500;border:1px solid transparent}
+        .top-nav .nav-links a:hover{color:#d4af37;border-color:rgba(212,175,55,.15)}
+        .top-nav .login-icon{display:flex;align-items:center;gap:4px;color:#b8a9d4;text-decoration:none;font-size:.7rem;font-weight:500;padding:4px 8px;border-radius:30px;border:1px solid rgba(255,255,255,.05);transition:.2s;background:rgba(255,255,255,.02)}
+        .top-nav .login-icon:hover{color:#d4af37;border-color:rgba(212,175,55,.15)}
+        .top-nav .login-icon svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+        .header{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(26,16,61,.95),rgba(11,13,23,.95));border:1px solid rgba(212,175,55,.2);box-shadow:0 0 60px rgba(212,175,55,.05);color:#fff;padding:2.5rem 1rem 1.8rem;text-align:center;border-radius:0 0 40px 40px;margin:0 -16px 1.5rem}
+        .header::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:url('images/branches.png')center/cover no-repeat;opacity:.5;z-index:0;pointer-events:none}
+        .header .logo,.header h1,.header p{position:relative;z-index:1}
+        .header .logo{width:160px;height:auto;border-radius:50%;border:2px solid rgba(212,175,55,.4);box-shadow:0 0 30px rgba(212,175,55,.1);margin-bottom:.5rem}
+        .header h1{font-weight:300;font-size:2.2rem;text-shadow:0 0 40px rgba(212,175,55,.1)}
+        .header h1 span{color:#d4af37}
+        .header p{opacity:.7;font-weight:300}
+        h2{font-size:1.6rem;color:#d4af37;border-bottom:1px solid rgba(212,175,55,.2);padding-bottom:6px;margin:2rem 0 1rem;text-shadow:0 0 20px rgba(212,175,55,.05)}
+        .rooms-carousel{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:4px 2px 12px;scrollbar-width:none}
+        .rooms-carousel::-webkit-scrollbar{display:none}
+        .room-card-carousel{flex:0 0 85%;max-width:280px;scroll-snap-align:start;background:rgba(255,255,255,.03);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.06);border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.4);cursor:pointer;transition:.3s;flex-shrink:0}
+        .room-card-carousel:hover{border-color:rgba(212,175,55,.4);transform:scale(1.01)}
+        .room-card-carousel img{width:100%;height:160px;object-fit:cover;display:block}
+        .room-card-carousel .content{padding:1rem 1.2rem 1.2rem}
+        .room-card-carousel .content h3{color:#d4af37;font-size:1.2rem;margin-bottom:.3rem}
+        .room-card-carousel .content .price{color:#d4af37;font-weight:600;font-size:1rem;margin:.3rem 0}
+        .room-card-carousel .content .desc{font-size:.9rem;color:#c8c2d4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .room-card-carousel .content .btn-detail{display:inline-block;margin-top:8px;color:#d4af37;text-decoration:none;font-weight:600;border-bottom:1px dashed rgba(212,175,55,.3);cursor:pointer}
+        .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:.5rem}
+        .menu-item{cursor:pointer;transition:.3s;background:rgba(255,255,255,.03);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:.8rem .5rem;text-align:center}
+        .menu-item:hover{background:rgba(255,255,255,.06);transform:scale(1.02)}
+        .menu-item .menu-item-name{font-weight:600;font-size:.95rem}
+        .menu-item .menu-item-price{color:#d4af37;font-weight:600}
+        .events-carousel{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:4px 2px 12px;scrollbar-width:none}
+        .events-carousel::-webkit-scrollbar{display:none}
+        .event-card{flex:0 0 85%;max-width:280px;scroll-snap-align:start;background:rgba(255,255,255,.03);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.06);border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.4);cursor:pointer;transition:.3s;flex-shrink:0}
+        .event-card:hover{border-color:rgba(212,175,55,.4);transform:scale(1.01)}
+        .event-card img{width:100%;height:150px;object-fit:cover;display:block}
+        .event-card .content{padding:1rem 1.2rem 1.2rem}
+        .event-card .content .date{font-size:.8rem;color:#b8a9d4;margin-bottom:4px}
+        .event-card .content h3{color:#d4af37;font-size:1.2rem;margin-bottom:.3rem}
+        .event-card .content .price{font-size:1rem;margin:.3rem 0}
+        .event-card .content .desc{font-size:.95rem;color:#c8c2d4}
+        .event-card .content .btn-detail{display:inline-block;margin-top:8px;color:#d4af37;text-decoration:none;font-weight:600;border-bottom:1px dashed rgba(212,175,55,.3);cursor:pointer}
+        .sauna-block{cursor:pointer;transition:.3s;background:rgba(255,255,255,.03);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.06);border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.4);margin-bottom:1.2rem}
+        .sauna-block:hover{border-color:rgba(212,175,55,.4);transform:scale(1.01)}
+        .sauna-block img{width:100%;height:160px;object-fit:cover;display:block}
+        .sauna-block .content{padding:1rem 1.2rem}
+        .meditation-block{background:linear-gradient(145deg,rgba(180,169,212,.08),rgba(11,13,23,.9));border:1px solid rgba(180,169,212,.15);border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(180,169,212,.05);position:relative;margin-bottom:1.2rem}
+        .meditation-block::before{content:'';position:absolute;top:-20%;left:-20%;width:140%;height:140%;background:radial-gradient(ellipse at 30% 40%,rgba(180,169,212,.06),transparent 60%);pointer-events:none}
+        .meditation-block img{width:100%;height:160px;object-fit:cover;display:block}
+        .meditation-block .content{padding:1rem 1.2rem 1.2rem;position:relative;z-index:1}
+        .meditation-block .content p{opacity:.9}
+        .btn{display:inline-block;background:linear-gradient(145deg,rgba(212,175,55,.2),rgba(212,175,55,.05));border:1px solid rgba(212,175,55,.3);color:#d4af37;padding:10px 24px;border-radius:40px;font-size:1rem;text-decoration:none;cursor:pointer;transition:.3s;font-weight:600;box-shadow:0 4px 15px rgba(212,175,55,.1)}
+        .btn:hover{background:rgba(212,175,55,.15);border-color:rgba(212,175,55,.5);box-shadow:0 4px 25px rgba(212,175,55,.2);transform:scale(1.02)}
+        .btn-wa{background:rgba(37,211,102,.15);border-color:rgba(37,211,102,.3);color:#25D366}
+        .btn-wa:hover{background:rgba(37,211,102,.2);border-color:rgba(37,211,102,.5)}
+        .btn-block{display:block;width:100%;text-align:center;margin:8px 0}
+        .form-card{background:rgba(255,255,255,.03);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:1.5rem 1.2rem}
+        .field{margin-bottom:16px}
+        .field label{display:block;font-weight:500;margin-bottom:4px;color:#b8a9d4}
+        .field input,.field select,.field textarea{width:100%;padding:10px 14px;font-size:1rem;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.04);color:#eae6f0;font-family:inherit}
+        .field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(212,175,55,.2);outline:0;background:rgba(255,255,255,.06)}
+        .checkbox{display:flex;align-items:flex-start;gap:10px;margin:12px 0}
+        .checkbox input{width:20px;height:20px;accent-color:#d4af37}
+        .checkbox label{color:#b8a9d4}
+        .btn-submit{width:100%;padding:14px;font-size:1.15rem}
+        .success{display:none;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.15);border-radius:16px;padding:20px;text-align:center;color:#25D366;margin-top:10px}
+        .success.show{display:block}
+        .small-note{font-size:.8rem;color:rgba(255,255,255,.2);text-align:center;margin-top:10px}
+        .contact-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:1rem 0}
+        .contact-item{display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;opacity:.6;transition:.3s}
+        .contact-item:hover{opacity:1;transform:translateY(-3px)}
+        .contact-item img{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);padding:4px}
+        .contact-item span{font-size:.65rem;color:#b8a9d4;letter-spacing:.3px}
+        .footer{text-align:center;margin-top:2.5rem;font-size:.9rem;color:rgba(255,255,255,.15);border-top:1px solid rgba(255,255,255,.04);padding-top:1.5rem}
+        .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);z-index:1000;justify-content:center;align-items:center;padding:20px}
+        .modal-overlay.active{display:flex}
+        .modal-window{background:#121626;border:1px solid rgba(212,175,55,.15);border-radius:24px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;padding:24px 20px 20px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.8)}
+        .modal-close{position:absolute;top:12px;right:16px;background:0 0;border:0;color:#d4af37;font-size:28px;cursor:pointer;opacity:.6;transition:.2s;line-height:1;z-index:10}
+        .modal-close:hover{opacity:1}
+        .modal-window img{width:100%;max-height:200px;object-fit:cover;border-radius:16px;margin-bottom:16px}
+        .modal-window h2{font-size:1.6rem;color:#eae6f0;border-bottom:0;margin:0 0 6px}
+        .modal-window .price{font-size:1.2rem;margin-bottom:10px}
+        .modal-window .description{margin:12px 0 16px;color:#c8c2d4;line-height:1.7;white-space:pre-line}
+        .modal-window .btn{width:100%;text-align:center;padding:14px;font-size:1.1rem}
+        .modal-window .field{margin-bottom:14px}
+        .modal-window .field label{color:#b8a9d4;font-size:.9rem}
+        .modal-window .field input,.modal-window .field select{width:100%;padding:10px 14px;font-size:1rem;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.04);color:#eae6f0;font-family:inherit}
+        #floatingBooking{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;background:linear-gradient(145deg,#d4af37,#b8952a);color:#0b0d17;border:0;padding:14px 32px;border-radius:60px;font-size:1.2rem;font-weight:700;box-shadow:0 8px 30px rgba(212,175,55,.4);cursor:pointer;transition:.3s;text-decoration:none;display:inline-block;letter-spacing:.5px}
+        #floatingBooking:hover{transform:translateX(-50%) scale(1.05);box-shadow:0 8px 40px rgba(212,175,55,.6)}
+        #musicToggle{position:fixed;bottom:90px;right:20px;z-index:999;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;backdrop-filter:blur(4px);color:#d4af37;box-shadow:0 4px 20px rgba(0,0,0,.6);transition:.3s}
+        #musicToggle:hover{transform:scale(1.05);background:rgba(212,175,55,.25)}
+        .fade-section{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+        .fade-section.visible{opacity:1;transform:translateY(0)}
+        #preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b0d17;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .8s ease,visibility .8s}
+        #preloader.hide{opacity:0;visibility:hidden;pointer-events:none}
+        .loader-ring{width:80px;height:80px;border-radius:50%;border:3px solid rgba(212,175,55,.1);border-top:3px solid #d4af37;animation:spin 1s linear infinite;box-shadow:0 0 30px rgba(212,175,55,.1)}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .loader-logo{margin-top:20px;font-size:1.5rem;color:#d4af37;font-weight:300;letter-spacing:3px;animation:pulse 1.5s ease-in-out infinite}
+        @keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+        .review-card{background:rgba(255,255,255,.03);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:1rem 1.2rem;margin-bottom:1rem}
+        .review-card .author{font-weight:600;color:#d4af37}
+        .review-card .text{margin-top:4px;font-style:italic;color:#c8c2d4}
+        .review-card .date{font-size:.7rem;opacity:.4;margin-top:4px}
+        .map-container{border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.06);box-shadow:0 8px 32px rgba(0,0,0,.4);margin-bottom:1.2rem}
+        .map-container iframe{width:100%;height:200px;display:block;border:0;border-radius:16px}
+        .map-text{background:rgba(255,255,255,.03);backdrop-filter:blur(4px);border-radius:16px;padding:.8rem 1.2rem;margin-top:.5rem;font-size:.95rem;color:#c8c2d4}
+        .map-text strong{color:#d4af37}
+        .oil-tag{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:2px 14px;font-size:.8rem;display:inline-block;margin:4px 4px 0 0;color:#b8a9d4}
+        .about-toggle{color:#d4af37;cursor:pointer;font-weight:600;margin-left:4px;border-bottom:1px dashed rgba(212,175,55,.3)}
+        .about-full{display:none;margin-top:8px}
+        .about-full.open{display:block}
+        @media(max-width:480px){.modal-window{padding:20px 16px}.room-card-carousel,.event-card{flex:0 0 90%}.top-nav .nav-links{font-size:.55rem;gap:6px}.top-nav .nav-links a{padding:2px 4px}.top-nav .login-icon{padding:2px 6px}.top-nav .login-icon svg{width:16px;height:16px}.menu-grid{grid-template-columns:1fr 1fr;gap:8px}}
     </style>
 </head>
 <body>
-
-<!-- ПРЕЛОАДЕР -->
-<div id="preloader">
-    <div class="loader-ring"></div>
-    <div class="loader-logo">FreeDom</div>
-</div>
-
+<div id="preloader"><div class="loader-ring"></div><div class="loader-logo">FreeDom</div></div>
 <div class="container">
-    <!-- ВЕРХНЯЯ НАВИГАЦИЯ -->
     <div class="top-nav">
         <div class="nav-links">
             <a href="partners.html">Партнёрская программа</a>
@@ -252,120 +138,91 @@
             <a href="admin.html">Админ-панель</a>
         </div>
         <a href="login.html" class="login-icon" id="loginIcon">
-            <svg viewBox="0 0 24 24">
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                <polyline points="10 17 15 12 10 7"/>
-                <line x1="15" y1="12" x2="3" y2="12"/>
-            </svg>
+            <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
         </a>
     </div>
-
-    <!-- ШАПКА -->
     <div class="header">
         <img src="images/logo.png" alt="FreeDom" class="logo">
         <h1>🌿 <span>Free</span>Dom</h1>
         <p>Космический центр развития · ЗОЖ · Сыроедение</p>
-        <p style="font-size:0.9rem; opacity:0.5;">Живём одной семьёй, рады каждому</p>
+        <p style="font-size:.9rem;opacity:.5">Живём одной семьёй, рады каждому</p>
     </div>
-
-    <!-- О НАС -->
     <section class="fade-section">
         <h2>✨ О нас</h2>
-        <div class="room-card" style="padding:1.2rem; cursor:default;">
-            <p>
-                Мы — команда единомышленников, стремящихся к здоровому образу жизни. 
-                <span class="about-toggle" id="aboutToggle">Читать далее →</span>
-            </p>
+        <div class="room-card" style="padding:1.2rem;cursor:default">
+            <p>Мы — команда единомышленников, стремящихся к здоровому образу жизни. <span class="about-toggle" id="aboutToggle">Читать далее →</span></p>
             <div class="about-full" id="aboutFull">
                 <p>На территории не едим мясо, не употребляем алкоголь, не курим, ограничиваем сахар. Ежедневно: кулинарные, спортивные, интеллектуальные и развлекательные мероприятия. Сад, бассейн, йога-зал, музыка, караоке, PlayStation, чайная. Есть баня (индивидуально или по четвергам/воскресеньям для проживающих).</p>
-                <p style="margin-top:0.5rem; font-style:italic; color:rgba(212,175,55,0.5);">«Относись к другим так, как хочешь, чтобы относились к тебе».</p>
+                <p style="margin-top:.5rem;font-style:italic;color:rgba(212,175,55,.5)">«Относись к другим так, как хочешь, чтобы относились к тебе».</p>
             </div>
         </div>
     </section>
-
-    <!-- КАРУСЕЛЬ КОМНАТ (ФОТО С GITHUB ПО НАЗВАНИЮ) -->
     <section class="fade-section">
         <h2>🚀 Наши номера</h2>
-        <div id="roomsContainer">
-            <div class="rooms-carousel" id="roomsCarousel">
-                <div style="width:100%; text-align:center; padding:2rem; opacity:0.6;">Загрузка комнат...</div>
-            </div>
-        </div>
+        <div id="roomsContainer"><div class="rooms-carousel" id="roomsCarousel"><div style="width:100%;text-align:center;padding:2rem;opacity:.6">Загрузка комнат...</div></div></div>
     </section>
-
-    <!-- БАНЯ -->
     <section class="fade-section">
         <h2>🔥 Баня</h2>
         <div class="sauna-block" data-id="service1">
             <img src="images/sauna.jpg" alt="Баня FreeDom">
             <div class="content">
-                <p><strong style="color:#d4af37;">Индивидуально</strong> и <strong style="color:#d4af37;">для проживающих</strong> — баня доступна в любое время.</p>
-                <p style="margin-top:0.5rem; opacity:0.7;">Нажмите, чтобы узнать подробности →</p>
+                <p><strong style="color:#d4af37">Индивидуально</strong> и <strong style="color:#d4af37">для проживающих</strong> — баня доступна в любое время.</p>
+                <p style="margin-top:.5rem;opacity:.7">Нажмите, чтобы узнать подробности →</p>
             </div>
         </div>
     </section>
-
-    <!-- МЕДИТАЦИЯ -->
     <section class="fade-section">
         <h2>🧘 Медитация и осознанность</h2>
         <div class="meditation-block">
             <img src="images/meditation.jpg" alt="Медитация FreeDom">
             <div class="content">
-                <p>Практики каждую неделю. 30 минут тишины помогают снять напряжение, улучшить сон и ясность ума. Для проживающих — раз в неделю <strong style="color:#d4af37;">бесплатно</strong>.</p>
-                <p style="margin-top:0.3rem; opacity:0.6;">Присоединяйтесь к нам в саду или йога-зале.</p>
+                <p>Практики каждую неделю. 30 минут тишины помогают снять напряжение, улучшить сон и ясность ума. Для проживающих — раз в неделю <strong style="color:#d4af37">бесплатно</strong>.</p>
+                <p style="margin-top:.3rem;opacity:.6">Присоединяйтесь к нам в саду или йога-зале.</p>
             </div>
         </div>
     </section>
-
-    <!-- VEG-RAW КУХНЯ -->
     <section class="fade-section">
         <h2>🥗 Veg-raw кухня</h2>
-        <p style="margin-bottom:1.2rem; opacity:0.7;">Свежие, живые блюда от Джефа. Заказывайте с доставкой в номер.</p>
+        <p style="margin-bottom:1.2rem;opacity:.7">Свежие, живые блюда от Джефа. Заказывайте с доставкой в номер.</p>
         <div class="menu-grid">
-            <div class="menu-item" onclick="openOrderModal('Шаурма сыроедческая', 250)">
-                <div style="font-size:2.5rem; margin-bottom:0.3rem;">🌯</div>
+            <div class="menu-item" onclick="openOrderModal('Шаурма сыроедческая',250)">
+                <div style="font-size:2.5rem;margin-bottom:.3rem">🌯</div>
                 <div class="menu-item-name">Шаурма сыроедческая</div>
                 <div class="menu-item-price">250 ₽</div>
             </div>
-            <div class="menu-item" onclick="openOrderModal('Конфеты сыроедческие', 180)">
-                <div style="font-size:2.5rem; margin-bottom:0.3rem;">🍬</div>
+            <div class="menu-item" onclick="openOrderModal('Конфеты сыроедческие',180)">
+                <div style="font-size:2.5rem;margin-bottom:.3rem">🍬</div>
                 <div class="menu-item-name">Конфеты сыроедческие</div>
                 <div class="menu-item-price">180 ₽</div>
             </div>
-            <div class="menu-item" onclick="openOrderModal('Тыквенный суп', 200)">
-                <div style="font-size:2.5rem; margin-bottom:0.3rem;">🍲</div>
+            <div class="menu-item" onclick="openOrderModal('Тыквенный суп',200)">
+                <div style="font-size:2.5rem;margin-bottom:.3rem">🍲</div>
                 <div class="menu-item-name">Тыквенный суп</div>
                 <div class="menu-item-price">200 ₽</div>
             </div>
-            <div class="menu-item" onclick="openOrderModal('Каша витаминная', 150)">
-                <div style="font-size:2.5rem; margin-bottom:0.3rem;">🥣</div>
+            <div class="menu-item" onclick="openOrderModal('Каша витаминная',150)">
+                <div style="font-size:2.5rem;margin-bottom:.3rem">🥣</div>
                 <div class="menu-item-name">Каша витаминная</div>
                 <div class="menu-item-price">150 ₽</div>
             </div>
-            <div class="menu-item" onclick="openOrderModal('Салат "Щётка"', 120)">
-                <div style="font-size:2.5rem; margin-bottom:0.3rem;">🥗</div>
+            <div class="menu-item" onclick="openOrderModal('Салат "Щётка"',120)">
+                <div style="font-size:2.5rem;margin-bottom:.3rem">🥗</div>
                 <div class="menu-item-name">Салат "Щётка"</div>
                 <div class="menu-item-price">120 ₽</div>
             </div>
-            <div class="menu-item" onclick="openOrderModal('Смузи от Джефа', 200)">
-                <div style="font-size:2.5rem; margin-bottom:0.3rem;">🥤</div>
+            <div class="menu-item" onclick="openOrderModal('Смузи от Джефа',200)">
+                <div style="font-size:2.5rem;margin-bottom:.3rem">🥤</div>
                 <div class="menu-item-name">Смузи от Джефа</div>
                 <div class="menu-item-price">200 ₽</div>
             </div>
         </div>
     </section>
-
-    <!-- СОБЫТИЯ (ЗАГРУЗКА ИЗ SUPABASE + КАРТИНКИ ИЗ ПАПКИ) -->
     <section class="fade-section">
         <h2>📅 События</h2>
-        <div class="events-carousel" id="eventsCarousel">
-            <div style="width:100%; text-align:center; padding:2rem; opacity:0.6;">Загрузка событий...</div>
-        </div>
+        <div class="events-carousel" id="eventsCarousel"><div style="width:100%;text-align:center;padding:2rem;opacity:.6">Загрузка событий...</div></div>
     </section>
-
-    <!-- МАСЛА -->
     <section class="fade-section">
-        <div style="margin:1.5rem 0;">
+        <div style="margin:1.5rem 0">
             <h3>Масла холодного отжима</h3>
             <div>
                 <span class="oil-tag">Лён коричневый 700 ₽</span>
@@ -382,47 +239,26 @@
         </div>
         <a href="https://wa.me/79630326011?text=Здравствуйте! Хочу заказать еду из вашего меню" class="btn btn-wa btn-block">📱 Заказать еду в WhatsApp</a>
     </section>
-
-    <!-- ОТЗЫВЫ -->
     <section class="fade-section">
         <h2>💬 Отзывы</h2>
-        <div class="review-card">
-            <div class="author">Сергей Огородник</div>
-            <div class="text">«Отличное место! Живу тут уже 2 недели и рад, что нашел единомышленников. Очень душевное и уникальное место!»</div>
-            <div class="date">июнь 2025</div>
-        </div>
-        <div class="review-card">
-            <div class="author">Алёна Белослудцева</div>
-            <div class="text">«Хорошее место, где можно помедитировать и отдохнуть, есть баня. Так же проходит чайная церемония и есть возможность уединиться.»</div>
-            <div class="date">май 2025</div>
-        </div>
-        <div class="review-card">
-            <div class="author">Ринкус Мария</div>
-            <div class="text">«Обожаю Фридом! Всегда туда приезжаю. Мое место восстановления! Если хотите баню, бассейн, практики, релакс, оздоровление, интересные беседы за камином — рекомендую обязательно. За такие цены лучше не найдете.»</div>
-            <div class="date">май 2025</div>
-        </div>
-        <div class="review-card">
-            <div class="author">Максим Р.</div>
-            <div class="text">«FreeDom по-настоящему Дом Свободы... Любовь окрыляет, музыка вечна, вибрации бесконечны.»</div>
-            <div class="date">май 2025</div>
-        </div>
-
+        <div class="review-card"><div class="author">Сергей Огородник</div><div class="text">«Отличное место! Живу тут уже 2 недели и рад, что нашел единомышленников. Очень душевное и уникальное место!»</div><div class="date">июнь 2025</div></div>
+        <div class="review-card"><div class="author">Алёна Белослудцева</div><div class="text">«Хорошее место, где можно помедитировать и отдохнуть, есть баня. Так же проходит чайная церемония и есть возможность уединиться.»</div><div class="date">май 2025</div></div>
+        <div class="review-card"><div class="author">Ринкус Мария</div><div class="text">«Обожаю Фридом! Всегда туда приезжаю. Мое место восстановления! Если хотите баню, бассейн, практики, релакс, оздоровление, интересные беседы за камином — рекомендую обязательно. За такие цены лучше не найдете.»</div><div class="date">май 2025</div></div>
+        <div class="review-card"><div class="author">Максим Р.</div><div class="text">«FreeDom по-настоящему Дом Свободы... Любовь окрыляет, музыка вечна, вибрации бесконечны.»</div><div class="date">май 2025</div></div>
         <div class="form-card review-form">
-            <p style="margin-bottom:1rem; opacity:0.6;">Оставьте свой отзыв о FreeDom — он появится на сайте!</p>
+            <p style="margin-bottom:1rem;opacity:.6">Оставьте свой отзыв о FreeDom — он появится на сайте!</p>
             <form id="reviewForm" action="https://formspree.io/f/xpqgkzgo" method="POST">
                 <div class="field"><label>Ваше имя</label><input type="text" name="name" placeholder="Анна" required></div>
                 <div class="field"><label>Текст отзыва</label><textarea name="review" rows="3" placeholder="Поделитесь впечатлениями..." required></textarea></div>
                 <button type="submit" class="btn btn-block">Отправить отзыв</button>
             </form>
-            <div id="reviewSuccess" class="success" style="display:none;">✅ Спасибо! Ваш отзыв опубликован.</div>
+            <div id="reviewSuccess" class="success" style="display:none">✅ Спасибо! Ваш отзыв опубликован.</div>
         </div>
     </section>
-
-    <!-- ФОРМА БРОНИРОВАНИЯ -->
     <section class="fade-section">
         <h2>📅 Забронировать номер</h2>
         <div class="form-card" id="bookingAnchor">
-            <p style="margin-bottom:1.2rem; opacity:0.6;">Заполните форму, и мы свяжемся с вами в течение часа.</p>
+            <p style="margin-bottom:1.2rem;opacity:.6">Заполните форму, и мы свяжемся с вами в течение часа.</p>
             <form id="bookingForm" action="https://formspree.io/f/xpqgkzgo" method="POST">
                 <div class="field"><label>Тип номера *</label><select name="room_type" required><option value="">Выберите...</option><option value="family">Семейная комната</option><option value="balcony">Двухместный с балконом</option><option value="attic">Мансардная комната</option><option value="bungalow">Бунгало в саду</option><option value="balcony_bed">Спальное место на балконе</option><option value="hostel_standart">Хостел стандарт</option><option value="hostel_economy">Хостел эконом</option></select></div>
                 <div class="field"><label>Дата заезда *</label><input type="date" name="checkin" required></div>
@@ -441,8 +277,6 @@
             <div id="successMessage" class="success">✅ Спасибо!<br>Мы свяжемся с вами в ближайшее время.</div>
         </div>
     </section>
-
-    <!-- КОНТАКТЫ -->
     <section class="fade-section">
         <h2>🌌 Связь с нами</h2>
         <div class="contact-links">
@@ -451,37 +285,26 @@
             <a href="https://t.me/freedom_sochi" class="contact-item"><img src="images/telegram.png" alt="Telegram"><span>Telegram</span></a>
             <a href="https://vk.ru/freedom_sochi" class="contact-item"><img src="images/vk.png" alt="VK"><span>VK</span></a>
         </div>
-        <p style="text-align:center; opacity:0.4;">📍 Сочи, Мамайка, Теневой пер., 48</p>
+        <p style="text-align:center;opacity:.4">📍 Сочи, Мамайка, Теневой пер., 48</p>
     </section>
-
-    <!-- КАРТА -->
     <section class="fade-section">
         <h2>🗺️ Как нас найти</h2>
         <div class="map-container">
-            <iframe src="https://yandex.ru/map-widget/v1/org/freedom/161345577891/gallery/?ll=39.707703%2C43.651800&z=19.33" 
-                    width="100%" height="200" frameborder="0" allowfullscreen="true" style="border-radius: 16px; border: 1px solid rgba(255,255,255,0.06);"></iframe>
+            <iframe src="https://yandex.ru/map-widget/v1/org/freedom/161345577891/gallery/?ll=39.707703%2C43.651800&z=19.33" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border-radius:16px;border:1px solid rgba(255,255,255,.06)"></iframe>
         </div>
         <div class="map-text">
             <p><strong>📍 Адрес:</strong> Сочи, Мамайка, Теневой пер., 48</p>
-            <p><strong>🚕 Как добраться:</strong><br>
-            — Остановка «Теневой пер.»: маршрут № 37 от ж/д вокзала (остановка у маг. «Вкус Вилл»), 20 мин. в пути, далее пешком 20 мин.<br>
-            — Лучше на такси от центра Сочи до FreeDom — 10 минут.</p>
-            <p style="opacity:0.6; font-size:0.9rem; margin-top:4px;">
-                <a href="https://yandex.ru/maps/org/freedom/161345577891/" target="_blank" style="color:#d4af37; text-decoration:none; border-bottom:1px dashed rgba(212,175,55,0.3);">Открыть карту в Яндекс.Картах →</a>
-            </p>
+            <p><strong>🚕 Как добраться:</strong><br>— Остановка «Теневой пер.»: маршрут № 37 от ж/д вокзала (остановка у маг. «Вкус Вилл»), 20 мин. в пути, далее пешком 20 мин.<br>— Лучше на такси от центра Сочи до FreeDom — 10 минут.</p>
+            <p style="opacity:.6;font-size:.9rem;margin-top:4px"><a href="https://yandex.ru/maps/org/freedom/161345577891/" target="_blank" style="color:#d4af37;text-decoration:none;border-bottom:1px dashed rgba(212,175,55,.3)">Открыть карту в Яндекс.Картах →</a></p>
         </div>
     </section>
-
     <footer class="footer">
         <p>FreeDom — место для жизни, отдыха и развития ❤️</p>
-        <p style="font-size:0.8rem; opacity:0.3;">На территории действуют правила ЗОЖ: без мяса, алкоголя, курения.</p>
+        <p style="font-size:.8rem;opacity:.3">На территории действуют правила ЗОЖ: без мяса, алкоголя, курения.</p>
     </footer>
 </div>
-
-<!-- ПЛАВАЮЩАЯ КНОПКА БРОНИРОВАНИЯ -->
 <a href="#bookingAnchor" id="floatingBooking">📅 Забронировать</a>
 
-<!-- МОДАЛЬНОЕ ОКНО БРОНИРОВАНИЯ КОМНАТЫ -->
 <div class="modal-overlay" id="bookingModal">
     <div class="modal-window">
         <button class="modal-close" id="bookingModalClose">&times;</button>
@@ -493,29 +316,24 @@
             <input type="hidden" id="bookingRoomId" name="room_id">
             <input type="hidden" id="bookingRoomPrice" name="room_price">
             <input type="hidden" id="bookingRoomName" name="room_name">
-
             <div class="field"><label for="bookingGuestCount">Количество гостей</label><input type="number" id="bookingGuestCount" min="1" max="10" value="1"></div>
             <div class="field"><label for="bookingGuestNameModal">Ваше имя *</label><input type="text" id="bookingGuestNameModal" placeholder="Иван Петров" required></div>
             <div class="field"><label for="bookingGuestPhoneModal">Телефон *</label><input type="tel" id="bookingGuestPhoneModal" placeholder="+7 999 123-45-67" required></div>
             <div class="field"><label for="bookingGuestEmailModal">Email</label><input type="email" id="bookingGuestEmailModal" placeholder="ivan@mail.ru"></div>
             <div class="field"><label for="bookingCheckInModal">Дата заезда *</label><input type="date" id="bookingCheckInModal" required></div>
             <div class="field"><label for="bookingCheckOutModal">Дата выезда *</label><input type="date" id="bookingCheckOutModal" required></div>
-
-            <div id="bookingModalError" class="error-msg" style="display:none; color:#ff6b6b;"></div>
+            <div id="bookingModalError" class="error-msg" style="display:none;color:#ff6b6b"></div>
             <button type="submit" class="btn btn-block" id="bookingModalSubmit">Забронировать</button>
         </form>
-        <div id="bookingModalSuccess" style="display:none; text-align:center; padding:1rem; color:#25D366;">
-            ✅ Бронирование создано! Мы свяжемся с вами.
-        </div>
+        <div id="bookingModalSuccess" style="display:none;text-align:center;padding:1rem;color:#25D366">✅ Бронирование создано! Мы свяжемся с вами.</div>
     </div>
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО ЗАКАЗА ЕДЫ -->
 <div class="modal-overlay" id="orderModal">
     <div class="modal-window">
         <button class="modal-close" id="orderModalClose">&times;</button>
-        <h2 style="color:#d4af37;">📝 Заказ: <span id="orderItemName"></span></h2>
-        <p style="opacity:0.6; margin-bottom:1rem;">Цена: <span id="orderItemPrice"></span> ₽</p>
+        <h2 style="color:#d4af37">📝 Заказ: <span id="orderItemName"></span></h2>
+        <p style="opacity:.6;margin-bottom:1rem">Цена: <span id="orderItemPrice"></span> ₽</p>
         <form id="orderForm">
             <input type="hidden" id="orderName" value="">
             <input type="hidden" id="orderPrice" value="">
@@ -524,17 +342,14 @@
             <div class="field"><label>Email</label><input type="email" id="orderGuestEmail" placeholder="ivan@mail.ru"></div>
             <div class="field"><label>Количество</label><input type="number" id="orderQuantity" value="1" min="1"></div>
             <div class="field"><label>Комментарий к заказу</label><textarea id="orderComment" rows="2" placeholder="Без лука, острое..."></textarea></div>
-            <button type="submit" class="btn btn-block" style="padding:12px; font-size:1.1rem; background:linear-gradient(145deg,#d4af37,#b8952a); color:#0b0d17; border:none; border-radius:40px; font-weight:700;">✅ Заказать</button>
+            <button type="submit" class="btn btn-block" style="padding:12px;font-size:1.1rem;background:linear-gradient(145deg,#d4af37,#b8952a);color:#0b0d17;border:0;border-radius:40px;font-weight:700">✅ Заказать</button>
         </form>
-        <div id="orderSuccess" style="display:none; text-align:center; padding:1rem; color:#25D366;">✅ Заказ отправлен! Мы свяжемся с вами в ближайшее время.</div>
-        <div id="orderError" class="error-msg" style="display:none; color:#ff6b6b;"></div>
+        <div id="orderSuccess" style="display:none;text-align:center;padding:1rem;color:#25D366">✅ Заказ отправлен! Мы свяжемся с вами в ближайшее время.</div>
+        <div id="orderError" class="error-msg" style="display:none;color:#ff6b6b"></div>
     </div>
 </div>
 
-<!-- МУЗЫКА -->
-<audio id="bgMusic" autoplay loop muted>
-    <source src="images/music.mp3" type="audio/mpeg">
-</audio>
+<audio id="bgMusic" autoplay loop muted><source src="images/music.mp3" type="audio/mpeg"></audio>
 <div id="musicToggle">🔇</div>
 
 <script>
@@ -542,48 +357,55 @@
     const SUPABASE_ANON_KEY = 'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // ===== ЗАГРУЗКА КОМНАТ (ФОТО С GITHUB ПО НАЗВАНИЮ) =====
+    // Жёсткий маппинг названий комнат к файлам картинок
+    const roomImageMap = {
+        'Хостел эконом': 'hostel_economy.jpg',
+        'Хостел стандарт': 'hostel_standart.jpg',
+        'Семейная комната': 'family_room.jpg',
+        'Мансардная комната №1': 'attic_room1.jpg',
+        'Мансардная комната №2': 'attic_room2.jpg',
+        'Бунгало в саду': 'bungalow.jpg',
+        'Спальное место на балконе': 'balcony_bed.jpg',
+        'Двухместный с балконом №1': 'balcony_room1.jpg',
+        'Двухместный с балконом №2': 'balcony_room2.jpg'
+    };
+
+    // Жёсткий маппинг названий событий к файлам картинок
+    const eventImageMap = {
+        'Гонг-медитация': 'gong-meditation.jpg',
+        'Чайная церемония': 'tea-ceremony.jpg'
+    };
+
+    // Базовый URL для картинок на GitHub
+    const GITHUB_IMAGE_BASE = 'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/';
+
+    function getRoomImageUrl(roomName) {
+        const fileName = roomImageMap[roomName];
+        if (fileName) return GITHUB_IMAGE_BASE + fileName;
+        return 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(roomName);
+    }
+
+    function getEventImageUrl(eventTitle) {
+        const fileName = eventImageMap[eventTitle];
+        if (fileName) return GITHUB_IMAGE_BASE + fileName;
+        return 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(eventTitle);
+    }
+
     async function loadRooms() {
         const container = document.getElementById('roomsCarousel');
         try {
-            // Загружаем комнаты из Supabase
             const { data, error } = await supabase.from('rooms').select('*').order('name');
             if (error) throw error;
             if (!data || data.length === 0) {
-                container.innerHTML = '<div style="width:100%; text-align:center; padding:2rem; opacity:0.6;">Комнат пока нет</div>';
+                container.innerHTML = '<div style="width:100%;text-align:center;padding:2rem;opacity:.6">Комнат пока нет</div>';
                 return;
             }
-            
-            // Маппинг названий комнат к именам файлов (жёстко задаём для надёжности)
-            const roomImageMap = {
-                'Хостел эконом': 'hostel_economy.jpg',
-                'Хостел стандарт': 'hostel_standart.jpg',
-                'Семейная комната': 'family_room.jpg',
-                'Мансардная комната №1': 'attic_room1.jpg',
-                'Мансардная комната №2': 'attic_room2.jpg',
-                'Бунгало в саду': 'bungalow.jpg',
-                'Спальное место на балконе': 'balcony_bed.jpg',
-                'Двухместный с балконом №1': 'balcony_room1.jpg',
-                'Двухместный с балконом №2': 'balcony_room2.jpg'
-            };
-
             let html = '';
             data.forEach(room => {
-                let imageUrl = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(room.name);
-                // Пытаемся найти картинку по названию
-                const fileName = roomImageMap[room.name];
-                if (fileName) {
-                    imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
-                } else if (room.image_url) {
-                    // fallback: если в базе есть свой путь
-                    const fallbackFile = room.image_url.replace('images/', '');
-                    if (fallbackFile) {
-                        imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fallbackFile}`;
-                    }
-                }
+                const imgSrc = getRoomImageUrl(room.name);
                 html += `
                     <div class="room-card-carousel" data-room='${JSON.stringify(room)}'>
-                        <img src="${imageUrl}" alt="${room.name}" onerror="this.src='https://placehold.co/600x400/1a1a2e/d4af37?text=${encodeURIComponent(room.name)}'">
+                        <img src="${imgSrc}" alt="${room.name}" onerror="this.src='https://placehold.co/600x400/1a1a2e/d4af37?text=${encodeURIComponent(room.name)}'">
                         <div class="content">
                             <h3>${room.name}</h3>
                             <div class="price">${room.price_per_night} ₽/ночь</div>
@@ -594,8 +416,6 @@
                 `;
             });
             container.innerHTML = html;
-            
-            // Обработчики кликов
             document.querySelectorAll('.room-card-carousel').forEach(card => {
                 card.addEventListener('click', function(e) {
                     if (e.target.classList.contains('btn-detail')) return;
@@ -610,11 +430,10 @@
             });
         } catch (error) {
             console.error('Ошибка загрузки комнат:', error);
-            container.innerHTML = '<div style="width:100%; text-align:center; padding:2rem; color:#ff6b6b;">Ошибка загрузки комнат</div>';
+            container.innerHTML = '<div style="width:100%;text-align:center;padding:2rem;color:#ff6b6b">Ошибка загрузки комнат</div>';
         }
     }
 
-    // ===== ЗАГРУЗКА АКТИВНОГО СОБЫТИЯ (Supabase + картинка по имени) =====
     async function loadActiveEvent() {
         const container = document.getElementById('eventsCarousel');
         try {
@@ -627,32 +446,22 @@
             if (error) {
                 console.error('Ошибка загрузки события:', error);
                 if (error.code === '42P01') {
-                    container.innerHTML = '<div style="width:100%; text-align:center; padding:2rem; opacity:0.4;">События пока не добавлены</div>';
+                    container.innerHTML = '<div style="width:100%;text-align:center;padding:2rem;opacity:.4">События пока не добавлены</div>';
                     return;
                 }
-                container.innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки события</div>';
+                container.innerHTML = '<div style="color:#ff6b6b">Ошибка загрузки события</div>';
                 return;
             }
 
             if (!data) {
-                container.innerHTML = '<div style="width:100%; text-align:center; padding:2rem; opacity:0.4;">Нет активных событий</div>';
+                container.innerHTML = '<div style="width:100%;text-align:center;padding:2rem;opacity:.4">Нет активных событий</div>';
                 return;
             }
 
-            // Маппинг названий событий к картинкам
-            const eventImageMap = {
-                'Гонг-медитация': 'gong-meditation.jpg',
-                'Чайная церемония': 'tea-ceremony.jpg'
-            };
-            let imageUrl = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(data.title);
-            const fileName = eventImageMap[data.title] || (data.image_url ? data.image_url.replace('images/', '') : null);
-            if (fileName) {
-                imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
-            }
-
+            const imgSrc = getEventImageUrl(data.title);
             container.innerHTML = `
                 <div class="event-card" data-id="${data.id}">
-                    <img src="${imageUrl}" alt="${data.title}" onerror="this.src='https://placehold.co/600x400/1a1a2e/d4af37?text=${encodeURIComponent(data.title)}'">
+                    <img src="${imgSrc}" alt="${data.title}" onerror="this.src='https://placehold.co/600x400/1a1a2e/d4af37?text=${encodeURIComponent(data.title)}'">
                     <div class="content">
                         <div class="date">📆 ${data.date} ${data.time ? '· ' + data.time : ''}</div>
                         <h3>${data.title}</h3>
@@ -677,7 +486,7 @@
             }
         } catch (error) {
             console.error('Критическая ошибка загрузки события:', error);
-            container.innerHTML = '<div style="color:#ff6b6b;">Ошибка загрузки события</div>';
+            container.innerHTML = '<div style="color:#ff6b6b">Ошибка загрузки события</div>';
         }
     }
 
@@ -685,7 +494,7 @@
         alert(`📅 ${eventData.title}\n${eventData.date} ${eventData.time || ''}\n${eventData.description || ''}`);
     }
 
-    // ===== МОДАЛЬНОЕ ОКНО БРОНИРОВАНИЯ =====
+    // ----- Модалка бронирования -----
     const bookingModal = document.getElementById('bookingModal');
     const bookingModalClose = document.getElementById('bookingModalClose');
     const bookingModalImage = document.getElementById('bookingModalImage');
@@ -713,23 +522,8 @@
                 window.location.href = 'login.html';
                 return;
             }
-            let imageUrl = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(room.name);
-            const roomImageMap = {
-                'Хостел эконом': 'hostel_economy.jpg',
-                'Хостел стандарт': 'hostel_standart.jpg',
-                'Семейная комната': 'family_room.jpg',
-                'Мансардная комната №1': 'attic_room1.jpg',
-                'Мансардная комната №2': 'attic_room2.jpg',
-                'Бунгало в саду': 'bungalow.jpg',
-                'Спальное место на балконе': 'balcony_bed.jpg',
-                'Двухместный с балконом №1': 'balcony_room1.jpg',
-                'Двухместный с балконом №2': 'balcony_room2.jpg'
-            };
-            const fileName = roomImageMap[room.name] || (room.image_url ? room.image_url.replace('images/', '') : null);
-            if (fileName) {
-                imageUrl = `https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/${fileName}`;
-            }
-            bookingModalImage.src = imageUrl;
+            const imgSrc = getRoomImageUrl(room.name);
+            bookingModalImage.src = imgSrc;
             bookingModalImage.onerror = function() {
                 this.src = 'https://placehold.co/600x400/1a1a2e/d4af37?text=' + encodeURIComponent(room.name);
             };
@@ -845,7 +639,7 @@
         }
     });
 
-    // ===== ЗАКАЗ ЕДЫ (VEG-RAW) =====
+    // ----- Модалка заказа еды -----
     function openOrderModal(name, price) {
         document.getElementById('orderItemName').textContent = name;
         document.getElementById('orderItemPrice').textContent = price;
@@ -941,13 +735,12 @@
         }
     });
 
-    // ===== ПРЕЛОАДЕР =====
+    // ----- Общие скрипты -----
     window.addEventListener('load', function() {
         document.getElementById('preloader').classList.add('hide');
         document.body.classList.add('loaded');
     });
 
-    // ===== АНИМАЦИЯ =====
     const sections = document.querySelectorAll('.fade-section');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -958,7 +751,6 @@
     }, { threshold: 0.1 });
     sections.forEach(section => observer.observe(section));
 
-    // ===== СВОРАЧИВАНИЕ ТЕКСТА О НАС =====
     document.getElementById('aboutToggle').addEventListener('click', function(e) {
         e.stopPropagation();
         const full = document.getElementById('aboutFull');
@@ -966,7 +758,6 @@
         this.textContent = full.classList.contains('open') ? 'Свернуть ↑' : 'Читать далее →';
     });
 
-    // ===== ФОРМА ОТЗЫВОВ =====
     const reviewForm = document.getElementById('reviewForm');
     const reviewSuccess = document.getElementById('reviewSuccess');
     reviewForm.addEventListener('submit', function(e) {
@@ -976,7 +767,6 @@
         }, 500);
     });
 
-    // ===== МУЗЫКА =====
     const audio = document.getElementById('bgMusic');
     const toggleBtn = document.getElementById('musicToggle');
     let isPlaying = false;
@@ -1002,13 +792,11 @@
         }
     });
 
-    // ===== ИКОНКА ВХОДА =====
     supabase.auth.getSession().then(({ data }) => {
         const loginIcon = document.getElementById('loginIcon');
         if (data.session) loginIcon.href = 'profile.html';
     });
 
-    // ===== ЗАГРУЗКА ПРИ СТАРТЕ =====
     document.addEventListener('DOMContentLoaded', function() {
         loadRooms();
         loadActiveEvent();
