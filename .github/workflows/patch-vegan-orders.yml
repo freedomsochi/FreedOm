@@ -1,0 +1,51 @@
+name: Prepare Veg-raw orders
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: "!contains(github.event.head_commit.message, '[vegan-orders-patched]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch index.html
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          # Keep only the two current test dishes in the Veg-raw menu.
+          menu = '''<div class="menu-grid">
+              <div class="menu-item" onclick="openOrderModal('Шаурма сыроедческая',250)"><div style="font-size:2.5rem;margin-bottom:.3rem">🌯</div><div class="menu-item-name">Шаурма сыроедческая</div><div class="menu-item-price">250 ₽</div></div>
+              <div class="menu-item" onclick="openOrderModal('Травяной чай',100)"><div style="font-size:2.5rem;margin-bottom:.3rem">🍵</div><div class="menu-item-name">Травяной чай</div><div class="menu-item-price">100 ₽</div></div>
+          </div>'''
+          s, n = re.subn(r'<div class="menu-grid">.*?</div>\s*</section>\s*<section class="fade-section">\s*<h2>📅 События', menu + '\n    </section>\n    <section class="fade-section">\n        <h2>📅 События', s, count=1, flags=re.S)
+          if n != 1:
+              raise SystemExit('Veg-raw menu block was not found')
+
+          # Add a small marker so the patch is idempotent.
+          if 'FreeDom: Formspree kitchen notification' not in s:
+              old = "const totalAmount=price*quantity,items=[{name,quantity,price,comment}];try{const session=await supabase.auth.getSession(),userId=session.data.session?.user?.id||null;const{error}=await supabase.from('orders').insert({user_id:userId,guest_name:guestName,guest_phone:guestPhone,guest_email:guestEmail||null,items,total_amount:totalAmount,status:'новый',payment_status:'не выбрано'});if(error)throw error;document.getElementById('orderForm').style.display='none';successDiv.style.display='block';"
+              new = "const totalAmount=price*quantity,items=[{name,quantity,price,comment}];try{const session=await supabase.auth.getSession(),userId=session.data.session?.user?.id||null;const{error}=await supabase.from('orders').insert({user_id:userId,guest_name:guestName,guest_phone:guestPhone,guest_email:guestEmail||null,items,total_amount:totalAmount,status:'новый',payment_status:'не выбрано'});if(error)throw error;\n    /* FreeDom: Formspree kitchen notification */\n    try{const fd=new FormData();fd.append('type','Новый заказ Veg-raw кухни');fd.append('item',name);fd.append('quantity',String(quantity));fd.append('total',String(totalAmount)+' ₽');fd.append('guest_name',guestName);fd.append('guest_phone',guestPhone);fd.append('guest_email',guestEmail||'не указан');fd.append('comment',comment||'нет');await fetch('https://formspree.io/f/xpqgqkzgo',{method:'POST',body:fd,headers:{Accept:'application/json'}})}catch(notificationError){console.warn('Уведомление Formspree не отправлено:',notificationError)}document.getElementById('orderForm').style.display='none';successDiv.style.display='block';"
+              if old not in s:
+                  raise SystemExit('Order insert block was not found')
+              s = s.replace(old, new, 1)
+
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit patched page and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f .github/workflows/patch-vegan-orders.yml
+          git add index.html .github/workflows/patch-vegan-orders.yml
+          git commit -m "Prepare Veg-raw test menu and Telegram order notifications [vegan-orders-patched]"
+          git push
