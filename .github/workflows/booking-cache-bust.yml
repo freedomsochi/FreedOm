@@ -1,0 +1,33 @@
+name: Bust booking sync cache
+
+on:
+  push:
+    paths:
+      - 'booking-sync.js'
+
+permissions:
+  contents: write
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Update script version
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('src="booking-sync.js"', 'src="booking-sync.js?v=c583e482"')
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit cache bust
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet || git commit -m 'Bust booking sync script cache [skip ci]'
+          git push
