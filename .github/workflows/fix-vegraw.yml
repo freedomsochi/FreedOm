@@ -1,36 +1,37 @@
-name: Fix Veg-raw Formspree
-
+name: Site maintenance
 on:
   push:
     paths:
       - '.github/workflows/fix-vegraw.yml'
+      - 'booking-sync.trigger'
     branches:
       - main
-
 permissions:
   contents: write
-
 jobs:
-  fix:
+  maintain:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch Veg-raw order handler
+      - name: Ensure booking sync is loaded
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          old = """const formData=new FormData();formData.append('type','Новый заказ Veg-raw кухни');formData.append('item',name);formData.append('quantity',String(quantity));formData.append('total',String(totalAmount)+' ₽');formData.append('guest_name',guestName);formData.append('guest_phone',guestPhone);formData.append('guest_email',guestEmail||'не указан');formData.append('comment',comment||'нет');try{const formspreeResponse=await fetch('https://formspree.io/f/xpqgqkzgo',{method:'POST',body:formData,headers:{Accept:'application/json'}});if(!formspreeResponse.ok){const formspreeText=await formspreeResponse.text();console.warn('Formspree уведомление не отправлено:',formspreeResponse.status,formspreeText)}}catch(notificationError){console.warn('Ошибка уведомления Formspree:',notificationError)}form.style.display='none';successDiv.style.display='block';submitBtn.disabled=false;submitBtn.textContent='✅ Заказать';setTimeout(()=>{document.getElementById('orderModal').classList.remove('active');document.body.style.overflow='';form.style.display='block';successDiv.style.display='none'},3000)"""
-          new = """const notificationFrame=document.createElement('iframe');notificationFrame.name='formspree_notification_frame_'+Date.now();notificationFrame.style.display='none';const notificationForm=document.createElement('form');notificationForm.method='POST';notificationForm.action='https://formspree.io/f/xpqgqkzgo';notificationForm.target=notificationFrame.name;notificationForm.style.display='none';const notificationFields={type:'Новый заказ Veg-raw кухни',item:name,quantity:String(quantity),total:String(totalAmount)+' ₽',guest_name:guestName,guest_phone:guestPhone,guest_email:guestEmail||'не указан',comment:comment||'нет'};Object.entries(notificationFields).forEach(([key,value])=>{const input=document.createElement('input');input.type='hidden';input.name=key;input.value=value;notificationForm.appendChild(input)});document.body.appendChild(notificationFrame);document.body.appendChild(notificationForm);notificationForm.submit();setTimeout(()=>{notificationForm.remove();notificationFrame.remove()},5000);form.style.display='none';successDiv.style.display='block';submitBtn.disabled=false;submitBtn.textContent='✅ Заказать';setTimeout(()=>{document.getElementById('orderModal').classList.remove('active');document.body.style.overflow='';form.style.display='block';successDiv.style.display='none'},3000)"""
-          if old not in s:
-              raise SystemExit('Current Veg-raw handler not found; aborting without changes.')
-          p.write_text(s.replace(old,new,1), encoding='utf-8')
+          tag = '<script src="booking-sync.js"></script>'
+          if tag not in s:
+              marker = '</body>'
+              if marker not in s:
+                  raise SystemExit('index.html: </body> not found')
+              s = s.replace(marker, tag + '\n' + marker, 1)
+              p.write_text(s, encoding='utf-8')
           PY
-      - name: Commit patch
+      - name: Commit maintenance changes
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Use hidden iframe for Veg-raw Formspree notification' || exit 0
+          git diff --cached --quiet && exit 0
+          git commit -m 'Restore booking sync to Supabase'
           git push
