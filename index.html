@@ -297,5 +297,6 @@
     supabase.auth.getSession().then(({data})=>{const loginIcon=document.getElementById('loginIcon');if(data.session)loginIcon.href='profile.html'});
     document.querySelectorAll('.room-card-carousel').forEach((card,index)=>{card.addEventListener('click',function(e){if(e.target.classList.contains('btn-detail'))return;const room={id:'room-'+index,name:this.querySelector('h3').textContent,price_per_night:parseInt(this.querySelector('.price').textContent)||0,description:this.querySelector('.desc').textContent||'',image_url:this.querySelector('img').src};openBookingModal(room)});card.querySelector('.btn-detail').addEventListener('click',function(e){e.stopPropagation();const parent=this.closest('.room-card-carousel');const room={id:'room-'+index,name:parent.querySelector('h3').textContent,price_per_night:parseInt(parent.querySelector('.price').textContent)||0,description:parent.querySelector('.desc').textContent||'',image_url:parent.querySelector('img').src};openBookingModal(room)})});
 </script>
+<script src="booking-sync.js"></script>
 </body>
 </html>
