@@ -59,44 +59,4 @@
       }
     });
   }
-
-  // The site also has a modal booking form. It already writes to bookings;
-  // this listener only adds the same robust fallback for that form if needed.
-  const modalForm=document.getElementById('bookingModalForm');
-  if(modalForm){
-    modalForm.addEventListener('submit',async function(e){
-      if(window.__freedomModalNativeSubmit) return;
-      e.preventDefault();
-      const roomId=document.getElementById('bookingRoomId')?.value;
-      const roomPrice=Number(document.getElementById('bookingRoomPrice')?.value)||0;
-      const guestName=document.getElementById('bookingGuestName')?.value.trim();
-      const guestPhone=document.getElementById('bookingGuestPhone')?.value.trim();
-      const guestEmail=document.getElementById('bookingGuestEmail')?.value.trim()||null;
-      const checkin=document.getElementById('bookingCheckIn')?.value;
-      const checkout=document.getElementById('bookingCheckOut')?.value;
-      const guestCount=Number(document.getElementById('bookingGuestCount')?.value)||1;
-      try{
-        const {data:room,error:roomError}=await sb.from('rooms').select('id,name,price_per_night').eq('id',roomId).maybeSingle();
-        if(roomError) throw roomError;
-        if(!room) throw new Error('Номер не найден.');
-        const {data:busy,error:busyError}=await sb.from('bookings').select('id,status').eq('room_id',roomId).lt('check_in_date',checkout).gt('check_out_date',checkin);
-        if(busyError) throw busyError;
-        const active=new Set(['новое','подтверждено','проживает','активна']);
-        if((busy||[]).some(x=>active.has(String(x.status||'').toLowerCase()))) throw new Error('Номер уже занят на выбранные даты.');
-        const nights=Math.round((new Date(checkout+'T00:00:00')-new Date(checkin+'T00:00:00'))/86400000);
-        if(nights<=0) throw new Error('Дата выезда должна быть позже даты заезда.');
-        const userId=await safeUserId();
-        const {error}=await sb.from('bookings').insert({room_id:roomId,user_id:userId,guest_name:guestName,guest_phone:guestPhone,guest_email:guestEmail,guest_count:guestCount,check_in_date:checkin,check_out_date:checkout,total_amount:roomPrice*nights,status:'новое',payment_status:'не выбрано'});
-        if(error) throw error;
-        window.__freedomModalNativeSubmit=true;
-        const submit=modalForm.querySelector('button[type="submit"]');
-        if(submit) submit.disabled=true;
-        HTMLFormElement.prototype.submit.call(modalForm);
-      }catch(err){
-        console.error('FreeDom modal booking sync error:',err);
-        const box=document.getElementById('bookingModalError');
-        if(box){box.textContent='Ошибка: '+(err?.message||'неизвестная ошибка');box.style.display='block';}
-      }
-    });
-  }
 })();
