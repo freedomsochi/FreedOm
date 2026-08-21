@@ -1,0 +1,15 @@
+/* FreeDom Space Map — visual layer extracted for safe iteration. */
+:root{--fd-green:#17362a;--fd-soft:#edf4ef;--fd-line:#dbe9df;--fd-bg:#fafffb;--fd-accent:#66c79a}
+.space-map{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(145deg,#fafffb,#dff0e4);border:1px solid var(--fd-line)}
+.space-map .garden{background:linear-gradient(145deg,#eff9ee,#d1e9d3)}
+.space-map .garden::before{content:"";position:absolute;inset:9%;border:14px solid #f7fbf6aa;border-radius:48%;box-shadow:0 0 0 1px #c8ddcd;pointer-events:none}
+.space-map .path{position:absolute;height:12px;border-radius:99px;background:#ffffff99;box-shadow:0 0 0 1px #c9dfcd;transform-origin:left center;pointer-events:none}
+.space-map .path-1{left:11%;top:50%;width:34%;transform:rotate(-28deg)}
+.space-map .path-2{left:34%;top:38%;width:31%;transform:rotate(12deg)}
+.space-map .path-3{left:47%;top:49%;width:25%;transform:rotate(45deg)}
+.space-map .path-4{left:30%;top:57%;width:39%;transform:rotate(18deg)}
+.space-map .path-5{left:52%;top:64%;width:24%;transform:rotate(-12deg)}
+.space-map .map-marker{transition:transform .2s,box-shadow .2s}
+.space-map .map-marker:hover{transform:translateY(-2px)}
+.space-map .map-marker.selected{box-shadow:0 0 0 2px var(--fd-accent),0 15px 34px #23413020}
+@media(max-width:560px){.space-map .path{height:9px}}
