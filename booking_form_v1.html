@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FreeDom — бронирование</title><style>body{font-family:system-ui,sans-serif;max-width:720px;margin:40px auto;padding:20px}label{display:block;margin:14px 0 6px}input,button{width:100%;padding:12px;box-sizing:border-box}button{margin-top:20px;cursor:pointer}.summary{padding:16px;border-radius:14px;background:#f3f5f4}.error{color:#b42318}.success{color:#067647}</style></head>
+<body>
+<h1>Бронирование FreeDom</h1><div id="summary" class="summary">Загрузка…</div>
+<form id="bookingForm"><label>Имя<input name="guest_name" required></label><label>Телефон<input name="guest_phone" required></label><label>Email<input name="guest_email" type="email"></label><label>Количество гостей/мест<input id="guestCount" name="guest_count" type="number" min="1" value="1" required></label><button type="submit">Забронировать</button><p id="result"></p></form>
+<script>
+const p=new URLSearchParams(location.search); const roomId=p.get('room_id'); const roomName=p.get('room_name')||'Выбранный объект'; const mode=p.get('booking_mode')||'whole'; const checkIn=p.get('check_in'); const checkOut=p.get('check_out'); const capacity=Number(p.get('capacity')||1);
+const summary=document.querySelector('#summary'); const count=document.querySelector('#guestCount');
+summary.textContent=`${roomName} · ${checkIn||'—'} → ${checkOut||'—'} · ${mode==='places'?'по местам':'целиком'}`; count.max=capacity;
+document.querySelector('#bookingForm').addEventListener('submit',async e=>{e.preventDefault();const result=document.querySelector('#result');result.className='';result.textContent='Проверяем доступность…';const data=Object.fromEntries(new FormData(e.target));data.room_id=roomId;data.check_in=checkIn;data.check_out=checkOut;data.guest_count=Number(data.guest_count);try{const r=await fetch('/api/booking',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const j=await r.json();if(!r.ok||j.ok===false)throw new Error(j.error||'Не удалось создать бронь');result.className='success';result.textContent=`Бронь создана${j.booking_id?` № ${j.booking_id}`:''}.`;e.target.reset();}catch(err){result.className='error';result.textContent=err.message;}});
+</script></body></html>
