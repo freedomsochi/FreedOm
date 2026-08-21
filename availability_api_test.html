@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FreeDom — Availability API test</title>
+<style>
+body{margin:0;padding:24px;background:#f4f8f3;color:#20352a;font-family:Inter,system-ui,sans-serif}main{max-width:760px;margin:auto;background:#fff;padding:24px;border-radius:20px;box-shadow:0 15px 50px rgba(39,65,52,.1)}form{display:flex;gap:10px;flex-wrap:wrap;align-items:end}label{display:grid;gap:5px;font-size:12px}input,button{padding:10px 12px;border:1px solid #dbe7df;border-radius:10px;font:inherit}button{background:#20352a;color:#fff;cursor:pointer}pre{margin-top:20px;padding:16px;background:#f4f8f3;border-radius:12px;overflow:auto;white-space:pre-wrap}.ok{color:#438e6e}.error{color:#b34d43}
+</style>
+</head>
+<body>
+<main>
+<h1>Live availability API</h1>
+<p>Тестирует только публичный Vercel endpoint. Supabase service-role key никогда не передаётся браузеру.</p>
+<form id="form">
+<label>Заезд<input id="from" type="date" required></label>
+<label>Выезд<input id="to" type="date" required></label>
+<button>Проверить</button>
+</form>
+<p id="status"></p>
+<pre id="output">Ожидание запроса…</pre>
+<script>
+const $=s=>document.querySelector(s);
+const d=new Date(); const next=new Date(d); next.setDate(d.getDate()+1);
+const iso=x=>x.toISOString().slice(0,10); $('#from').value=iso(d); $('#to').value=iso(next);
+$('#form').addEventListener('submit',async e=>{
+ e.preventDefault(); $('#status').textContent='Запрос…'; $('#status').className='';
+ $('#output').textContent='';
+ try{
+  const r=await fetch('/api/availability',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({check_in:$('#from').value,check_out:$('#to').value})});
+  const text=await r.text(); let data; try{data=JSON.parse(text)}catch{data={raw:text}};
+  $('#status').textContent=r.ok?'Endpoint отвечает':'Endpoint вернул ошибку HTTP '+r.status;
+  $('#status').className=r.ok?'ok':'error'; $('#output').textContent=JSON.stringify(data,null,2);
+ }catch(err){$('#status').textContent='Ошибка сети';$('#status').className='error';$('#output').textContent=String(err)}
+});
+</script>
+</main>
+</body>
+</html>
