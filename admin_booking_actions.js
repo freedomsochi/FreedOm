@@ -1,4 +1,4 @@
-/* FreeDom CRM — pending booking actions. Mutations go through the protected Vercel admin API. */
+/* FreeDom CRM — pending booking actions. Mutations use the authenticated Supabase session. */
 (function(){
   const style=document.createElement('style');
   style.textContent='.booking-pending-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.booking-pending-actions button{border:0;border-radius:10px;padding:9px 12px;font:inherit;font-weight:700;cursor:pointer}.booking-confirm{background:#dff5ed;color:#246b58}.booking-cancel{background:#fff0ed;color:#8b463d}.booking-pending-label{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:10px;background:#fff7df;color:#80662c;font-size:12px;font-weight:700}';
@@ -6,7 +6,10 @@
   async function act(id,action,btn){
     btn.disabled=true; const old=btn.textContent; btn.textContent='Обработка…';
     try{
-      const response=await fetch('/api/admin-booking',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({booking_id:id,action})});
+      const {data,error}=await window.db.auth.getSession();
+      const token=data?.session?.access_token;
+      if(error||!token)throw new Error('Сессия администратора не найдена. Войдите в CRM заново.');
+      const response=await fetch('/api/admin-booking',{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({booking_id:id,action})});
       const body=await response.json().catch(()=>({}));
       if(!response.ok||body.ok===false)throw new Error(body.error||`Ошибка ${response.status}`);
       window.location.reload();
