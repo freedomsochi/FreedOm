@@ -2,9 +2,13 @@ const SUPABASE_URL = process.env.SUPABASE_URL || 'https://vutmbhsclmcfqqlzxqkc.s
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 export default async function handler(req, res) {
+  if (req.method === 'GET') {
+    return res.status(200).json({ ok: true, configured: Boolean(SUPABASE_SERVICE_ROLE_KEY) });
+  }
+
   if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).json({ ok: false, error: 'POST required' });
+    res.setHeader('Allow', 'GET, POST');
+    return res.status(405).json({ ok: false, error: 'GET or POST required' });
   }
 
   if (!SUPABASE_SERVICE_ROLE_KEY) {
