@@ -1,0 +1,22 @@
+/* FreeDom CRM — mobile pass */
+@media (max-width: 720px){
+  .fd-main{min-width:0;overflow-x:hidden}
+  .fd-container{width:100%;box-sizing:border-box;padding-left:14px;padding-right:14px}
+  .fd-topbar{position:relative}
+  .fd-title{font-size:26px;line-height:1.05}
+  .fd-btn{min-height:42px}
+  .fd-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .fd-table table{min-width:620px}
+  input,select,textarea,button{font-size:16px}
+  .card,.panel,.metric,.stat,.column,.order{box-shadow:0 8px 24px rgba(41,77,86,.055)}
+  .row:hover,.card:hover,.panel:hover,.metric:hover,.stat:hover,.order:hover{transform:none!important}
+}
+@media (max-width: 480px){
+  .fd-container{padding-left:11px;padding-right:11px}
+  .fd-title{font-size:23px}
+  .fd-sub{font-size:12px;line-height:1.45}
+  .fd-sidebar{width:58px}
+  .fd-main{margin-left:58px}
+  .fd-nav a{justify-content:center;padding:10px 6px}
+  .fd-nav .label{display:none}
+}
