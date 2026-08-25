@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FreeDom CRM — Бронирования</title>
+<link rel="stylesheet" href="admin_design.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--a:#1fb7a6;--ink:#17222b;--muted:#71808b;--line:rgba(37,70,82,.12)}
+body{background:linear-gradient(135deg,#f5fbf8,#f7f7ff 48%,#eef8f7);color:var(--ink)}
+.fd-container{max-width:1320px}.fd-title{letter-spacing:-.04em}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--a);font-weight:800}
+.panel{background:rgba(255,255,255,.68)!important;border:1px solid rgba(255,255,255,.9)!important;box-shadow:0 18px 55px rgba(41,77,86,.08)!important;backdrop-filter:blur(20px);border-radius:24px;padding:22px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.panel h2{margin:0;font-size:19px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.filter{border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 11px;cursor:pointer}.filter.active{background:rgba(31,183,166,.1);border-color:rgba(31,183,166,.25)}
+.list{display:grid;gap:10px}.booking{padding:16px;border:1px solid rgba(37,70,82,.08);border-radius:18px;background:rgba(255,255,255,.58)}
+.main{display:flex;justify-content:space-between;gap:16px}.name{font-weight:800;font-size:16px}.room{color:var(--muted);font-size:12px;margin-top:4px}.meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}.chip{padding:6px 9px;border-radius:10px;background:rgba(31,183,166,.08);color:#35766e;font-size:11px;font-weight:700}.extra{background:rgba(123,127,240,.12);color:#575ab0}.price{text-align:right;font-weight:800;white-space:nowrap}.price small{display:block;color:var(--muted);font-size:10px;font-weight:500;margin-bottom:2px}.bed-note{margin-top:11px;padding:9px 11px;border-radius:12px;background:rgba(123,127,240,.08);font-size:12px;font-weight:700;color:#575ab0}.empty{padding:28px 4px;color:var(--muted);text-align:center}
+@media(max-width:600px){.panel{padding:16px;border-radius:20px}.main{display:block}.price{text-align:left;margin-top:8px}}
+</style>
+</head>
+<body>
+<div class="fd-shell">
+<aside class="fd-sidebar"><div class="fd-brand">Free<span>Dom</span></div><nav class="fd-nav">
+<a href="admin_v10_dashboard.html">📊 <span class="label">Дашборд</span></a>
+<a href="admin_v10.html">👥 <span class="label">Гости</span></a>
+<a href="admin_v10_events.html">🎫 <span class="label">События</span></a>
+<a class="active" href="admin_v12_bookings.html">🛏️ <span class="label">Бронирования</span></a>
+<a href="admin_v11_kitchen.html">🍲 <span class="label">Кухня</span></a>
+<a href="admin_v11_services.html">🧾 <span class="label">Услуги</span></a>
+<a href="admin_v10_finance.html">💰 <span class="label">Финансы</span></a>
+</nav></aside>
+<main class="fd-main"><div class="fd-container">
+<header class="fd-topbar"><div class="eyebrow">FreeDom · CRM</div><h1 class="fd-title">Бронирования</h1><p class="fd-muted">Новые заявки и параметры размещения, включая дополнительную кровать.</p></header>
+<section class="panel"><div class="panel-head"><h2>Заявки</h2><span id="count" class="fd-badge">Загрузка…</span></div>
+<div class="filters"><button class="filter active" data-status="all">Все</button><button class="filter" data-status="новое">Новые</button><button class="filter" data-status="подтверждено">Подтверждённые</button><button class="filter" data-status="отменено">Отменённые</button></div>
+<div id="list" class="list"><div class="empty">Загрузка…</div></div>
+</section>
+</div></main></div>
+<script>
+const sb=supabase.createClient('https://vutmbhsclmcfqqlzxqkc.supabase.co','sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q');
+const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const money=n=>(Number(n)||0).toLocaleString('ru-RU')+' ₽';
+const state={rows:[],status:'all'};
+function nights(a,b){if(!a||!b)return 0;return Math.max(0,Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000))}
+function render(){let rows=state.rows;if(state.status!=='all')rows=rows.filter(x=>x.status===state.status);$('count').textContent=`${rows.length} ${rows.length===1?'бронирование':rows.length<5?'бронирования':'бронирований'}`;if(!rows.length){$('list').innerHTML='<div class="empty">Бронирований в этом фильтре нет.</div>';return} $('list').innerHTML=rows.map(x=>{const room=x.rooms?.name||'Номер не указан';const family=room==='Семейная комната';const bed=x.additional_bed===true;return `<article class="booking"><div class="main"><div><div class="name">${esc(x.guest_name||'Гость')}</div><div class="room">🛏️ ${esc(room)}${family?' · 2 основных места':''}</div></div><div class="price"><small>${nights(x.check_in_date,x.check_out_date)} ночей</small>${x.total_amount!=null?money(x.total_amount):'—'}</div></div><div class="meta"><span class="chip">${esc(x.check_in_date||'—')} → ${esc(x.check_out_date||'—')}</span><span class="chip">👥 ${Number(x.guest_count)||1} ${Number(x.guest_count)===1?'гость':Number(x.guest_count)<5?'гостя':'гостей'}</span><span class="chip">${esc(x.status||'—')}</span>${family&&bed?'<span class="chip extra">🛏️ + кровать</span>':''}</div>${family&&bed?'<div class="bed-note">Дополнительная двухъярусная кровать нужна · размещение до 4 гостей</div>':''}</article>`}).join('')}
+async function load(){const {data,error}=await sb.auth.getSession();if(error||!data?.session){$('list').innerHTML='<div class="empty">Сессия CRM не найдена. Войдите в админку заново.</div>';return}const {data:result,error:rpcError}=await sb.rpc('admin_get_bookings');if(rpcError){console.error(rpcError);$('list').innerHTML='<div class="empty">Не удалось загрузить бронирования.</div>';return}state.rows=Array.isArray(result?.bookings)?result.bookings:[];render()}
+document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.status=btn.dataset.status;render()}));
+load();
+</script>
+</body></html>
