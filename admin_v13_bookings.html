@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FreeDom CRM — Бронирования</title>
+<link rel="stylesheet" href="admin_design.css">
+<style>
+body{background:linear-gradient(135deg,#f5fbf8,#f7f7ff 48%,#eef8f7)}
+.workspace{max-width:1440px;margin:0 auto;padding:24px}
+.workspace-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:#1fb7a6;font-weight:800}
+h1{margin:5px 0;font-size:clamp(30px,5vw,46px);letter-spacing:-.04em}.muted{color:#71808b;margin:0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;padding:8px;background:rgba(255,255,255,.65);border:1px solid rgba(37,70,82,.10);border-radius:18px;backdrop-filter:blur(18px)}
+.tab{border:0;border-radius:12px;padding:10px 15px;background:transparent;color:#52626d;font-weight:800;cursor:pointer}.tab.active{background:#dff5ed;color:#246b58}
+.frame{margin-top:12px;border:1px solid rgba(37,70,82,.10);border-radius:24px;overflow:hidden;background:#fff;box-shadow:0 18px 55px rgba(41,77,86,.08)}
+iframe{display:block;width:100%;height:calc(100vh - 190px);min-height:680px;border:0;background:white}
+@media(max-width:600px){.workspace{padding:14px}.workspace-head{display:block}.workspace-head .muted{margin-top:8px}.tabs{margin-top:12px}iframe{height:calc(100vh - 220px);min-height:620px}}
+</style>
+</head>
+<body>
+<div class="workspace">
+<header class="workspace-head"><div><div class="eyebrow">FreeDom · CRM</div><h1>Бронирования</h1><p class="muted">Одно место для пространства и заявок.</p></div></header>
+<nav class="tabs" aria-label="Режим бронирований">
+<button class="tab active" data-src="admin_v11_bookings.html">🗺 Пространство</button>
+<button class="tab" data-src="admin_v12_bookings.html">📋 Заявки</button>
+</nav>
+<section class="frame"><iframe id="workspaceFrame" src="admin_v11_bookings.html" title="Бронирования"></iframe></section>
+</div>
+<script>
+const frame=document.getElementById('workspaceFrame');
+document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));tab.classList.add('active');
+ frame.src=tab.dataset.src;
+}));
+</script>
+</body>
+</html>
