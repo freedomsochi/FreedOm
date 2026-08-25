@@ -13,9 +13,8 @@
     chip(s){return `<span class="chip ${s.className}">${s.icon} ${s.label}</span>`;},
     progress(paid,charged,debt){
       const p=Math.max(0,num(paid)),c=Math.max(0,num(charged));
-      if(c<=0)return '';
+      if(c<=0||p<=0||p>=c)return '';
       const pct=Math.max(0,Math.min(100,Math.round((p/c)*100)));
-      if(p<=0||p>=c)return '';
       return `<div class="payment-progress"><div class="payment-progress-track"><span style="width:${pct}%"></span></div><div class="payment-progress-caption">${pct}% оплачено</div></div>`;
     }
   };
