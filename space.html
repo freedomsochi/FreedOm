@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FreeDom Space</title>
+<style>
+:root{--ink:#f5f2eb;--muted:rgba(245,242,235,.68);--line:rgba(255,255,255,.2);--glass:rgba(12,18,20,.34)}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101513;color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{opacity:0;transition:opacity .45s ease}body.ready{opacity:1}
+.space{position:relative;width:100%;height:100%;isolation:isolate;background:#18201d}
+.scene{position:absolute;inset:0;display:grid;place-items:center;opacity:0;visibility:hidden;transition:opacity .65s ease,visibility .65s ease}
+.scene.active{opacity:1;visibility:visible}
+.photo-placeholder{position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,rgba(180,205,188,.28),transparent 35%),linear-gradient(135deg,#26352e,#101714 58%,#0b0f0d);background-size:cover}
+.photo-placeholder:after{content:"ФОТОГРАФИЯ ЛОКАЦИИ";position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.16);font-size:clamp(.65rem,1vw,1rem);letter-spacing:.32em}
+.scene-balcony .photo-placeholder{background:radial-gradient(circle at 58% 38%,rgba(160,185,205,.3),transparent 34%),linear-gradient(145deg,#71858b,#334448 48%,#101817)}
+.scene-balcony .photo-placeholder:after{content:"ФОТОГРАФИЯ ВИДА НА ГОРЫ"}
+.vignette{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42),transparent 24%,transparent 62%,rgba(0,0,0,.58));pointer-events:none}
+.top{position:absolute;z-index:5;top:0;left:0;right:0;height:86px;display:flex;align-items:flex-start;justify-content:space-between;padding:22px 28px;pointer-events:none}
+.top>*{pointer-events:auto}.home{display:inline-flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(14px);padding:10px 14px;border-radius:999px}.home:hover{background:rgba(12,18,20,.55)}
+.brand{position:absolute;left:50%;transform:translateX(-50%);font-size:clamp(.85rem,1.6vw,1.05rem);font-weight:400;letter-spacing:.34em;text-transform:uppercase;white-space:nowrap;color:rgba(255,255,255,.9)}
+.scene-info{position:absolute;z-index:4;left:clamp(22px,6vw,90px);bottom:clamp(100px,13vh,150px);max-width:min(620px,72vw)}
+.kicker{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}.title{margin:0;font-size:clamp(2.4rem,7vw,6.8rem);font-weight:300;letter-spacing:-.04em;line-height:.92}.desc{margin:18px 0 0;max-width:520px;font-size:clamp(.9rem,1.5vw,1.12rem);line-height:1.6;color:rgba(255,255,255,.78)}
+.intro{position:absolute;z-index:4;top:50%;left:50%;transform:translate(-50%,-50%);width:min(860px,86vw);text-align:center}.intro h1{font-size:clamp(2.4rem,7vw,7rem);font-weight:300;line-height:.94;margin:0 0 18px;letter-spacing:-.045em}.intro p{margin:0 auto;color:rgba(255,255,255,.7);font-size:clamp(.9rem,1.6vw,1.15rem);letter-spacing:.04em}
+.nav{position:absolute;z-index:6;left:28px;right:28px;bottom:28px;display:flex;justify-content:space-between;align-items:center;gap:18px}.nav-btn{min-width:160px;display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(16px);padding:13px 16px;border-radius:14px;transition:.25s}.nav-btn:hover{background:rgba(12,18,20,.56);transform:translateY(-2px)}.nav-btn.right{margin-left:auto;justify-content:flex-end;text-align:right}.arrow{font-size:1.35rem;font-weight:300}.nav-label{display:flex;flex-direction:column;gap:2px}.nav-over{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}.nav-name{font-size:.9rem}.nav-empty{width:160px}
+.progress{position:absolute;z-index:6;left:50%;transform:translateX(-50%);bottom:43px;display:flex;gap:8px}.dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.3);transition:.3s}.dot.active{width:22px;border-radius:10px;background:rgba(255,255,255,.85)}
+@media(max-width:700px){.top{padding:16px;height:72px}.brand{top:18px}.home{font-size:.65rem;padding:8px 11px}.scene-info{left:22px;right:22px;bottom:118px;max-width:none}.title{font-size:clamp(2.8rem,14vw,5rem)}.desc{font-size:.88rem}.nav{left:16px;right:16px;bottom:16px}.nav-btn{min-width:0;padding:11px 12px}.nav-btn .nav-name{font-size:.78rem}.nav-empty{width:80px}.progress{bottom:30px}.intro h1{font-size:clamp(2.5rem,13vw,5rem)}}
+</style>
+</head>
+<body>
+<main class="space" aria-label="FreeDom Space">
+  <header class="top">
+    <a class="home" href="index.html" aria-label="На главную">← Главная</a>
+    <div class="brand">FreeDom Space</div>
+  </header>
+
+  <section class="scene active" data-scene="yoga" aria-label="Йога-зал">
+    <div class="photo-placeholder" aria-hidden="true"></div><div class="vignette" aria-hidden="true"></div>
+    <div class="intro">
+      <div class="kicker">FreeDom Space</div>
+      <h1>Познакомьтесь<br>с пространством FreeDom</h1>
+      <p>Начните путешествие с йога-зала.</p>
+    </div>
+    <div class="nav">
+      <div class="nav-empty"></div>
+      <a class="nav-btn right" href="#yoga-balcony" data-next="balcony">
+        <span class="nav-label"><span class="nav-over">Пройти дальше</span><span class="nav-name">Балкон йога-зала</span></span><span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="scene scene-balcony" data-scene="balcony" aria-label="Балкон йога-зала">
+    <div class="photo-placeholder" aria-hidden="true"></div><div class="vignette" aria-hidden="true"></div>
+    <div class="scene-info">
+      <div class="kicker">Йога-зал · Балкон</div>
+      <h2 class="title">Вид на горы</h2>
+      <p class="desc">Последняя точка этого маршрута. Здесь пространство открывается наружу — к горам и воздуху.</p>
+    </div>
+    <div class="nav">
+      <a class="nav-btn" href="#yoga" data-prev="yoga"><span class="arrow">←</span><span class="nav-label"><span class="nav-over">Вернуться</span><span class="nav-name">Йога-зал</span></span></a>
+      <div class="nav-empty"></div>
+    </div>
+  </section>
+  <div class="progress" aria-hidden="true"><span class="dot active"></span><span class="dot"></span></div>
+</main>
+<script>
+const scenes=[...document.querySelectorAll('.scene')];
+const dots=[...document.querySelectorAll('.dot')];
+function show(name){const i=scenes.findIndex(s=>s.dataset.scene===name);if(i<0)return;scenes.forEach((s,n)=>s.classList.toggle('active',n===i));dots.forEach((d,n)=>d.classList.toggle('active',n===i));history.replaceState(null,'','#'+(name==='balcony'?'yoga-balcony':'yoga'));}
+document.querySelectorAll('[data-next]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show('balcony')}));
+document.querySelectorAll('[data-prev]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show('yoga')}));
+window.addEventListener('hashchange',()=>show(location.hash==='#yoga-balcony'?'balcony':'yoga'));
+window.addEventListener('load',()=>{document.body.classList.add('ready');if(location.hash==='#yoga-balcony')show('balcony')});
+</script>
+</body>
+</html>
