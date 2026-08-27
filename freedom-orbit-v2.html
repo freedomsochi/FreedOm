@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FreeDom — Orbit V2</title>
+<style>
+:root{--paper:#eef1e9;--ink:#24322c;--muted:#6d7972;--metal:#8b968e;--leaf:#6f9475;--warm:#b98761;--glass:rgba(248,250,245,.48)}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#e9eee7}
+.scene{position:relative;width:100%;height:100%;overflow:hidden;isolation:isolate;background:radial-gradient(circle at 50% 42%,#fbfcf8 0%,#f0f4ed 35%,#e3e9e1 72%,#d8e2d9 100%)}
+.scene:before{content:"";position:absolute;inset:-15%;background:radial-gradient(ellipse at 18% 25%,rgba(113,150,120,.16),transparent 30%),radial-gradient(ellipse at 82% 70%,rgba(185,142,108,.11),transparent 27%);filter:blur(22px);z-index:-3}
+.scene:after{content:"";position:absolute;inset:0;opacity:.035;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.top{position:absolute;left:clamp(18px,4vw,48px);right:clamp(18px,4vw,48px);top:clamp(16px,3vw,32px);display:flex;align-items:center;justify-content:space-between;z-index:20}.brand{font:600 14px/1 Georgia,serif;letter-spacing:.2em;text-transform:uppercase}.sub{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);opacity:.8}
+.stage{position:absolute;inset:0;display:grid;place-items:center;touch-action:none}.orbit{position:relative;width:min(92vw,700px);height:min(92vw,700px)}
+.aura{position:absolute;inset:7%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.8),rgba(255,255,255,.18) 45%,transparent 70%);filter:blur(3px)}
+.ring{position:absolute;inset:6%;border-radius:50%;z-index:5;touch-action:none;cursor:grab}.ring.dragging{cursor:grabbing}.ring::before{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(66,83,73,.24);box-shadow:0 0 0 8px rgba(255,255,255,.13),inset 0 0 45px rgba(255,255,255,.72),0 28px 80px rgba(42,59,49,.08)}.ring::after{content:"";position:absolute;inset:3.6%;border-radius:50%;border:1px solid rgba(108,123,114,.16);background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(120,137,126,.025));box-shadow:inset 0 1px rgba(255,255,255,.9)}
+.rail{position:absolute;inset:8.5%;border-radius:50%;border:1px solid rgba(102,117,107,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+.node{position:absolute;left:50%;top:50%;width:112px;height:112px;margin:-56px;border:1px solid rgba(255,255,255,.78);border-radius:50%;padding:12px;background:linear-gradient(145deg,rgba(250,252,248,.64),rgba(210,219,211,.35));box-shadow:0 12px 32px rgba(38,56,45,.08),inset 0 1px 0 rgba(255,255,255,.95);color:#56635b;display:grid;place-items:center;text-align:center;font:600 11px/1.25 Georgia,serif;letter-spacing:.06em;transition:transform .5s cubic-bezier(.2,.9,.2,1),background .5s,box-shadow .5s,color .5s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.node.active{background:linear-gradient(145deg,rgba(255,255,252,.88),rgba(222,229,223,.52));color:var(--ink);box-shadow:0 18px 46px rgba(38,58,45,.16),inset 0 1px 0 #fff,0 0 0 7px rgba(111,148,117,.08);transform:rotate(var(--a)) translateY(calc(min(33vw,230px))) rotate(calc(var(--a) * -1)) scale(1.08)}
+.node:not(.active){transform:rotate(var(--a)) translateY(calc(min(33vw,230px))) rotate(calc(var(--a) * -1))}.node span{display:block;opacity:.55;font:8px/1.2 Inter,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-top:5px}
+.pointer{position:absolute;left:50%;top:5.2%;width:1px;height:26px;background:linear-gradient(to bottom,var(--ink),transparent);transform:translateX(-50%);z-index:9;opacity:.55}.pointer::before{content:"";position:absolute;top:-3px;left:50%;width:6px;height:6px;border-radius:50%;background:var(--ink);transform:translateX(-50%);box-shadow:0 0 0 5px rgba(36,50,44,.05)}
+.tree{position:absolute;left:50%;bottom:9%;width:40%;height:77%;transform:translateX(-50%);z-index:3;pointer-events:none;filter:drop-shadow(0 26px 25px rgba(41,61,48,.13));transition:filter .8s}.tree svg{width:100%;height:100%;overflow:visible}.branch{fill:none;stroke:url(#wood);stroke-linecap:round}.leaf{transform-box:fill-box;transform-origin:center;animation:sway 6s ease-in-out infinite}.leaf:nth-of-type(2){animation-delay:-1.1s}.leaf:nth-of-type(3){animation-delay:-2.3s}.leaf:nth-of-type(4){animation-delay:-3.2s}.leaf:nth-of-type(5){animation-delay:-.6s}.leaf:nth-of-type(6){animation-delay:-4s}@keyframes sway{50%{transform:rotate(2deg) translateX(2px)}}
+.ground{position:absolute;left:50%;bottom:12%;width:33%;height:7%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(76,100,82,.18),transparent 70%);filter:blur(8px);z-index:1}
+.center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:7;width:132px;text-align:center;pointer-events:none}.center .mark{width:26px;height:26px;margin:auto;border-radius:50%;background:radial-gradient(circle at 33% 27%,#fff 0 18%,#b4ceb7 42%,#668d6d 72%,#486a52 100%);box-shadow:0 0 0 8px rgba(111,148,117,.08),0 8px 22px rgba(47,75,56,.2)}.center .caption{margin-top:11px;font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:#7c8880}
+.info{position:absolute;left:50%;bottom:clamp(18px,3vw,34px);transform:translateX(-50%);z-index:20;text-align:center;pointer-events:none}.info .eyebrow{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);opacity:.8}.info h1{margin:6px 0 0;font:500 clamp(22px,4vw,34px)/1 Georgia,serif}.info p{margin:8px auto 0;max-width:430px;font-size:11px;line-height:1.55;color:var(--muted);opacity:.85}
+.world{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:rgba(29,41,34,.12);backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px);opacity:0;pointer-events:none;transition:opacity .55s}.world.open{opacity:1;pointer-events:auto}.window{position:relative;width:min(900px,calc(100% - 28px));max-height:84vh;overflow:hidden;border:1px solid rgba(255,255,255,.82);border-radius:30px;background:rgba(248,250,246,.91);box-shadow:0 45px 130px rgba(24,38,29,.24);transform:translateY(18px) scale(.97);transition:transform .65s cubic-bezier(.2,.9,.2,1)}.world.open .window{transform:none}.window .close{position:absolute;right:18px;top:18px;z-index:2;width:38px;height:38px;border:1px solid rgba(80,95,85,.1);border-radius:50%;background:rgba(255,255,255,.7);color:var(--ink);font-size:20px}.window .body{padding:36px}.window small{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}.window h2{margin:7px 0 10px;font:500 clamp(30px,5vw,48px)/1 Georgia,serif}.window p{max-width:650px;color:var(--muted);font-size:14px;line-height:1.7;margin:0}.window .line{width:52px;height:1px;background:rgba(36,50,44,.25);margin:20px 0}
+@media(max-width:620px){.top{top:14px}.sub{font-size:8px}.orbit{width:108vw;height:108vw}.node{width:88px;height:88px;margin:-44px;font-size:9px}.node.active,.node:not(.active){transform:rotate(var(--a)) translateY(38vw) rotate(calc(var(--a) * -1))}.node.active{transform:rotate(var(--a)) translateY(38vw) rotate(calc(var(--a) * -1)) scale(1.08)}.tree{width:55%;height:76%;bottom:10%}.center{width:110px}.info{bottom:15px}.info p{max-width:300px;font-size:10px}.window .body{padding:28px 22px}.window h2{font-size:32px}}
+</style>
+</head>
+<body>
+<div class="scene" id="scene">
+<header class="top"><div class="brand">FreeDom</div><div class="sub">дом · природа · человек</div></header>
+<div class="stage" id="stage"><div class="orbit" id="orbit"><div class="aura"></div><div class="ground"></div>
+<div class="tree" id="tree"><svg viewBox="0 0 220 440" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#5e5145"/><stop offset=".5" stop-color="#a17d5c"/><stop offset="1" stop-color="#55483e"/></linearGradient><radialGradient id="fol"><stop stop-color="#a6c7aa"/><stop offset="1" stop-color="#55785d"/></radialGradient></defs><path class="branch" d="M108 425C99 359 109 304 99 245C91 193 68 154 39 124M99 247C122 205 151 174 181 145M94 205C70 178 48 161 27 150M105 308C131 281 160 259 193 248" stroke-width="16"/><g class="leaf"><ellipse cx="42" cy="111" rx="46" ry="37" fill="url(#fol)" opacity=".94"/></g><g class="leaf"><ellipse cx="177" cy="125" rx="47" ry="39" fill="url(#fol)" opacity=".95"/></g><g class="leaf"><ellipse cx="75" cy="176" rx="41" ry="33" fill="#6f9978" opacity=".94"/></g><g class="leaf"><ellipse cx="178" cy="238" rx="39" ry="29" fill="#86ac8c" opacity=".92"/></g><g class="leaf"><ellipse cx="106" cy="69" rx="52" ry="40" fill="#608767" opacity=".94"/></g><g class="leaf"><ellipse cx="126" cy="177" rx="38" ry="30" fill="#769f7e" opacity=".8"/></g></svg></div>
+<div class="ring" id="ring"><div class="rail"></div></div><div class="pointer"></div><div class="center"><div class="mark"></div><div class="caption">живая система</div></div></div></div>
+<div class="info"><div class="eyebrow">выбрано</div><h1 id="selected">Пространство</h1><p id="hint">Поверните кольцо вокруг дерева</p></div>
+<div class="world" id="world"><div class="window"><button class="close" id="close" aria-label="Закрыть">×</button><div class="body"><small id="meta"></small><h2 id="title"></h2><div class="line"></div><p id="desc"></p></div></div></div>
+</div>
+<script>
+const data=[
+{name:'Пространство',meta:'FreeDom Space',desc:'Зал для практик, библиотека, игровая, рабочая зона, музыка, разговоры и жизнь дома. Здесь мы будем соединять этот новый интерфейс с уже созданным погружением FreeDom Space.'},
+{name:'События',meta:'Жизнь FreeDom',desc:'Реальные события дома: творческие вечера, медитации, чайные церемонии, встречи и музыкальные вечера. Следующий этап — подключить сюда настоящие события и их данные.'},
+{name:'Комнаты',meta:'Проживание',desc:'Карта дома остаётся рабочей основой. Выбор комнаты, её состояние и данные availability из Supabase сохраняются; меняем только визуальную оболочку.'},
+{name:'Баня',meta:'Тепло → вода → звёзды',desc:'Отдельное пространство с горизонтальной галереей: баня и место у бассейна под звёздным небом. Атмосферу и фотографии проработаем отдельным этапом.'},
+{name:'Кухня',meta:'Отложено',desc:'Оставляем место в общей системе, но концепцию кухни пока не разрабатываем.'}
+];
+const ring=document.getElementById('ring'),orbit=document.getElementById('orbit'),selected=document.getElementById('selected'),hint=document.getElementById('hint'),world=document.getElementById('world');
+const step=72;let rotation=0,drag=false,lastPointerAngle=0,accum=0;
+function makeNodes(){data.forEach((item,i)=>{const n=document.createElement('button');n.className='node';n.style.setProperty('--a',`${i*step}deg`);n.innerHTML=`${item.name}<span>${i===0?'войти':''}</span>`;n.addEventListener('click',()=>snap(i));ring.appendChild(n)})}
+function norm(a){return ((a+180)%360+360)%360-180}
+function current(){return ((Math.round(-rotation/step)%data.length)+data.length)%data.length}
+function render(){ring.style.transform=`rotate(${rotation}deg)`;const i=current();selected.textContent=data[i].name;document.querySelectorAll('.node').forEach((n,k)=>n.classList.toggle('active',k===i))}
+function snap(i){let target=-i*step;let d=norm(target-rotation);rotation+=d;ring.classList.remove('dragging');render();hint.textContent='Нажмите, чтобы войти'}
+function pointerAngle(e){const r=orbit.getBoundingClientRect();const x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;return Math.atan2(y,x)*180/Math.PI}
+function down(e){drag=true;ring.classList.add('dragging');lastPointerAngle=pointerAngle(e);accum=0;ring.setPointerCapture?.(e.pointerId);e.preventDefault()}
+function move(e){if(!drag)return;const a=pointerAngle(e),d=norm(a-lastPointerAngle);if(Math.abs(d)>90){lastPointerAngle=a;return}rotation+=d;accum+=d;lastPointerAngle=a;render()}
+function up(){if(!drag)return;drag=false;ring.classList.remove('dragging');const i=current();snap(i)}
+ring.addEventListener('pointerdown',down);ring.addEventListener('pointermove',move);ring.addEventListener('pointerup',up);ring.addEventListener('pointercancel',up);
+document.getElementById('open')?.addEventListener('click',()=>{});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')world.classList.remove('open');if(e.key==='ArrowRight')snap((current()+1)%data.length);if(e.key==='ArrowLeft')snap((current()+data.length-1)%data.length)});
+function openWorld(){const i=current();document.getElementById('meta').textContent=data[i].meta;document.getElementById('title').textContent=data[i].name;document.getElementById('desc').textContent=data[i].desc;world.classList.add('open')}
+ring.addEventListener('dblclick',openWorld);document.getElementById('close').addEventListener('click',()=>world.classList.remove('open'));world.addEventListener('click',e=>{if(e.target===world)world.classList.remove('open')});
+makeNodes();snap(0);
+</script>
+</body>
+</html>
