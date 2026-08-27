@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FreeDom — Orbit V3</title>
+<style>
+:root{--bg:#edf0e8;--ink:#26332c;--muted:#78827b;--wood:#80664e;--leaf:#66866d;--glass:rgba(248,250,246,.44);--line:rgba(49,65,55,.18)}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+.scene{position:relative;width:100%;height:100%;overflow:hidden;background:radial-gradient(circle at 50% 43%,#fffefa 0,#f4f5ef 29%,#e9eee7 63%,#dce5dc 100%);isolation:isolate}
+.scene:before{content:"";position:absolute;inset:-20%;background:radial-gradient(ellipse at 12% 20%,rgba(91,129,99,.18),transparent 27%),radial-gradient(ellipse at 90% 78%,rgba(166,125,91,.12),transparent 25%);filter:blur(30px);z-index:-2}
+.scene:after{content:"";position:absolute;inset:0;opacity:.025;pointer-events:none;background-image:radial-gradient(rgba(40,55,46,.7) .5px,transparent .5px);background-size:7px 7px}
+.top{position:absolute;top:clamp(18px,3vw,34px);left:clamp(20px,4vw,50px);right:clamp(20px,4vw,50px);display:flex;justify-content:space-between;align-items:center;z-index:20}.brand{font:600 14px Georgia,serif;letter-spacing:.22em}.sub{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.stage{position:absolute;inset:0;display:grid;place-items:center;touch-action:none}.orbit{position:relative;width:min(94vw,760px);height:min(94vw,760px)}
+.aura{position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.88),rgba(255,255,255,.24) 48%,transparent 72%);filter:blur(4px)}
+.ring{position:absolute;inset:5%;border-radius:50%;z-index:7;touch-action:none;cursor:grab}.ring.dragging{cursor:grabbing}.ring:before{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(70,84,75,.27);box-shadow:0 0 0 9px rgba(255,255,255,.13),inset 0 0 65px rgba(255,255,255,.75),0 35px 100px rgba(35,52,42,.09)}.ring:after{content:"";position:absolute;inset:3.4%;border-radius:50%;border:1px solid rgba(255,255,255,.86);box-shadow:inset 0 1px 0 #fff,inset 0 0 25px rgba(91,111,96,.08)}
+.rail{position:absolute;inset:8%;border-radius:50%;border:1px solid rgba(74,91,79,.12)}
+.node{position:absolute;left:50%;top:50%;width:112px;height:112px;margin:-56px;border:0;background:transparent;color:#6d7871;padding:8px;display:grid;place-items:center;text-align:center;font:500 12px/1.2 Georgia,serif;letter-spacing:.08em;transition:transform .7s cubic-bezier(.18,.88,.2,1),color .55s,filter .55s}.node:before{content:"";position:absolute;inset:20px;border:1px solid rgba(82,101,87,.16);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.34),rgba(255,255,255,.05));box-shadow:inset 0 1px rgba(255,255,255,.9);transition:all .55s}.node span{position:relative;z-index:1}.node.active{color:#26332c;font-size:13px;filter:drop-shadow(0 8px 12px rgba(40,58,46,.12))}.node.active:before{inset:14px;background:linear-gradient(145deg,rgba(255,255,252,.92),rgba(205,214,206,.42));border-color:rgba(68,84,73,.27);box-shadow:inset 0 1px #fff,0 10px 28px rgba(39,57,45,.12),0 0 0 7px rgba(101,137,109,.07)}
+.pointer{position:absolute;left:50%;top:4.4%;height:31px;width:1px;background:linear-gradient(#334239,transparent);transform:translateX(-50%);z-index:10;opacity:.6}.pointer:after{content:"";position:absolute;top:-4px;left:50%;width:7px;height:7px;border-radius:50%;background:#35443a;transform:translateX(-50%);box-shadow:0 0 0 5px rgba(53,68,58,.05)}
+.tree{position:absolute;left:50%;bottom:7%;width:43%;height:80%;transform:translateX(-50%);z-index:4;pointer-events:none;filter:drop-shadow(0 30px 25px rgba(48,65,53,.15));transition:filter .8s,transform .8s}.tree svg{width:100%;height:100%;overflow:visible}.branch{fill:none;stroke:url(#wood);stroke-linecap:round}.leaf{transform-box:fill-box;transform-origin:center;animation:sway 7s ease-in-out infinite}.leaf:nth-of-type(2){animation-delay:-1.4s}.leaf:nth-of-type(3){animation-delay:-2.8s}.leaf:nth-of-type(4){animation-delay:-4s}.leaf:nth-of-type(5){animation-delay:-.7s}.leaf:nth-of-type(6){animation-delay:-3.5s}.leaf:nth-of-type(7){animation-delay:-5s}@keyframes sway{0%,100%{transform:rotate(-.5deg) translateX(-1px)}50%{transform:rotate(1.8deg) translateX(2px)}}
+.ground{position:absolute;left:50%;bottom:8%;width:38%;height:8%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(66,90,71,.18),transparent 70%);filter:blur(9px);z-index:1}
+.center{position:absolute;left:50%;top:51%;transform:translate(-50%,-50%);z-index:8;width:140px;text-align:center;pointer-events:none}.center .mark{width:30px;height:30px;margin:auto;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff 0 17%,#c4d7c6 38%,#75997b 68%,#506e57 100%);box-shadow:0 0 0 9px rgba(100,137,108,.08),0 9px 28px rgba(46,73,54,.18)}.center .caption{margin-top:12px;font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:#7e8881}
+.info{position:absolute;left:50%;bottom:clamp(18px,3vw,34px);transform:translateX(-50%);z-index:20;text-align:center}.info .eyebrow{font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted)}.info h1{margin:7px 0 0;font:500 clamp(23px,4vw,35px)/1 Georgia,serif}.info p{margin:8px auto 0;max-width:400px;font-size:10px;line-height:1.55;color:var(--muted)}
+.world{position:absolute;inset:0;z-index:50;display:grid;place-items:center;background:rgba(37,50,43,.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);opacity:0;pointer-events:none;transition:opacity .6s}.world.open{opacity:1;pointer-events:auto}.window{width:min(900px,calc(100% - 28px));max-height:84vh;overflow:auto;border:1px solid rgba(255,255,255,.88);border-radius:28px;background:rgba(248,250,246,.92);box-shadow:0 45px 130px rgba(24,38,29,.2);transform:translateY(20px) scale(.975);transition:transform .65s cubic-bezier(.18,.88,.2,1)}.world.open .window{transform:none}.close{position:absolute;right:18px;top:18px;width:38px;height:38px;border-radius:50%;border:1px solid rgba(65,82,70,.12);background:rgba(255,255,255,.72);font-size:20px;color:var(--ink)}.body{padding:38px}.body small{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}.body h2{margin:8px 0 18px;font:500 clamp(30px,5vw,50px)/1 Georgia,serif}.body p{max-width:680px;margin:0;color:var(--muted);font-size:14px;line-height:1.75}
+@media(max-width:620px){.sub{font-size:7px}.orbit{width:112vw;height:112vw}.node{width:92px;height:92px;margin:-46px;font-size:9px}.node.active{font-size:10px}.tree{width:58%;height:77%;bottom:8%}.center{top:52%;width:100px}.center .caption{font-size:7px}.info{bottom:14px}.info p{display:none}.info h1{font-size:23px}.window{max-height:82vh}.body{padding:30px 23px}}
+</style>
+</head>
+<body>
+<div class="scene">
+<header class="top"><div class="brand">FreeDom</div><div class="sub">дом · природа · человек</div></header>
+<div class="stage"><div class="orbit" id="orbit"><div class="aura"></div><div class="ground"></div>
+<div class="tree"><svg viewBox="0 0 220 440" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#56483c"/><stop offset=".5" stop-color="#a07b5b"/><stop offset="1" stop-color="#59493d"/></linearGradient><radialGradient id="fol"><stop stop-color="#a9c9ac"/><stop offset="1" stop-color="#54745b"/></radialGradient></defs><path class="branch" d="M108 425C99 359 109 304 99 245C91 193 68 154 39 124M99 247C122 205 151 174 181 145M94 205C70 178 48 161 27 150M105 308C131 281 160 259 193 248M101 274C84 240 68 215 48 198" stroke-width="16"/><g class="leaf"><ellipse cx="42" cy="111" rx="46" ry="37" fill="url(#fol)"/></g><g class="leaf"><ellipse cx="177" cy="125" rx="47" ry="39" fill="url(#fol)"/></g><g class="leaf"><ellipse cx="75" cy="176" rx="41" ry="33" fill="#6f9978"/></g><g class="leaf"><ellipse cx="178" cy="238" rx="39" ry="29" fill="#86ac8c"/></g><g class="leaf"><ellipse cx="106" cy="69" rx="52" ry="40" fill="#608767"/></g><g class="leaf"><ellipse cx="126" cy="177" rx="38" ry="30" fill="#769f7e" opacity=".86"/></g><g class="leaf"><ellipse cx="48" cy="204" rx="31" ry="25" fill="#668d70" opacity=".86"/></g></svg></div>
+<div class="ring" id="ring"><div class="rail"></div></div><div class="pointer"></div><div class="center"><div class="mark"></div><div class="caption">free / living</div></div></div></div>
+<div class="info"><div class="eyebrow">выбрано</div><h1 id="selected">Пространство</h1><p>Поверните кольцо вокруг дерева</p></div>
+<div class="world" id="world"><div class="window"><button class="close" id="close" aria-label="Закрыть">×</button><div class="body"><small id="meta"></small><h2 id="title"></h2><p id="desc"></p></div></div></div>
+</div>
+<script>
+const data=[
+{name:'Пространство',meta:'FreeDom Space',desc:'Зал для практик, библиотека, игровая, рабочая зона, музыка и разговоры. Внутри этого мира мы объединим новый интерфейс с уже созданным погружением FreeDom Space.'},
+{name:'События',meta:'Жизнь FreeDom',desc:'Реальные события дома: творческие вечера, медитации, чайные церемонии, встречи и музыкальные вечера. Здесь появятся настоящие данные о ближайших событиях.'},
+{name:'Комнаты',meta:'Проживание',desc:'Карта дома остаётся основой. Выбор комнаты, её состояние и availability из Supabase сохраняются; визуальную оболочку можно переосмыслить отдельно.'},
+{name:'Баня',meta:'Тепло → вода → звёзды',desc:'Два состояния одного пространства: баня и место у бассейна под звёздным небом. Позже добавим реальные фотографии, горизонтальный свайп и атмосферную анимацию.'},
+{name:'Кухня',meta:'Позже',desc:'Сектор остаётся частью общей системы. Саму концепцию кухни определим отдельным этапом.'}
+];
+const ring=document.getElementById('ring'),orbit=document.getElementById('orbit'),selected=document.getElementById('selected'),world=document.getElementById('world');
+const step=72;let rotation=0,drag=false,last=0;
+function angle(e){const r=orbit.getBoundingClientRect();return Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2)*180/Math.PI}
+function norm(a){return ((a+180)%360+360)%360-180}
+function current(){return ((Math.round(-rotation/step)%data.length)+data.length)%data.length}
+function render(){ring.style.transform=`rotate(${rotation}deg)`;const i=current();selected.textContent=data[i].name;document.querySelectorAll('.node').forEach((n,k)=>n.classList.toggle('active',k===i))}
+function snap(i){rotation+=norm(-i*step-rotation);render()}
+function make(){data.forEach((x,i)=>{const n=document.createElement('button');n.className='node';n.style.setProperty('--a',`${i*step}deg`);n.innerHTML=`<span>${x.name}</span>`;n.addEventListener('click',()=>{snap(i);openWorld()});ring.appendChild(n)})}
+function down(e){drag=true;ring.classList.add('dragging');last=angle(e);ring.setPointerCapture?.(e.pointerId);e.preventDefault()}
+function move(e){if(!drag)return;const a=angle(e),d=norm(a-last);if(Math.abs(d)<80){rotation+=d;render()}last=a}
+function up(){if(!drag)return;drag=false;ring.classList.remove('dragging');snap(current())}
+function openWorld(){const i=current();document.getElementById('meta').textContent=data[i].meta;document.getElementById('title').textContent=data[i].name;document.getElementById('desc').textContent=data[i].desc;world.classList.add('open')}
+ring.addEventListener('pointerdown',down);ring.addEventListener('pointermove',move);ring.addEventListener('pointerup',up);ring.addEventListener('pointercancel',up);document.getElementById('close').addEventListener('click',()=>world.classList.remove('open'));world.addEventListener('click',e=>{if(e.target===world)world.classList.remove('open')});document.addEventListener('keydown',e=>{if(e.key==='Escape')world.classList.remove('open');if(e.key==='ArrowRight')snap((current()+1)%data.length);if(e.key==='ArrowLeft')snap((current()+data.length-1)%data.length)});make();snap(0);
+</script>
+</body>
+</html>
