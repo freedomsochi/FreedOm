@@ -28,24 +28,24 @@
     const nights=Math.round((end-start)/86400000);
     if(!d.checkin||!d.checkout||!d.name||!d.phone)throw new Error('Заполните имя, телефон и даты.');
     if(!Number.isFinite(nights)||nights<=0)throw new Error('Дата выезда должна быть позже даты заезда.');
+
     const room=await resolveRoom(d.roomType,d.roomName);
-    let candidates=[room];
-    if(d.roomType){
-      const map={family:['Семейная комната'],balcony:['Двухместный с балконом №1','Двухместный с балконом №2'],attic:['Мансардная комната №1','Мансардная комната №2'],bungalow:['Бунгало в саду'],balcony_bed:['Спальное место на балконе'],hostel_standart:['Хостел стандарт'],hostel_economy:['Хостел эконом']};
-      const {data:r,error:re}=await sb.from('rooms').select('id,name,price_per_night').in('name',map[d.roomType]||[]);if(re)throw re;if(r?.length)candidates=r;
-    }
-    const candidateIds=candidates.map(r=>r.id);
-    const {data:busy,error:be}=await sb.from('bookings').select('room_id,check_in_date,check_out_date,status').in('room_id',candidateIds).lt('check_in_date',d.checkout).gt('check_out_date',d.checkin);
-    if(be)throw be;
-    const active=new Set(['новое','подтверждено','активна','долг','проживает']);
-    const busyIds=new Set((busy||[]).filter(b=>active.has(String(b.status||'').toLowerCase())).map(b=>b.room_id));
-    const selected=candidates.find(r=>!busyIds.has(r.id));
-    if(!selected)throw new Error('На выбранные даты нет свободного номера этого типа.');
-    const total=Math.round(Number(selected.price_per_night||0)*nights);
-    const payload={room_id:selected.id,user_id:null,guest_name:d.name,guest_phone:d.phone,guest_email:d.email||null,check_in_date:d.checkin,check_out_date:d.checkout,status:'новое',services:{children:d.children||0,notes:d.notes||'',source:d.source||'',room_type:d.roomType||'',booking_source:'website'},total_amount:total,guest_count:(d.adults||1)+(d.children||0),discount_amount:0,paid_amount:0,payment_status:'не выбрано'};
-    const {data,error}=await sb.from('bookings').insert(payload).select('id').single();
+    const guestCount=(d.adults||1)+(d.children||0);
+    const {data:result,error}=await sb.rpc('create_public_booking',{
+      p_room_id:room.id,
+      p_check_in:d.checkin,
+      p_check_out:d.checkout,
+      p_guest_count:guestCount,
+      p_guest_name:d.name,
+      p_guest_phone:d.phone,
+      p_guest_email:d.email||null,
+      p_additional_bed:Boolean(d.additionalBed)
+    });
     if(error)throw error;
-    return {id:data.id,total,nights,room:selected};
+    if(!result?.ok)throw new Error('Бронирование не создано.');
+
+    const total=Math.round(Number(room.price_per_night||0)*nights);
+    return {id:result.booking_id,total,nights,room};
   }
 
   function isBookingForm(form){
@@ -57,9 +57,9 @@
 
   function getData(form){
     if(form.id==='bookingModalForm'){
-      return {roomName:document.getElementById('bookingRoomName')?.value||document.getElementById('bookingModalTitle')?.textContent||'',roomType:'',checkin:document.getElementById('bookingCheckIn')?.value||'',checkout:document.getElementById('bookingCheckOut')?.value||'',adults:Number(document.getElementById('bookingGuestCount')?.value||1),children:0,name:document.getElementById('bookingGuestNameModal')?.value?.trim()||'',phone:document.getElementById('bookingGuestPhoneModal')?.value?.trim()||'',email:document.getElementById('bookingGuestEmailModal')?.value?.trim()||'',notes:'',source:'website'};
+      return {roomName:document.getElementById('bookingRoomName')?.value||document.getElementById('bookingModalTitle')?.textContent||'',roomType:'',checkin:document.getElementById('bookingCheckIn')?.value||'',checkout:document.getElementById('bookingCheckOut')?.value||'',adults:Number(document.getElementById('bookingGuestCount')?.value||1),children:0,name:document.getElementById('bookingGuestNameModal')?.value?.trim()||'',phone:document.getElementById('bookingGuestPhoneModal')?.value?.trim()||'',email:document.getElementById('bookingGuestEmailModal')?.value?.trim()||'',notes:'',source:'website',additionalBed:false};
     }
-    return {roomType:val(form,'room_type'),roomName:'',checkin:val(form,'checkin'),checkout:val(form,'checkout'),adults:Number(val(form,'adults'))||1,children:Number(val(form,'children'))||0,name:val(form,'name'),phone:val(form,'phone'),email:val(form,'email'),notes:val(form,'notes'),source:val(form,'source')};
+    return {roomType:val(form,'room_type'),roomName:'',checkin:val(form,'checkin'),checkout:val(form,'checkout'),adults:Number(val(form,'adults'))||1,children:Number(val(form,'children'))||0,name:val(form,'name'),phone:val(form,'phone'),email:val(form,'email'),notes:val(form,'notes'),source:val(form,'source'),additionalBed:val(form,'additional_bed')==='true'||val(form,'additional_bed')==='1'||form.querySelector('[name="additional_bed"]:checked')!==null};
   }
 
   async function notify(form,booking){
@@ -119,5 +119,5 @@
   function normalizePhone(v){const d=String(v||'').replace(/\D/g,'');if(/^8\d{10}$/.test(d))return '7'+d.slice(1);if(/^7\d{10}$/.test(d))return d;return d}
   async function submitEventRegistration(e){e.preventDefault();const btn=document.getElementById('eventRegSubmit'),err=document.getElementById('eventRegError'),form=document.getElementById('eventRegistrationForm');err.style.display='none';btn.disabled=true;btn.textContent='Записываем…';const name=document.getElementById('eventGuestName').value.trim(),phone=normalizePhone(document.getElementById('eventGuestPhone').value),email=document.getElementById('eventGuestEmail').value.trim(),participants=Math.max(1,Number(document.getElementById('eventParticipants').value)||1),comment=document.getElementById('eventComment').value.trim();try{if(!name)throw new Error('Укажите имя.');if(!/^7\d{10}$/.test(phone))throw new Error('Введите корректный номер телефона.');const {data,error}=await sb.rpc('create_event_registration',{p_event_id:selectedEvent.id,p_guest_name:name,p_phone:phone,p_email:email||null,p_participants:participants,p_comment:comment||null});if(error)throw error;const total=Number(selectedEvent.price||0)*participants;const fd=new FormData();fd.append('type','📅 Новая запись на событие FreeDom');fd.append('event',selectedEvent.name);fd.append('event_date',selectedEvent.event_date);fd.append('event_time',selectedEvent.start_time||'');fd.append('location',selectedEvent.location||'');fd.append('guest_name',name);fd.append('guest_phone',phone);fd.append('guest_email',email||'не указан');fd.append('participants',String(participants));fd.append('total',String(total)+' ₽');fd.append('registration_id',data.id);try{const n=await fetch(FORM_ENDPOINT,{method:'POST',body:fd,headers:{Accept:'application/json'}});if(!n.ok)console.warn('Event notification failed:',n.status)}catch(ne){console.warn('Event notification error:',ne)}form.style.display='none';btn.style.display='none';document.getElementById('eventRegSuccess').style.display='block';}catch(ex){console.error('Event registration error:',ex);err.textContent='Ошибка: '+(ex.message||'не удалось записаться');err.style.display='block';btn.disabled=false;btn.textContent='📅 Записаться'}}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{ensureEventModal();loadEvents()});else{ensureEventModal();loadEvents()}
-  console.log('FreeDom booking sync v5 loaded');
+  console.log('FreeDom booking sync v6 loaded');
 })();
