@@ -5,140 +5,78 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>FreeDom — Пространство</title>
 <style>
-:root{--paper:#f3f1ea;--ink:#26302b;--muted:rgba(255,255,255,.74);--line:rgba(255,255,255,.22)}
+:root{--paper:#f3f1ea;--ink:#26302b;--muted:#737b76}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-snap-type:y mandatory;overflow-y:auto;overflow-x:hidden}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 18% 8%,rgba(255,255,255,.9),transparent 32%),radial-gradient(circle at 85% 70%,rgba(208,218,210,.32),transparent 38%);z-index:-1}
-.nav{position:fixed;z-index:100;top:0;left:0;right:0;height:78px;padding:20px 28px;display:flex;align-items:flex-start;justify-content:space-between;background:linear-gradient(var(--paper),rgba(243,241,234,.65),transparent);backdrop-filter:blur(7px)}
-.brand{position:absolute;left:50%;transform:translateX(-50%);font-size:.76rem;letter-spacing:.34em;text-transform:uppercase;color:var(--ink);padding-top:3px}.back{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
-.section{position:relative;min-height:100svh;height:100svh;scroll-snap-align:start;scroll-snap-stop:always;padding:20px;display:grid;place-items:center;overflow:hidden}
-.section-inner{position:relative;width:100%;height:100%;overflow:hidden;border-radius:4px;isolation:isolate;background:#9aa69e;box-shadow:0 24px 80px rgba(35,45,40,.12)}
-.photo{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.06);transition:transform 1.7s cubic-bezier(.2,.7,.2,1),filter 1.2s ease;filter:saturate(.88)}
-.section:not(.is-visible) .photo{filter:blur(9px) saturate(.72);transform:scale(1.12)}
+.nav{position:fixed;z-index:100;top:0;left:0;right:0;height:74px;padding:20px 28px;display:flex;align-items:flex-start;justify-content:space-between;background:linear-gradient(var(--paper),rgba(243,241,234,.7),transparent);backdrop-filter:blur(7px)}
+.brand{position:absolute;left:50%;transform:translateX(-50%);font-size:.76rem;letter-spacing:.34em;text-transform:uppercase;color:var(--ink)}
+.back{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
+.section{position:relative;width:100%;height:100svh;min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.section-inner{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;isolation:isolate;background:#9aa69e}
+.photo{position:absolute;inset:-2%;background-size:cover;background-position:center;transform:scale(1.08);transition:transform 1.7s cubic-bezier(.2,.7,.2,1),filter 1.2s ease;filter:saturate(.88)}
+.section:not(.is-visible) .photo{filter:blur(9px) saturate(.72);transform:scale(1.14)}
 .section.is-visible .photo{filter:blur(0) saturate(.96);transform:scale(1)}
-.section-inner:after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(8,15,12,.28) 0%,transparent 28%,transparent 52%,rgba(8,13,11,.7) 100%)}
-.content{position:absolute;z-index:3;left:clamp(24px,7vw,100px);right:clamp(24px,7vw,100px);bottom:clamp(48px,9vh,100px);max-width:720px;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.28);transform:translateY(34px);opacity:0;transition:transform 1s .18s cubic-bezier(.2,.7,.2,1),opacity .9s .18s ease}
+.section-inner:after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(8,15,12,.22),transparent 32%,transparent 50%,rgba(8,13,11,.72))}
+.content{position:absolute;z-index:3;left:clamp(24px,7vw,100px);right:clamp(24px,7vw,100px);bottom:clamp(48px,9vh,100px);max-width:760px;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.3);transform:translateY(34px);opacity:0;transition:transform 1s .18s cubic-bezier(.2,.7,.2,1),opacity .9s .18s ease}
 .section.is-visible .content{transform:translateY(0);opacity:1}
-.kicker{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:15px}.content h2{font-size:clamp(3rem,7vw,7rem);font-weight:300;line-height:.86;letter-spacing:-.065em;margin:0 0 24px}.content p{font-size:clamp(.94rem,1.45vw,1.14rem);line-height:1.7;max-width:650px;margin:0;color:rgba(255,255,255,.88)}
-.scroll-hint{position:absolute;z-index:5;right:26px;bottom:24px;color:rgba(255,255,255,.68);font-size:.57rem;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px;writing-mode:vertical-rl}.scroll-hint:after{content:"";display:block;width:1px;height:35px;background:rgba(255,255,255,.45)}
+.kicker{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:15px}
+.content h2{font-size:clamp(3rem,7vw,7rem);font-weight:300;line-height:.86;letter-spacing:-.065em;margin:0 0 24px}
+.content p{font-size:clamp(.94rem,1.45vw,1.14rem);line-height:1.7;max-width:680px;margin:0;color:rgba(255,255,255,.9)}
 .hero .section-inner{background:#e4e2da}.hero .section-inner:after{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.02))}.hero .photo{opacity:.18;background:radial-gradient(circle at 50% 45%,#aebbb0,transparent 35%),linear-gradient(135deg,#f2f0e8,#cbd3cc)}
-.hero-content{position:absolute;z-index:4;inset:0;display:grid;place-items:center;text-align:center;padding:80px 24px;color:var(--ink)}.hero-content .kicker{color:#737b76;text-shadow:none}.hero-content h1{font-size:clamp(4rem,11vw,9.5rem);font-weight:300;line-height:.82;letter-spacing:-.075em;margin:0}.hero-content p{max-width:520px;margin:30px auto 0;color:#69726d;line-height:1.65}.hero-scroll{margin-top:64px;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:#737b76;animation:breathe 2.6s ease-in-out infinite}@keyframes breathe{50%{transform:translateY(7px);opacity:.5}}
-/* Individual atmospheres */
+.hero-content{position:absolute;z-index:4;inset:0;display:grid;place-items:center;text-align:center;padding:80px 24px;color:var(--ink)}
+.hero-content .kicker{color:#737b76;text-shadow:none}.hero-content h1{font-size:clamp(4rem,11vw,9.5rem);font-weight:300;line-height:.82;letter-spacing:-.075em;margin:0}.hero-content p{max-width:520px;margin:30px auto 0;color:#69726d;line-height:1.65}
 .visual-yoga{background:radial-gradient(circle at 52% 34%,#eee9dc,#abb9ae 45%,#596c61 100%)}
 .visual-events{background:radial-gradient(circle at 58% 35%,#f1dfc4,#b78f69 38%,#3f3c38 100%)}
-.visual-soul{background:radial-gradient(circle at 53% 57%,#f2c991 0,#9d704f 22%,#44362e 53%,#171a18 100%)}
-.visual-night{background:radial-gradient(circle at 50% 40%,#8db2b5 0,#426c6d 27%,#1a3330 58%,#09110f 100%)}
+.visual-soul{background:radial-gradient(circle at 53% 57%,#f2c991,#9d704f 22%,#44362e 53%,#171a18 100%)}
+.visual-night{background:radial-gradient(circle at 50% 40%,#8db2b5,#426c6d 27%,#1a3330 58%,#09110f 100%)}
 .visual-health{background:linear-gradient(135deg,#e7eadf,#bdc9bc 45%,#6d7e70)}
-.visual-work{background:linear-gradient(135deg,#e8e4d8,#b7c1b7 50%,#74847a)}
-.visual-game{background:radial-gradient(circle at 55% 38%,#d8c9b5,#83776b 43%,#30302b 100%)}
-.visual-library{background:linear-gradient(145deg,#d8d0bd,#8e8978 46%,#403f38)}
-.visual-music{background:radial-gradient(circle at 45% 35%,#d9c4a8,#8e725e 40%,#2d2925 100%)}
 .visual-nature{background:radial-gradient(circle at 30% 25%,#edf0dd,#a5b797 43%,#4e6755 100%)}
 .visual-night:before{content:"✦   ·     ✧       ·   ✦       ·      ✧   ·   ✦";position:absolute;z-index:2;top:13%;left:7%;right:7%;text-align:center;color:rgba(255,255,255,.82);font-size:clamp(.8rem,1.5vw,1.25rem);letter-spacing:.7em}
-
-/* 4-in-1 */
-.gallery-section{background:var(--paper);padding:20px}.gallery-section .section-inner{background:#e5e2d8;overflow:hidden}.gallery-head{position:absolute;z-index:5;left:clamp(24px,7vw,100px);top:clamp(80px,11vh,120px);max-width:560px}.gallery-head .kicker{color:#737b76;text-shadow:none}.gallery-head h2{font-size:clamp(2.7rem,6vw,6rem);font-weight:300;line-height:.9;letter-spacing:-.06em;margin:0;color:var(--ink)}.gallery-head p{margin:17px 0 0;max-width:470px;color:#68716c;line-height:1.55;font-size:.9rem}.gallery-hint{position:absolute;z-index:8;right:clamp(24px,7vw,100px);top:clamp(90px,12vh,130px);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:#6d756f;display:flex;align-items:center;gap:10px}.gallery-hint:after{content:"→";font-size:1.2rem}.gallery{position:absolute;z-index:2;left:0;right:0;bottom:0;height:66%;display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 clamp(24px,7vw,100px) 35px;cursor:grab}.gallery:active{cursor:grabbing}.gallery::-webkit-scrollbar{display:none}.gallery-card{position:relative;flex:0 0 min(68vw,920px);height:100%;scroll-snap-align:center;border-radius:3px;overflow:hidden;background:#aab5ad;box-shadow:0 28px 65px rgba(35,45,40,.14)}.gallery-card .photo{transform:scale(1);filter:none}.gallery-card:hover .photo{transform:scale(1.035)}.gallery-card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%,rgba(8,13,11,.74) 100%)}.gallery-card .card-copy{position:absolute;z-index:3;left:30px;right:30px;bottom:28px;color:white;text-shadow:0 2px 20px rgba(0,0,0,.3)}.card-copy .num{font-size:.57rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:8px}.card-copy h3{font-size:clamp(2.2rem,4.5vw,4.5rem);font-weight:300;letter-spacing:-.05em;line-height:.9;margin:0 0 11px}.card-copy p{max-width:600px;margin:0;font-size:.88rem;line-height:1.55;color:rgba(255,255,255,.84)}
-.gallery-dots{position:absolute;z-index:7;left:50%;transform:translateX(-50%);bottom:20px;display:flex;gap:7px}.gallery-dots span{width:5px;height:5px;border-radius:50%;background:rgba(38,48,44,.28);transition:.3s}.gallery-dots span.active{width:24px;border-radius:9px;background:rgba(38,48,44,.75)}
-
-.nature .section-inner:after{background:linear-gradient(180deg,rgba(8,18,11,.12),transparent 35%,rgba(6,15,9,.72))}.nature .content{max-width:760px}.nature .content h2{font-size:clamp(3.3rem,8vw,8rem)}
-.final{background:var(--paper);color:var(--ink)}.final .section-inner{background:#e8e5dc;display:grid;place-items:center}.final .section-inner:after{background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.75),transparent 40%)}.final-content{position:relative;z-index:3;text-align:center;padding:40px}.final-content .kicker{color:#737b76}.final-content h2{font-size:clamp(3.5rem,9vw,8rem);font-weight:300;letter-spacing:-.07em;line-height:.85;margin:0;color:var(--ink)}.final-content p{max-width:470px;margin:28px auto 0;color:#69726d;line-height:1.65}.rooms-link{display:inline-flex;margin-top:40px;color:var(--ink);text-decoration:none;border-bottom:1px solid rgba(38,48,44,.3);padding-bottom:8px;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase}
-
-@media(max-width:760px){.nav{height:66px;padding:15px 16px}.brand{font-size:.68rem;top:17px}.back{font-size:.59rem}.section{padding:12px}.section-inner{border-radius:2px}.content{left:22px;right:22px;bottom:58px}.content h2{font-size:clamp(2.8rem,14vw,5rem);margin-bottom:17px}.content p{font-size:.86rem;line-height:1.58}.scroll-hint{right:16px;bottom:17px;font-size:.5rem}.hero-content h1{font-size:clamp(3.6rem,16vw,6rem)}.hero-content p{font-size:.86rem;margin-top:23px}.hero-scroll{margin-top:48px}.gallery-section{padding:12px}.gallery-head{left:22px;right:22px;top:76px}.gallery-head h2{font-size:clamp(2.7rem,13vw,4.8rem)}.gallery-head p{font-size:.82rem}.gallery-hint{right:22px;top:86px;font-size:.5rem}.gallery{height:60%;gap:12px;padding:0 22px 28px}.gallery-card{flex-basis:88vw}.gallery-card .card-copy{left:22px;right:22px;bottom:22px}.card-copy h3{font-size:clamp(2rem,10vw,3.3rem)}.card-copy p{font-size:.78rem}.gallery-dots{bottom:12px}.nature .content h2{font-size:clamp(3rem,15vw,5.2rem)}.final-content{padding:25px}.final-content h2{font-size:clamp(3.3rem,16vw,5.5rem)}}
+.gallery-section{background:#e5e2d8}
+.gallery-section .section-inner{background:#e5e2d8}
+.gallery{position:absolute;z-index:2;inset:0;display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 0 0;cursor:grab}
+.gallery:active{cursor:grabbing}.gallery::-webkit-scrollbar{display:none}
+.gallery-card{position:relative;flex:0 0 100%;height:100%;scroll-snap-align:center;overflow:hidden;background:#aab5ad}
+.gallery-card .photo{transform:scale(1);filter:none}.gallery-card:hover .photo{transform:scale(1.035)}
+.gallery-card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 32%,rgba(8,13,11,.74) 100%)}
+.gallery-card .card-copy{position:absolute;z-index:3;left:clamp(24px,7vw,100px);right:clamp(24px,7vw,100px);bottom:clamp(48px,9vh,100px);color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.3);transform:translateY(28px);opacity:0;transition:.9s ease}
+.gallery-card.is-active .card-copy{transform:none;opacity:1}.card-copy .num{font-size:.57rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:8px}.card-copy h3{font-size:clamp(2.8rem,6vw,6rem);font-weight:300;letter-spacing:-.05em;line-height:.9;margin:0 0 12px}.card-copy p{max-width:680px;margin:0;font-size:clamp(.9rem,1.3vw,1.05rem);line-height:1.6;color:rgba(255,255,255,.86)}
+.gallery-dots{position:absolute;z-index:8;left:50%;transform:translateX(-50%);bottom:24px;display:flex;gap:7px}.gallery-dots span{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.4);transition:.3s}.gallery-dots span.active{width:24px;border-radius:9px;background:#fff}
+.final .section-inner{background:#e8e5dc;display:grid;place-items:center}.final .section-inner:after{background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.75),transparent 40%)}
+.final-content{position:relative;z-index:3;text-align:center;padding:40px;color:var(--ink)}.final-content .kicker{color:#737b76}.final-content h2{font-size:clamp(3.5rem,9vw,8rem);font-weight:300;letter-spacing:-.07em;line-height:.85;margin:0}.final-content p{max-width:470px;margin:28px auto 0;color:#69726d;line-height:1.65}
+@media(max-width:760px){.nav{height:64px;padding:16px}.brand{font-size:.68rem}.back{font-size:.59rem}.content{left:22px;right:22px;bottom:52px}.content h2{font-size:clamp(2.8rem,14vw,5rem);margin-bottom:17px}.content p{font-size:.86rem;line-height:1.58}.hero-content{padding:70px 22px}.hero-content h1{font-size:clamp(3.6rem,16vw,6rem)}.hero-content p{font-size:.86rem;margin-top:23px}.gallery{gap:0}.gallery-card .card-copy{left:22px;right:22px;bottom:52px}.card-copy h3{font-size:clamp(2.6rem,13vw,4.8rem)}.card-copy p{font-size:.8rem}.gallery-dots{bottom:18px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 <nav class="nav"><a class="back" href="index.html">← Главная</a><div class="brand">FreeDom Space</div></nav>
-
-<section class="section hero is-visible">
-  <div class="section-inner">
-    <div class="photo"></div>
-    <div class="hero-content">
-      <div>
-        <div class="kicker">FreeDom / Пространство</div>
-        <h1>Познакомьтесь<br>с FreeDom</h1>
-        <p>Не только комнаты. Дом, в котором можно двигаться, создавать, разговаривать, играть, читать и быть ближе к природе.</p>
-        <div class="hero-scroll">листайте вниз ↓</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-inner"><div class="photo visual-yoga"></div>
-    <div class="content"><div class="kicker">01 — тело · движение</div><h2>Зал для практик</h2><p>Место, где начинается ваш разговор с телом, а ум успокаивается. Здесь вы можете провести тренировку, воспользовавшись нашей экипировкой и спортивным инвентарём. Есть всё необходимое для разминки, а также полноценной силовой тренировки.</p></div>
-    <div class="scroll-hint">вниз</div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-inner"><div class="photo visual-events"></div>
-    <div class="content"><div class="kicker">02 — встречаться · узнавать</div><h2>Волшебные события</h2><p>В нашем доме регулярно проходят творческие вечера, медитации под звуки гонга и тибетских чаш, чайные церемонии, встречи с путешественниками, художниками, духовными учителями, общественными деятелями и писателями. Здесь вы можете принять участие в самых разных мероприятиях и узнать много нового, а также провести собственное.</p></div>
-    <div class="scroll-hint">вниз</div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-inner"><div class="photo visual-soul"></div>
-    <div class="content"><div class="kicker">03 — люди · разговоры</div><h2>Разговоры по душам</h2><p>Мы не просто хотим вести здоровый образ жизни. Это фундамент и основа нашего пребывания в центре, но главным всё-таки остаётся раскрытие талантов и глубинных желаний человека. По вечерам мы собираемся в каминном зале и обсуждаем, как прошёл день, делимся успехами или неудачами, подводим итоги недели. Самые активные участники событий получают премии.</p></div>
-    <div class="scroll-hint">вниз</div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-inner"><div class="photo visual-night"></div>
-    <div class="content"><div class="kicker">04 — тепло · вода · тишина</div><h2>Баня у бассейна</h2><p>Когда распаренное тело погружается в холодную воду — мир замирает. Останавливаются мысли. Ощущаешь себя вдали от всей цивилизации, в этом маленьком мире, который находится в тишине и спокойствии. Здесь мы отдыхаем от всего, что накопилось. <br><br><em>В месте под звёздами.</em></p></div>
-    <div class="scroll-hint">вниз</div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-inner"><div class="photo visual-health"></div>
-    <div class="content"><div class="kicker">05 — выбор · аскеза · сила</div><h2>Вегетарианство и ЗОЖ</h2><p>На территории дома строго воспрещены любые вредные привычки — алкоголь, сигареты, а также пища животного происхождения. Мы ограничиваем потребление сахара и соли. Никого не агитируем к ведению данного образа жизни, но сами придерживаемся этой позиции и поэтому выбрали её фундаментом. Любая аскеза, на наш взгляд, является источником накопления сил, новых мыслей и идей. Поэтому наш выбор остановился именно на ограничении, а не вседозволенности.</p></div>
-    <div class="scroll-hint">вниз</div>
-  </div>
-</section>
-
-<section class="section gallery-section">
-  <div class="section-inner">
-    <div class="gallery-head"><div class="kicker">06 — жизнь внутри дома</div><h2>Для жизни<br>и творчества</h2><p>Четыре пространства. Одно движение вправо — и вы уже в другой части FreeDom.</p></div>
-    <div class="gallery-hint">листайте вправо</div>
-    <div class="gallery" id="gallery">
-      <article class="gallery-card"><div class="photo visual-work"></div><div class="card-copy"><div class="num">01 / 04</div><h3>Рабочая зона</h3><p>На территории всего дома работает высокоскоростной Wi‑Fi. Работать можно из любой части — в гамаке возле бассейна или на балконе с видом на горы. Можно провести встречу, наслаждаясь красотой природы.</p></div></article>
-      <article class="gallery-card"><div class="photo visual-game"></div><div class="card-copy"><div class="num">02 / 04</div><h3>Игровая</h3><p>Для тех, кто любит погрузиться в виртуальный мир, у нас есть PlayStation с разными играми. А для любителей игр в компании друзей — настольные игры.</p></div></article>
-      <article class="gallery-card"><div class="photo visual-library"></div><div class="card-copy"><div class="num">03 / 04</div><h3>Библиотека</h3><p>Огромная библиотека совершенно разной литературы: художественной, научной, культуры, мифологии, религии и архитектуры. Вы точно найдёте что-то важное для себя.</p></div></article>
-      <article class="gallery-card"><div class="photo visual-music"></div><div class="card-copy"><div class="num">04 / 04</div><h3>Музыкальная студия</h3><p>Большой выбор музыкальных инструментов: несколько акустических гитар, укулеле, ханг, гусли, барабаны, синтезатор, музыкальный центр и набор для записи. Мы проводим музыкальные вечера и джемы каждую неделю.</p></div></article>
-    </div>
-    <div class="gallery-dots" id="dots"><span class="active"></span><span></span><span></span><span></span></div>
-  </div>
-</section>
-
-<section class="section nature">
-  <div class="section-inner"><div class="photo visual-nature"></div>
-    <div class="content"><div class="kicker">07 — вокруг нас</div><h2>Единство<br>с природой</h2><p>На территории дома прорастает множество разных растений и деревьев. Вы можете сорвать яблочко или хурму утром на завтрак, либо фейхоа с мандаринами. Пение птиц и журчание ручейка очень успокаивают. Мы чувствуем себя частью этой планеты, и это даёт много сил и радости.<br><br>Дом находится в горно-лесной местности. При желании можно подняться на самый верх и насладиться прекрасным видом на Сочи и море. А если хочется уединения — в пяти минутах ходьбы протекает прекрасная и чистая речка.</p></div>
-    <div class="scroll-hint">вниз</div>
-  </div>
-</section>
-
-<section class="section final">
-  <div class="section-inner"><div class="final-content"><div class="kicker">FreeDom</div><h2>А теперь<br>выберите комнату.</h2><p>Пространство — это то, чем наполнены наши дни. Комната — место, куда мы возвращаемся после них.</p><a class="rooms-link" href="index.html">смотреть комнаты →</a></div></div>
-</section>
-
+<section class="section hero is-visible"><div class="section-inner"><div class="photo"></div><div class="hero-content"><div><div class="kicker">FreeDom / Пространство</div><h1>Познакомьтесь<br>с FreeDom</h1><p>Не только комнаты. Дом, в котором можно двигаться, создавать, разговаривать, играть, читать и быть ближе к природе.</p></div></div></div></section>
+<section class="section"><div class="section-inner"><div class="photo visual-yoga"></div><div class="content"><div class="kicker">01 — тело · движение</div><h2>Зал для практик</h2><p>Место, где начинается ваш разговор с телом, а ум успокаивается. Здесь вы можете провести тренировку, воспользовавшись нашей экипировкой и спортивным инвентарём. Есть всё необходимое для разминки, а также полноценной силовой тренировки.</p></div></div></section>
+<section class="section"><div class="section-inner"><div class="photo visual-events"></div><div class="content"><div class="kicker">02 — встречаться · узнавать</div><h2>Волшебные события</h2><p>В нашем доме регулярно проходят творческие вечера, медитации под звуки гонга и тибетских чаш, чайные церемонии, встречи с путешественниками, художниками, духовными учителями, общественными деятелями и писателями. Здесь вы можете принять участие в самых разных мероприятиях и узнать много нового, а также провести собственное.</p></div></div></section>
+<section class="section"><div class="section-inner"><div class="photo visual-soul"></div><div class="content"><div class="kicker">03 — вместе</div><h2>Разговоры по душам</h2><p>Мы не просто хотим вести здоровый образ жизни. Это фундамент нашего пребывания в центре, но главным остаётся раскрытие талантов и глубинных желаний человека. По вечерам мы собираемся в каминном зале, обсуждаем день, делимся успехами и неудачами, подводим итоги недели. Самые активные участники событий получают премии.</p></div></div></section>
+<section class="section"><div class="section-inner"><div class="photo visual-night"></div><div class="content"><div class="kicker">04 — тишина · вода · небо</div><h2>В месте под звёздами</h2><p>Когда распаренное тело погружается в холодную воду — мир замирает. Останавливаются мысли. Ощущаешь себя вдали от всей цивилизации, в этом маленьком мире тишины и спокойствия. Здесь мы отдыхаем от всего, что накопилось.</p></div></div></section>
+<section class="section"><div class="section-inner"><div class="photo visual-night"></div><div class="content"><div class="kicker">05 — тепло · вода</div><h2>Баня у бассейна</h2><p>Пространство для перезагрузки тела и мыслей. Тепло бани, холодная вода и место, где вечером можно остаться под открытым небом.</p></div></div></section>
+<section class="section"><div class="section-inner"><div class="photo visual-health"></div><div class="content"><div class="kicker">06 — осознанность</div><h2>Вегетарианство и ЗОЖ</h2><p>На территории дома строго воспрещены вредные привычки — алкоголь, сигареты, а также пища животного происхождения. Мы ограничиваем потребление сахара и соли. Никого не агитируем к такому образу жизни, но сами придерживаемся этой позиции и выбрали её фундаментом. Любая аскеза, на наш взгляд, является источником накопления сил, новых мыслей и идей.</p></div></div></section>
+<section class="section gallery-section" id="creative"><div class="section-inner"><div class="gallery">
+<div class="gallery-card is-active"><div class="photo visual-work"></div><div class="card-copy"><div class="num">07 / 01</div><h3>Рабочая зона</h3><p>На территории всего дома работает высокоскоростной Wi‑Fi. Работать можно из любой части дома — будь то гамак возле бассейна или балкон с видом на горы.</p></div></div>
+<div class="gallery-card"><div class="photo visual-game"></div><div class="card-copy"><div class="num">07 / 02</div><h3>Игровая</h3><p>Для тех, кто любит погрузиться в виртуальный мир, у нас есть PlayStation с разными играми, а для любителей игр в компании друзей — настолки.</p></div></div>
+<div class="gallery-card"><div class="photo visual-library"></div><div class="card-copy"><div class="num">07 / 03</div><h3>Библиотека</h3><p>Огромная библиотека совершенно разной литературы: художественной, научной, культуры, мифологии, религии и архитектуры. Вы точно найдёте что-то важное для себя.</p></div></div>
+<div class="gallery-card"><div class="photo visual-music"></div><div class="card-copy"><div class="num">07 / 04</div><h3>Музыкальная студия</h3><p>Большой выбор музыкальных инструментов: акустические гитары, укулеле, ханг, гусли, барабаны, синтезатор, музыкальный центр и набор для записи. Мы проводим музыкальные вечера и джемы каждую неделю.</p></div></div>
+</div><div class="gallery-dots"><span class="active"></span><span></span><span></span><span></span></div></div></section>
+<section class="section"><div class="section-inner"><div class="photo visual-nature"></div><div class="content"><div class="kicker">08 — природа</div><h2>Единство с природой</h2><p>На территории дома прорастает множество разных растений и деревьев. Можно сорвать яблочко или хурму утром на завтрак, либо фейхуа с мандаринами. Пение птиц и журчание ручейка очень успокаивают. Дом находится в горно-лесной местности. При желании можно подняться на самый верх и насладиться прекрасным видом на Сочи и море. А если хочется уединения, в пяти минутах ходьбы протекает прекрасная и чистая речка.</p></div></div></section>
+<section class="section final"><div class="section-inner"><div class="final-content"><div class="kicker">FreeDom</div><h2>Пространство,<br>которое остаётся.</h2><p>А теперь можно познакомиться с местом, где вы будете жить.</p></div></div></section>
 <script>
-const sections=[...document.querySelectorAll('.section:not(.hero)')];
-const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('is-visible')}),{threshold:.35});
+const sections=[...document.querySelectorAll('.section')];
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('is-visible')}),{threshold:.55});
 sections.forEach(s=>observer.observe(s));
-
-const gallery=document.getElementById('gallery');
-const dots=[...document.querySelectorAll('#dots span')];
-const cards=[...document.querySelectorAll('.gallery-card')];
-function updateDots(){const center=gallery.scrollLeft+gallery.clientWidth/2;let best=0,bestDist=Infinity;cards.forEach((c,i)=>{const d=Math.abs(c.offsetLeft+c.offsetWidth/2-center);if(d<bestDist){bestDist=d;best=i}});dots.forEach((d,i)=>d.classList.toggle('active',i===best))}
-gallery.addEventListener('scroll',updateDots,{passive:true});
-let down=false,startX=0,startScroll=0;
-gallery.addEventListener('pointerdown',e=>{down=true;startX=e.clientX;startScroll=gallery.scrollLeft;gallery.setPointerCapture(e.pointerId)});
-gallery.addEventListener('pointermove',e=>{if(down)gallery.scrollLeft=startScroll-(e.clientX-startX)});
-gallery.addEventListener('pointerup',()=>down=false);gallery.addEventListener('pointercancel',()=>down=false);
-window.addEventListener('keydown',e=>{if(e.key==='ArrowRight'&&document.activeElement!==document.body){};if(e.key==='ArrowRight'&&gallery.matches(':hover'))gallery.scrollBy({left:gallery.clientWidth*.72,behavior:'smooth'});if(e.key==='ArrowLeft'&&gallery.matches(':hover'))gallery.scrollBy({left:-gallery.clientWidth*.72,behavior:'smooth'})});
+let locked=false;
+function moveVertical(dir){if(locked)return;const current=sections.reduce((best,s,i)=>Math.abs(s.getBoundingClientRect().top)<Math.abs(sections[best].getBoundingClientRect().top)?i:best,0);const next=Math.max(0,Math.min(sections.length-1,current+dir));if(next===current)return;locked=true;sections[next].scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>locked=false,850)}
+window.addEventListener('wheel',e=>{if(Math.abs(e.deltaY)<8||e.target.closest('.gallery'))return;e.preventDefault();moveVertical(e.deltaY>0?1:-1)},{passive:false});
+let touchY=0;window.addEventListener('touchstart',e=>touchY=e.touches[0].clientY,{passive:true});window.addEventListener('touchend',e=>{if(e.target.closest('.gallery'))return;const d=touchY-e.changedTouches[0].clientY;if(Math.abs(d)>45)moveVertical(d>0?1:-1)},{passive:true});
+window.addEventListener('keydown',e=>{if(['ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();moveVertical(1)}if(['ArrowUp','PageUp'].includes(e.key)){e.preventDefault();moveVertical(-1)}});
+const gallery=document.querySelector('.gallery');const cards=[...document.querySelectorAll('.gallery-card')];const dots=[...document.querySelectorAll('.gallery-dots span')];
+const galleryObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){cards.forEach(c=>c.classList.remove('is-active'));e.target.classList.add('is-active');const i=cards.indexOf(e.target);dots.forEach((d,n)=>d.classList.toggle('active',n===i))}}),{root:gallery,threshold:.65});cards.forEach(c=>galleryObserver.observe(c));
 </script>
 </body>
 </html>
