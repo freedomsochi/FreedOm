@@ -1,6 +1,7 @@
 name: fix-orbit-layout
 on:
-  workflow_dispatch:
+  push:
+    branches: [feat/homepage-v13]
 jobs:
   patch:
     runs-on: ubuntu-latest
@@ -28,7 +29,6 @@ jobs:
           s=s.replace('.space-launch .portal.active{opacity:1;transform:rotate(var(--a)) translateY(min(39vw,315px)) scale(8) rotate(calc(-1 * var(--a) - var(--r)));', '.space-launch .portal.active{opacity:1;transform:translate(-50%,-50%) scale(8) rotate(calc(-1 * var(--r,0deg)));',1)
           s=s.replace('.core{position:absolute;left:50%;top:50%;z-index:30;', '.core{outline:none;-webkit-tap-highlight-color:transparent;position:absolute;left:50%;top:50%;z-index:30;',1)
           marker="core.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();core.click()}};"
-          repl="core.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();core.click()}};"
           if marker not in s: raise SystemExit('JS marker not found')
           js="""const R=()=>Math.min(window.innerWidth*.39,315);function layoutPortals(){const r=R();ps.forEach((p,i)=>{const a=i*72*Math.PI/180;p.style.setProperty('--x',(Math.sin(a)*r).toFixed(2)+'px');p.style.setProperty('--y',(-Math.cos(a)*r).toFixed(2)+'px')})}layoutPortals();window.addEventListener('resize',layoutPortals);ps.forEach(p=>p.addEventListener('pointerdown',e=>e.stopPropagation()));"""
           s=s.replace(marker,marker+js,1)
