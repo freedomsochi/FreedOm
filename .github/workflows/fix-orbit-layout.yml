@@ -1,0 +1,43 @@
+name: fix-orbit-layout
+on:
+  workflow_dispatch:
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/homepage-v13
+      - name: Patch Orbit layout
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('freedom-home-v14.html')
+          s=p.read_text()
+          old='''.portal{position:absolute;left:50%;top:50%;width:132px;height:132px;margin:-66px;border-radius:50%;display:grid;place-items:center;text-align:center;border:1px solid rgba(255,255,255,.8);background:rgba(255,250,240,.23);backdrop-filter:blur(20px);box-shadow:0 18px 45px rgba(50,35,23,.12);transform:rotate(var(--a)) translateY(min(39vw,315px)) rotate(calc(-1 * var(--a) - var(--r)));transition:transform .45s,background .6s,box-shadow .6s,opacity .8s}'''
+          new='''.portal{position:absolute;left:calc(50% + var(--x,0px));top:calc(50% + var(--y,0px));width:132px;height:132px;margin:0;border-radius:50%;display:grid;place-items:center;text-align:center;border:1px solid rgba(255,255,255,.8);background:rgba(255,250,240,.23);backdrop-filter:blur(20px);box-shadow:0 18px 45px rgba(50,35,23,.12);transform:translate(-50%,-50%) rotate(calc(-1 * var(--r,0deg)));transition:transform 1.2s cubic-bezier(.12,.86,.16,1),background .6s,box-shadow .6s,opacity .8s}'''
+          if old not in s: raise SystemExit('portal base rule not found')
+          s=s.replace(old,new,1)
+          old2='''.portal{opacity:0;pointer-events:none;transform:rotate(var(--a)) translateY(0) scale(.08) rotate(calc(-1 * var(--a)));filter:blur(10px)}.menu-open .portal{opacity:1;pointer-events:auto;transform:rotate(var(--a)) translateY(min(39vw,315px)) scale(1) rotate(calc(-1 * var(--a) - var(--r)));filter:blur(0);transition:transform 1.2s cubic-bezier(.12,.86,.16,1),opacity .8s,background .6s,box-shadow .6s}'''
+          new2='''.portal{opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.08) rotate(calc(-1 * var(--r,0deg)));filter:blur(10px)}.menu-open .portal{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1) rotate(calc(-1 * var(--r,0deg)));filter:blur(0)}'''
+          if old2 not in s: raise SystemExit('portal open rule not found')
+          s=s.replace(old2,new2,1)
+          s=s.replace('.menu-open .portal:nth-child(4){transition-delay:.12s}.menu-open .portal:nth-child(5){transition-delay:.22s}.menu-open .portal:nth-child(6){transition-delay:.32s}.menu-open .portal:nth-child(7){transition-delay:.42s}', '.menu-open .portal[data-i="0"]{transition-delay:0s}.menu-open .portal[data-i="1"]{transition-delay:.08s}.menu-open .portal[data-i="2"]{transition-delay:.16s}.menu-open .portal[data-i="3"]{transition-delay:.24s}.menu-open .portal[data-i="4"]{transition-delay:.32s}',1)
+          s=s.replace('.space-launch .portal.active{opacity:1;transform:rotate(var(--a)) translateY(min(39vw,315px)) scale(8) rotate(calc(-1 * var(--a) - var(--r)));', '.space-launch .portal.active{opacity:1;transform:translate(-50%,-50%) scale(8) rotate(calc(-1 * var(--r,0deg)));',1)
+          s=s.replace('.core{position:absolute;left:50%;top:50%;z-index:30;', '.core{outline:none;-webkit-tap-highlight-color:transparent;position:absolute;left:50%;top:50%;z-index:30;',1)
+          marker="core.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();core.click()}};"
+          repl="core.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();core.click()}};"
+          if marker not in s: raise SystemExit('JS marker not found')
+          js="""const R=()=>Math.min(window.innerWidth*.39,315);function layoutPortals(){const r=R();ps.forEach((p,i)=>{const a=i*72*Math.PI/180;p.style.setProperty('--x',(Math.sin(a)*r).toFixed(2)+'px');p.style.setProperty('--y',(-Math.cos(a)*r).toFixed(2)+'px')})}layoutPortals();window.addEventListener('resize',layoutPortals);ps.forEach(p=>p.addEventListener('pointerdown',e=>e.stopPropagation()));"""
+          s=s.replace(marker,marker+js,1)
+          p.write_text(s)
+          PY
+      - name: Commit
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add freedom-home-v14.html
+          git commit -m "fix: rebuild Orbit portal positioning" || exit 0
+          git push origin feat/homepage-v13
