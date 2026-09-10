@@ -21,35 +21,38 @@
 </style>
 </head>
 <body>
-<main class="scene" id="scene"><div class="bg" id="bg"></div><div class="bg2" id="bg2"></div><div class="veil"></div><div class="light"></div>
-<div class="logo">FreeDom</div><div class="caption">дом в котором есть жизнь</div>
-<a class="account" href="#" id="account" aria-label="Личный кабинет"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg><span>Личный кабинет</span></a>
-<div class="orbit"><div class="branches"><img src="images/branches.png" alt="FreeDom"></div><div class="ring" id="ring"><div class="node active" style="--a:0" data-i="0">Пространство</div><div class="node" style="--a:72" data-i="1">Кухня</div><div class="node" style="--a:144" data-i="2">Баня</div><div class="node" style="--a:216" data-i="3">События</div><div class="node" style="--a:288" data-i="4">Комнаты</div></div><div class="core" id="core" aria-label="Войти в выбранный раздел"></div></div>
-<div class="hint">вращайте пространство · выберите путь</div>
-<section class="world" id="world"><div class="sheet"><div class="bar"><div><div class="title" id="title">Пространство</div><div class="meta">FreeDom · вход внутрь</div></div><button class="close" id="close" aria-label="Вернуться">×</button></div><iframe class="frame" id="frame" title="FreeDom world"></iframe><div class="entry" id="entry"><div class="entry-photo" id="entryPhoto"></div><div class="entry-shade"></div><div class="entry-copy"><strong id="entryTitle">Пространство</strong><span>входим внутрь FreeDom</span></div></div></div></section>
-</main>
+<div class="scene" id="scene">
+<div class="bg" id="bg"></div><div class="bg2" id="bg2"></div><div class="veil"></div><div class="light"></div>
+<div class="logo">FreeDom</div><div class="caption">дом в котором есть жизнь · выбери свой путь</div>
+<a class="account" href="#account" onclick="event.preventDefault();alert('Личный кабинет подключим отдельно — он не входит в Orbit.')">Личный кабинет</a>
+<div class="orbit" id="orbit">
+<div class="branches"><img src="images/branches.png" alt=""></div>
+<div class="ring" id="ring">
+<div class="node active" style="--a:0deg" data-index="0">Пространство</div>
+<div class="node" style="--a:72deg" data-index="1">Кухня</div>
+<div class="node" style="--a:144deg" data-index="2">Баня</div>
+<div class="node" style="--a:216deg" data-index="3">События</div>
+<div class="node" style="--a:288deg" data-index="4">Комнаты</div>
+</div><div class="core" id="core" aria-label="FreeDom"></div></div>
+<div class="hint">Проведи вокруг дерева · выбери путь</div>
+<div class="world" id="world"><div class="sheet"><div class="bar"><div><div class="title" id="worldTitle">Пространство</div><div class="meta">FreeDom · войти в мир</div></div><button class="close" id="close" aria-label="Закрыть">×</button></div><iframe class="frame" id="frame" title="FreeDom world"></iframe><div class="entry" id="entry"><div class="entry-photo" id="entryPhoto"></div><div class="entry-shade"></div><div class="entry-copy"><strong id="entryTitle">Пространство</strong><span>войти</span></div></div></div></div>
+</div>
 <script>
-const pics=['images/room-bungalow.jpg','images/room-family.jpg','images/sauna.jpg','images/gong-meditation.jpg','images/room-hostel.jpg'];
-const names=['Пространство','Кухня','Баня','События','Комнаты'];
-const ring=document.getElementById('ring'),nodes=[...document.querySelectorAll('.node')],bg=document.getElementById('bg'),bg2=document.getElementById('bg2'),world=document.getElementById('world'),frame=document.getElementById('frame'),entry=document.getElementById('entry'),entryPhoto=document.getElementById('entryPhoto'),title=document.getElementById('title'),entryTitle=document.getElementById('entryTitle'),scene=document.getElementById('scene');
-let idx=0,rot=0,drag=0,last=0,vel=0,lastT=0,timer=null,pointerId=null,opened=false,ignoreClickUntil=0;
-function angle(e){const r=ring.getBoundingClientRect();return Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2)*180/Math.PI}
-function set(){ring.style.setProperty('--r',rot+'deg')}
-function atmosphere(i){clearTimeout(timer);bg2.style.backgroundImage=`url('${pics[i]}')`;bg2.style.opacity=1;bg2.style.transform='scale(1.09)';timer=setTimeout(()=>{bg.style.backgroundImage=`url('${pics[i]}')`;bg.style.transform='scale(1.05)';bg2.style.opacity=0;bg2.style.transform='scale(1.05)'},1250)}
-function select(i){idx=(i+5)%5;const target=-idx*72;let d=target-rot;d=((d+180)%360+360)%360-180;rot+=d;set();nodes.forEach((n,k)=>n.classList.toggle('active',k===idx));atmosphere(idx)}
-function snap(){select(Math.round(-rot/72))}
-function startDrag(e){if(opened)return;drag=1;pointerId=e.pointerId;ring.classList.add('drag');ring.setPointerCapture(e.pointerId);last=angle(e);lastT=performance.now();vel=0}
-function moveDrag(e){if(!drag||e.pointerId!==pointerId)return;let x=angle(e),d=x-last;if(d>180)d-=360;if(d<-180)d+=360;rot+=d;set();let now=performance.now(),dt=Math.max(8,now-lastT);vel=.76*vel+.24*d/dt*16;last=x;lastT=now}
-function endDrag(){if(!drag)return;drag=0;pointerId=null;ring.classList.remove('drag');rot+=Math.max(-28,Math.min(28,vel*8));set();ignoreClickUntil=performance.now()+220;setTimeout(snap,260)}
-ring.addEventListener('pointerdown',startDrag);ring.addEventListener('pointermove',moveDrag);ring.addEventListener('pointerup',endDrag);ring.addEventListener('pointercancel',endDrag);ring.addEventListener('lostpointercapture',()=>{if(drag)endDrag()});
-nodes.forEach(n=>n.addEventListener('click',e=>{e.stopPropagation();if(performance.now()<ignoreClickUntil)return;const i=+n.dataset.i;if(i===idx)openWorld(i);else select(i)}));
-document.getElementById('core').addEventListener('click',()=>{if(performance.now()<ignoreClickUntil)return;openWorld(idx)});
-function openWorld(i){if(opened)return;opened=true;idx=i;title.textContent=names[i];entryTitle.textContent=names[i];entryPhoto.style.backgroundImage=`url('${pics[i]}')`;scene.classList.add('entering');world.classList.add('open');entry.classList.remove('hide');requestAnimationFrame(()=>entry.classList.add('active'));if(i===0){frame.src='space-preview.html'}else{frame.src='about:blank';setTimeout(()=>entry.classList.add('hide'),1100)}}
-function closeWorld(){if(!opened)return;entry.classList.remove('hide');entry.classList.remove('active');frame.classList.remove('ready');setTimeout(()=>{world.classList.remove('open');scene.classList.remove('entering');setTimeout(()=>{frame.src='';atmosphere(idx)},700)},550);opened=false}
-document.getElementById('close').addEventListener('click',closeWorld);
-frame.addEventListener('load',()=>{if(opened&&idx===0){setTimeout(()=>{frame.classList.add('ready');entry.classList.add('hide')},500)}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeWorld();if(!opened&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){e.preventDefault();select(idx+(e.key==='ArrowRight'?1:-1))}});
-document.getElementById('account').addEventListener('click',e=>{e.preventDefault();alert('Личный кабинет подключим отдельно — он не входит в Orbit.')});
-bg.style.backgroundImage=`url('${pics[0]}')`;
+const scene=document.getElementById('scene'),ring=document.getElementById('ring'),orbit=document.getElementById('orbit'),nodes=[...document.querySelectorAll('.node')],bg=document.getElementById('bg'),bg2=document.getElementById('bg2'),world=document.getElementById('world'),frame=document.getElementById('frame'),entry=document.getElementById('entry'),entryPhoto=document.getElementById('entryPhoto'),entryTitle=document.getElementById('entryTitle'),worldTitle=document.getElementById('worldTitle'),close=document.getElementById('close'),core=document.getElementById('core');
+const photos=['images/room-bungalow.jpg','images/room-family.jpg','images/sauna.jpg','images/gong-meditation.jpg','images/room-hostel.jpg'];
+const names=['Пространство','Кухня','Баня','События','Комнаты'];let rot=0,idx=0,drag=false,lastAngle=0,lastTime=0,velocity=0,raf=0,ignoreClickUntil=0;
+function norm(a){return Math.atan2(Math.sin(a),Math.cos(a))}
+function angleAt(e){const r=orbit.getBoundingClientRect();return Math.atan2(e.clientY-(r.top+r.height/2),e.clientX-(r.left+r.width/2))}
+function setRot(v){rot=v;ring.style.setProperty('--r',rot+'deg');const nearest=Math.round(-rot/72);idx=((nearest%5)+5)%5;nodes.forEach((n,i)=>n.classList.toggle('active',i===idx));atmosphere(idx)}
+function atmosphere(i){const target=photos[i];bg2.style.backgroundImage=`url('${target}')`;bg2.style.opacity='1';bg2.style.transform='scale(1.04)';bg.style.opacity='0';setTimeout(()=>{bg.style.backgroundImage=`url('${target}')`;bg.style.opacity='1';bg2.style.opacity='0';bg.style.transform='scale(1.05)'},700)}
+ring.addEventListener('pointerdown',e=>{if(world.classList.contains('open'))return;drag=true;ring.classList.add('drag');ring.setPointerCapture(e.pointerId);lastAngle=angleAt(e);lastTime=performance.now();velocity=0;cancelAnimationFrame(raf);e.preventDefault()});
+ring.addEventListener('pointermove',e=>{if(!drag)return;const a=angleAt(e),now=performance.now(),d=norm(a-lastAngle),dt=Math.max(8,now-lastTime);rot+=d*180/Math.PI;velocity=(d*180/Math.PI)/(dt/16.67);lastAngle=a;lastTime=now;ring.style.setProperty('--r',rot+'deg');const nearest=Math.round(-rot/72);idx=((nearest%5)+5)%5;nodes.forEach((n,i)=>n.classList.toggle('active',i===idx));atmosphere(idx);e.preventDefault()});
+function release(){if(!drag)return;drag=false;ring.classList.remove('drag');ignoreClickUntil=Date.now()+280;let v=velocity;function coast(){if(Math.abs(v)<.015){const target=Math.round(rot/72)*72;ring.style.transition='transform .95s cubic-bezier(.12,.86,.16,1)';rot=target;ring.style.setProperty('--r',rot+'deg');idx=(((-Math.round(rot/72))%5)+5)%5;nodes.forEach((n,i)=>n.classList.toggle('active',i===idx));atmosphere(idx);return}rot+=v;v*=.93;ring.style.setProperty('--r',rot+'deg');const nearest=Math.round(-rot/72);idx=((nearest%5)+5)%5;nodes.forEach((n,i)=>n.classList.toggle('active',i===idx));atmosphere(idx);raf=requestAnimationFrame(coast)}coast()}
+ring.addEventListener('pointerup',release);ring.addEventListener('pointercancel',release);ring.addEventListener('lostpointercapture',release);
+function openWorld(i){if(Date.now()<ignoreClickUntil)return;idx=i;const target=photos[i];worldTitle.textContent=names[i];entryTitle.textContent=names[i];entryPhoto.style.backgroundImage=`url('${target}')`;entry.classList.remove('hide');scene.classList.add('entering');world.classList.add('open');frame.classList.remove('ready');if(i===0){frame.src='space-preview.html';}else{frame.src='about:blank';setTimeout(()=>{if(world.classList.contains('open')&&idx===i){entry.classList.add('hide')}},1100)}}
+nodes.forEach(n=>n.addEventListener('click',e=>{if(Date.now()<ignoreClickUntil)return;openWorld(Number(n.dataset.index))}));core.addEventListener('click',()=>openWorld(idx));
+frame.addEventListener('load',()=>{if(idx!==0)return;setTimeout(()=>{if(world.classList.contains('open')){frame.classList.add('ready');entry.classList.add('hide')}},500)});
+function closeWorld(){entry.classList.remove('hide');frame.classList.remove('ready');setTimeout(()=>{world.classList.remove('open');scene.classList.remove('entering');setTimeout(()=>{frame.src='about:blank';atmosphere(idx)},700)},550)}
+close.addEventListener('click',closeWorld);window.addEventListener('keydown',e=>{if(e.key==='Escape'&&world.classList.contains('open'))closeWorld();if(e.key==='ArrowRight'&&!world.classList.contains('open')){rot-=72;ring.style.setProperty('--r',rot+'deg');idx=(idx+1)%5;nodes.forEach((n,i)=>n.classList.toggle('active',i===idx));atmosphere(idx)}if(e.key==='ArrowLeft'&&!world.classList.contains('open')){rot+=72;ring.style.setProperty('--r',rot+'deg');idx=(idx+4)%5;nodes.forEach((n,i)=>n.classList.toggle('active',i===idx));atmosphere(idx)}});
 </script>
 </body></html>
