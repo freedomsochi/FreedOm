@@ -1,0 +1,32 @@
+name: Sync transfer summary
+on:
+  push:
+    branches: [feat/live-availability-bridge]
+permissions:
+  contents: write
+jobs:
+  sync:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: feat/live-availability-bridge
+      - name: Append current Orbit state
+        run: |
+          cat >> INFORMATION-SUMMARY-FOR-CHAT-TRANSFER.md <<'EOF'
+
+## Latest verified state — 2026-09-10
+- Branch head after this sync is being used as the current continuation point.
+- Real `space-preview.html` is preserved; its back control now returns to the parent Orbit when embedded instead of navigating the iframe to `index.html`.
+- `freedom-orbit-v12.html` now intercepts the Space iframe back control on iframe load and calls `closeWorld()`, preserving the existing Orbit rotation/selection state.
+- The V12 page also retains its `postMessage` listener for the `freedom-space-close` bridge.
+- Temporary repair workflows used to restore/patch the bridge were removed after the repair completed.
+- Do not treat the bridge as production-complete until the deployed preview is visually tested on mobile and desktop.
+EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add INFORMATION-SUMMARY-FOR-CHAT-TRANSFER.md
+          git commit -m "docs: sync transfer summary with Space Orbit bridge [skip ci]"
+          git push origin HEAD:feat/live-availability-bridge
