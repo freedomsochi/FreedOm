@@ -1,0 +1,36 @@
+name: Patch Space entry
+on:
+  push:
+    branches: [feat/homepage-v13]
+permissions:
+  contents: write
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch V14 Space entry
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('freedom-home-v14.html')
+          s = p.read_text()
+          css = '.space-launch .core{transform:translate(-50%,-50%) scale(.22);opacity:0;filter:blur(12px);transition:transform .95s cubic-bezier(.12,.86,.16,1),opacity .55s,filter .75s}.space-launch .ring{opacity:0;filter:blur(10px);transform:rotate(var(--r,0deg)) scale(1.7);transition:opacity .65s,filter .8s,transform 1s cubic-bezier(.12,.86,.16,1)}.space-launch .portal.active{opacity:1;transform:rotate(var(--a)) translateY(min(39vw,315px)) scale(8) rotate(calc(-1 * var(--a) - var(--r)));background:rgba(245,250,237,.82);box-shadow:0 0 0 100vmax rgba(226,236,211,.96),0 0 120px rgba(255,255,255,.8);border-color:rgba(255,255,255,.9);transition:transform 1.05s cubic-bezier(.12,.86,.16,1),box-shadow 1s,background .8s}.space-launch .portal.active b{opacity:0}.space-launch .brand-top,.space-launch .hint,.space-launch .account{opacity:0;transition:opacity .45s}.space-launch:after{content:"Пространство";position:absolute;z-index:150;left:50%;top:50%;transform:translate(-50%,-50%);font:500 clamp(30px,5vw,58px)/1 Cormorant Garamond,serif;letter-spacing:.02em;color:#31402d;opacity:0;animation:spaceTitle .8s .35s ease forwards;pointer-events:none}@keyframes spaceTitle{to{opacity:1}}'
+          marker = '@media(max-width:760px){.brand-top'
+          if 'space-launch .portal.active' not in s:
+              s = s.replace(marker, css + marker, 1)
+          old = "function open(i){idx=i;set(-i*72);apply();home.classList.add('entering');world.classList.add('open');title.textContent=names[i];scroll.scrollTop=0;scroll.innerHTML=content(i)}"
+          new = "function open(i){idx=i;set(-i*72);apply();if(i===0){openSpace();return}home.classList.add('entering');world.classList.add('open');title.textContent=names[i];scroll.scrollTop=0;scroll.innerHTML=content(i)}function openSpace(){home.classList.add('space-launch');home.classList.add('entering');setTimeout(()=>{window.location.href='space-preview.html'},1050)}"
+          if old not in s:
+              raise SystemExit('open() marker not found or patch already changed')
+          s = s.replace(old, new, 1)
+          p.write_text(s)
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add freedom-home-v14.html
+          git diff --cached --quiet || git commit -m 'feat: add cinematic Space entry transition'
+          git push
