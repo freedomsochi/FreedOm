@@ -1,53 +1,50 @@
 name: V14 selection highlight
+
 on:
   push:
-    branches: [feat/homepage-v13]
-  workflow_dispatch:
+    branches:
+      - feat/homepage-v13
+
+permissions:
+  contents: write
 
 jobs:
   patch:
-    if: github.event.head_commit.message != 'chore: remove V14 selection highlight workflow'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: feat/homepage-v13
+          fetch-depth: 0
       - name: Patch V14 selection behavior
         run: |
-          python - <<'PY'
+          python3 - <<'PY'
           from pathlib import Path
           p = Path('freedom-home-v14.html')
           s = p.read_text()
-          old = "set(180-i*72);apply();if(i===0){openSpace();return}"
-          new = "set(-i*72);apply();if(i===0){openSpace();return}"
+          old = 'set(180-i*72);apply();if(i===0){openSpace();return}'
+          new = 'set(-i*72);apply();if(i===0){openSpace();return}'
           if old in s:
               s = s.replace(old, new, 1)
-          else:
-              raise SystemExit('selection rotation pattern not found')
-
-          marker = ".portal.active{background:rgba(255,252,244,.52);box-shadow:0 24px 70px rgba(49,34,21,.2),0 0 0 8px rgba(255,240,213,.12)}"
-          addition = marker + ".home[data-theme=space]{--selection:#8ea87c}.home[data-theme=kitchen]{--selection:#b88455}.home[data-theme=sauna]{--selection:#5d958a}.home[data-theme=events]{--selection:#7667a8}.home[data-theme=rooms]{--selection:#b9a27f}.portal.selected{background:color-mix(in srgb,var(--selection) 62%,rgba(255,250,240,.35));border-color:rgba(255,255,255,.95);box-shadow:0 24px 70px color-mix(in srgb,var(--selection) 45%,transparent),0 0 0 10px color-mix(in srgb,var(--selection) 22%,transparent),inset 0 0 24px rgba(255,255,255,.18);transform:translate(-50%,-50%) scale(1.08) rotate(calc(-1 * var(--r,0deg)))}.portal.selected:after{content:'Нажмите ещё раз';position:absolute;left:50%;top:calc(100% + 12px);transform:translateX(-50%);font:500 8px Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(47,39,32,.7);white-space:nowrap;opacity:1}.portal.selected b{color:#30271f}"
-          if marker not in s:
-              raise SystemExit('selection CSS marker not found')
-          s = s.replace(marker, addition, 1)
-
-          old_js = "p.onclick=e=>{e.preventDefault();e.stopPropagation();if(typeof open==='function')open(i)}"
-          new_js = "p.onclick=e=>{e.preventDefault();e.stopPropagation();if(typeof open!=='function')return;if(i===idx){open(i);return}idx=i;set(-i*72);apply();ps.forEach((q,j)=>q.classList.toggle('selected',j===i))}"
-          if old_js not in s:
-              raise SystemExit('portal click override not found')
-          s = s.replace(old_js, new_js, 1)
-
-          old_apply = "ps.forEach((p,i)=>p.classList.toggle('active',i===idx));"
-          new_apply = "ps.forEach((p,i)=>{p.classList.toggle('active',i===idx);p.classList.toggle('selected',i===idx)});"
-          if old_apply not in s:
-              raise SystemExit('apply pattern not found')
-          s = s.replace(old_apply, new_apply, 1)
+          old_click = "p.onclick=e=>{e.preventDefault();e.stopPropagation();if(typeof open==='function')open(i)}"
+          new_click = "p.onclick=e=>{e.preventDefault();e.stopPropagation();if(typeof open!=='function')return;if(i===idx){open(i);return}idx=i;set(-i*72);apply();ps.forEach((q,j)=>q.classList.toggle('selected',j===i))}"
+          if old_click in s:
+              s = s.replace(old_click, new_click, 1)
+          old_apply = 'ps.forEach((p,i)=>p.classList.toggle(\'active\',i===idx));'
+          new_apply = 'ps.forEach((p,i)=>{p.classList.toggle(\'active\',i===idx);p.classList.toggle(\'selected\',i===idx)});'
+          if old_apply in s:
+              s = s.replace(old_apply, new_apply, 1)
+          marker = '.portal.active{background:rgba(255,252,244,.52);box-shadow:0 24px 70px rgba(49,34,21,.2),0 0 0 8px rgba(255,240,213,.12)}'
+          addition = marker + '.home[data-theme=space]{--selection:#8ea87c}.home[data-theme=kitchen]{--selection:#b88455}.home[data-theme=sauna]{--selection:#5d958a}.home[data-theme=events]{--selection:#7667a8}.home[data-theme=rooms]{--selection:#b9a27f}.portal.selected{background:color-mix(in srgb,var(--selection) 62%,rgba(255,250,240,.35));border-color:rgba(255,255,255,.95);box-shadow:0 24px 70px color-mix(in srgb,var(--selection) 45%,transparent),0 0 0 10px color-mix(in srgb,var(--selection) 22%,transparent),inset 0 0 24px rgba(255,255,255,.18);transform:translate(-50%,-50%) scale(1.08) rotate(calc(-1 * var(--r,0deg)))}.portal.selected:after{content:\'Нажмите ещё раз\';position:absolute;left:50%;top:calc(100% + 12px);transform:translateX(-50%);font:500 8px Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(47,39,32,.7);white-space:nowrap}.portal.selected b{color:#30271f}'
+          if marker in s and '.portal.selected{' not in s:
+              s = s.replace(marker, addition, 1)
           p.write_text(s)
           PY
       - name: Commit V14 patch
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add freedom-home-v14.html
-          git commit -m "fix: clarify V14 top selection and highlight selected portal"
-          git push
+          git diff --cached --quiet && exit 0
+          git commit -m 'fix: clarify V14 top selection and highlight selected portal'
+          git push origin feat/homepage-v13
