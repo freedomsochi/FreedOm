@@ -1,0 +1,75 @@
+name: Fix V14 Orbit and Space
+
+on:
+  push:
+    branches: [feat/homepage-v13]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/homepage-v13
+          fetch-depth: 0
+      - name: Patch V14
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('freedom-home-v14.html')
+          s = p.read_text()
+
+          old_css = '''.portal:nth-of-type(1){--x:0px;--y:calc(-1 * min(39vw,315px))}.portal:nth-of-type(2){--x:min(39vw,315px);--y:0px}.portal:nth-of-type(3){--x:0px;--y:min(39vw,315px)}.portal:nth-of-type(4){--x:calc(-1 * min(39vw,315px));--y:0px}.portal:nth-of-type(5){--x:0px;--y:calc(-1 * min(39vw,315px))}.portal{position:absolute;left:calc(50% + var(--x,0px));top:calc(50% + var(--y,0px));width:132px;height:132px;margin:0;border-radius:50%;display:grid;place-items:center;text-align:center;border:1px solid rgba(255,255,255,.8);background:rgba(255,250,240,.23);backdrop-filter:blur(20px);box-shadow:0 18px 45px rgba(50,35,23,.12);transform:translate(-50%,-50%) rotate(calc(-1 * var(--r,0deg)));transition:transform 1.2s cubic-bezier(.12,.86,.16,1),background .6s,box-shadow .6s,opacity .8s}'''
+          new_css = '''.portal{position:absolute;left:50%;top:50%;width:132px;height:132px;margin:-66px;border-radius:50%;display:grid;place-items:center;text-align:center;border:1px solid rgba(255,255,255,.8);background:rgba(255,250,240,.23);backdrop-filter:blur(20px);box-shadow:0 18px 45px rgba(50,35,23,.12);transform:rotate(var(--a)) translateY(min(39vw,315px)) rotate(calc(-1 * var(--a) - var(--r,0deg)));transition:transform 1.2s cubic-bezier(.12,.86,.16,1),background .6s,box-shadow .6s,opacity .8s}'''
+          if old_css not in s:
+              raise SystemExit('V14 CSS anchor not found')
+          s = s.replace(old_css, new_css)
+
+          old_extra = '''.portal[data-i="0"]{--x:0px;--y:calc(-1 * min(39vw,315px))}.portal[data-i="1"]{--x:min(39vw,315px);--y:0px}.portal[data-i="2"]{--x:0px;--y:min(39vw,315px)}.portal[data-i="3"]{--x:calc(-1 * min(39vw,315px));--y:0px}.portal[data-i="4"]{--x:calc(-1 * min(39vw,315px));--y:calc(-1 * min(39vw,315px))}.menu-open .portal[data-i="0"],.menu-open .portal[data-i="1"],.menu-open .portal[data-i="2"],.menu-open .portal[data-i="3"],.menu-open .portal[data-i="4"]{transition-delay:0s}'''
+          new_extra = '''.menu-open .portal{transition-delay:0s}'''
+          if old_extra not in s:
+              raise SystemExit('V14 data-i anchor not found')
+          s = s.replace(old_extra, new_extra)
+
+          old_space = '''.space-launch .portal.active{opacity:1;transform:translate(-50%,-50%) scale(8) rotate(calc(-1 * var(--r,0deg)));background:rgba(245,250,237,.82);box-shadow:0 0 0 100vmax rgba(226,236,211,.96),0 0 120px rgba(255,255,255,.8);border-color:rgba(255,255,255,.9);transition:transform 1.05s cubic-bezier(.12,.86,.16,1),box-shadow 1s,background .8s}'''
+          new_space = '''.space-launch .portal.active{opacity:1;transform:rotate(var(--a)) translateY(min(39vw,315px)) scale(8) rotate(calc(-1 * var(--a) - var(--r,0deg)));background:rgba(245,250,237,.82);box-shadow:0 0 0 100vmax rgba(226,236,211,.96),0 0 120px rgba(255,255,255,.8);border-color:rgba(255,255,255,.9);transition:transform 1.35s cubic-bezier(.12,.86,.16,1),box-shadow 1.1s,background .9s}'''
+          if old_space not in s:
+              raise SystemExit('V14 space anchor not found')
+          s = s.replace(old_space, new_space)
+
+          old_js = '''let rot=0,idx=0,drag=false,last=0,vel=0,ignore=0,raf;'''
+          new_js = '''let rot=0,idx=0,drag=false,moved=false,last=0,vel=0,ignore=0,raf;'''
+          if old_js not in s:
+              raise SystemExit('V14 JS state anchor not found')
+          s = s.replace(old_js, new_js)
+
+          old_pointer = '''ring.onpointerdown=e=>{if(!home.classList.contains('menu-open'))return;drag=true;ring.classList.add('drag');ring.setPointerCapture(e.pointerId);last=ang(e);vel=0;e.preventDefault()};ring.onpointermove=e=>{if(!drag)return;let a=ang(e),d=norm(a-last)*180/Math.PI;set(rot+d);vel=d;last=a;apply();e.preventDefault()};function release(){if(!drag)return;drag=false;ring.classList.remove('drag');ignore=Date.now()+320;let v=vel;function coast(){if(Math.abs(v)<.02){ring.style.transition='transform .9s cubic-bezier(.12,.86,.16,1)';set(Math.round(rot/72)*72);apply();setTimeout(()=>ring.style.transition='',950);return}set(rot+v);v*=.93;apply();raf=requestAnimationFrame(coast)}coast()}'''
+          new_pointer = '''ring.onpointerdown=e=>{if(!home.classList.contains('menu-open'))return;drag=true;moved=false;ring.classList.add('drag');ring.setPointerCapture(e.pointerId);last=ang(e);vel=0;e.preventDefault()};ring.onpointermove=e=>{if(!drag)return;let a=ang(e),d=norm(a-last)*180/Math.PI;if(Math.abs(d)>0.8)moved=true;set(rot+d);vel=d;last=a;apply();e.preventDefault()};function release(){if(!drag)return;drag=false;ring.classList.remove('drag');if(moved)ignore=Date.now()+320;let v=vel;if(!moved)return;function coast(){if(Math.abs(v)<.02){ring.style.transition='transform .9s cubic-bezier(.12,.86,.16,1)';set(Math.round(rot/72)*72);apply();setTimeout(()=>ring.style.transition='',950);return}set(rot+v);v*=.93;apply();raf=requestAnimationFrame(coast)}coast()}'''
+          if old_pointer not in s:
+              raise SystemExit('V14 pointer anchor not found')
+          s = s.replace(old_pointer, new_pointer)
+
+          old_open = '''function openSpace(){home.classList.add('space-launch');home.classList.add('entering');setTimeout(()=>{window.location.href='space-preview.html'},1050)}'''
+          new_open = '''function openSpace(){home.classList.add('space-launch');home.classList.add('entering');setTimeout(()=>{window.location.href='space-preview.html'},1450)}'''
+          if old_open not in s:
+              raise SystemExit('V14 openSpace anchor not found')
+          s = s.replace(old_open, new_open)
+
+          p.write_text(s)
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add freedom-home-v14.html
+          git diff --cached --quiet || git commit -m "fix: center V14 Orbit and restore Space transition"
+          git push origin HEAD:feat/homepage-v13
+      - name: Remove one-time workflow
+        if: success()
+        run: |
+          git rm .github/workflows/fix-v14-orbit-space.yml
+          git commit -m "chore: remove one-time V14 fix workflow"
+          git push origin HEAD:feat/homepage-v13
