@@ -1,0 +1,38 @@
+name: V14 selection fix
+on:
+  push:
+    branches: [feat/homepage-v13]
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/homepage-v13
+          fetch-depth: 0
+      - name: Fix selected portal to bottom center
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('freedom-home-v14.html')
+          s=p.read_text()
+          old="set(-i*72);apply();if(i===0){openSpace();return}"
+          new="set(180-i*72);apply();if(i===0){openSpace();return}"
+          if old not in s:
+              raise SystemExit('selection rotation expression not found')
+          s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+      - name: Remove temporary workflow and commit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add freedom-home-v14.html
+          git commit -m "fix: place selected Orbit portal at bottom center" || true
+          git rm .github/workflows/v14-selection-fix.yml
+          git commit -m "chore: remove temporary V14 selection workflow"
+          git push origin feat/homepage-v13
