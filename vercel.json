@@ -1,5 +1,5 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/freedom-home-v14.html" }
+  "redirects": [
+    { "source": "/", "destination": "/freedom-home-v14.html", "permanent": false }
   ]
 }
