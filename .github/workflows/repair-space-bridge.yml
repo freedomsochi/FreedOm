@@ -16,23 +16,35 @@ jobs:
         with:
           fetch-depth: 0
           ref: feat/live-availability-bridge
-      - name: Restore Space from known-good commit and add Orbit bridge
+      - name: Patch Space return bridge
         shell: bash
         run: |
-          git fetch origin c41ee5c97a703c5bd4492d52914dcbda7dbba6e9 --depth=1
-          git show c41ee5c97a703c5bd4492d52914dcbda7dbba6e9:space-preview.html > space-preview.html
           python3 - <<'PY'
           from pathlib import Path
-          p=Path('space-preview.html')
-          s=p.read_text()
-          old='<a class="back" href="index.html">← Главная</a>'
-          new='<a class="back" href="#" onclick="if(window.parent!==window){window.parent.postMessage({type:\'freedom-space-close\'},\'*\');return false}window.location.href=\'index.html\';return false">← Главная</a>'
-          if old not in s:
-              raise SystemExit('expected Space back link not found')
-          p.write_text(s.replace(old,new,1))
+
+          changed = False
+
+          p = Path('space-preview.html')
+          s = p.read_text()
+          old = '<a class="back" href="index.html">← Главная</a>'
+          new = '<a class="back" href="#" onclick="if(window.parent!==window){window.parent.postMessage({type:\'freedom-space-close\'},\'*\');return false}window.location.href=\'index.html\';return false">← Главная</a>'
+          if old in s:
+              p.write_text(s.replace(old, new, 1))
+              changed = True
+
+          p = Path('freedom-orbit-v12.html')
+          s = p.read_text()
+          old = "frame.addEventListener('load',()=>{if(idx!==0)return;setTimeout(()=>{if(world.classList.contains('open')){frame.classList.add('ready');entry.classList.add('hide')}},500)});"
+          new = "frame.addEventListener('load',()=>{if(idx!==0)return;try{const back=frame.contentDocument?.querySelector('.back');if(back){back.addEventListener('click',e=>{e.preventDefault();closeWorld()})}}catch(e){}setTimeout(()=>{if(world.classList.contains('open')){frame.classList.add('ready');entry.classList.add('hide')}},500)});"
+          if old in s:
+              p.write_text(s.replace(old, new, 1))
+              changed = True
+
+          if not changed:
+              raise SystemExit(0)
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add space-preview.html
-          git commit -m "fix: restore Space and bridge return to Orbit [skip ci]"
+          git add space-preview.html freedom-orbit-v12.html
+          git commit -m "fix: bridge Space return into Orbit [skip ci]"
           git push origin HEAD:feat/live-availability-bridge
