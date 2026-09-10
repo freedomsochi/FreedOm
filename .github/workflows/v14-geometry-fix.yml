@@ -1,0 +1,42 @@
+name: V14 geometry fix
+
+on:
+  push:
+    branches:
+      - feat/homepage-v13
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: ${{ !contains(github.event.head_commit.message, 'fix: make V14 orbit geometry truly symmetric') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/homepage-v13
+          fetch-depth: 0
+      - name: Apply geometry fix
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('freedom-home-v14.html')
+          s = p.read_text()
+          marker = '/* V14 geometry: true symmetric pentagon with equal inner/outer gaps */'
+          if marker not in s:
+              css = '''<style>\n/* V14 geometry: true symmetric pentagon with equal inner/outer gaps */\n.portal{margin:0!important}\n@media (min-width:761px){\n  .portal[data-i="0"]{--x:0px;--y:calc(-1 * min(calc(23.5vw + 56px),261px))}\n  .portal[data-i="1"]{--x:calc(.9510565163 * min(calc(23.5vw + 56px),261px));--y:calc(-.3090169944 * min(calc(23.5vw + 56px),261px))}\n  .portal[data-i="2"]{--x:calc(.5877852523 * min(calc(23.5vw + 56px),261px));--y:calc(.8090169944 * min(calc(23.5vw + 56px),261px))}\n  .portal[data-i="3"]{--x:calc(-.5877852523 * min(calc(23.5vw + 56px),261px));--y:calc(.8090169944 * min(calc(23.5vw + 56px),261px))}\n  .portal[data-i="4"]{--x:calc(-.9510565163 * min(calc(23.5vw + 56px),261px));--y:calc(-.3090169944 * min(calc(23.5vw + 56px),261px))}\n}\n@media (max-width:760px){\n  .portal[data-i="0"]{--x:0px;--y:calc(-1 * (31vw + 38.5px))}\n  .portal[data-i="1"]{--x:calc(.9510565163 * (31vw + 38.5px));--y:calc(-.3090169944 * (31vw + 38.5px))}\n  .portal[data-i="2"]{--x:calc(.5877852523 * (31vw + 38.5px));--y:calc(.8090169944 * (31vw + 38.5px))}\n  .portal[data-i="3"]{--x:calc(-.5877852523 * (31vw + 38.5px));--y:calc(.8090169944 * (31vw + 38.5px))}\n  .portal[data-i="4"]{--x:calc(-.9510565163 * (31vw + 38.5px));--y:calc(-.3090169944 * (31vw + 38.5px))}\n}\n</style>'''
+              s = s.replace('</body>', css + '</body>')
+              if s == p.read_text():
+                  s = s.replace('</html>', css + '</html>')
+              p.write_text(s)
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add freedom-home-v14.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'fix: make V14 orbit geometry truly symmetric'
+          git push origin feat/homepage-v13
