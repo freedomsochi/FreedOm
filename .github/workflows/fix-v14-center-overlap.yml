@@ -2,29 +2,36 @@ name: Fix V14 portal center overlap
 on:
   push:
     branches: [feat/homepage-v13]
+permissions:
+  contents: write
 jobs:
   fix:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch V14 portal positioning
-        shell: python
+        with:
+          ref: feat/homepage-v13
+          fetch-depth: 0
+      - name: Patch V14 portal geometry
+        shell: bash
         run: |
+          python3 - <<'PY'
           from pathlib import Path
-          p = Path('freedom-home-v14.html')
-          s = p.read_text()
-          old = '''<style>\n/* V14 fix: five portals on one true circle centered on FreeDom */\n.portal{left:50%!important;top:50%!important;margin:-66px!important;transform:rotate(var(--a)) translateY(min(39vw,315px)) rotate(calc(-1 * var(--a) - var(--r,0deg)))!important;}\n.menu-open .portal{transform:rotate(var(--a)) translateY(min(39vw,315px)) rotate(calc(-1 * var(--a) - var(--r,0deg)))!important;}\n.space-launch .portal.active{transform:rotate(var(--a)) translateY(min(39vw,315px)) scale(8) rotate(calc(-1 * var(--a) - var(--r,0deg)))!important;transition:transform 1.35s cubic-bezier(.12,.86,.16,1),box-shadow 1.1s,background .9s!important;}\n</style>'''
-          new = '''<style>\n/* V14 fix: five portals on one true circle centered on FreeDom */\n.portal[data-i="0"]{--x:0px;--y:calc(-1 * min(39vw,315px));}\n.portal[data-i="1"]{--x:calc(.95106 * min(39vw,315px));--y:calc(-.30902 * min(39vw,315px));}\n.portal[data-i="2"]{--x:calc(.58779 * min(39vw,315px));--y:calc(.80902 * min(39vw,315px));}\n.portal[data-i="3"]{--x:calc(-.58779 * min(39vw,315px));--y:calc(.80902 * min(39vw,315px));}\n.portal[data-i="4"]{--x:calc(-.95106 * min(39vw,315px));--y:calc(-.30902 * min(39vw,315px));}\n.portal{left:calc(50% + var(--x))!important;top:calc(50% + var(--y))!important;margin:0!important;}\n</style>'''
-          if old not in s:
-              raise SystemExit('expected V14 override block not found')
-          p.write_text(s.replace(old, new, 1))
-      - name: Commit fix and remove workflow
+          p=Path('freedom-home-v14.html')
+          s=p.read_text()
+          marker='/* V14 geometry final: equal gaps */'
+          if marker in s:
+              raise SystemExit(0)
+          css='<style>/* V14 geometry final: equal gaps */.portal{margin:0!important}@media (min-width:761px){.portal[data-i="0"]{--x:0px;--y:calc(-1 * min(calc(23.5vw + 56px),261px))}.portal[data-i="1"]{--x:calc(.9510565163 * min(calc(23.5vw + 56px),261px));--y:calc(-.3090169944 * min(calc(23.5vw + 56px),261px))}.portal[data-i="2"]{--x:calc(.5877852523 * min(calc(23.5vw + 56px),261px));--y:calc(.8090169944 * min(calc(23.5vw + 56px),261px))}.portal[data-i="3"]{--x:calc(-.5877852523 * min(calc(23.5vw + 56px),261px));--y:calc(.8090169944 * min(calc(23.5vw + 56px),261px))}.portal[data-i="4"]{--x:calc(-.9510565163 * min(calc(23.5vw + 56px),261px));--y:calc(-.3090169944 * min(calc(23.5vw + 56px),261px))}}@media (max-width:760px){.portal[data-i="0"]{--x:0px;--y:calc(-1 * (31vw + 38.5px))}.portal[data-i="1"]{--x:calc(.9510565163 * (31vw + 38.5px));--y:calc(-.3090169944 * (31vw + 38.5px))}.portal[data-i="2"]{--x:calc(.5877852523 * (31vw + 38.5px));--y:calc(.8090169944 * (31vw + 38.5px))}.portal[data-i="3"]{--x:calc(-.5877852523 * (31vw + 38.5px));--y:calc(.8090169944 * (31vw + 38.5px))}.portal[data-i="4"]{--x:calc(-.9510565163 * (31vw + 38.5px));--y:calc(-.3090169944 * (31vw + 38.5px))}}</style>'
+          p.write_text(s.replace('</body>',css+'</body>') if '</body>' in s else s.replace('</html>',css+'</html>'))
+          PY
+      - name: Commit geometry fix and remove workflow
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add freedom-home-v14.html
-          git commit -m "fix: remove V14 portal center override" || true
+          git commit -m "fix: make V14 orbit geometry truly symmetric" || true
           git rm .github/workflows/fix-v14-center-overlap.yml
-          git commit -m "chore: remove temporary V14 center fix workflow"
-          git push
+          git commit -m "chore: remove temporary V14 geometry workflow"
+          git push origin feat/homepage-v13
