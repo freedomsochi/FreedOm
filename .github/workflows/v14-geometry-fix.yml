@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   fix:
-    if: ${{ !contains(github.event.head_commit.message, 'fix: make V14 orbit geometry truly symmetric') }}
+    if: github.event.head_commit.message != 'fix: make V14 orbit geometry truly symmetric'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,9 +26,27 @@ jobs:
           s = p.read_text()
           marker = '/* V14 geometry: true symmetric pentagon with equal inner/outer gaps */'
           if marker not in s:
-              css = '''<style>\n/* V14 geometry: true symmetric pentagon with equal inner/outer gaps */\n.portal{margin:0!important}\n@media (min-width:761px){\n  .portal[data-i="0"]{--x:0px;--y:calc(-1 * min(calc(23.5vw + 56px),261px))}\n  .portal[data-i="1"]{--x:calc(.9510565163 * min(calc(23.5vw + 56px),261px));--y:calc(-.3090169944 * min(calc(23.5vw + 56px),261px))}\n  .portal[data-i="2"]{--x:calc(.5877852523 * min(calc(23.5vw + 56px),261px));--y:calc(.8090169944 * min(calc(23.5vw + 56px),261px))}\n  .portal[data-i="3"]{--x:calc(-.5877852523 * min(calc(23.5vw + 56px),261px));--y:calc(.8090169944 * min(calc(23.5vw + 56px),261px))}\n  .portal[data-i="4"]{--x:calc(-.9510565163 * min(calc(23.5vw + 56px),261px));--y:calc(-.3090169944 * min(calc(23.5vw + 56px),261px))}\n}\n@media (max-width:760px){\n  .portal[data-i="0"]{--x:0px;--y:calc(-1 * (31vw + 38.5px))}\n  .portal[data-i="1"]{--x:calc(.9510565163 * (31vw + 38.5px));--y:calc(-.3090169944 * (31vw + 38.5px))}\n  .portal[data-i="2"]{--x:calc(.5877852523 * (31vw + 38.5px));--y:calc(.8090169944 * (31vw + 38.5px))}\n  .portal[data-i="3"]{--x:calc(-.5877852523 * (31vw + 38.5px));--y:calc(.8090169944 * (31vw + 38.5px))}\n  .portal[data-i="4"]{--x:calc(-.9510565163 * (31vw + 38.5px));--y:calc(-.3090169944 * (31vw + 38.5px))}\n}\n</style>'''
+              css = r'''<style>
+          /* V14 geometry: true symmetric pentagon with equal inner/outer gaps */
+          .portal{margin:0!important}
+          @media (min-width:761px){
+            .portal[data-i="0"]{--x:0px;--y:calc(-1 * min(calc(23.5vw + 56px),261px))}
+            .portal[data-i="1"]{--x:calc(.9510565163 * min(calc(23.5vw + 56px),261px));--y:calc(-.3090169944 * min(calc(23.5vw + 56px),261px))}
+            .portal[data-i="2"]{--x:calc(.5877852523 * min(calc(23.5vw + 56px),261px));--y:calc(.8090169944 * min(calc(23.5vw + 56px),261px))}
+            .portal[data-i="3"]{--x:calc(-.5877852523 * min(calc(23.5vw + 56px),261px));--y:calc(.8090169944 * min(calc(23.5vw + 56px),261px))}
+            .portal[data-i="4"]{--x:calc(-.9510565163 * min(calc(23.5vw + 56px),261px));--y:calc(-.3090169944 * min(calc(23.5vw + 56px),261px))}
+          }
+          @media (max-width:760px){
+            .portal[data-i="0"]{--x:0px;--y:calc(-1 * (31vw + 38.5px))}
+            .portal[data-i="1"]{--x:calc(.9510565163 * (31vw + 38.5px));--y:calc(-.3090169944 * (31vw + 38.5px))}
+            .portal[data-i="2"]{--x:calc(.5877852523 * (31vw + 38.5px));--y:calc(.8090169944 * (31vw + 38.5px))}
+            .portal[data-i="3"]{--x:calc(-.5877852523 * (31vw + 38.5px));--y:calc(.8090169944 * (31vw + 38.5px))}
+            .portal[data-i="4"]{--x:calc(-.9510565163 * (31vw + 38.5px));--y:calc(-.3090169944 * (31vw + 38.5px))}
+          }
+          </style>'''
+              old = s
               s = s.replace('</body>', css + '</body>')
-              if s == p.read_text():
+              if s == old:
                   s = s.replace('</html>', css + '</html>')
               p.write_text(s)
           PY
