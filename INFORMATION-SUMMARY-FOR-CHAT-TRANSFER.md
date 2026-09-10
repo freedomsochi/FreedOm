@@ -56,7 +56,9 @@ Especially liked concept: enter the photograph and let the selected image become
 ## Space
 Existing cinematic Space must be reused, not recreated. It contains fullscreen scenes, vertical storytelling, real FreeDom content, events, sauna/pool/star scene, galleries and mobile adaptation.
 
-Current verified state on `feat/live-availability-bridge`: `space-preview.html` is a tiny redirect to an older Vercel Space deployment (`https://freed-7ehbn7d33-sergeyogorodnik19-3325s-projects.vercel.app/space-preview.html`). The fuller Space implementation exists on `main`. Do not mistake the redirect for the full Space implementation. Eventually integrate the real Space reliably instead of depending on an external redirect.
+**Current verified state on `feat/live-availability-bridge`: `space-preview.html` now contains the real fuller Space implementation from `main`, copied locally into the working branch.** Its current content SHA is `00c5d5b7374fa8d44fe26bc715aa04753caf53a3`, and the restoring commit is `0043e431a2861b89f5861bd06d5b14321f4f87bc` (`feat: restore real existing Space implementation locally`). The old external Vercel redirect is no longer present in the working branch.
+
+The restored Space is the existing implementation: fullscreen scenes, real FreeDom narrative/content, mobile adaptation, horizontal galleries, and keyboard/touch/wheel section navigation. It still contains its original standalone `← Главная` link to `index.html`; when embedded inside V12's iframe, the parent World close control should currently be treated as the reliable return path. A future surgical improvement can make the Space back control explicitly communicate with the parent Orbit instead of navigating inside the iframe.
 
 ## Rooms
 Use existing real room categories/data and preserve booking/availability logic. Known project categories include family room, double room with balcony, attic room, bungalow, sleeping place on balcony, standard hostel and economy hostel. Verify actual data before changing.
@@ -77,12 +79,15 @@ Do not break Auth, users/guests, rooms, bookings/availability, kitchen/orders, a
 
 ## GitHub state — VERIFIED CURRENT WORKING BRANCH
 Working branch: `feat/live-availability-bridge`
-Current latest verified tip: `ebfeead419a1a3bdcab37246a851be0254a5d486` — `feat: add cinematic Orbit world entry and return`.
+Current latest code tip: `0043e431a2861b89f5861bd06d5b14321f4f87bc` — `feat: restore real existing Space implementation locally`.
 
 Earlier relevant commits:
 - `103e50a0e7dfb71ee4a71aac9d0754c196a4ee0a` — `feat: refine FreeDom Orbit V12 five-room homepage`
 - `42a150cdb1acf9a1cae04b288a9bd39aab14dea2` — `fix: connect Orbit Space to real existing FreeDom Space`
 - `5298a637` — `feat: harden Orbit interaction mechanics`
+- `ebfeead419a1a3bdcab37246a851be0254a5d486` — `feat: add cinematic Orbit world entry and return`
+- `28ab56d63a35a60d2e84f721bc921706be7dfe71` — temporary local Space entry; superseded by the real Space restoration above
+- `6fcdff5f1518ff7e03b27fbb9394ec3838999255` — `docs: sync project transfer summary with current Orbit V12 state`
 
 `main` and `feat/live-availability-bridge` are intentionally divergent. Do not merge experimental homepage work into `main` until visually/functionally validated.
 
@@ -98,7 +103,7 @@ V12 currently:
 - uses a fullscreen World layer;
 - starts world entry from the selected real photo;
 - zooms the entry photo while Orbit fades/softens;
-- for Пространство, loads `space-preview.html` behind the entry layer and reveals it after load;
+- for Пространство, loads the now-local `space-preview.html` behind the entry layer and reveals it after load;
 - for the other four directions, currently shows only the cinematic entry state and does not pretend those worlds are finished;
 - closing restores the entry/photo transition, hides the world and restores the Orbit state/selected position.
 
@@ -112,18 +117,19 @@ The code intentionally uses `about:blank` for unfinished worlds rather than faki
 - Mobile layout has a dedicated media query; phone is a primary scenario, not just a shrunk desktop.
 - The selected direction remains the logical `idx`; `rot` is preserved so returning to Home can restore the prior Orbit position.
 
-## Current V12 visual concerns to evaluate next
+## Current V12 visual/functional concerns to evaluate next
 1. The exact timing between photo zoom, Orbit fade and Space reveal.
 2. Whether the transition feels like entering a photograph rather than opening a modal.
 3. Whether Space appears without a visible loading jump.
 4. Whether closing Space feels like the reverse of entering and returns naturally to the same Orbit position.
-5. Mobile touch zones and accidental drag/click behavior.
-6. Tree/Orbit composition and whether the branches asset still feels physically integrated into the scene.
-7. Avoid the old central rectangle/square artifact; solve it through correct alpha/rendering rather than removing the real branches asset.
+5. Make the Space internal `← Главная` control communicate with the parent Orbit when embedded, instead of navigating `index.html` inside the iframe.
+6. Mobile touch zones and accidental drag/click behavior.
+7. Tree/Orbit composition and whether the branches asset still feels physically integrated into the scene.
+8. Avoid the old central rectangle/square artifact; solve it through correct alpha/rendering rather than removing the real branches asset.
 
 ## Space integration status
-Current feature-branch `space-preview.html` SHA: `d1489a8ef5c20628fc8c4251a09226acc3360609`.
-It redirects to the older Vercel Space deployment. The real fuller `space-preview.html` implementation is on `main` and should eventually be brought into the working branch or otherwise integrated without an external dependency.
+Current feature-branch `space-preview.html` content SHA: `00c5d5b7374fa8d44fe26bc715aa04753caf53a3`.
+It is now the fuller existing Space implementation from `main`, locally restored in the working branch. No old Vercel redirect remains in this file.
 
 ## Vercel
 A previously known preview URL for V11 was:
@@ -134,7 +140,7 @@ Vercel project is believed to be `freed-om`, connected to `freedomsochi/FreedOm`
 ## Current task / next steps
 Continue from V12; do not restart.
 1. Validate Home → Orbit → Space → Home as one coherent cycle.
-2. Fix the Space dependency so the working branch can open the real Space reliably.
+2. Make the Space internal back control parent-aware and finish the reverse transition.
 3. Refine transition timing and mobile behavior based on actual browser verification.
 4. Only after Space is solid, connect Kitchen, Sauna, Events and Rooms one by one to existing project data/logic.
 5. Do not replace `main/index.html` or deploy production until the new homepage has been visually and functionally validated.
