@@ -53,6 +53,8 @@ function openWorld(i){if(Date.now()<ignoreClickUntil)return;idx=i;const target=p
 nodes.forEach(n=>n.addEventListener('click',e=>{if(Date.now()<ignoreClickUntil)return;openWorld(Number(n.dataset.index))}));core.addEventListener('click',()=>openWorld(idx));
 frame.addEventListener('load',()=>{if(idx!==0)return;setTimeout(()=>{if(world.classList.contains('open')){frame.classList.add('ready');entry.classList.add('hide')}},500)});
 function closeWorld(){entry.classList.remove('hide');frame.classList.remove('ready');setTimeout(()=>{world.classList.remove('open');scene.classList.remove('entering');setTimeout(()=>{frame.src='about:blank';atmosphere(idx)},700)},550)}
-close.addEventListener('click',closeWorld);window.addEventListener('keydown',e=>{if(e.key==='Escape'&&world.classList.contains('open'))closeWorld();if(e.key==='ArrowRight'&&!world.classList.contains('open')){rot-=72;ring.style.setProperty('--r',rot+'deg');idx=(idx+1)%5;nodes.forEach((n,i)=>n.classList.toggle('active',i===idx));atmosphere(idx)}if(e.key==='ArrowLeft'&&!world.classList.contains('open')){rot+=72;ring.style.setProperty('--r',rot+'deg');idx=(idx+4)%5;nodes.forEach((n,i)=>n.classList.toggle('active',i===idx));atmosphere(idx)}});
+close.addEventListener('click',closeWorld);
+window.addEventListener('message',e=>{if(e.data&&e.data.type==='freedom-space-close'&&world.classList.contains('open')&&idx===0)closeWorld()});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&world.classList.contains('open'))closeWorld();if(e.key==='ArrowRight'&&!world.classList.contains('open')){rot-=72;ring.style.setProperty('--r',rot+'deg');idx=(idx+1)%5;nodes.forEach((n,i)=>n.classList.toggle('active',i===idx));atmosphere(idx)}if(e.key==='ArrowLeft'&&!world.classList.contains('open')){rot+=72;ring.style.setProperty('--r',rot+'deg');idx=(idx+4)%5;nodes.forEach((n,i)=>n.classList.toggle('active',i===idx));atmosphere(idx)}});
 </script>
 </body></html>
