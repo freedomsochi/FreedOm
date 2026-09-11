@@ -11,7 +11,7 @@
   const portals = [...document.querySelectorAll('.portal')];
   portals.forEach(p => {
     const i = Number(p.dataset.i);
-    p.onclick = e => { e.preventDefault(); e.stopPropagation(); if (typeof open === 'function') open(i); };
+    p.onclick = e => { e.preventDefault(); e.stopPropagation(); if (typeof open !== 'function') return; if (i === idx) { open(i); return; } idx = i; set(-i*72); apply(); ps.forEach((q,j)=>q.classList.toggle('selected',j===i)); };
   });
 })();
 </script><style>
