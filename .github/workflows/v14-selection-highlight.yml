@@ -16,35 +16,48 @@ jobs:
         with:
           ref: feat/homepage-v13
           fetch-depth: 0
-      - name: Patch V14 selection behavior
+      - name: Patch V14 interaction and Space return
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          p = Path('freedom-home-v14.html')
-          s = p.read_text()
-          old = 'set(180-i*72);apply();if(i===0){openSpace();return}'
-          new = 'set(-i*72);apply();if(i===0){openSpace();return}'
-          if old in s:
-              s = s.replace(old, new, 1)
+
+          home = Path('freedom-home-v14.html')
+          s = home.read_text()
+
+          # Selection must land at the top and require a second deliberate tap to enter.
+          s = s.replace('set(180-i*72);apply();if(i===0){openSpace();return}', 'set(-i*72);apply();if(i===0){openSpace();return}', 1)
           old_click = "p.onclick=e=>{e.preventDefault();e.stopPropagation();if(typeof open==='function')open(i)}"
           new_click = "p.onclick=e=>{e.preventDefault();e.stopPropagation();if(typeof open!=='function')return;if(i===idx){open(i);return}idx=i;set(-i*72);apply();ps.forEach((q,j)=>q.classList.toggle('selected',j===i))}"
-          if old_click in s:
-              s = s.replace(old_click, new_click, 1)
-          old_apply = 'ps.forEach((p,i)=>p.classList.toggle(\'active\',i===idx));'
-          new_apply = 'ps.forEach((p,i)=>{p.classList.toggle(\'active\',i===idx);p.classList.toggle(\'selected\',i===idx)});'
-          if old_apply in s:
-              s = s.replace(old_apply, new_apply, 1)
+          s = s.replace(old_click, new_click, 1)
+
+          old_apply = "ps.forEach((p,i)=>p.classList.toggle('active',i===idx));"
+          new_apply = "ps.forEach((p,i)=>{p.classList.toggle('active',i===idx);p.classList.toggle('selected',i===idx)});"
+          s = s.replace(old_apply, new_apply, 1)
+
+          # Make the selected portal read as the current theme rather than a generic white state.
           marker = '.portal.active{background:rgba(255,252,244,.52);box-shadow:0 24px 70px rgba(49,34,21,.2),0 0 0 8px rgba(255,240,213,.12)}'
           addition = marker + '.home[data-theme=space]{--selection:#8ea87c}.home[data-theme=kitchen]{--selection:#b88455}.home[data-theme=sauna]{--selection:#5d958a}.home[data-theme=events]{--selection:#7667a8}.home[data-theme=rooms]{--selection:#b9a27f}.portal.selected{background:color-mix(in srgb,var(--selection) 62%,rgba(255,250,240,.35));border-color:rgba(255,255,255,.95);box-shadow:0 24px 70px color-mix(in srgb,var(--selection) 45%,transparent),0 0 0 10px color-mix(in srgb,var(--selection) 22%,transparent),inset 0 0 24px rgba(255,255,255,.18);transform:translate(-50%,-50%) scale(1.08) rotate(calc(-1 * var(--r,0deg)))}.portal.selected:after{content:\'Нажмите ещё раз\';position:absolute;left:50%;top:calc(100% + 12px);transform:translateX(-50%);font:500 8px Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(47,39,32,.7);white-space:nowrap}.portal.selected b{color:#30271f}'
-          if marker in s and '.portal.selected{' not in s:
+          if '.portal.selected{' not in s and marker in s:
               s = s.replace(marker, addition, 1)
-          p.write_text(s)
+
+          # Space launch: preserve the selected state and carry the share token through.
+          old_space = "function openSpace(){home.classList.add('space-launch');home.classList.add('entering');setTimeout(()=>{const share=new URLSearchParams(location.search).get('_vercel_share');window.location.href='space-preview.html'+(share?'?_vercel_share='+encodeURIComponent(share):'')},1450)}"
+          new_space = "function openSpace(){home.classList.add('space-launch');home.classList.add('entering');sessionStorage.setItem('freedomOrbitState',JSON.stringify({idx,rot}));setTimeout(()=>{const q=new URLSearchParams();q.set('from','orbit');q.set('idx',String(idx));const share=new URLSearchParams(location.search).get('_vercel_share');if(share)q.set('_vercel_share',share);window.location.href='space-preview.html?'+q.toString()},1050)}"
+          s = s.replace(old_space, new_space, 1)
+          home.write_text(s)
+
+          space = Path('space-preview.html')
+          t = space.read_text()
+          old_back = "onclick=\"if(window.parent!==window){window.parent.postMessage({type:'freedom-space-close'},'*');return false}window.location.href='index.html';return false\""
+          new_back = "onclick=\"if(window.parent!==window){window.parent.postMessage({type:'freedom-space-close'},'*');return false}const q=new URLSearchParams(location.search);window.location.href=q.get('from')==='orbit'?'freedom-home-v14.html':'index.html';return false\""
+          t = t.replace(old_back, new_back, 1)
+          space.write_text(t)
           PY
-      - name: Commit V14 patch
+      - name: Commit patch
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add freedom-home-v14.html
+          git add freedom-home-v14.html space-preview.html
           git diff --cached --quiet && exit 0
-          git commit -m 'fix: clarify V14 top selection and highlight selected portal'
+          git commit -m 'fix: make Orbit selection deliberate and transition to Space'
           git push origin feat/homepage-v13
