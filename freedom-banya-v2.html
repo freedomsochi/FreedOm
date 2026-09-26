@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FreeDom — Баня</title>
+<style>
+:root{--paper:#fff8ed;--warm:#d89a5d;--line:rgba(255,248,236,.42)}
+*{box-sizing:border-box}html,body{margin:0;background:#171310;color:var(--paper);font-family:Inter,system-ui,sans-serif;overflow:hidden}button{font:inherit;color:inherit}a{color:inherit}
+#world{height:100svh;position:relative}
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;transform:scale(1.035);transition:opacity 1s ease,transform 1.35s cubic-bezier(.2,.7,.2,1),visibility 1s}.scene.active{opacity:1;visibility:visible;transform:scale(1)}
+.media{position:absolute;inset:-2%;background:center/cover no-repeat;transition:filter 1.2s ease,transform 7s ease}.scene.active .media{transform:scale(1.045)}
+.veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,13,10,.34),rgba(18,13,10,.12) 44%,rgba(18,13,10,.68))}
+.grain{position:absolute;inset:0;opacity:.07;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.9) .5px,transparent .5px);background-size:4px 4px}
+.nav{position:fixed;top:0;left:0;right:0;z-index:30;padding:22px 28px;display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.2em;text-transform:uppercase}.brand{font:500 17px Georgia,serif;letter-spacing:.3em}.back{opacity:.78;text-decoration:none}
+.content{position:relative;z-index:5;width:min(1160px,calc(100% - 48px));height:100%;margin:auto;display:flex;align-items:center}
+.copy{max-width:650px}.eyebrow,.counter{font-size:9px;letter-spacing:.34em;text-transform:uppercase;opacity:.7}.title{font:400 clamp(56px,9vw,112px)/.9 Georgia,serif;margin:15px 0 22px}.copy p{font-size:clamp(15px,1.5vw,19px);line-height:1.65;max-width:620px;color:rgba(255,248,237,.84)}.accent{color:#efc18d}
+.hero .copy{padding-top:4vh}.hero .title{margin-bottom:15px}.hero .sub{font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.78}
+.pill{margin-top:36px;display:inline-flex;align-items:center;gap:12px;padding:12px 17px;border:1px solid var(--line);border-radius:999px;background:rgba(255,248,236,.1);backdrop-filter:blur(18px);font-size:9px;letter-spacing:.16em;text-transform:uppercase}.play{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.55)}
+.story .media{background-image:url('images/room-bungalow.jpg');opacity:.48}.story .veil{background:linear-gradient(110deg,rgba(25,17,12,.8),rgba(40,26,18,.22),rgba(12,9,7,.7))}
+.heat .media{background-image:url('images/sauna.jpg');filter:saturate(.9) sepia(.16)}.heat .veil{background:linear-gradient(110deg,rgba(38,16,7,.76),rgba(101,43,15,.18),rgba(12,9,7,.58))}.heat .accent{color:#e6a56d}
+.cold .media{background-image:url('images/room-hostel.jpg');filter:saturate(.72) hue-rotate(8deg)}.cold .veil{background:linear-gradient(110deg,rgba(4,19,28,.76),rgba(9,40,56,.18),rgba(4,13,18,.64))}.cold .accent{color:#b7d8dc}
+.breath .media{background-image:url('images/gong-meditation.jpg');filter:saturate(.72) brightness(.9)}.breath .veil{background:linear-gradient(110deg,rgba(31,27,23,.7),rgba(67,58,49,.15),rgba(18,15,13,.62))}.breath .accent{color:#d6c7ae}
+.reset .media{background-image:url('images/room-bungalow.jpg');filter:saturate(.72) brightness(.8)}.reset .veil{background:linear-gradient(110deg,rgba(24,20,17,.66),rgba(76,65,54,.12),rgba(10,8,7,.65))}
+.panel{position:absolute;right:7%;top:50%;transform:translateY(-50%);width:190px;height:190px;border-radius:50%;border:1px solid rgba(255,255,255,.28);display:grid;place-items:center;background:rgba(255,255,255,.05);backdrop-filter:blur(13px);z-index:6}.panel span{text-align:center;font-size:8px;letter-spacing:.24em;text-transform:uppercase;line-height:2}
+.breath .panel{animation:breathe 6s ease-in-out infinite}@keyframes breathe{50%{transform:translateY(-50%) scale(1.1);border-color:rgba(255,255,255,.5)}}
+.reset .copy{max-width:720px}.reset .title{font-size:clamp(50px,7vw,90px)}
+.controls{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:14px}.arrow{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,248,236,.34);background:rgba(255,248,236,.08);backdrop-filter:blur(14px);cursor:pointer}.dots{display:flex;gap:7px}.dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.3);transition:.35s}.dot.active{width:22px;border-radius:8px;background:rgba(255,255,255,.82)}
+.hint{position:fixed;right:28px;bottom:28px;z-index:40;font-size:8px;letter-spacing:.2em;text-transform:uppercase;opacity:.48}
+.modal{position:fixed;inset:0;z-index:60;background:rgba(15,11,9,.5);backdrop-filter:blur(18px);display:grid;place-items:center;padding:20px;opacity:0;pointer-events:none;transition:.35s}.modal.open{opacity:1;pointer-events:auto}.card{width:min(580px,100%);padding:32px;border:1px solid rgba(255,248,236,.38);border-radius:30px;background:rgba(65,52,43,.82);box-shadow:0 30px 100px rgba(0,0,0,.35)}.top{display:flex;justify-content:space-between}.card h2{font:400 34px Georgia,serif;margin:8px 0 12px}.close{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);width:38px;height:38px;border-radius:50%;cursor:pointer}.card p,.card li{font-size:13px;line-height:1.65;color:rgba(255,248,237,.78)}.book{display:inline-block;margin-top:12px;padding:13px 18px;border-radius:999px;border:1px solid rgba(255,248,236,.5);text-decoration:none;font-size:9px;letter-spacing:.15em;text-transform:uppercase}
+@media(max-width:700px){.nav{padding:17px 16px}.back{display:none}.content{width:calc(100% - 30px);align-items:end;padding-bottom:15vh}.title{font-size:60px}.copy p{font-size:15px}.panel{width:120px;height:120px;right:5%;top:25%}.hint{display:none}.controls{bottom:18px}.arrow{width:38px;height:38px}.story .content{align-items:center;padding-bottom:0}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="brand">FreeDom</div><a class="back" href="freedom-orbit-v11.html">Главная</a></header>
+<main id="world">
+<section class="scene hero active"><div class="media" style="background-image:url('images/sauna.jpg')"></div><div class="veil"></div><div class="grain"></div><div class="content"><div class="copy hero-copy"><div class="eyebrow">FreeDom · практика состояния</div><h1 class="title">Баня</h1><div class="sub">тепло → холод → дыхание → перезагрузка</div><div class="pill"><span class="play">▶</span> короткое видео · 16:9</div></div></div></section>
+<section class="scene story"><div class="media"></div><div class="veil"></div><div class="content"><div class="copy"><div class="eyebrow">01 · Жизнь дома</div><h1 class="title">Отдельное место<br>в жизни FreeDom.</h1><p>Раз в неделю мы собираемся вместе, чтобы пройти путь от жара до холода, от напряжения до покоя.</p><p>Здесь баня — не просто способ расслабить тело. <span class="accent">Она становится практикой.</span></p></div></div></section>
+<section class="scene heat"><div class="media"></div><div class="veil"></div><div class="content"><div class="copy"><div class="counter">02 · Жар</div><h1 class="title">Жар</h1><p>Вместе с теплом возникают мысли о дискомфорте. Появляется выбор — ждать или выйти, терпеть или выйти.</p><p>Вместе с потом могут всплывать эмоции и воспоминания, от которых в обычной жизни мы прячемся.</p><p><span class="accent">Остаёшься с паром и мыслями.</span></p></div><div class="panel"><span>тепло<br>·<br>внутрь</span></div></div></section>
+<section class="scene cold"><div class="media"></div><div class="veil"></div><div class="content"><div class="copy"><div class="counter">03 · Холод</div><h1 class="title">Холод</h1><p>После бани — холодная вода. Пар с тела уходит, и раскалённое состояние резко меняется.</p><p>Как горячий металл, который погружают в воду: контраст собирает внимание обратно в тело.</p><p><span class="accent">После — воздух. И можно просто быть.</span></p></div><div class="panel"><span>тепло<br>↓<br>холод<br>↓<br>покой</span></div></div></section>
+<section class="scene breath"><div class="media"></div><div class="veil"></div><div class="content"><div class="copy"><div class="counter">04 · Дыхание</div><h1 class="title">Дыхание</h1><p>После жара и холода внимание возвращается к самому простому — вдоху и выдоху.</p><p>Ты, момент, ровное дыхание, спокойный ум.</p><p><span class="accent">Сейчас всё хорошо.</span></p></div><div class="panel"><span>вдох<br>·<br>выдох</span></div></div></section>
+<section class="scene reset"><div class="media"></div><div class="veil"></div><div class="content"><div class="copy"><div class="eyebrow">FreeDom · перезагрузка</div><h1 class="title">Вернуться<br>к себе.</h1><p>Баня во FreeDom стала частью жизни дома — местом, где можно остановиться, почувствовать тело, поговорить или побыть в тишине.</p><p><span class="accent">Жар → Холод → Дыхание → Перезагрузка.</span></p></div></div></section>
+</main>
+<div class="controls"><button class="arrow" id="prev">←</button><div class="dots" id="dots"></div><button class="arrow" id="next">→</button></div>
+<div class="hint">свайп · колесо · стрелки</div>
+<div class="modal" id="modal"><div class="card"><div class="top"><div><div class="eyebrow">FreeDom · индивидуально</div><h2>Индивидуальная баня</h2></div><button class="close" id="close">×</button></div><p>Подробная информация об индивидуальной бане, услугах, продолжительности и стоимости добавляется после согласования.</p><ul><li>индивидуальный формат;</li><li>сопровождение процесса;</li><li>дополнительные услуги — по согласованию.</li></ul><a class="book" href="#">Заказать индивидуально</a></div></div>
+<script>
+const scenes=[...document.querySelectorAll('.scene')],dots=document.getElementById('dots');let index=0,busy=false,startY=0,startX=0;
+scenes.forEach((_,i)=>{const d=document.createElement('i');d.className='dot'+(i===0?' active':'');dots.appendChild(d)});
+function go(n){if(busy)return;index=Math.max(0,Math.min(scenes.length-1,n));busy=true;scenes.forEach((s,i)=>s.classList.toggle('active',i===index));[...dots.children].forEach((d,i)=>d.classList.toggle('active',i===index));setTimeout(()=>busy=false,900)}
+document.getElementById('next').onclick=()=>go(index+1);document.getElementById('prev').onclick=()=>go(index-1);
+addEventListener('wheel',e=>{if(Math.abs(e.deltaY)<8)return;go(index+(e.deltaY>0?1:-1))},{passive:true});
+addEventListener('keydown',e=>{if(['ArrowDown','ArrowRight','PageDown'].includes(e.key))go(index+1);if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key))go(index-1)});
+addEventListener('touchstart',e=>{startY=e.touches[0].clientY;startX=e.touches[0].clientX},{passive:true});
+addEventListener('touchend',e=>{const dy=e.changedTouches[0].clientY-startY,dx=e.changedTouches[0].clientX-startX;if(Math.max(Math.abs(dy),Math.abs(dx))<45)return;go(index+((Math.abs(dy)>Math.abs(dx)?dy<0:dx<0)?1:-1))},{passive:true});
+</script>
+</body>
+</html>
