@@ -101,10 +101,16 @@
   }
 }
 /* TREE CONCEPT MOCKUP */
+.core{overflow:visible}
+.core:before{content:"";position:absolute;inset:7%;z-index:0;border-radius:50%;border:1px solid rgba(198,158,67,.18);box-shadow:0 0 18px rgba(218,181,91,.08),inset 0 0 14px rgba(255,225,145,.04);pointer-events:none;animation:goldShimmer 5.5s linear infinite}
+.core:after{content:"";position:absolute;inset:7%;z-index:2;border-radius:50%;border:1px solid transparent;border-top-color:rgba(232,201,121,.72);border-right-color:rgba(210,169,73,.28);box-shadow:0 0 12px rgba(218,181,91,.18);pointer-events:none;animation:goldShimmer 6.5s linear infinite reverse}
+.tree-home{position:relative;z-index:1}
+@keyframes goldShimmer{to{transform:rotate(360deg)}}
+
 .core{border:0;padding:0;background:transparent;box-shadow:none;animation:none}
 .tree-home,.project-tree,.history-tree{
   display:block;width:100%;height:100%;
-  background-image:url('images/branches.png');
+  background-image:url('images/logo.png');
   background-position:center;
   background-repeat:no-repeat;
   background-size:contain;
@@ -173,7 +179,7 @@
 .history-scroll{position:absolute;inset:0;overflow:auto;padding:120px 7vw 90px}
 .history-hero{max-width:1200px;margin:0 auto 70px;display:grid;grid-template-columns:minmax(280px, .9fr) minmax(320px,1fr);align-items:center;gap:7vw}
 .history-tree-wrap{position:relative;width:min(42vw,440px);height:min(42vw,440px);justify-self:center}
-.history-tree{position:absolute;inset:17%;width:66%;height:66%;margin:auto;z-index:3;background-image:url('images/branches.png');background-position:center;background-repeat:no-repeat;background-size:contain}
+.history-tree{position:absolute;inset:17%;width:66%;height:66%;margin:auto;z-index:3;background-image:url('images/logo.png');background-position:center;background-repeat:no-repeat;background-size:contain}
 .history-ring{position:absolute;inset:8%;border:1px solid rgba(189,238,203,.8);border-radius:50%;transform:rotate(-16deg) skewX(-13deg) scaleY(.45);box-shadow:0 0 28px rgba(174,240,192,.38),0 0 80px rgba(151,208,164,.13),inset 0 0 20px rgba(255,255,255,.18)}
 .history-ring:before{content:"";position:absolute;inset:-11%;border:1px solid rgba(255,255,255,.22);border-radius:50%}
 .history-text{max-width:600px}
