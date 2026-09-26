@@ -28,8 +28,22 @@
   .core h1{font-size:31px;padding:0 16px;letter-spacing:0}
 }
 
-/* Initial render: keep the FreeDom title at its final visual size/weight from the first frame */
-/* Keep the central title independent from web-font loading so it never jumps after page load */
-.core h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:clamp(30px,4.1vw,48px);line-height:1;padding:0 20px;letter-spacing:-.015em}
-@media(max-width:760px){.core h1{font-size:31px;padding:0 16px;letter-spacing:-.01em}}
+/* Final central title: light, compact, and always contained by the core */
+.core h1{
+  font-family:Arial,sans-serif;
+  font-weight:400;
+  font-size:clamp(27px,3.45vw,40px);
+  line-height:1;
+  padding:0 18px;
+  letter-spacing:-.035em;
+  white-space:nowrap;
+  text-align:center;
+}
+@media(max-width:760px){
+  .core h1{
+    font-size:28px;
+    padding:0 12px;
+    letter-spacing:-.035em;
+  }
+}
 </style></body></html>
