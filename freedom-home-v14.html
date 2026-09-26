@@ -27,4 +27,8 @@
   .core{width:148px;height:148px}
   .core h1{font-size:31px;padding:0 16px;letter-spacing:0}
 }
+
+/* Initial render: keep the FreeDom title at its final visual size/weight from the first frame */
+.core h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4.4vw,52px);line-height:1;padding:0 20px;letter-spacing:.01em}
+@media(max-width:760px){.core h1{font-size:31px;padding:0 16px;letter-spacing:0}}
 </style></body></html>
