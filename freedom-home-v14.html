@@ -29,6 +29,7 @@
 }
 
 /* Initial render: keep the FreeDom title at its final visual size/weight from the first frame */
-.core h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4.4vw,52px);line-height:1;padding:0 20px;letter-spacing:.01em}
-@media(max-width:760px){.core h1{font-size:31px;padding:0 16px;letter-spacing:0}}
+/* Keep the central title independent from web-font loading so it never jumps after page load */
+.core h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:clamp(30px,4.1vw,48px);line-height:1;padding:0 20px;letter-spacing:-.015em}
+@media(max-width:760px){.core h1{font-size:31px;padding:0 16px;letter-spacing:-.01em}}
 </style></body></html>
