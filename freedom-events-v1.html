@@ -51,13 +51,27 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 .card:nth-child(3) .card-inner{box-shadow:0 30px 90px rgba(0,0,0,.35),0 0 60px rgba(213,139,67,.18),inset 0 0 35px rgba(255,255,255,.08)}
 .card:nth-child(4) .card-inner{box-shadow:0 30px 90px rgba(0,0,0,.35),0 0 55px rgba(214,89,181,.17),inset 0 0 35px rgba(255,255,255,.08)}
 .card:nth-child(5) .card-inner{box-shadow:0 30px 90px rgba(0,0,0,.35),0 0 55px rgba(72,196,142,.17),inset 0 0 35px rgba(255,255,255,.08)}
+.card:nth-child(1){z-index:1}.card:nth-child(2){z-index:2}.card:nth-child(3){z-index:3}.card:nth-child(4){z-index:2}.card:nth-child(5){z-index:1}
+.card:hover{z-index:20}
+.card.focused{z-index:25!important;filter:none!important}
+.card.focused .card-inner{transform:translateZ(22px) scale(1.07)}
+.card.focused:before{opacity:1}
+.card.focused .hint{opacity:.95}
 .card.selected{z-index:30;filter:none!important}
 .card.selected .card-inner{transform:rotateY(180deg) scale(1.03)}
 .card.selected{transform:translate(-50%,-50%) translate(0,0) rotate(0) scale(1.35)!important}
+.card.selected .card-inner{box-shadow:0 45px 120px rgba(0,0,0,.55),0 0 90px rgba(130,220,210,.22),inset 0 0 35px rgba(255,255,255,.1)}
 .card.selected .front{opacity:0}.backface{position:absolute;inset:0;z-index:5;border-radius:25px;overflow:hidden;background:linear-gradient(145deg,rgba(32,30,58,.88),rgba(14,13,28,.94));transform:rotateY(180deg);backface-visibility:hidden;padding:25px;display:flex;flex-direction:column;justify-content:flex-end}
 .backface h3{font:400 35px/.9 Baskerville,Georgia,serif;margin:0 0 12px}.backface .line{height:1px;background:rgba(255,255,255,.18);margin-bottom:14px}.backface p{font-size:11px;line-height:1.65;color:rgba(255,255,255,.65);margin:0 0 18px}.backface .meta{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.72)}
 .close{position:absolute;right:18px;top:18px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-size:18px;z-index:8}
-.foot{position:absolute;z-index:20;bottom:20px;left:50%;transform:translateX(-50%);font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.32);white-space:nowrap}
+.foot{position:absolute;z-index:20;bottom:20px;left:50%;transform:translateX(-50%);font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.42);white-space:nowrap;transition:opacity .35s}
+.deck.focused-mode .foot{color:rgba(255,255,255,.58)}
+.deck.open .foot{opacity:0}
+.selection-guide{position:absolute;z-index:22;left:50%;bottom:43px;transform:translateX(-50%);padding:9px 14px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(10,9,22,.22);backdrop-filter:blur(12px);font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap;pointer-events:none;transition:opacity .35s,transform .35s}
+.deck.focused-mode .selection-guide{opacity:.8}
+.deck.open .selection-guide{opacity:0;transform:translateX(-50%) translateY(8px)}
+.card .hint{transition:opacity .25s,transform .25s}
+.card.focused .hint{transform:translateY(-2px)}
 .deck.open .card:not(.selected){opacity:.16;filter:blur(4px);transform:translate(-50%,-50%) scale(.78)!important}
 .particles{position:absolute;inset:0;pointer-events:none;z-index:31;opacity:0}.deck.open .particles{opacity:1}
 .particle{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 15px 4px rgba(160,226,218,.75);animation:float 2.8s ease-in-out infinite}
@@ -89,15 +103,64 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 <div class="particles"><i class="particle"></i><i class="particle"></i><i class="particle"></i><i class="particle"></i><i class="particle"></i></div>
 <article class="card" data-i="0"><div class="card-inner"><div class="front"><img src="images/gong-meditation.jpg" alt=""><div class="card-content"><div class="card-num">01</div><h2>Молитвенная встреча</h2><div class="date">скоро · время уточняется</div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><button class="close" type="button" aria-label="Закрыть">×</button><h3>Молитвенная встреча</h3><div class="line"></div><p>Встреча для тишины, молитвы и совместного присутствия.</p><div class="meta">скоро · время уточняется</div></div></div></article><article class="card" data-i="1"><div class="card-inner"><div class="front"><img src="images/tea-ceremony.jpg" alt=""><div class="card-content"><div class="card-num">02</div><h2>Поющие чаши</h2><div class="date">30 сентября · 19:00</div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><button class="close" type="button" aria-label="Закрыть">×</button><h3>Поющие чаши</h3><div class="line"></div><p>Звуковая практика, пространство тишины и мягкого возвращения к себе.</p><div class="meta">30 сентября · 19:00</div></div></div></article><article class="card" data-i="2"><div class="card-inner"><div class="front"><img src="images/sauna.jpg" alt=""><div class="card-content"><div class="card-num">03</div><h2>Баня</h2><div class="date">каждый четверг</div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><button class="close" type="button" aria-label="Закрыть">×</button><h3>Баня</h3><div class="line"></div><p>Тёплый вечер FreeDom: пар, вода, разговор и восстановление.</p><div class="meta">каждый четверг</div></div></div></article><article class="card" data-i="3"><div class="card-inner"><div class="front"><img src="images/gong-meditation.jpg" alt=""><div class="card-content"><div class="card-num">04</div><h2>Караоке</h2><div class="date">5 октября · 20:00</div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><button class="close" type="button" aria-label="Закрыть">×</button><h3>Караоке</h3><div class="line"></div><p>Музыка, смех и тот самый вечер, когда можно перестать стесняться.</p><div class="meta">5 октября · 20:00</div></div></div></article><article class="card" data-i="4"><div class="card-inner"><div class="front"><img src="images/room-bungalow.jpg" alt=""><div class="card-content"><div class="card-num">05</div><h2>Клуб позитивной психологии</h2><div class="date">7 октября · 19:00</div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><button class="close" type="button" aria-label="Закрыть">×</button><h3>Клуб позитивной психологии</h3><div class="line"></div><p>Разговор о том, что помогает жить осознаннее, свободнее и добрее.</p><div class="meta">7 октября · 19:00</div></div></div></article>
 </section>
+<div class="selection-guide">нажми на карточку · затем ещё раз, чтобы открыть</div>
 <div class="foot">выбери событие · оно приблизится</div>
 </main>
 <script>
 const deck=document.getElementById('deck'),cards=[...document.querySelectorAll('.card')];
-function openCard(card){cards.forEach(c=>c.classList.remove('selected'));card.classList.add('selected');deck.classList.add('open')}
-function closeCard(){cards.forEach(c=>c.classList.remove('selected'));deck.classList.remove('open')}
-cards.forEach(card=>{card.addEventListener('click',e=>{if(e.target.closest('.close')){closeCard();return}if(!card.classList.contains('selected'))openCard(card)});card.querySelector('.close').addEventListener('click',e=>{e.stopPropagation();closeCard()})});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCard()});
-let sy=0;deck.addEventListener('touchstart',e=>sy=e.touches[0].clientY,{passive:true});deck.addEventListener('touchend',e=>{const dy=e.changedTouches[0].clientY-sy;if(Math.abs(dy)>55&&!deck.classList.contains('open')){cards.forEach(c=>c.style.transform='translate(-50%,-50%) '+(dy<0?'translateY(-8px)':'translateY(8px)'))}});
+let focusedIndex=-1, opened=false;
+function focusCard(card){
+  if(opened)return;
+  cards.forEach(c=>c.classList.remove('focused'));
+  focusedIndex=cards.indexOf(card);
+  card.classList.add('focused');
+  deck.classList.add('focused-mode');
+}
+function openCard(card){
+  cards.forEach(c=>c.classList.remove('focused','selected'));
+  focusedIndex=cards.indexOf(card);
+  card.classList.add('selected');
+  deck.classList.add('open');
+  opened=true;
+}
+function closeCard(){
+  cards.forEach(c=>c.classList.remove('selected','focused'));
+  deck.classList.remove('open','focused-mode');
+  opened=false;
+  focusedIndex=-1;
+}
+function moveFocus(direction){
+  if(opened)return;
+  const next=focusedIndex<0?(direction>0?0:cards.length-1):(focusedIndex+direction+cards.length)%cards.length;
+  focusCard(cards[next]);
+  cards[next].scrollIntoView({block:'nearest',inline:'nearest'});
+}
+cards.forEach(card=>{
+  card.addEventListener('click',e=>{
+    if(e.target.closest('.close')){closeCard();return}
+    if(card.classList.contains('focused')) openCard(card);
+    else focusCard(card);
+  });
+  card.addEventListener('mouseenter',()=>{if(!opened)focusCard(card)});
+  card.querySelector('.close').addEventListener('click',e=>{e.stopPropagation();closeCard()});
+});
+deck.addEventListener('click',e=>{
+  if(opened && !e.target.closest('.card.selected')) closeCard();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeCard();return}
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();moveFocus(1)}
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();moveFocus(-1)}
+  if((e.key==='Enter'||e.key===' ')&&focusedIndex>=0&&!opened){e.preventDefault();openCard(cards[focusedIndex])}
+});
+let sx=0,sy=0;
+deck.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+deck.addEventListener('touchend',e=>{
+  if(opened)return;
+  const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)){moveFocus(dx<0?1:-1)}
+  else if(Math.abs(dy)>55&&Math.abs(dy)>Math.abs(dx)){moveFocus(dy<0?1:-1)}
+});
 </script>
 </body>
 </html>
