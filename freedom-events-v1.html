@@ -41,23 +41,23 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 .card h2{font:400 28px/.9 Baskerville,Georgia,serif;margin:0 0 12px}
 .card .date{font-size:8px;letter-spacing:.15em;text-transform:uppercase;opacity:.76}
 .card .hint{margin-top:13px;font-size:7px;letter-spacing:.15em;text-transform:uppercase;opacity:.42}
-.card[data-i="0"]{transform:translate(-50%,-50%) translate(-260px,25px) rotate(-9deg) scale(.88)}
-.card[data-i="1"]{transform:translate(-50%,-50%) translate(-130px,-22px) rotate(-4deg) scale(.94)}
-.card[data-i="2"]{transform:translate(-50%,-50%) translate(0,-38px) rotate(0) scale(1.03)}
-.card[data-i="3"]{transform:translate(-50%,-50%) translate(130px,-12px) rotate(5deg) scale(.94)}
-.card[data-i="4"]{transform:translate(-50%,-50%) translate(260px,25px) rotate(9deg) scale(.88)}
+
+
+
+
+
 .card[data-i="0"] .card-inner{box-shadow:0 30px 90px rgba(0,0,0,.35),0 0 55px rgba(67,93,190,.16),inset 0 0 35px rgba(255,255,255,.08)}
 .card[data-i="1"] .card-inner{box-shadow:0 30px 90px rgba(0,0,0,.35),0 0 55px rgba(91,197,190,.16),inset 0 0 35px rgba(255,255,255,.08)}
 .card[data-i="2"] .card-inner{box-shadow:0 30px 90px rgba(0,0,0,.35),0 0 60px rgba(213,139,67,.18),inset 0 0 35px rgba(255,255,255,.08)}
 .card[data-i="3"] .card-inner{box-shadow:0 30px 90px rgba(0,0,0,.35),0 0 55px rgba(214,89,181,.17),inset 0 0 35px rgba(255,255,255,.08)}
 .card[data-i="4"] .card-inner{box-shadow:0 30px 90px rgba(0,0,0,.35),0 0 55px rgba(72,196,142,.17),inset 0 0 35px rgba(255,255,255,.08)}
 .card[data-i="0"]{z-index:1}.card[data-i="1"]{z-index:2}.card[data-i="2"]{z-index:3}.card[data-i="3"]{z-index:2}.card[data-i="4"]{z-index:1}
-.card:hover{z-index:20}
+.card:hover{z-index:40}
 .card.focused{z-index:25!important;filter:none!important}
 .card.focused .card-inner{transform:translateZ(22px) scale(1.07)}
 .card.focused:before{opacity:1}
 .card.focused .hint{opacity:.95}
-.card.selected{z-index:30;filter:none!important}
+.card.selected{z-index:50;filter:none!important}
 .card.selected .card-inner{transform:rotateY(180deg) scale(1.03)}
 .card.selected{transform:translate(-50%,-50%) translate(0,0) rotate(0) scale(1.35)!important}
 .card.selected .card-inner{box-shadow:0 45px 120px rgba(0,0,0,.55),0 0 90px rgba(130,220,210,.22),inset 0 0 35px rgba(255,255,255,.1)}
@@ -70,11 +70,11 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 .selection-guide{position:absolute;z-index:22;left:50%;bottom:43px;transform:translateX(-50%);padding:9px 14px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(10,9,22,.22);backdrop-filter:blur(12px);font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap;pointer-events:none;transition:opacity .35s,transform .35s}
 .deck.focused-mode .selection-guide{opacity:.8}
 .deck.open .selection-guide{opacity:0;transform:translateX(-50%) translateY(8px)}
-.deck.dragging .card{transition-duration:.12s}
+.deck.dragging .card{transition-duration:.08s}
 .deck.dragging{cursor:grabbing}
 .card .hint{transition:opacity .25s,transform .25s}
 .card.focused .hint{transform:translateY(-2px)}
-.deck.open .card:not(.selected){opacity:.16;filter:blur(4px);transform:translate(-50%,-50%) scale(.78)!important}
+
 .particles{position:absolute;inset:0;pointer-events:none;z-index:31;opacity:0}.deck.open .particles{opacity:1}
 .particle{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 15px 4px rgba(160,226,218,.75);animation:float 2.8s ease-in-out infinite}
 .particle:nth-child(1){left:43%;top:39%}.particle:nth-child(2){left:56%;top:34%;animation-delay:.4s}.particle:nth-child(3){left:62%;top:53%;animation-delay:1s}.particle:nth-child(4){left:38%;top:58%;animation-delay:.7s}.particle:nth-child(5){left:50%;top:25%;animation-delay:1.3s}
@@ -84,11 +84,11 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
  .heading{top:12%;width:90%}.heading h1{font-size:54px}.heading p{font-size:10px}
  .deck{inset:27% 0 12%;perspective:1000px}
  .card{width:148px;height:220px}
- .card[data-i="0"]{transform:translate(-50%,-50%) translate(-92px,55px) rotate(-13deg) scale(.72)}
- .card[data-i="1"]{transform:translate(-50%,-50%) translate(-47px,4px) rotate(-7deg) scale(.82)}
- .card[data-i="2"]{transform:translate(-50%,-50%) translate(0,-25px) rotate(0) scale(.9)}
- .card[data-i="3"]{transform:translate(-50%,-50%) translate(47px,4px) rotate(7deg) scale(.82)}
- .card[data-i="4"]{transform:translate(-50%,-50%) translate(92px,55px) rotate(13deg) scale(.72)}
+ 
+ 
+ 
+ 
+ 
  .card.selected{transform:translate(-50%,-50%) translate(0,20px) scale(1.18)!important}
  .card h2{font-size:23px}.card-content{inset:auto 14px 14px}.backface{padding:19px}.backface h3{font-size:29px}.backface p{font-size:10px}
  .foot{bottom:10px}
@@ -110,78 +110,103 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 </main>
 <script>
 const deck=document.getElementById('deck'),cards=[...document.querySelectorAll('.card')];
-let focusedIndex=-1, opened=false;
-function focusCard(card){
-  if(opened)return;
-  cards.forEach(c=>c.classList.remove('focused'));
-  focusedIndex=cards.indexOf(card);
-  card.classList.add('focused');
-  deck.classList.add('focused-mode');
+let rot=-144,idx=2,drag=false,lastAngle=0,vel=0,ignore=0,opened=false,raf=null;
+
+function norm(x){return Math.atan2(Math.sin(x),Math.cos(x))}
+function angleAt(x,y){
+  const r=deck.getBoundingClientRect();
+  return Math.atan2(y-r.top-r.height/2,x-r.left-r.width/2);
+}
+function apply(){
+  idx=((Math.round(-rot/72)%5)+5)%5;
+  cards.forEach((card,i)=>{
+    const deg=i*72+rot, rad=deg*Math.PI/180;
+    const d=Math.abs(norm(rad))*180/Math.PI;
+    const depth=(Math.cos(rad)+1)/2;
+    const x=Math.sin(rad)*(window.innerWidth<760?150:330);
+    const y=(1-Math.cos(rad))*(window.innerWidth<760?34:62);
+    const scale=.72+depth*.30;
+    const opacity=.34+depth*.66;
+    const z=Math.round(10+depth*20);
+    const blur=Math.max(0,(1-depth)*1.6);
+    const tilt=Math.sin(rad)*7;
+    card.style.transform=`translate(-50%,-50%) translate(${x}px,${y}px) rotate(${tilt}deg) scale(${scale})`;
+    card.style.opacity=opened && i!==idx?.16:opacity;
+    card.style.zIndex=z;
+    card.style.filter=opened && i!==idx?'blur(4px)':`blur(${blur}px)`;
+    card.classList.toggle('focused',!opened&&i===idx);
+  });
+  deck.classList.toggle('focused-mode',!opened);
+}
+function set(v){rot=v;apply()}
+function snap(){
+  const target=Math.round(rot/72)*72;
+  let v=vel;
+  function coast(){
+    if(Math.abs(v)<.02){
+      const diff=target-rot;
+      rot+=diff*.22;
+      apply();
+      if(Math.abs(diff)<.25){rot=target;apply();return}
+      requestAnimationFrame(coast);
+      return;
+    }
+    rot+=v; v*=.93; apply(); requestAnimationFrame(coast);
+  }
+  coast();
+}
+function focusIndex(i){
+  const current=((Math.round(-rot/72)%5)+5)%5;
+  let diff=i-current;
+  if(diff>2)diff-=5;if(diff<-2)diff+=5;
+  rot-=diff*72;vel=0;apply();
 }
 function openCard(card){
-  cards.forEach(c=>c.classList.remove('focused','selected'));
-  focusedIndex=cards.indexOf(card);
+  idx=cards.indexOf(card);
+  rot=-idx*72;
+  cards.forEach(c=>c.classList.remove('selected'));
   card.classList.add('selected');
-  deck.classList.add('open');
-  opened=true;
+  opened=true;deck.classList.add('open');apply();
 }
 function closeCard(){
-  cards.forEach(c=>c.classList.remove('selected','focused'));
-  deck.classList.remove('open','focused-mode');
-  opened=false;
-  focusedIndex=-1;
+  opened=false;cards.forEach(c=>c.classList.remove('selected'));
+  deck.classList.remove('open');apply();
 }
-function moveFocus(direction){
-  if(opened)return;
-  const next=focusedIndex<0?(direction>0?0:cards.length-1):(focusedIndex+direction+cards.length)%cards.length;
-  focusCard(cards[next]);
-  cards[next].scrollIntoView({block:'nearest',inline:'nearest'});
-}
-cards.forEach(card=>{
+cards.forEach((card,i)=>{
   card.addEventListener('click',e=>{
     if(e.target.closest('.close')){closeCard();return}
-    if(card.classList.contains('focused')) openCard(card);
-    else focusCard(card);
+    if(Date.now()<ignore)return;
+    if(i===idx)openCard(card);else focusIndex(i);
   });
-  card.addEventListener('mouseenter',()=>{if(!opened)focusCard(card)});
   card.querySelector('.close').addEventListener('click',e=>{e.stopPropagation();closeCard()});
 });
-deck.addEventListener('click',e=>{
-  if(opened && !e.target.closest('.card.selected')) closeCard();
+deck.addEventListener('pointerdown',e=>{
+  if(opened)return;
+  drag=true;deck.classList.add('dragging');deck.setPointerCapture(e.pointerId);
+  lastAngle=angleAt(e.clientX,e.clientY);vel=0;ignore=Date.now()+120;e.preventDefault();
 });
+deck.addEventListener('pointermove',e=>{
+  if(!drag||opened)return;
+  const a=angleAt(e.clientX,e.clientY),d=norm(a-lastAngle)*180/Math.PI;
+  if(Math.abs(d)>.01){rot+=d;vel=d;lastAngle=a;apply()}
+  e.preventDefault();
+});
+function release(){
+  if(!drag)return;
+  drag=false;deck.classList.remove('dragging');ignore=Date.now()+260;snap();
+}
+deck.addEventListener('pointerup',release);
+deck.addEventListener('pointercancel',release);
+deck.addEventListener('lostpointercapture',release);
+
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){closeCard();return}
-  if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();moveFocus(1)}
-  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();moveFocus(-1)}
-  if((e.key==='Enter'||e.key===' ')&&focusedIndex>=0&&!opened){e.preventDefault();openCard(cards[focusedIndex])}
-});
-let dragStartX=0,dragStartY=0,dragLastX=0,dragging=false,dragMoved=false;
-deck.addEventListener('touchstart',e=>{
   if(opened)return;
-  const t=e.touches[0];
-  dragStartX=dragLastX=t.clientX; dragStartY=t.clientY;
-  dragging=true; dragMoved=false;
-  deck.classList.add('dragging');
-},{passive:true});
-deck.addEventListener('touchmove',e=>{
-  if(!dragging||opened)return;
-  const t=e.touches[0],dx=t.clientX-dragLastX,dy=t.clientY-dragStartY;
-  if(Math.abs(t.clientX-dragStartX)>8||Math.abs(dy)>8)dragMoved=true;
-  if(Math.abs(dx)>12){
-    moveFocus(dx<0?1:-1);
-    dragLastX=t.clientX;
-  }
-  e.preventDefault();
-},{passive:false});
-deck.addEventListener('touchend',()=>{
-  if(!dragging)return;
-  dragging=false;
-  deck.classList.remove('dragging');
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();rot-=72;apply()}
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();rot+=72;apply()}
+  if((e.key==='Enter'||e.key===' ')&&!opened){e.preventDefault();openCard(cards[idx])}
 });
-deck.addEventListener('touchcancel',()=>{
-  dragging=false;
-  deck.classList.remove('dragging');
-});
+apply();
 </script>
 </body>
 </html>
