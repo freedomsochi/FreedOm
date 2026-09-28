@@ -70,6 +70,8 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 .selection-guide{position:absolute;z-index:22;left:50%;bottom:43px;transform:translateX(-50%);padding:9px 14px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(10,9,22,.22);backdrop-filter:blur(12px);font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap;pointer-events:none;transition:opacity .35s,transform .35s}
 .deck.focused-mode .selection-guide{opacity:.8}
 .deck.open .selection-guide{opacity:0;transform:translateX(-50%) translateY(8px)}
+.deck.dragging .card{transition-duration:.12s}
+.deck.dragging{cursor:grabbing}
 .card .hint{transition:opacity .25s,transform .25s}
 .card.focused .hint{transform:translateY(-2px)}
 .deck.open .card:not(.selected){opacity:.16;filter:blur(4px);transform:translate(-50%,-50%) scale(.78)!important}
@@ -153,13 +155,32 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();moveFocus(-1)}
   if((e.key==='Enter'||e.key===' ')&&focusedIndex>=0&&!opened){e.preventDefault();openCard(cards[focusedIndex])}
 });
-let sx=0,sy=0;
-deck.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
-deck.addEventListener('touchend',e=>{
+let dragStartX=0,dragStartY=0,dragLastX=0,dragging=false,dragMoved=false;
+deck.addEventListener('touchstart',e=>{
   if(opened)return;
-  const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
-  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)){moveFocus(dx<0?1:-1)}
-  else if(Math.abs(dy)>55&&Math.abs(dy)>Math.abs(dx)){moveFocus(dy<0?1:-1)}
+  const t=e.touches[0];
+  dragStartX=dragLastX=t.clientX; dragStartY=t.clientY;
+  dragging=true; dragMoved=false;
+  deck.classList.add('dragging');
+},{passive:true});
+deck.addEventListener('touchmove',e=>{
+  if(!dragging||opened)return;
+  const t=e.touches[0],dx=t.clientX-dragLastX,dy=t.clientY-dragStartY;
+  if(Math.abs(t.clientX-dragStartX)>8||Math.abs(dy)>8)dragMoved=true;
+  if(Math.abs(dx)>12){
+    moveFocus(dx<0?1:-1);
+    dragLastX=t.clientX;
+  }
+  e.preventDefault();
+},{passive:false});
+deck.addEventListener('touchend',()=>{
+  if(!dragging)return;
+  dragging=false;
+  deck.classList.remove('dragging');
+});
+deck.addEventListener('touchcancel',()=>{
+  dragging=false;
+  deck.classList.remove('dragging');
 });
 </script>
 </body>
