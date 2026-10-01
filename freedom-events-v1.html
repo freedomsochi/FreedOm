@@ -185,7 +185,8 @@ cards.forEach((card,i)=>{
  card.querySelector('.signup')?.addEventListener('click',e=>{e.stopPropagation();alert('Здесь будет форма записи на событие.');});
 });
 
-deck.addEventListener('click',e=>{if(opened&&!e.target.closest('.card')){closeCard();return}});\ndeck.addEventListener('pointerdown',e=>{
+deck.addEventListener('click',e=>{if(opened&&!e.target.closest('.card')){closeCard();return}});
+deck.addEventListener('pointerdown',e=>{
  if(opened)return;
  drag=true;moved=false;lastAngle=pointerAngle(e.clientX,e.clientY);
  deck.classList.add('dragging');deck.setPointerCapture?.(e.pointerId);
