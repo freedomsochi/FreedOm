@@ -353,7 +353,7 @@
         const q=new URLSearchParams(location.search);const roomId=q.get('room_id');const roomName=q.get('room_name');
         if(roomId||roomName){
             try{
-                let query=supabase.from('rooms').select('id,name,price_per_night,description,image_url');
+                let query=supabase.from('rooms').select('id,name,price_per_night,description,image_url,booking_mode,capacity');
                 if(roomId) query=query.eq('id',roomId); else query=query.eq('name',roomName);
                 const {data,error}=await query.maybeSingle();
                 if(!error&&data) openBookingModal(data,{checkin:q.get('checkin')||'',checkout:q.get('checkout')||'',adults:q.get('adults')||'1'});
