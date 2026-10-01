@@ -61,7 +61,7 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 .card.selected .card-inner{transform:rotateY(180deg) scale(1.03);animation:cardFlip .92s cubic-bezier(.18,.78,.18,1) .08s both}
 .card.selected{transform:translate(-50%,-50%) translate(0,0) rotate(0) scale(1.35)!important}
 .card.selected .card-inner{box-shadow:0 45px 120px rgba(0,0,0,.55),0 0 90px rgba(130,220,210,.22),inset 0 0 35px rgba(255,255,255,.1)}
-.card.selected .front{opacity:0}.backface{position:absolute;inset:0;z-index:5;border-radius:25px;overflow:hidden;background:linear-gradient(145deg,rgba(32,30,58,.88),rgba(14,13,28,.94));transform:rotateY(180deg);backface-visibility:hidden;padding:25px;display:flex;flex-direction:column;justify-content:flex-end}
+.card.selected .front{opacity:0}.card.closing{z-index:50!important;animation:cardExit .48s cubic-bezier(.55,.08,.72,.22) both}.card.closing .card-inner{animation:cardFlipOut .42s cubic-bezier(.55,.08,.72,.22) both}.card.closing:before{opacity:.15}.deck.closing .particles:before{animation:closeFlash .45s ease-out both}.deck.closing .particle{animation:starReturn .5s cubic-bezier(.55,.08,.72,.22) both}.backface{position:absolute;inset:0;z-index:5;border-radius:25px;overflow:hidden;background:linear-gradient(145deg,rgba(32,30,58,.88),rgba(14,13,28,.94));transform:rotateY(180deg);backface-visibility:hidden;padding:25px;display:flex;flex-direction:column;justify-content:flex-end}
 .backface h3{font:400 35px/.9 Baskerville,Georgia,serif;margin:0 0 12px}.backface .line{height:1px;background:rgba(255,255,255,.18);margin-bottom:14px}.backface p{font-size:11px;line-height:1.65;color:rgba(255,255,255,.65);margin:0 0 18px}.backface .meta{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.72)}
 @keyframes cardArrival{
   0%{transform:translate(-50%,-50%) translate(0,0) rotate(0) scale(.72);filter:brightness(1.15)}
@@ -69,6 +69,10 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
   72%{transform:translate(-50%,-50%) translate(0,0) rotate(0) scale(1.29);filter:brightness(1.12)}
   100%{transform:translate(-50%,-50%) translate(0,0) rotate(0) scale(1.35);filter:brightness(1)}
 }
+@keyframes cardExit{0%{transform:translate(-50%,-50%) translate(0,0) rotate(0) scale(1.35);filter:brightness(1)}55%{transform:translate(-50%,-50%) translate(0,0) rotate(0) scale(1.5);filter:brightness(1.35)}100%{transform:translate(-50%,-50%) translate(0,0) rotate(0) scale(.72);filter:brightness(1)}}
+@keyframes cardFlipOut{0%{transform:rotateY(180deg) scale(1.03)}45%{transform:rotateY(195deg) scale(1.08)}100%{transform:rotateY(360deg) scale(.78)}}
+@keyframes closeFlash{0%{opacity:1;transform:translate(-50%,-50%) scale(14)}100%{opacity:0;transform:translate(-50%,-50%) scale(.1)}}
+@keyframes starReturn{0%{opacity:1;transform:translate(var(--dx),var(--dy)) scale(.45)}100%{opacity:0;transform:translate(0,0) scale(.1)}}
 @keyframes cardFlip{
   0%{transform:rotateY(0deg) scale(.78)}
   36%{transform:rotateY(28deg) scale(1.06)}
@@ -97,7 +101,7 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 .particles{position:absolute;inset:0;pointer-events:none;z-index:31;opacity:0}.deck.open .particles{opacity:1}
 .particles:before,.particles:after{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;transform:translate(-50%,-50%) scale(.1);opacity:0;background:radial-gradient(circle,#fff 0,rgba(255,255,255,.75) 18%,rgba(133,224,213,.28) 45%,transparent 72%);box-shadow:0 0 45px 20px rgba(143,225,214,.18)}
 .deck.open .particles:before{animation:burstFlash .85s ease-out .05s both}
-.deck.open .particles:after{animation:burstFlash .95s ease-out .18s both}
+.deck.open .particles:after{animation:burstFlash .95s ease-out .18s both}.deck.closing .particles:after{animation:closeFlash .5s ease-out .04s both}
 .particle{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 15px 4px rgba(160,226,218,.75);animation:starBurst 1.8s cubic-bezier(.12,.75,.22,1) both}
 @keyframes burstFlash{0%{opacity:0;transform:translate(-50%,-50%) scale(.1)}18%{opacity:1;transform:translate(-50%,-50%) scale(9)}100%{opacity:0;transform:translate(-50%,-50%) scale(20)}}
 @keyframes starBurst{0%{opacity:0;transform:translate(0,0) scale(.2)}18%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.35)}}
@@ -177,7 +181,7 @@ function focus(i){
  rot-=d*72;apply();
 }
 function openCard(card){idx=cards.indexOf(card);rot=-idx*72;opened=true;cards.forEach(c=>c.classList.remove('selected'));card.classList.add('selected');deck.classList.add('open');apply()}
-function closeCard(){opened=false;cards.forEach(c=>c.classList.remove('selected'));deck.classList.remove('open');apply()}
+function closeCard(){if(!opened)return;const card=cards[idx];opened=false;deck.classList.add('closing');card.classList.remove('selected');card.classList.add('closing');setTimeout(()=>{card.classList.remove('closing');deck.classList.remove('closing');apply()},500)}
 
 cards.forEach((card,i)=>{
  card.addEventListener('click',e=>{if(e.target.closest('.close'))return;if(opened)return;if(Date.now()<ignoreUntil)return;if(i===idx)openCard(card);else focus(i)});
