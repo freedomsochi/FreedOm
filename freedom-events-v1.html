@@ -29,7 +29,7 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 .kicker{font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.48);margin-bottom:10px}
 .heading h1{font:400 clamp(48px,7vw,82px)/.85 Baskerville,Georgia,serif;margin:0}
 .heading p{font-size:11px;line-height:1.6;color:rgba(255,255,255,.56);max-width:390px;margin:14px auto 0}
-.deck{position:absolute;z-index:10;inset:24% 7% 9%;perspective:1400px}
+.deck{position:absolute;z-index:10;inset:24% 7% 9%;perspective:1400px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .card{position:absolute;left:50%;top:50%;width:min(190px,25vw);height:min(285px,38vw);transform-style:preserve-3d;cursor:pointer;transition:transform 1s cubic-bezier(.12,.86,.16,1),filter .5s,opacity .5s;will-change:transform}
 .card-inner{position:absolute;inset:0;border-radius:25px;overflow:hidden;border:1px solid rgba(255,255,255,.42);background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.045));backdrop-filter:blur(16px);box-shadow:0 30px 90px rgba(0,0,0,.35),inset 0 0 35px rgba(255,255,255,.08);transform-style:preserve-3d;transition:transform 1s cubic-bezier(.12,.86,.16,1)}
 .card:before{content:"";position:absolute;z-index:3;inset:-30%;background:radial-gradient(circle,rgba(123,226,211,.22),transparent 42%);filter:blur(22px);opacity:.35;transition:opacity .5s}
