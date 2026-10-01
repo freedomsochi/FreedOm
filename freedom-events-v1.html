@@ -110,7 +110,7 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 </main>
 <script>
 const deck=document.getElementById('deck'),cards=[...document.querySelectorAll('.card')];
-let rot=0,idx=0,drag=false,lastAngle=0,vel=0,ignoreUntil=0,opened=false,raf=0;
+let rot=0,idx=0,drag=false,lastAngle=0,ignoreUntil=0,opened=false,raf=0;
 
 function norm(a){return Math.atan2(Math.sin(a),Math.cos(a))}
 function pointerAngle(x,y){
@@ -132,18 +132,23 @@ function apply(){
  });
 }
 function snap(){
- const target=Math.round(rot/72)*72; let v=vel;
+ const target=Math.round(rot/72)*72;
  cancelAnimationFrame(raf);
- function tick(){
-  if(Math.abs(v)>.015){rot+=v;v*=.92;apply();raf=requestAnimationFrame(tick);return}
-  const d=target-rot;rot+=d*.2;apply();
-  if(Math.abs(d)>.12)raf=requestAnimationFrame(tick);else{rot=target;vel=0;apply()}
+ const start=rot,delta=target-start;
+ const duration=220,startTime=performance.now();
+ function tick(now){
+  const p=Math.min(1,(now-startTime)/duration);
+  const eased=1-Math.pow(1-p,3);
+  rot=start+delta*eased;
+  apply();
+  if(p<1)raf=requestAnimationFrame(tick);
+  else{rot=target;apply()}
  }
  raf=requestAnimationFrame(tick);
 }
 function focus(i){
  let d=i-idx;if(d>2)d-=5;if(d<-2)d+=5;
- rot-=d*72;vel=0;apply();
+ rot-=d*72;apply();
 }
 function openCard(card){idx=cards.indexOf(card);rot=-idx*72;opened=true;cards.forEach(c=>c.classList.remove('selected'));card.classList.add('selected');deck.classList.add('open');apply()}
 function closeCard(){opened=false;cards.forEach(c=>c.classList.remove('selected'));deck.classList.remove('open');apply()}
@@ -155,13 +160,13 @@ cards.forEach((card,i)=>{
 
 deck.addEventListener('pointerdown',e=>{
  if(opened)return;
- drag=true;lastAngle=pointerAngle(e.clientX,e.clientY);vel=0;ignoreUntil=Date.now()+180;
+ drag=true;lastAngle=pointerAngle(e.clientX,e.clientY);ignoreUntil=Date.now()+180;
  deck.classList.add('dragging');deck.setPointerCapture?.(e.pointerId);
 });
 deck.addEventListener('pointermove',e=>{
  if(!drag||opened)return;
  const now=pointerAngle(e.clientX,e.clientY),delta=norm(now-lastAngle);
- if(Math.abs(delta)>.0005){const sensitivity=3.6;rot+=delta*180/Math.PI*sensitivity;vel=delta*180/Math.PI*sensitivity;lastAngle=now;apply()}
+ if(Math.abs(delta)>.0005){const sensitivity=3.6;rot+=delta*180/Math.PI*sensitivity;lastAngle=now;apply()}
 });
 function release(e){
  if(!drag)return;drag=false;deck.classList.remove('dragging');
@@ -169,7 +174,7 @@ function release(e){
  ignoreUntil=Date.now()+220;snap();
 }
 deck.addEventListener('pointerup',release);deck.addEventListener('pointercancel',release);
-deck.addEventListener('wheel',e=>{if(opened)return;e.preventDefault();rot-=Math.sign(e.deltaY||e.deltaX)*10;vel=-Math.sign(e.deltaY||e.deltaX)*2;apply();clearTimeout(deck._wheel);deck._wheel=setTimeout(snap,90)},{passive:false});
+deck.addEventListener('wheel',e=>{if(opened)return;e.preventDefault();rot-=Math.sign(e.deltaY||e.deltaX)*10;apply();clearTimeout(deck._wheel);deck._wheel=setTimeout(snap,90)},{passive:false});
 document.addEventListener('keydown',e=>{
  if(e.key==='Escape'){closeCard();return} if(opened)return;
  if(e.key==='ArrowRight'||e.key==='ArrowDown'){rot-=18;apply();clearTimeout(deck._key);deck._key=setTimeout(snap,80)}
