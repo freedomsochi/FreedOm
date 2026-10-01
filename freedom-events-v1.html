@@ -161,7 +161,7 @@ deck.addEventListener('pointerdown',e=>{
 deck.addEventListener('pointermove',e=>{
  if(!drag||opened)return;
  const now=pointerAngle(e.clientX,e.clientY),delta=norm(now-lastAngle);
- if(Math.abs(delta)>.0005){rot+=delta*180/Math.PI*1.8;vel=delta*180/Math.PI*1.8;lastAngle=now;apply()}
+ if(Math.abs(delta)>.0005){const sensitivity=delta>0?3.6:1.8;rot+=delta*180/Math.PI*sensitivity;vel=delta*180/Math.PI*sensitivity;lastAngle=now;apply()}
 });
 function release(e){
  if(!drag)return;drag=false;deck.classList.remove('dragging');
