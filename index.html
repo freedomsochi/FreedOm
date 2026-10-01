@@ -224,7 +224,7 @@
     <footer class="footer"><p>FreeDom — место для жизни, отдыха и развития ❤️</p><p style="font-size:.8rem;opacity:.3">На территории действуют правила ЗОЖ: без мяса, алкоголя, курения.</p></footer>
 </div>
 <a href="#bookingAnchor" id="floatingBooking">📅 Забронировать</a>
-<div class="modal-overlay" id="bookingModal"><div class="modal-window"><button class="modal-close" id="bookingModalClose">&times;</button><img id="bookingModalImage" src="" alt=""><h2 id="bookingModalTitle"></h2><div class="price" id="bookingModalPrice"></div><div class="description" id="bookingModalDesc"></div><form id="bookingModalForm"><input type="hidden" id="bookingRoomId" name="room_id"><input type="hidden" id="bookingRoomPrice" name="room_price"><input type="hidden" id="bookingRoomName" name="room_name"><div class="field"><label for="bookingGuestCount">Количество гостей</label><input type="number" id="bookingGuestCount" min="1" max="10" value="1"></div><div class="field"><label for="bookingGuestNameModal">Ваше имя *</label><input type="text" id="bookingGuestNameModal" placeholder="Иван Петров" required></div><div class="field"><label for="bookingGuestPhoneModal">Телефон *</label><input type="tel" id="bookingGuestPhoneModal" placeholder="+7 999 123-45-67" required></div><div class="field"><label for="bookingGuestEmailModal">Email</label><input type="email" id="bookingGuestEmailModal" placeholder="ivan@mail.ru"></div><div class="field"><label for="bookingCheckInModal">Дата заезда *</label><input type="date" id="bookingCheckInModal" required></div><div class="field"><label for="bookingCheckOutModal">Дата выезда *</label><input type="date" id="bookingCheckOutModal" required></div><div id="bookingModalError" class="error-msg" style="display:none;color:#ff6b6b"></div><button type="submit" class="btn btn-block" id="bookingModalSubmit">Забронировать</button></form><div id="bookingModalSuccess" style="display:none;text-align:center;padding:1rem;color:#25D366">✅ Бронирование создано! Мы свяжемся с вами.</div></div></div>
+<div class="modal-overlay" id="bookingModal"><div class="modal-window"><button class="modal-close" id="bookingModalClose">&times;</button><img id="bookingModalImage" src="" alt=""><h2 id="bookingModalTitle"></h2><div class="price" id="bookingModalPrice"></div><div class="description" id="bookingModalDesc"></div><div id="bookingModalCapacity" style="margin:-4px 0 14px;color:#b8a9d4;font-size:.9rem"></div><form id="bookingModalForm"><input type="hidden" id="bookingRoomId" name="room_id"><input type="hidden" id="bookingRoomPrice" name="room_price"><input type="hidden" id="bookingRoomName" name="room_name"><div class="field"><label for="bookingGuestCount">Количество гостей</label><input type="number" id="bookingGuestCount" min="1" max="10" value="1"></div><div id="additionalBedField" class="checkbox" style="display:none"><input type="checkbox" id="bookingAdditionalBed"><label for="bookingAdditionalBed">Добавить двухъярусную кровать ещё на 2 места<br><span style="font-size:.8rem;opacity:.7">Семейная комната: до 4 гостей</span></label></div><div class="field"><label for="bookingGuestNameModal">Ваше имя *</label><input type="text" id="bookingGuestNameModal" placeholder="Иван Петров" required></div><div class="field"><label for="bookingGuestPhoneModal">Телефон *</label><input type="tel" id="bookingGuestPhoneModal" placeholder="+7 999 123-45-67" required></div><div class="field"><label for="bookingGuestEmailModal">Email</label><input type="email" id="bookingGuestEmailModal" placeholder="ivan@mail.ru"></div><div class="field"><label for="bookingCheckInModal">Дата заезда *</label><input type="date" id="bookingCheckInModal" required></div><div class="field"><label for="bookingCheckOutModal">Дата выезда *</label><input type="date" id="bookingCheckOutModal" required></div><div id="bookingModalError" class="error-msg" style="display:none;color:#ff6b6b"></div><button type="submit" class="btn btn-block" id="bookingModalSubmit">Забронировать</button></form><div id="bookingModalSuccess" style="display:none;text-align:center;padding:1rem;color:#25D366">✅ Бронирование создано! Мы свяжемся с вами.</div></div></div>
 <div class="modal-overlay" id="orderModal"><div class="modal-window"><button class="modal-close" id="orderModalClose">&times;</button><h2 style="color:#d4af37">📝 Заказ: <span id="orderItemName"></span></h2><p style="opacity:.6;margin-bottom:1rem">Цена: <span id="orderItemPrice"></span> ₽</p><form id="orderForm"><input type="hidden" id="orderName" value=""><input type="hidden" id="orderPrice" value=""><div class="field"><label>Ваше имя *</label><input type="text" id="orderGuestName" placeholder="Иван Петров" required></div><div class="field"><label>Телефон *</label><input type="tel" id="orderGuestPhone" placeholder="+7 999 123-45-67" required></div><div class="field"><label>Email</label><input type="email" id="orderGuestEmail" placeholder="ivan@mail.ru"></div><div class="field"><label>Количество</label><input type="number" id="orderQuantity" value="1" min="1"></div><div class="field"><label>Комментарий к заказу</label><textarea id="orderComment" rows="2" placeholder="Без лука, острое..."></textarea></div><button type="submit" class="btn btn-block" style="padding:12px;font-size:1.1rem;background:linear-gradient(145deg,#d4af37,#b8952a);color:#0b0d17;border:0;border-radius:40px;font-weight:700">✅ Заказать</button></form><div id="orderSuccess" style="display:none;text-align:center;padding:1rem;color:#25D366">✅ Заказ отправлен! Мы свяжемся с вами в ближайшее время.</div><div id="orderError" class="error-msg" style="display:none;color:#ff6b6b"></div></div></div>
 <audio id="bgMusic" autoplay loop muted><source src="images/music.mp3" type="audio/mpeg"></audio><div id="musicToggle">🔇</div>
 <script>
@@ -237,6 +237,9 @@
     const bookingModalTitle = document.getElementById('bookingModalTitle');
     const bookingModalPrice = document.getElementById('bookingModalPrice');
     const bookingModalDesc = document.getElementById('bookingModalDesc');
+    const bookingModalCapacity = document.getElementById('bookingModalCapacity');
+    const additionalBedField = document.getElementById('additionalBedField');
+    const bookingAdditionalBed = document.getElementById('bookingAdditionalBed');
     const bookingRoomId = document.getElementById('bookingRoomId');
     const bookingRoomPrice = document.getElementById('bookingRoomPrice');
     const bookingRoomName = document.getElementById('bookingRoomName');
@@ -256,6 +259,11 @@
         bookingModalTitle.textContent = room.name;
         bookingModalPrice.textContent = room.price_per_night ? room.price_per_night + ' ₽/ночь' : '';
         bookingModalDesc.textContent = room.description || '';
+        const isFamily = room.name === 'Семейная комната';
+        bookingModalCapacity.textContent = isFamily ? '2 основных места · можно добавить 2 места двухъярусной кроватью' : (room.booking_mode === 'places' ? `4 места в номере · бронирование по местам` : `Вместимость: ${room.capacity || 'уточняется'}`);
+        additionalBedField.style.display = isFamily ? 'flex' : 'none';
+        bookingAdditionalBed.checked = false;
+        bookingGuestCount.max = isFamily ? '4' : String(room.capacity || 10);
         bookingRoomId.value = room.id;
         bookingRoomPrice.value = room.price_per_night || 0;
         bookingRoomName.value = room.name;
@@ -291,6 +299,7 @@
         const checkIn=bookingCheckIn.value;
         const checkOut=bookingCheckOut.value;
         const guestCount=Math.max(1,parseInt(bookingGuestCount.value)||1);
+        const additionalBed=bookingAdditionalBed.checked;
         if(!roomId||!guestName||!guestPhone||!checkIn||!checkOut){
             bookingModalError.textContent='Заполните имя, телефон и даты.';
             bookingModalError.style.display='block';
@@ -317,7 +326,7 @@
                     guest_name:guestName,
                     guest_phone:guestPhone,
                     guest_email:guestEmail||null,
-                    additional_bed:false
+                    additional_bed:additionalBed
                 })
             });
             const data=await response.json().catch(()=>({}));
