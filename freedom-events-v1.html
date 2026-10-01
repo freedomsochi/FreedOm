@@ -180,12 +180,12 @@ function openCard(card){idx=cards.indexOf(card);rot=-idx*72;opened=true;cards.fo
 function closeCard(){opened=false;cards.forEach(c=>c.classList.remove('selected'));deck.classList.remove('open');apply()}
 
 cards.forEach((card,i)=>{
- card.addEventListener('click',e=>{if(e.target.closest('.close'))return;if(Date.now()<ignoreUntil)return;if(i===idx)openCard(card);else focus(i)});
+ card.addEventListener('click',e=>{if(e.target.closest('.close'))return;if(opened)return;if(Date.now()<ignoreUntil)return;if(i===idx)openCard(card);else focus(i)});
  card.querySelector('.close')?.addEventListener('click',e=>{e.stopPropagation();closeCard()});
  card.querySelector('.signup')?.addEventListener('click',e=>{e.stopPropagation();alert('Здесь будет форма записи на событие.');});
 });
 
-deck.addEventListener('pointerdown',e=>{
+deck.addEventListener('click',e=>{if(opened&&!e.target.closest('.card')){closeCard();return}});\ndeck.addEventListener('pointerdown',e=>{
  if(opened)return;
  drag=true;moved=false;lastAngle=pointerAngle(e.clientX,e.clientY);
  deck.classList.add('dragging');deck.setPointerCapture?.(e.pointerId);
