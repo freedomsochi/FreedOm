@@ -8,139 +8,155 @@
 <main class="main"><div class="heading"><div class="eyebrow">FreeDom · карта места</div><h1>Дом, который можно почувствовать.</h1><p>Выберите этаж или пространство слева. Точка на карте ведёт к месту, а при приближении открывается его история, фотография и подробности.</p></div>
 <div class="datebar"><div class="field"><label>Заезд</label><input id="from" type="date"></div><div class="field"><label>Выезд</label><input id="to" type="date"></div><button class="primary" id="apply">Показать доступность комнат</button><div class="period" id="period"></div></div>
 <div class="map-shell"><div class="architectural-key">FreeDom · ARCHITECTURAL MASTERPLAN</div><div class="map" id="map">
-<svg class="map-art-svg" id="houseMap" viewBox="0 0 1200 820" preserveAspectRatio="none" role="img" aria-label="Концептуальный мастерплан FreeDom сверху">
+<svg class="map-art-svg" id="houseMap" viewBox="0 0 1200 820" preserveAspectRatio="none" role="img" aria-label="Мастерплан территории FreeDom">
 <defs>
-<linearGradient id="site" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eff4ea"/><stop offset=".55" stop-color="#dbe8d7"/><stop offset="1" stop-color="#c7d9c4"/></linearGradient>
-<linearGradient id="roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eadfc9"/><stop offset=".5" stop-color="#cbb58e"/><stop offset="1" stop-color="#9e7e55"/></linearGradient>
-<linearGradient id="roof2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b99362"/><stop offset="1" stop-color="#79583b"/></linearGradient>
-<linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fffdf8"/><stop offset="1" stop-color="#e6e0d3"/></linearGradient>
-<linearGradient id="water" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b7e1dd"/><stop offset=".55" stop-color="#70b8b4"/><stop offset="1" stop-color="#477f7c"/></linearGradient>
-<pattern id="grain" width="34" height="34" patternUnits="userSpaceOnUse"><rect width="34" height="34" fill="#dce9d8"/><circle cx="6" cy="8" r="1" fill="#a9c4a7" opacity=".35"/><circle cx="25" cy="22" r="1" fill="#a9c4a7" opacity=".25"/></pattern>
-<pattern id="deck" width="18" height="18" patternUnits="userSpaceOnUse"><rect width="18" height="18" fill="#d9c29a"/><path d="M0 5h18M0 13h18" stroke="#ae8c5d" stroke-width="1" opacity=".55"/></pattern>
-<filter id="shadow" x="-40%" y="-40%" width="190%" height="200%"><feDropShadow dx="13" dy="18" stdDeviation="11" flood-color="#173326" flood-opacity=".22"/></filter>
-<filter id="soft" x="-40%" y="-40%" width="190%" height="200%"><feDropShadow dx="6" dy="9" stdDeviation="6" flood-color="#173326" flood-opacity=".16"/></filter>
-<filter id="blur"><feGaussianBlur stdDeviation="5"/></filter>
+ <linearGradient id="ground" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf3e8"/><stop offset="1" stop-color="#cbdcc8"/></linearGradient>
+ <linearGradient id="roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8d9bb"/><stop offset=".55" stop-color="#c3a477"/><stop offset="1" stop-color="#8f6d49"/></linearGradient>
+ <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f6f1e7"/><stop offset="1" stop-color="#cdbfa6"/></linearGradient>
+ <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#bd925e"/><stop offset="1" stop-color="#76543a"/></linearGradient>
+ <linearGradient id="water" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b8e1dd"/><stop offset=".55" stop-color="#6fb5b0"/><stop offset="1" stop-color="#427c79"/></linearGradient>
+ <filter id="ds" x="-40%" y="-40%" width="200%" height="210%"><feDropShadow dx="14" dy="18" stdDeviation="10" flood-color="#294338" flood-opacity=".25"/></filter>
+ <filter id="smallshadow"><feDropShadow dx="7" dy="9" stdDeviation="5" flood-color="#294338" flood-opacity=".2"/></filter>
+ <pattern id="grass" width="42" height="42" patternUnits="userSpaceOnUse"><rect width="42" height="42" fill="#dce8d8"/><path d="M8 31l3-5M27 13l3-5M34 34l3-5" stroke="#b7cdb3" stroke-width="1" opacity=".4"/></pattern>
 </defs>
 
-<!-- presentation terrain -->
-<rect x="25" y="25" width="1150" height="770" rx="44" fill="url(#site)" filter="url(#shadow)"/>
-<rect x="41" y="41" width="1118" height="738" rx="35" fill="url(#grain)" opacity=".45"/>
-<rect x="56" y="56" width="1088" height="708" rx="27" fill="none" stroke="#fff" stroke-width="3" opacity=".8"/>
-<path d="M72 740 C185 700 260 690 350 713 C445 738 520 691 615 705 C710 720 790 676 884 694 C974 712 1052 726 1128 696" fill="none" stroke="#b3cbae" stroke-width="36" stroke-linecap="round" opacity=".22"/>
+<!-- museum presentation base -->
+<rect x="25" y="25" width="1150" height="770" rx="42" fill="url(#ground)" filter="url(#ds)"/>
+<rect x="43" y="43" width="1114" height="734" rx="32" fill="url(#grass)" opacity=".62"/>
+<rect x="60" y="60" width="1080" height="700" rx="26" fill="none" stroke="#fff" stroke-width="3"/>
 
-<!-- orchard, layered like a physical landscape model -->
-<g>
-<g fill="#456d4b" opacity=".2" filter="url(#blur)">
-<ellipse cx="120" cy="111" rx="31" ry="16"/><ellipse cx="181" cy="84" rx="25" ry="14"/><ellipse cx="247" cy="122" rx="31" ry="17"/><ellipse cx="316" cy="91" rx="27" ry="15"/><ellipse cx="385" cy="120" rx="31" ry="17"/><ellipse cx="449" cy="91" rx="25" ry="14"/>
-<ellipse cx="109" cy="187" rx="26" ry="14"/><ellipse cx="174" cy="211" rx="31" ry="17"/><ellipse cx="246" cy="180" rx="28" ry="16"/><ellipse cx="318" cy="216" rx="31" ry="17"/><ellipse cx="390" cy="178" rx="27" ry="15"/>
-</g>
-<g stroke="#70563d" stroke-width="6" stroke-linecap="round"><path d="M120 102v36M181 78v32M247 113v35M316 83v32M385 111v35M449 83v30"/><path d="M109 180v29M174 204v35M246 173v30M318 209v34M390 172v30"/></g>
-<g fill="#638c64" stroke="#4b7352" stroke-width="2.5">
-<circle cx="120" cy="96" r="27"/><circle cx="181" cy="72" r="23"/><circle cx="247" cy="108" r="29"/><circle cx="316" cy="77" r="26"/><circle cx="385" cy="106" r="29"/><circle cx="449" cy="77" r="23"/>
-<circle cx="109" cy="168" r="24"/><circle cx="174" cy="194" r="29"/><circle cx="246" cy="165" r="26"/><circle cx="318" cy="201" r="29"/><circle cx="390" cy="166" r="25"/>
-</g>
-<g fill="#b0cda6" opacity=".65"><circle cx="112" cy="87" r="9"/><circle cx="174" cy="65" r="8"/><circle cx="238" cy="99" r="10"/><circle cx="308" cy="69" r="9"/><circle cx="376" cy="97" r="10"/><circle cx="442" cy="69" r="8"/><circle cx="102" cy="160" r="8"/><circle cx="165" cy="185" r="10"/><circle cx="238" cy="156" r="9"/><circle cx="309" cy="192" r="10"/></g>
-</g>
+<!-- landscape zones, deliberately separated -->
+<path d="M78 280 C170 235 270 245 355 278 C402 296 440 292 474 277" fill="none" stroke="#b6cdb2" stroke-width="70" opacity=".32"/>
+<path d="M730 85 C850 60 1000 76 1120 118" fill="none" stroke="#b7ceb2" stroke-width="85" opacity=".24"/>
+<path d="M70 690 C190 640 280 648 390 688 C475 719 560 716 650 682" fill="none" stroke="#b7ceb2" stroke-width="70" opacity=".22"/>
 
-<!-- garden contour / planting beds -->
-<path d="M72 266 C170 235 294 246 390 275 C423 285 454 289 480 283" fill="none" stroke="#f5f0e4" stroke-width="11" stroke-linecap="round"/>
-<path d="M72 266 C170 235 294 246 390 275 C423 285 454 289 480 283" fill="none" stroke="#a9c0a5" stroke-width="2" stroke-dasharray="3 9"/>
-
-<!-- MAIN HOUSE: volumetric architectural mass -->
-<g filter="url(#shadow)">
-<path d="M373 154 L418 103 L772 103 L830 154 L830 394 L782 438 L418 438 L370 394Z" fill="#6e5840" opacity=".25" transform="translate(0 16)"/>
-<path d="M370 153 L418 101 L772 101 L831 153 L831 392 L782 434 L418 434 L369 392Z" fill="#d2c0a0" stroke="#765e43" stroke-width="6"/>
-<!-- roof -->
-<path d="M383 151 L420 112 L769 112 L817 151 L786 174 L419 174Z" fill="url(#roof)" stroke="#92734c" stroke-width="5"/>
-<path d="M383 151 L419 174 L419 392 L384 387Z" fill="#b08e60" stroke="#846746" stroke-width="4"/>
-<path d="M817 151 L786 174 L786 393 L820 387Z" fill="#94724d" stroke="#72553b" stroke-width="4"/>
-<!-- walls -->
-<path d="M419 174 H786 V393 L755 419 H449 L419 393Z" fill="url(#wall)" stroke="#89998e" stroke-width="5"/>
-<!-- internal architectural lines -->
-<path d="M590 175V418M685 175V418M419 257H786M419 330H786M510 257V418" fill="none" stroke="#aab6ac" stroke-width="4"/>
-<!-- roof ridge and skylights -->
-<path d="M429 128H758" stroke="#f7ecd5" stroke-width="5"/>
-<g fill="#8e7453" stroke="#6f5a42" stroke-width="2"><rect x="459" y="128" width="49" height="10" rx="4"/><rect x="535" y="128" width="49" height="10" rx="4"/><rect x="631" y="128" width="49" height="10" rx="4"/><rect x="706" y="128" width="38" height="10" rx="4"/></g>
-<!-- glazing -->
-<g fill="#9bbcb6" stroke="#6c857e" stroke-width="3">
-<rect x="442" y="188" width="112" height="44" rx="3"/><rect x="604" y="188" width="61" height="44" rx="3"/><rect x="700" y="188" width="61" height="44" rx="3"/>
-<rect x="438" y="274" width="58" height="37" rx="3"/><rect x="524" y="274" width="43" height="37" rx="3"/><rect x="605" y="274" width="56" height="37" rx="3"/><rect x="700" y="274" width="61" height="37" rx="3"/>
-<rect x="438" y="347" width="58" height="39" rx="3"/><rect x="605" y="347" width="56" height="39" rx="3"/><rect x="700" y="347" width="61" height="39" rx="3"/>
+<!-- mature tree clusters, not touching buildings -->
+<g fill="#4f7955" stroke="#3e6447" stroke-width="2">
+ <circle cx="125" cy="105" r="25"/><circle cx="190" cy="82" r="21"/><circle cx="255" cy="112" r="26"/><circle cx="320" cy="88" r="22"/><circle cx="385" cy="115" r="25"/><circle cx="445" cy="90" r="21"/>
+ <circle cx="130" cy="205" r="22"/><circle cx="200" cy="225" r="26"/><circle cx="270" cy="195" r="22"/><circle cx="345" cy="220" r="25"/><circle cx="420" cy="190" r="22"/>
+ <circle cx="1060" cy="110" r="23"/><circle cx="1110" cy="160" r="20"/><circle cx="1050" cy="215" r="24"/><circle cx="1110" cy="265" r="22"/>
 </g>
-<!-- veranda -->
-<path d="M438 420 H761 V451 H426 Q426 431 438 420Z" fill="url(#deck)" stroke="#7e6242" stroke-width="5"/>
-<path d="M455 420v31M495 420v31M710 420v31M748 420v31" stroke="#8c6d49" stroke-width="4"/>
-<path d="M428 452H766" stroke="#6b5239" stroke-width="6"/>
-<rect x="574" y="401" width="35" height="49" rx="3" fill="#8b6a49" stroke="#644a35" stroke-width="4"/>
+<g fill="#a9c79f" opacity=".65"><circle cx="118" cy="97" r="8"/><circle cx="184" cy="75" r="7"/><circle cx="248" cy="103" r="8"/><circle cx="313" cy="81" r="7"/><circle cx="378" cy="106" r="8"/><circle cx="439" cy="83" r="7"/></g>
+
+<!-- pedestrian circulation, kept behind objects -->
+<g fill="none" stroke-linecap="round">
+ <path d="M600 748 C600 680 600 625 570 575 C545 533 515 494 486 454" stroke="#bda984" stroke-width="30"/>
+ <path d="M570 575 C475 558 385 525 305 478 C245 443 205 404 180 365" stroke="#bda984" stroke-width="25"/>
+ <path d="M570 575 C650 560 730 530 800 492 C865 457 915 418 955 375" stroke="#bda984" stroke-width="25"/>
+ <path d="M600 748 C600 680 600 625 570 575 C545 533 515 494 486 454M570 575 C475 558 385 525 305 478 C245 443 205 404 180 365M570 575 C650 560 730 530 800 492 C865 457 915 418 955 375" stroke="#f8f0df" stroke-width="4"/>
 </g>
 
-<!-- restrained room labels -->
-<g fill="#63736a" font-family="Inter,system-ui,sans-serif" text-anchor="middle">
-<text x="500" y="211" font-size="11" font-weight="800" letter-spacing="2">ГОСТИНАЯ</text><text x="635" y="211" font-size="9" font-weight="750" letter-spacing="1.5">КУХНЯ</text><text x="740" y="211" font-size="9" font-weight="750" letter-spacing="1.2">КАМИННЫЙ ЗАЛ</text>
-<text x="465" y="300" font-size="8" font-weight="750">ХОСТЕЛ</text><text x="548" y="300" font-size="7" font-weight="700">ЛЕСТНИЦА</text><text x="635" y="300" font-size="7" font-weight="700">ОБЩАЯ ЗОНА</text><text x="739" y="300" font-size="8" font-weight="750">КОМНАТЫ</text>
+<!-- HOUSE, compact footprint, true axonometric mass -->
+<g filter="url(#ds)">
+ <!-- lower wall extrusion -->
+ <path d="M392 160 L430 125 L760 125 L808 160 L808 360 L770 397 L430 397 L392 360Z" fill="#8e7758" stroke="#735a40" stroke-width="4"/>
+ <!-- front wall -->
+ <path d="M392 142 L430 107 L760 107 L808 142 L808 342 L770 378 L430 378 L392 342Z" fill="url(#wall)" stroke="#7b694f" stroke-width="5"/>
+ <!-- roof top -->
+ <path d="M378 139 L424 96 L765 96 L823 139 L786 166 L418 166Z" fill="url(#roof)" stroke="#806342" stroke-width="5"/>
+ <!-- roof thickness -->
+ <path d="M378 139 L418 166 L418 184 L378 156Z M823 139 L786 166 L786 184 L823 157Z" fill="#80603f"/>
+ <!-- architectural wings -->
+ <path d="M418 166V342L448 365V190Z" fill="#d0bea0" opacity=".7"/>
+ <path d="M786 166V342L770 378V190Z" fill="#ad8f64" opacity=".75"/>
+ <!-- glazing -->
+ <g fill="#91b4ae" stroke="#647f78" stroke-width="3">
+  <rect x="442" y="190" width="91" height="37" rx="2"/><rect x="560" y="190" width="61" height="37" rx="2"/><rect x="646" y="190" width="102" height="37" rx="2"/>
+  <rect x="442" y="253" width="58" height="34" rx="2"/><rect x="525" y="253" width="48" height="34" rx="2"/><rect x="600" y="253" width="57" height="34" rx="2"/><rect x="683" y="253" width="65" height="34" rx="2"/>
+  <rect x="442" y="311" width="58" height="35" rx="2"/><rect x="600" y="311" width="57" height="35" rx="2"/><rect x="683" y="311" width="65" height="35" rx="2"/>
+ </g>
+ <!-- roof details -->
+ <path d="M433 120H752" stroke="#f5e8cf" stroke-width="5"/>
+ <g fill="#806b4d"><rect x="460" y="119" width="45" height="9" rx="3"/><rect x="535" y="119" width="45" height="9" rx="3"/><rect x="626" y="119" width="45" height="9" rx="3"/><rect x="698" y="119" width="35" height="9" rx="3"/></g>
+ <!-- veranda -->
+ <path d="M448 365 H755 V388 H437 Q437 373 448 365Z" fill="#d4b887" stroke="#76583b" stroke-width="4"/>
+ <path d="M457 365v23M500 365v23M713 365v23M747 365v23" stroke="#8a6845" stroke-width="4"/>
+ <rect x="573" y="345" width="34" height="43" fill="#8a6748" stroke="#604730" stroke-width="4"/>
 </g>
 
-<!-- pedestrian spine and fork -->
-<g filter="url(#soft)">
-<path d="M600 754 C600 695 598 649 575 605 C552 561 517 528 476 475" fill="none" stroke="#c7b79a" stroke-width="42" stroke-linecap="round"/>
-<path d="M575 605 C498 586 414 556 333 516 C274 487 230 452 199 407" fill="none" stroke="#c7b79a" stroke-width="35" stroke-linecap="round"/>
-<path d="M575 605 C657 582 735 555 808 521 C876 490 920 453 954 407" fill="none" stroke="#c7b79a" stroke-width="35" stroke-linecap="round"/>
+<!-- house annotation, light and restrained -->
+<g fill="#65736b" font-family="Inter,system-ui,sans-serif" text-anchor="middle" pointer-events="none">
+ <text x="486" y="211" font-size="10" font-weight="800" letter-spacing="1.5">ГОСТИНАЯ</text>
+ <text x="590" y="211" font-size="8" font-weight="800">КУХНЯ</text>
+ <text x="697" y="211" font-size="8" font-weight="800">КАМИННЫЙ ЗАЛ</text>
 </g>
-<g fill="none" stroke="#f8f1e4" stroke-width="4" stroke-linecap="round"><path d="M600 754 C600 695 598 649 575 605 C552 561 517 528 476 475"/><path d="M575 605 C498 586 414 556 333 516 C274 487 230 452 199 407"/><path d="M575 605 C657 582 735 555 808 521 C876 490 920 453 954 407"/></g>
-<circle cx="575" cy="605" r="16" fill="#d0b487" stroke="#fff8ea" stroke-width="6"/>
 
-<!-- LEFT GYM -->
-<g filter="url(#soft)">
-<path d="M105 372L212 335L319 372L304 392L121 392Z" fill="#5e6c61" opacity=".35"/>
-<path d="M112 359L212 326L312 359L299 378L125 378Z" fill="#8a988c" stroke="#52665a" stroke-width="5"/>
-<path d="M126 378V463M205 378V463M290 378V463" stroke="#586b60" stroke-width="8"/>
-<path d="M143 431H278M160 409h44v38M230 409h42v38" fill="none" stroke="#405449" stroke-width="8" stroke-linecap="round"/>
-<circle cx="175" cy="401" r="11" fill="#b2c7a9"/><circle cx="256" cy="401" r="11" fill="#b2c7a9"/>
+<!-- GYM, small independent pavilion -->
+<g filter="url(#smallshadow)">
+ <path d="M120 405 L205 377 L290 405 L280 418 L130 418Z" fill="#6c7c70" stroke="#4e6255" stroke-width="4"/>
+ <path d="M130 418V474M205 418V474M280 418V474" stroke="#52675a" stroke-width="7"/>
+ <path d="M148 449H263M160 434h35v35M226 434h35v35" fill="none" stroke="#405449" stroke-width="7"/>
 </g>
-<text x="212" y="480" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.5">ТРЕНАЖЁРНАЯ ЗОНА</text>
 
-<!-- FOUNTAIN -->
-<g filter="url(#soft)"><ellipse cx="166" cy="590" rx="59" ry="20" fill="#314c42" opacity=".22"/><path d="M108 567Q166 545 224 567L214 592Q166 615 118 592Z" fill="#d9ddd3" stroke="#7b8d81" stroke-width="5"/><ellipse cx="166" cy="568" rx="43" ry="14" fill="url(#water)" stroke="#5d9590" stroke-width="3"/><path d="M166 558C143 523 154 514 166 548C178 514 190 523 166 558" fill="none" stroke="#f7ffff" stroke-width="5"/></g>
-<text x="166" y="630" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.5">ФОНТАН</text>
+<!-- fountain -->
+<g filter="url(#smallshadow)">
+ <ellipse cx="160" cy="555" rx="47" ry="17" fill="#45655b" opacity=".2"/>
+ <ellipse cx="160" cy="545" rx="43" ry="14" fill="#d7dbd2" stroke="#7b8d81" stroke-width="4"/>
+ <ellipse cx="160" cy="544" rx="31" ry="9" fill="url(#water)"/>
+ <path d="M160 538C143 514 151 507 160 530C169 507 177 514 160 538" fill="none" stroke="#fff" stroke-width="4"/>
+</g>
 
-<!-- PLAYGROUND -->
-<g filter="url(#soft)"><ellipse cx="320" cy="709" rx="98" ry="20" fill="#765b40" opacity=".17"/><path d="M229 639L320 612L411 639L400 714L240 714Z" fill="#d6bd91" stroke="#896942" stroke-width="5"/><path d="M262 689V650h45v39M284 650l-23-25h47zM343 688v-50M330 650h27M359 650l20-23M354 668l18 18" fill="none" stroke="#795b3b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g>
-<text x="320" y="743" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.2">ДЕТСКАЯ ПЛОЩАДКА</text>
+<!-- PLAYGROUND, separate lower-left -->
+<g filter="url(#smallshadow)">
+ <path d="M210 625 L305 598 L400 625 L391 693 L219 693Z" fill="#d6bd91" stroke="#8c6b45" stroke-width="4"/>
+ <path d="M252 668V630M252 630l-22-23h44zM325 670V624M312 635h28M341 635l18-21M336 650l18 17" fill="none" stroke="#765839" stroke-width="7" stroke-linecap="round"/>
+</g>
 
-<!-- SUMMER KITCHEN -->
-<g filter="url(#soft)"><path d="M808 365L922 326L1037 365L1020 385L826 385Z" fill="#74583e" opacity=".35"/><path d="M814 351L922 315L1030 351L1014 372L830 372Z" fill="url(#roof2)" stroke="#6f5339" stroke-width="5"/><path d="M830 372H1014V461H830Z" fill="#e8d5b5" stroke="#765b40" stroke-width="5"/><path d="M851 375V455M914 375V455M977 375V455" stroke="#8c6b4a" stroke-width="5"/><path d="M841 397H1003" stroke="#f7ead4" stroke-width="5"/><rect x="855" y="414" width="50" height="22" rx="5" fill="#b29a79"/><rect x="924" y="414" width="50" height="22" rx="5" fill="#b29a79"/></g>
-<text x="922" y="478" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.3">ЛЕТНЯЯ КУХНЯ</text>
+<!-- SUMMER KITCHEN, independent pavilion above pool -->
+<g filter="url(#smallshadow)">
+ <path d="M830 330 L920 300 L1010 330 L998 347 L842 347Z" fill="#6f5238" stroke="#5e4733" stroke-width="4"/>
+ <path d="M842 347H998V418H842Z" fill="#e6d1ad" stroke="#77583c" stroke-width="4"/>
+ <path d="M860 349V415M920 349V415M980 349V415" stroke="#8b6847" stroke-width="5"/>
+ <path d="M853 370H987" stroke="#f7ead4" stroke-width="4"/>
+</g>
 
-<!-- POOL -->
-<g filter="url(#shadow)"><ellipse cx="884" cy="562" rx="149" ry="84" fill="#365f5c" opacity=".24"/><path d="M738 535Q741 459 884 454Q1027 459 1030 535Q1024 613 884 620Q744 613 738 535Z" fill="#547c79" stroke="#3e6967" stroke-width="5"/><path d="M750 525Q758 468 884 464Q1010 468 1018 525Q1008 585 884 595Q760 585 750 525Z" fill="url(#water)" stroke="#e8f7f4" stroke-width="6"/><path d="M772 504q55-20 110 0t110 0M765 537q60-21 119 0t119 0M792 568q46-14 92 0t92 0" fill="none" stroke="#effcf9" stroke-width="4" opacity=".75"/></g>
-<text x="884" y="537" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="850" fill="#fff" letter-spacing="2.5">БАССЕЙН</text>
+<!-- POOL, isolated from pavilion -->
+<g filter="url(#ds)">
+ <ellipse cx="880" cy="505" rx="116" ry="67" fill="#365f5c" opacity=".25"/>
+ <ellipse cx="880" cy="493" rx="112" ry="62" fill="#557f7b" stroke="#416a67" stroke-width="5"/>
+ <ellipse cx="880" cy="486" rx="98" ry="52" fill="url(#water)" stroke="#edf9f5" stroke-width="5"/>
+ <path d="M810 480q35-14 70 0t70 0M805 501q38-14 75 0t75 0M830 520q25-9 50 0t50 0" fill="none" stroke="#eefdfa" stroke-width="3" opacity=".8"/>
+</g>
 
-<!-- BANYA -->
-<g filter="url(#soft)"><path d="M1007 470L1070 438L1133 470L1122 528L1018 528Z" fill="#8b6544" opacity=".4"/><path d="M1008 459L1070 421L1132 459L1120 479L1019 479Z" fill="url(#roof2)" stroke="#644932" stroke-width="5"/><path d="M1019 479H1121V526H1019Z" fill="#e1c59e" stroke="#6f5038" stroke-width="5"/><rect x="1058" y="489" width="27" height="37" fill="#8fb9b3" stroke="#654b37" stroke-width="4"/></g>
-<text x="1070" y="548" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.5">БАНЯ</text>
+<!-- BANYA, far right and separated -->
+<g filter="url(#smallshadow)">
+ <path d="M1035 410 L1085 382 L1135 410 L1125 467 L1045 467Z" fill="#8c6544" stroke="#654a34" stroke-width="4"/>
+ <path d="M1028 406 L1085 370 L1142 406 L1125 421 L1044 421Z" fill="url(#roof2)" stroke="#62472f" stroke-width="4"/>
+ <rect x="1071" y="429" width="25" height="38" fill="#8fb7b1" stroke="#654a35" stroke-width="4"/>
+</g>
 
-<!-- HAMMOCK -->
-<g filter="url(#soft)"><path d="M665 625V710M775 625V710" stroke="#73563d" stroke-width="9" stroke-linecap="round"/><path d="M667 638Q720 675 773 638" fill="none" stroke="#d7b688" stroke-width="19"/><path d="M675 640Q720 664 765 640" fill="none" stroke="#fff2dd" stroke-width="4"/></g>
-<text x="720" y="735" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.5">ГАМАК</text>
+<!-- HAMMOCK, independent garden element -->
+<g filter="url(#smallshadow)">
+ <path d="M615 630V696M695 630V696" stroke="#73563d" stroke-width="8" stroke-linecap="round"/>
+ <path d="M617 640Q655 672 693 640" fill="none" stroke="#d4b17d" stroke-width="17"/>
+ <path d="M624 642Q655 661 686 642" fill="none" stroke="#fff0d7" stroke-width="3"/>
+</g>
 
-<!-- BUNGALOW -->
-<g filter="url(#shadow)"><path d="M801 651L891 603L985 651L972 736L814 736Z" fill="#9b744d" opacity=".45"/><path d="M801 640L891 588L985 640L972 662L814 662Z" fill="url(#roof2)" stroke="#644a34" stroke-width="6"/><path d="M814 662H972V730H814Z" fill="#ead9bd" stroke="#73573e" stroke-width="5"/><rect x="838" y="676" width="28" height="39" rx="4" fill="#91b9b3" stroke="#6d5642" stroke-width="4"/><rect x="922" y="676" width="28" height="39" rx="4" fill="#91b9b3" stroke="#6d5642" stroke-width="4"/><rect x="879" y="688" width="31" height="42" rx="3" fill="#9d7956" stroke="#694e38" stroke-width="4"/><path d="M808 731H978" stroke="#684e38" stroke-width="8"/></g>
-<text x="891" y="757" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.4">БУНГАЛО · ~20 М</text>
+<!-- BUNGALOW, far lower-right -->
+<g filter="url(#ds)">
+ <path d="M820 615 L900 575 L980 615 L970 690 L830 690Z" fill="#96704a" stroke="#684b34" stroke-width="4"/>
+ <path d="M808 605 L900 552 L992 605 L974 625 L826 625Z" fill="url(#roof2)" stroke="#62462f" stroke-width="5"/>
+ <rect x="834" y="625" width="132" height="61" fill="#ead8bb" stroke="#74563c" stroke-width="4"/>
+ <rect x="855" y="640" width="24" height="34" fill="#8fb7b1" stroke="#6b513d" stroke-width="3"/><rect x="921" y="640" width="24" height="34" fill="#8fb7b1" stroke="#6b513d" stroke-width="3"/>
+ <rect x="888" y="646" width="25" height="40" fill="#987354" stroke="#684c37" stroke-width="3"/>
+</g>
 
-<!-- POND + BRIDGE -->
-<g filter="url(#soft)"><ellipse cx="1038" cy="674" rx="97" ry="49" fill="#365f5c" opacity=".2"/><ellipse cx="1038" cy="658" rx="96" ry="45" fill="url(#water)" stroke="#4f8782" stroke-width="6"/><path d="M976 649q31-14 62 0t62 0M986 671q28-10 56 0t56 0" fill="none" stroke="#e4f6f2" stroke-width="4" opacity=".72"/><path d="M980 620H1096" stroke="#a47b4f" stroke-width="12" stroke-linecap="round"/><path d="M980 614H1096" stroke="#e3c79d" stroke-width="5"/></g>
-<text x="1038" y="730" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.4">ПРУД · МОСТИК</text>
-
-<!-- secondary planting -->
-<g fill="#5d855f" stroke="#496f50" stroke-width="2"><circle cx="540" cy="520" r="17"/><circle cx="600" cy="540" r="14"/><circle cx="690" cy="505" r="19"/><circle cx="760" cy="472" r="15"/><circle cx="1070" cy="340" r="18"/><circle cx="1120" cy="300" r="14"/><circle cx="1045" cy="255" r="20"/><circle cx="450" cy="680" r="18"/><circle cx="510" cy="700" r="13"/><circle cx="1120" cy="585" r="18"/></g>
-<g fill="#aecaa4" opacity=".65"><circle cx="535" cy="514" r="6"/><circle cx="596" cy="535" r="5"/><circle cx="684" cy="498" r="7"/><circle cx="756" cy="467" r="6"/><circle cx="1065" cy="333" r="7"/><circle cx="1116" cy="295" r="5"/><circle cx="1038" cy="247" r="8"/></g>
+<!-- POND, separate far lower-right -->
+<g filter="url(#smallshadow)">
+ <ellipse cx="1060" cy="650" rx="70" ry="36" fill="#355d59" opacity=".2"/>
+ <ellipse cx="1060" cy="640" rx="70" ry="34" fill="url(#water)" stroke="#4b817d" stroke-width="5"/>
+ <path d="M1018 635q22-8 44 0t44 0M1025 650q20-7 40 0t40 0" fill="none" stroke="#e9fbf7" stroke-width="3"/>
+ <path d="M1015 615H1105" stroke="#a37a4f" stroke-width="9"/><path d="M1015 611H1105" stroke="#e0c292" stroke-width="4"/>
+</g>
 
 <!-- gate -->
-<g filter="url(#soft)"><path d="M542 793V758H658V793" fill="#765b40" stroke="#59432f" stroke-width="6"/><path d="M552 759V793M574 759V793M600 759V793M626 759V793M648 759V793" stroke="#c29a69" stroke-width="6"/></g>
-<text x="600" y="739" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="850" fill="#5b6d61" letter-spacing="2">ГЛАВНЫЕ ВОРОТА</text>
+<g filter="url(#smallshadow)">
+ <path d="M548 780V750H652V780" fill="#76573c" stroke="#59412d" stroke-width="5"/>
+ <path d="M560 751V780M582 751V780M604 751V780M626 751V780M646 751V780" stroke="#c49a68" stroke-width="5"/>
+</g>
 
-<!-- exhibition notation -->
-<g font-family="Inter,system-ui,sans-serif" fill="#718077"><text x="78" y="738" font-size="8" font-weight="800" letter-spacing="2">LANDSCAPE MASTERPLAN · FREEDOM SOCHI</text><text x="1122" y="738" text-anchor="end" font-size="8" letter-spacing="1.4">КОНЦЕПТ · НЕ МАСШТАБ</text></g>
+<!-- discreet legend -->
+<g font-family="Inter,system-ui,sans-serif" fill="#6c7b71"><text x="78" y="735" font-size="8" font-weight="800" letter-spacing="1.8">FREEDOM SOCHI · LANDSCAPE MASTERPLAN</text><text x="1120" y="735" text-anchor="end" font-size="8" letter-spacing="1.2">КОНЦЕПТУАЛЬНЫЙ МАКЕТ · НЕ МАСШТАБ</text></g>
 </svg>
 <div class="floor-filter"></div><div class="markers" id="markers"></div></div><div class="floor-note" id="floorNote"></div><div class="map-caption">Нажмите на светящуюся точку — карта приблизится к объекту</div>
 <div class="detail" id="detail"><button class="close" id="close">×</button><img id="detailImage" src="images/room-family.jpg" alt=""><div class="detail-body"><div class="detail-type" id="detailType">ПРОСТРАНСТВО FREEDOM</div><h2 id="detailName">Выберите место</h2><p id="detailDesc"></p><div class="facts" id="detailFacts"></div><div class="detail-actions"><button class="cta" id="detailAction" style="display:none">Забронировать</button><button class="ghost" id="back">Вернуться к карте</button></div></div></div></div>
@@ -149,7 +165,24 @@
 const API='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability',RAW='https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/e99cd293-38f1-46dd-9060-c299368daa4c.png';
 const ROOM_DATA={'Хостел эконом':['images/room-hostel.jpg','Эконом-хостел для тех, кому важнее атмосфера дома, люди и сама поездка.','1','ХОСТЕЛ'],'Хостел стандарт':['images/room-hostel.jpg','Стандартный хостел — удобный вариант для проживания в доме FreeDom.','1','ХОСТЕЛ'],'Хостел стандарт №2':['images/room-hostel-2.jpg','Второй стандартный хостел.','1','ХОСТЕЛ'],'Семейная комната':['images/room-family.jpg','Уютная семейная комната на 2 основных места. При необходимости — до 4 гостей.','2','КОМНАТА'],'Двухместный с балконом №1':['images/room-balcony.jpg','Двухместная комната с балконом и видом на природу.','2','КОМНАТА'],'Двухместный с балконом №2':['images/room-balcony-bed.jpg','Двухместная комната с балконом и собственным санузлом.','2','КОМНАТА'],'Место под звёздами':['images/room-attic.jpg','Особенное место FreeDom для необычного проживания.','attic','ОСОБЕННОЕ'],'Мансардная комната №1':['images/room-attic.jpg','Тихая мансардная комната на 2 места.','attic','КОМНАТА'],'Мансардная комната №2':['images/room-attic.jpg','Небольшая мансардная комната на 1 место.','attic','КОМНАТА'],'Бунгало в саду':['images/room-bungalow.jpg','Отдельное жилое пространство в саду, примерно в 20 метрах от бассейна.','space','ОТДЕЛЬНОЕ ПРОСТРАНСТВО']};
 const SPACE_DATA={'Гостиная / общая зона':['images/room-family.jpg','Общее пространство дома для общения, книг и разговоров.','1','ДОМ'],'Кухня':['images/tea-ceremony.jpg','Общая кухня — место совместной еды и жизни.','1','ДОМ'],'Каминный зал':['images/room-family.jpg','Каминный зал с выходом на веранду.','1','ДОМ'],'Creative Space':['images/gong-meditation.jpg','Пространство для практик, творчества и занятий.','2','ДОМ'],'Тренажёрный зал':['images/room-hostel.jpg','Зона для тренировок и движения.','2','ДОМ'],'Балкон с видом':['images/room-balcony.jpg','Воздух, тишина и вид на природу.','2','ДОМ'],'Бассейн':['images/room-bungalow.jpg','Круглогодичный бассейн на нижней территории.','space','ТЕРРИТОРИЯ'],'Баня':['images/sauna.jpg','Отдельная банная зона: жар, вода, дыхание и отдых.','space','ТЕРРИТОРИЯ'],'Летняя кухня':['images/tea-ceremony.jpg','Место рядом с бассейном для еды, общения и событий.','space','ТЕРРИТОРИЯ'],'Бунгало в саду':['images/room-bungalow.jpg','Отдельное пространство в саду, примерно в 20 метрах от бассейна.','space','ТЕРРИТОРИЯ'],'Летний сад':['images/room-bungalow.jpg','Живая территория с плодовыми деревьями и местами отдыха.','space','ТЕРРИТОРИЯ'],'Гамак':['images/room-bungalow.jpg','Тихое место отдыха между бассейном и садом.','space','ТЕРРИТОРИЯ'],'Пруд':['images/room-bungalow.jpg','Природная зона с мостиком.','space','ТЕРРИТОРИЯ'],'Outdoor Gym':['images/room-hostel.jpg','Крытая спортивная зона на территории.','space','ТЕРРИТОРИЯ'],'Фонтан':['images/room-bungalow.jpg','Водная точка территории, отмеченная на плане.','space','ТЕРРИТОРИЯ'],'Детская площадка':['images/room-bungalow.jpg','Небольшая зона для детей на территории FreeDom.','space','ТЕРРИТОРИЯ']};
-const MARKERS=[['Гостиная / общая зона',500,205],['Кухня',635,205],['Каминный зал',740,205],['Creative Space',635,350],['Тренажёрный зал',212,420],['Балкон с видом',720,400],['Бассейн',884,535],['Баня',1070,490],['Летняя кухня',922,418],['Бунгало в саду',891,680],['Летний сад',270,265],['Гамак',720,650],['Пруд',1038,650],['Outdoor Gym',212,420],['Фонтан',166,570],['Детская площадка',320,670]];
+const MARKERS=[
+ ['Гостиная / общая зона',485,230],
+ ['Кухня',590,230],
+ ['Каминный зал',697,230],
+ ['Creative Space',635,300],
+ ['Тренажёрный зал',205,435],
+ ['Балкон с видом',700,325],
+ ['Бассейн',880,486],
+ ['Баня',1085,425],
+ ['Летняя кухня',920,380],
+ ['Бунгало в саду',900,620],
+ ['Летний сад',270,185],
+ ['Гамак',655,662],
+ ['Пруд',1060,640],
+ ['Outdoor Gym',205,435],
+ ['Фонтан',160,545],
+ ['Детская площадка',305,650]
+];
 let availability=[],activeLevel='all';
 const map=document.querySelector('#map'),markers=document.querySelector('#markers'),detail=document.querySelector('#detail'),note=document.querySelector('#floorNote'),from=document.querySelector('#from'),to=document.querySelector('#to'),period=document.querySelector('#period'),apply=document.querySelector('#apply');
 const pad=n=>String(n).padStart(2,'0'),iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());let now=new Date(),tom=new Date(now);tom.setDate(now.getDate()+1);from.value=iso(now);to.value=iso(tom);
