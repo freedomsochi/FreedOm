@@ -61,6 +61,61 @@ Important current discrepancy: on `feat/live-availability-bridge`, `space-previe
 ## Rooms
 Use existing real room categories/data and preserve booking/availability logic. Known project categories include family room, double room with balcony, attic room, bungalow, sleeping place on balcony, standard hostel and economy hostel. Verify actual data before changing.
 
+The Rooms branch is now being redesigned as an interactive 3D spatial model rather than a flat floor-plan/card catalog.
+
+### Approved Rooms visual direction — 2026-10-04
+The user approved the cinematic top-down/isometric reference generated for the Rooms page. Important: the generated image is a **visual quality and UI reference**, NOT the exact architectural geometry.
+
+Desired experience:
+- professionally designed 3D environment;
+- top-down/isometric view similar to a modern digital map/virtual tour;
+- user can pan, zoom and rotate the model;
+- default view shows the whole territory and house;
+- left navigation contains «Пространство» plus floors: Мансарда, 3 этаж, 2 этаж, 1 этаж, −1 этаж;
+- selecting a floor moves the camera toward the house and visually emphasizes that level while other levels become dimmer;
+- selecting «Пространство» keeps the whole territory visible;
+- territory objects have subtle glowing points/hotspots;
+- selecting an object animates the camera from above toward it;
+- information card appears only after selection/approach, not permanently below the map;
+- card contains photo, description, capacity, booking mode, availability/price when authoritative and «Забронировать»;
+- dark cinematic UI, warm architectural light, vegetation, water and depth;
+- approved lower-right handwritten phrase: **«Здесь начинается твоя история...»**;
+- approved interface elements include return-to-home, left floor navigation and light/dark toggle.
+
+### Spatial layout correction
+The generated reference image is NOT geometrically accurate. The real model must follow the established FreeDom textual plan:
+- gates at the bottom;
+- route from gates toward the house;
+- house central;
+- porch on the right side of the house;
+- road/path down toward the training/sport zone;
+- swimming pool to the right of that route;
+- summer kitchen adjacent to the house in its known position;
+- garden/territory around the house;
+- bungalow, hammock and fountain in the territory according to the known plan.
+
+The house must preserve the established level structure: −1, 1, 2, 3, attic, with rooms, common spaces, stairwell and balconies according to the existing textual plan. Exact dimensions are not authoritative until supported by a real architectural plan.
+
+### Rooms 3D implementation artifacts
+Main branch documentation:
+- `ROOMS_3D_DESIGN_BRIEF.md` — approved 3D visual/interaction brief.
+- `ROOMS_SPACE_MODEL_TZ.md` — earlier Rooms UX/architecture specification; use together with the new 3D brief.
+
+Experimental branch:
+- `rooms-3d-foundation`
+- `rooms-space-3d-foundation-v1.html`
+- commit `7f041b81ff546931aef5e017cb61d4bf948b7618`
+
+This foundation is a procedural Three.js prototype with terrain, house massing, floors, stairs, pool, summer kitchen, sport zone, bungalow, hammock, fountain, hotspots, camera controls, floor navigation, light toggle and selected-object card. It is **not final art** and must not be treated as production-ready geometry.
+
+Next Rooms work:
+1. visually inspect the foundation;
+2. correct geometry against the established textual plan;
+3. improve materials, vegetation, roofs, windows, doors, terrain and lighting;
+4. replace approximate geometry with the real architectural plan when available;
+5. connect hotspots to real room IDs/catalog/photos;
+6. connect availability and existing booking flow without rewriting backend logic.
+
 ## Kitchen
 Separate Orbit direction. It should feel communal/home-like, not like a restaurant. Preserve existing kitchen/order/backend logic.
 
@@ -77,70 +132,33 @@ Do not break Auth, users/guests, rooms, bookings/availability, kitchen/orders, a
 
 ## GitHub state — verified during current work
 ### `main`
-Previously verified HEAD: `c84c8604eb1659b6e91fd021aa44c6ed421b28c6` (`Use atomic public booking RPC for room reservations`).
+Current verified HEAD before this documentation update: `ec375dea95016b5cb67d59342ffbcba5eb635f5d` (`Add files via upload — Вид главной`).
 
 The persistent summary file is present on `main` at:
 `INFORMATION-SUMMARY-FOR-CHAT-TRANSFER.md`
 
-Its current blob SHA before this update was `e71963c8f7ef62744984477db7a5731c80b27381`.
-
 ### `feat/live-availability-bridge`
-Current HEAD verified during this work before V12 creation:
-`21b874ec8dacc1ce3022179ed9c4b362ab0fc07d`
-Commit: `feat: build five-branch FreeDom Orbit homepage`
-Parent: `41bd79559f48201a32c3c60fecef14e790586f60`
+The previously documented V12 branch remains experimental. Verify its exact tip before making further changes.
 
-After the current V12 change, this branch advances with the new V12 file; verify its exact tip again before the next implementation sprint.
-
-## Current V11
-`freedom-orbit-v11.html` exists on `feat/live-availability-bridge`.
-It has five nodes, real branches/photos, physical angle rotation, inertia/snap, upright labels, warm glassmorphism, atmosphere changes, separate account UI and fullscreen world layer.
-
-The tree center is currently softened with a CSS radial mask. This is a temporary visual treatment; do not remove or replace the real branches asset.
-
-## Current V12 — NEWEST IMPLEMENTATION
-Created during the current chat on `feat/live-availability-bridge`:
-`freedom-orbit-v12.html`
-
-Commit returned by GitHub: `103e50a0e7dfb71ee4a71aac9d0754c196a4ee0a`.
-
-V12 changes:
-- keeps **five** Orbit directions;
-- uses the user-confirmed order: Пространство / Кухня / Баня / События / Комнаты;
-- preserves angle-based rotation, inertia, snap and upright labels;
-- preserves real `branches.png` and real FreeDom photos;
-- keeps personal account outside Orbit;
-- makes the World layer truly fullscreen rather than an inset rounded sheet;
-- makes the entry transition more cinematic with scale/opacity and atmospheric fade;
-- keeps Space as the first connected world through the existing `space-preview.html` bridge;
-- keeps other four worlds as visual placeholders for later connection to existing project data/logic.
-
-V12 is still a prototype. Do not call it production-ready. It needs browser/mobile visual verification before further refinement.
-
-## Orbit history
-V5: `933b8c0186a15608ae476f0cbd93037f48ba1fb9` — real tree/photos, glassmorphism, physical rotation, inertia/snap, Space.
-V6: `24650bc7a46f6f4e2c7bd6b027608963142c63e5` — biophilic glass interface, transparency, blur, reflections, sunlight, depth, atmospheric reaction.
-V7–V10: further experiments; V10 is effectively a wrapper around V9. Do not assume latest version is automatically best.
-V11: `21b874ec...` — five-branch homepage prototype.
-V12: `103e50a...` — current five-direction prototype with fullscreen world layer.
+## Current V11 / V12 homepage work
+`freedom-orbit-v11.html` and `freedom-orbit-v12.html` remain experimental homepage/Orbit prototypes. Preserve the five-direction architecture and existing mechanics. Do not restart the homepage because of the Rooms work.
 
 ## Vercel
 Vercel project: `freed-om`, connected to `freedomsochi/FreedOm`.
-A recent Vercel API deployment listing returned 403 Not Authorized, so deployment state must be freshly verified before claims about current production/preview.
+Deployment state must be freshly verified before claims about current production/preview.
 
-Do not deploy experimental homepage changes to production/main until the Home → World → Home cycle is visually and functionally validated, especially on mobile.
+Do not deploy experimental homepage or Rooms 3D work to production/main until visually and functionally validated, especially on mobile.
 
 ## Visual source
 `Фридом pdf (1).pdf` contains 53 pages of real FreeDom visual material: wood interiors, brick, greenery, pool, garden, balconies, rooms, attic, fireplace, sauna, people, shared meals, events, meditation, music, tea ceremony and territory.
 
 ## Current task / next steps
-Continue from V12; do not restart.
-1. Visually inspect V12 on desktop and phone.
-2. Refine the tree/Orbit composition and solve the center rectangle through correct alpha/rendering, not by removing branches.
-3. Perfect Home → Space transition.
-4. Make Space → Home return restore Orbit position.
-5. Then connect Kitchen, Sauna, Events and Rooms one by one to existing project logic/data.
-6. Only after testing consider replacing `main/index.html` or production deployment.
+1. Continue the existing five-direction homepage architecture; do not redesign it around Rooms.
+2. Rooms is the current remaining major visual branch; Banya, Space and Events are already structurally established.
+3. Build the Rooms 3D foundation into a convincing spatial model.
+4. Treat the approved generated image as the visual/UI quality reference, not as a literal plan.
+5. Use real architectural/photographic materials later to replace assumptions.
+6. Preserve existing booking, CRM and Supabase logic.
 
 ## Non-negotiables
 - Do not endlessly create versions without a concrete improvement.
@@ -149,12 +167,14 @@ Continue from V12; do not restart.
 - Do not invent content/data when existing project data exists.
 - Phone is a primary scenario; do not merely shrink desktop.
 - Preserve real tree, real photos, warm glassmorphism, physical Orbit, atmospheric transitions, fullscreen worlds and enter/return metaphor.
+- For Rooms, do not use primitive-looking blocks as final art; the target is a professional 3D spatial environment.
+- The generated reference does not override the actual FreeDom plan.
 
 ## Chat-transfer rule
 Update this file approximately every **5 working messages**, especially after meaningful code, architecture or deployment changes. If exact automatic timing is impossible, update at the next practical checkpoint and record the latest state.
 
 ## Important correction history
-A previous summary incorrectly stated that the final architecture was three directions. The user corrected this in the current chat: **the final Orbit has five rooms/directions — Пространство, Кухня, Баня, События, Комнаты.** That correction is authoritative.
+A previous summary incorrectly stated that the final architecture was three directions. The user corrected this: **the final Orbit has five rooms/directions — Пространство, Кухня, Баня, События, Комнаты.** That correction is authoritative.
 
 ## Final metaphor
 **One living house, not a collection of unrelated pages.**
