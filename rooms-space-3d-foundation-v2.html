@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FreeDom — Rooms 3D Foundation V2</title>
+<style>
+:root{--mint:#b8e8cf;--cream:#efe4c9;--ink:#13221b;--glass:rgba(10,22,17,.72);--line:rgba(255,255,255,.16);--muted:#aebdb5}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08140f;color:#fff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}#app{position:fixed;inset:0}canvas{display:block}.ui{position:fixed;inset:0;pointer-events:none}.brand{position:absolute;left:30px;top:24px}.brand a{color:#fff;text-decoration:none;font-size:27px;font-weight:600;letter-spacing:-.045em}.brand small{display:block;color:#bdc9c3;font-size:11px;margin-top:3px}.back{position:absolute;left:30px;top:76px;pointer-events:auto;color:#e7eee9;text-decoration:none;font-size:12px;padding:10px 13px;border:1px solid var(--line);border-radius:14px;background:rgba(6,17,13,.42);backdrop-filter:blur(14px)}.back:hover{background:rgba(184,232,207,.12)}.levels{position:absolute;left:28px;top:132px;width:205px;display:grid;gap:7px;pointer-events:auto}.level{border:1px solid var(--line);border-radius:16px;padding:11px 13px;background:rgba(5,17,13,.48);backdrop-filter:blur(15px);color:#eaf1ed;cursor:pointer;text-align:left;transition:.28s}.level strong{display:block;font-size:12px}.level span{display:block;font-size:9px;color:#94a79d;margin-top:3px}.level.active{border-color:rgba(184,232,207,.75);background:rgba(184,232,207,.13);box-shadow:0 0 34px rgba(184,232,207,.08)}.level.space{margin-top:5px;border-color:rgba(239,228,201,.22)}.level.space.active{border-color:rgba(239,228,201,.75);background:rgba(239,228,201,.09)}.light{position:absolute;right:28px;top:24px;pointer-events:auto;border:1px solid var(--line);border-radius:30px;padding:10px 15px;background:rgba(5,17,13,.48);color:#fff;backdrop-filter:blur(15px);cursor:pointer}.help{position:absolute;left:30px;bottom:28px;color:#a9b8b1;font-size:10px;letter-spacing:.03em}.signature{position:absolute;right:30px;bottom:28px;color:#e6dfc8;font-family:cursive;font-size:22px;line-height:1.05;text-align:right;transform:rotate(-4deg)}.signature:after{content:'♡';display:block;font-size:39px;line-height:.7;margin-top:7px}.card{position:absolute;right:27px;top:88px;width:370px;max-height:calc(100vh - 128px);overflow:auto;pointer-events:auto;border:1px solid rgba(255,255,255,.2);border-radius:26px;background:var(--glass);backdrop-filter:blur(26px);box-shadow:0 32px 100px rgba(0,0,0,.4);padding:14px;transform:translate3d(120%,0,0);opacity:0;transition:.55s cubic-bezier(.2,.8,.2,1)}.card.open{transform:none;opacity:1}.card .photo{height:205px;border-radius:18px;background:linear-gradient(145deg,#b9cdbd,#45675a);display:grid;place-items:center;color:#dcebe3;font-size:10px;overflow:hidden;position:relative}.card .photo:before{content:'ФОТО ОБЪЕКТА';letter-spacing:.12em;padding:8px 11px;border:1px solid rgba(255,255,255,.25);border-radius:9px}.close{position:absolute;right:23px;top:23px;z-index:4;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.28);color:#fff;border-radius:50%;width:33px;height:33px;cursor:pointer;font-size:19px}.eyebrow{font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:var(--mint);font-weight:800;margin:15px 0 5px}.card h1{font-size:29px;margin:0 0 8px;letter-spacing:-.05em}.card p{color:#bcc9c3;font-size:13px;line-height:1.55}.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:13px 0}.fact{padding:10px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.045)}.fact b{display:block;font-size:12px}.fact span{font-size:9px;color:#8fa39a}.book{width:100%;border:0;border-radius:14px;background:var(--mint);color:#10251e;font-weight:800;padding:13px;cursor:pointer}.book:hover{filter:brightness(1.06)}.crosshair{position:absolute;left:50%;top:50%;width:0;height:0}.hintdot{position:absolute;width:22px;height:22px;border-radius:50%;border:2px solid rgba(235,255,244,.96);box-shadow:0 0 0 6px rgba(184,232,207,.12),0 0 25px rgba(184,232,207,.7);transform:translate(-50%,-50%);animation:pulse 2s infinite;pointer-events:none;display:none}.hintdot.show{display:block}@keyframes pulse{50%{box-shadow:0 0 0 12px rgba(184,232,207,.025),0 0 35px rgba(184,232,207,.86)}}@media(max-width:800px){.brand{left:15px;top:14px}.brand a{font-size:22px}.back{left:15px;top:58px}.levels{left:12px;right:12px;top:auto;bottom:13px;width:auto;display:flex;overflow:auto;padding-bottom:2px}.level{min-width:94px;padding:9px}.level span{display:none}.light{right:15px;top:14px}.card{left:12px;right:12px;top:auto;bottom:15px;width:auto;max-height:67vh}.help,.signature{display:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="ui">
+  <div class="brand"><a href="index.html">FreeDom</a><small>дом в котором живет любовь</small></div>
+  <a class="back" href="index.html">← Вернуться на главную</a>
+  <button class="light" id="light">☾ Ночной свет</button>
+  <div class="levels" id="levels"></div>
+  <div class="hintdot" id="hintdot"></div>
+  <div class="card" id="card"><button class="close" id="close">×</button><div class="photo" id="photo"></div><div class="eyebrow" id="eyebrow">Объект FreeDom</div><h1 id="title">—</h1><p id="desc">—</p><div class="facts"><div class="fact"><b id="cap">—</b><span>вместимость</span></div><div class="fact"><b id="type">—</b><span>тип объекта</span></div></div><button class="book" id="book">Забронировать →</button></div>
+  <div class="help">Перетаскивайте карту · колесо — масштаб · щёлкните по светящейся точке</div>
+  <div class="signature">Здесь начинается<br>твоя история...</div>
+</div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js';
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x08140f);scene.fog=new THREE.Fog(0x08140f,95,175);
+const camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,350);
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;document.querySelector('#app').appendChild(renderer.domElement);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.07;controls.minDistance=17;controls.maxDistance=125;controls.maxPolarAngle=Math.PI*.49;controls.target.set(0,0,0);
+const hemi=new THREE.HemisphereLight(0xd9f0e2,0x15251d,2.4);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xffefd0,4.5);sun.position.set(-40,75,-35);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-75;sun.shadow.camera.right=75;sun.shadow.camera.top=75;sun.shadow.camera.bottom=-75;scene.add(sun);
+const fill=new THREE.DirectionalLight(0x8fd5bd,1.2);fill.position.set(35,35,45);scene.add(fill);
+
+const C={ground:0x314f3b,grass:0x4d7951,soil:0x765d3e,wall:0xd8c7a8,wallSide:0xb9a582,wood:0x78583d,roof:0x35362f,floor:0xcdbd9a,path:0x9d9279,water:0x4fb9c8,glass:0x9bd8d9,stone:0x7d7768,mint:0xb8e8cf,cream:0xefe4c9};
+const mat={ground:new THREE.MeshStandardMaterial({color:C.ground,roughness:1}),grass:new THREE.MeshStandardMaterial({color:C.grass,roughness:1}),soil:new THREE.MeshStandardMaterial({color:C.soil,roughness:1}),wall:new THREE.MeshStandardMaterial({color:C.wall,roughness:.74}),wallSide:new THREE.MeshStandardMaterial({color:C.wallSide,roughness:.82}),wood:new THREE.MeshStandardMaterial({color:C.wood,roughness:.7}),roof:new THREE.MeshStandardMaterial({color:C.roof,roughness:.92}),floor:new THREE.MeshStandardMaterial({color:C.floor,roughness:.84}),path:new THREE.MeshStandardMaterial({color:C.path,roughness:1}),water:new THREE.MeshPhysicalMaterial({color:C.water,roughness:.12,metalness:.02,transmission:.12,transparent:true,opacity:.9}),glass:new THREE.MeshPhysicalMaterial({color:C.glass,roughness:.12,metalness:.05,transparent:true,opacity:.7}),stone:new THREE.MeshStandardMaterial({color:C.stone,roughness:.95})};
+const world=new THREE.Group();scene.add(world);const selectable=[];const floorGroups={minus:new THREE.Group(),one:new THREE.Group(),two:new THREE.Group(),three:new THREE.Group(),attic:new THREE.Group()};for(const g of Object.values(floorGroups))world.add(g);
+const terrainGroup=new THREE.Group();world.add(terrainGroup);
+function box(group,name,x,y,z,sx,sy,sz,material,ud={}){const m=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),material);m.position.set(x,y,z);m.name=name;m.castShadow=true;m.receiveShadow=true;Object.assign(m.userData,ud);group.add(m);return m}
+function cyl(group,name,x,y,z,r,h,material,ud={}){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,28),material);m.position.set(x,y,z);m.name=name;m.castShadow=true;m.receiveShadow=true;Object.assign(m.userData,ud);group.add(m);return m}
+function path(x,z,sx,sz,rot=0){const m=box(terrainGroup,'path',x,.12,z,sx,.18,sz,mat.path);m.rotation.y=rot;return m}
+function roof(group,x,y,z,sx,sz){const r=box(group,'roof',x,y,z,sx,1.15,sz,mat.roof);r.rotation.y=0;return r}
+function labelHot(group,id,title,x,y,z,kind='space'){const m=cyl(group,'hotspot',x,y,z,.42,.12,new THREE.MeshStandardMaterial({color:C.mint,emissive:C.mint,emissiveIntensity:2.4}),{hotspot:true,id,title,kind});selectable.push(m);const ring=new THREE.Mesh(new THREE.TorusGeometry(.72,.06,12,32),new THREE.MeshBasicMaterial({color:C.mint,transparent:true,opacity:.75}));ring.rotation.x=Math.PI/2;ring.position.copy(m.position);group.add(ring);}
+
+// TERRITORY — gates at bottom, house central, sport zone down-left, pool right, summer kitchen beside house.
+box(terrainGroup,'site',0,-.9,0,118,1.6,92,mat.ground);
+box(terrainGroup,'gardenPlate',0,-.02,-7,107,.15,68,mat.grass);
+path(0,31,31,6);path(0,39,9,15);path(-16,24,6,28);path(18,16,25,5);path(-22,-2,5,29);
+box(terrainGroup,'gate',0,1.1,42,11,2.3,1.2,mat.wood);for(let x=-4;x<=4;x+=2)box(terrainGroup,'gatePost',x,2.1,42,.22,4.2,.22,mat.wood);
+// stone stepping path
+for(let i=0;i<10;i++){const p=box(terrainGroup,'stone',-10+i*2.1,.18,33-i*3.1,2.1,.22,2.1,mat.stone);p.rotation.y=.1*i}
+// pool + deck, right of house
+box(terrainGroup,'poolDeck',22,.16,5,16,.3,25,mat.floor);box(terrainGroup,'pool',22,.27,5,11,.42,20,mat.water);box(terrainGroup,'poolEdge',22,.47,5,12,.22,21,mat.glass);
+// sport zone down-left, reached by road
+box(terrainGroup,'sportDeck',-23,.25,28,17,.5,13,mat.wood);for(let i=0;i<4;i++){cyl(terrainGroup,'sportPole',-29+i*4,2.25,28,.2,4,mat.stone);box(terrainGroup,'sportBar',-27+i*4,4.1,28,4,.2,.2,mat.stone)}
+// bungalow upper-left
+box(terrainGroup,'bungalow',-29,2.35,-27,13,4.5,10,mat.wood);roof(terrainGroup,-29,5.1,-27,15,12);
+// fountain and garden upper-right
+cyl(terrainGroup,'fountain',16,.45,-28,3.6,.7,mat.stone);cyl(terrainGroup,'fountainWater',16,.85,-28,3.05,.18,mat.water);cyl(terrainGroup,'fountainCore',16,1.5,-28,.5,1.4,mat.wall);
+// hammock
+box(terrainGroup,'hammockPost',35,2,-11,.25,4,.25,mat.wood);box(terrainGroup,'hammockPost',43,2,-11,.25,4,.25,mat.wood);const hammock=new THREE.Mesh(new THREE.BoxGeometry(8,.12,1.7),mat.glass);hammock.position.set(39,1.35,-11);hammock.rotation.z=.05;terrainGroup.add(hammock);
+// summer kitchen attached/adjacent to house, left of pool
+box(terrainGroup,'summerKitchen',-20,2.45,2,9,4.8,13,mat.wood);roof(terrainGroup,-20,5.35,2,10,14);box(terrainGroup,'summerKitchenFloor',-20,.25,2,10,.25,14,mat.floor);
+// trees, intentionally placed as readable clusters
+for(const [x,z,s] of [[-44,-30,1.5],[-39,-12,1.2],[-46,13,1.7],[-34,37,1.4],[36,-35,1.7],[46,-24,1.5],[44,14,1.6],[36,30,1.25],[10,-37,1.2],[-8,-34,1.1]]){cyl(terrainGroup,'tree',x,2,z,.42,4,mat.wood);cyl(terrainGroup,'crown',x,5,z,2.2*s,3.2,mat.grass)}
+
+// HOUSE — a clear architectural footprint with a central circulation/stair core.
+const HW=34,HD=24,WH=5.2;const baseY=0;
+const house=floorGroups.one;
+box(house,'floor',0,.18,0,HW,.35,HD,mat.floor);
+// perimeter walls with a visible front/right porch opening represented by columns
+box(house,'wallN',0,WH/2,-HD/2,HW,WH,.75,mat.wall);box(house,'wallW',-HW/2,WH/2,0,.75,WH,HD,mat.wall);box(house,'wallE',HW/2,WH/2,-4,.75,WH,HD-8,mat.wall);box(house,'wallSleft',-10,WH/2,HD/2,14,WH,.75,mat.wall);box(house,'wallSright',13,WH/2,HD/2,9,WH,.75,mat.wall);
+// architectural partitions: central hall/stair and room bands
+box(house,'hallWall',0,WH/2,0,.65,WH,HD-.9,mat.wallSide);box(house,'crossL',-8.5,WH/2,0,HW/2-1.5,.65,.65,mat.wallSide);box(house,'crossR',8.5,WH/2,0,HW/2-1.5,.65,.65,mat.wallSide);
+// stair run in center
+for(let i=0;i<10;i++)box(house,'stair',-2.1+i*.43,.32+i*.27,0,.42,.55,4.4,mat.wood);
+// right/front porch and steps
+box(house,'porch',12,.25,14,10,.5,5,mat.wood);for(let i=0;i<4;i++)box(house,'porchColumn',8+i*3.2,2.7,15,.22,5,.22,mat.wood);for(let i=0;i<5;i++)box(house,'porchStep',12,.16-i*.12,17+i*.7,9-i*.7,.18,.7,mat.stone);
+// doors/windows as shallow dark insets
+const glassMat=new THREE.MeshStandardMaterial({color:0x496f67,roughness:.2,metalness:.1});for(const x of [-12,-4,4,12])box(house,'window',x,2.5,-12.45,3.2,2.2,.08,glassMat);for(const x of [-11,0,11])box(house,'window',x,2.5,12.45,3,2.2,.08,glassMat);
+// floor slabs / upper masses
+function upperFloor(group,y,label,alpha=.96){const slabMat=new THREE.MeshStandardMaterial({color:C.floor,roughness:.82,transparent:alpha<1,opacity:alpha});box(group,'slab',0,y,0,HW+.5,.28,HD+.5,slabMat);box(group,'wallN',0,y+WH/2,-HD/2,HW,WH,.75,mat.wall);box(group,'wallW',-HW/2,y+WH/2,0,.75,WH,HD,mat.wall);box(group,'wallE',HW/2,y+WH/2,-4,.75,WH,HD-8,mat.wall);box(group,'wallS',0,y+WH/2,HD/2,HW,WH,.75,mat.wall);box(group,'hallWall',0,y+WH/2,0,.6,WH,HD-.9,mat.wallSide);box(group,'crossL',-8.5,y+WH/2,0,HW/2-1.5,.6,.6,mat.wallSide);box(group,'crossR',8.5,y+WH/2,0,HW/2-1.5,.6,.6,mat.wallSide);for(const x of [-12,-4,4,12])box(group,'window',x,y+2.5,-12.45,3.2,2.2,.08,glassMat);return group}
+upperFloor(floorGroups.two,5.8,'2',.95);upperFloor(floorGroups.three,11.6,'3',.95);
+// attic as lower, roofed volume
+box(floorGroups.attic,'slab',0,17.45,0,HW+.5,.3,HD+.5,mat.floor);box(floorGroups.attic,'atticN',0,19.9,-HD/2,HW,4.6,.75,mat.wall);box(floorGroups.attic,'atticW',-HW/2,19.9,0,.75,4.6,HD,mat.wall);box(floorGroups.attic,'atticE',HW/2,19.9,0,.75,4.6,HD,mat.wall);const roofA=box(floorGroups.attic,'roofA',0,22.7,-5,HW+2,1,15,mat.roof);roofA.rotation.x=-.55;const roofB=box(floorGroups.attic,'roofB',0,22.7,5,HW+2,1,15,mat.roof);roofB.rotation.x=.55;
+// basement foundation
+box(floorGroups.minus,'basement',0,-2.7,0,HW-2,.5,HD-2,mat.wallSide);box(floorGroups.minus,'basementHall',0,-2.3,0,5,.4,HD-4,mat.floor);
+
+// HOTSPOTS — the user can select an object; the camera then travels down toward it.
+labelHot(house,'room-guest','Гостевая',-12,.55,-6,'room');labelHot(house,'room-standard','Стандарт',10,.55,-6,'room');labelHot(house,'living','Гостиная',10,.55,7,'space');labelHot(terrainGroup,'summer-kitchen','Летняя кухня',-20,.7,2,'space');labelHot(terrainGroup,'pool','Бассейн',22,.75,5,'space');labelHot(terrainGroup,'sport','Тренажёрная зона',-23,.75,28,'space');labelHot(terrainGroup,'bungalow','Бунгало',-29,5.5,-27,'space');labelHot(terrainGroup,'hammock','Гамак',39,1.8,-11,'space');labelHot(terrainGroup,'fountain','Фонтан',16,1.3,-28,'space');
+
+const levels=[['minus','−1 этаж','фундамент / нижний уровень'],['one','1 этаж','гостиная · кухня · вход'],['two','2 этаж','жилой уровень'],['three','3 этаж','жилой уровень'],['attic','Мансарда','верхний уровень'],['space','Пространство','весь дом и территория']];
+const nav=document.querySelector('#levels');let current='space';levels.forEach(([id,t,s])=>{const b=document.createElement('button');b.className='level'+(id==='space'?' space':'');b.dataset.id=id;b.innerHTML=`<strong>${t}</strong><span>${s}</span>`;b.onclick=()=>setView(id);nav.appendChild(b)});
+const card=document.querySelector('#card'),title=document.querySelector('#title'),desc=document.querySelector('#desc'),cap=document.querySelector('#cap'),type=document.querySelector('#type'),book=document.querySelector('#book'),close=document.querySelector('#close'),light=document.querySelector('#light');
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();let selected=null,lightOn=true,anim=null;
+const data={
+'room-guest':{title:'Гостевая',desc:'Тихая комната внутри дома. Здесь карточка будет подключена к реальному объекту размещения и его фотографии.',cap:'2 места',type:'комната'},
+'room-standard':{title:'Стандарт',desc:'Отдельный объект размещения. После подключения каталога здесь появятся реальные описание, фото и доступность.',cap:'2 места',type:'комната'},
+'living':{title:'Гостиная',desc:'Общее пространство дома для общения, музыки, вечеров и жизни FreeDom.',cap:'общее',type:'пространство'},
+'summer-kitchen':{title:'Летняя кухня',desc:'Открытая зона рядом с домом и бассейном. Сейчас это пространственный маркер будущего объекта.',cap:'общее',type:'пространство'},
+'pool':{title:'Бассейн',desc:'Бассейн на территории FreeDom. Выбор точки переносит камеру непосредственно к объекту.',cap:'общее',type:'территория'},
+'sport':{title:'Тренажёрная зона',desc:'Зона движения и тренировок в нижней части территории, связанная дорожкой с домом.',cap:'общее',type:'территория'},
+'bungalow':{title:'Бунгало',desc:'Отдельное пространство в садовой части территории.',cap:'уточняется',type:'размещение'},
+'hammock':{title:'Гамак',desc:'Тихая точка в саду. Фотография и описание будут добавлены после съёмки.',cap:'общее',type:'территория'},
+'fountain':{title:'Фонтан',desc:'Центральный декоративный элемент сада.',cap:'общее',type:'территория'}};
+function setButtons(){nav.querySelectorAll('.level').forEach(b=>b.classList.toggle('active',b.dataset.id===current))}
+function setOpacity(group,op){group.traverse(o=>{if(o.isMesh){o.userData.baseOpacity=o.userData.baseOpacity??o.material.opacity??1;if(o.material.transparent||op<1){o.material.transparent=true;o.material.opacity=o.userData.baseOpacity*op}}})}
+function setView(id){current=id;setButtons();closeCard();if(id==='space'){Object.entries(floorGroups).forEach(([k,g])=>setOpacity(g,1));terrainGroup.visible=true;moveCamera(new THREE.Vector3(55,70,62),new THREE.Vector3(0,0,0),900);return}
+  terrainGroup.visible=true;Object.entries(floorGroups).forEach(([k,g])=>{g.visible=true;setOpacity(g,k===id?1:.13)});if(id==='attic'){floorGroups.attic.visible=true}moveCamera(new THREE.Vector3(27,44+levels.findIndex(x=>x[0]===id)*1.5,30),new THREE.Vector3(0, id==='minus'?-2: id==='one'?1: id==='two'?7: id==='three'?13:18, 0),850);}
+function moveCamera(pos,target,duration=850){const startP=camera.position.clone(),startT=controls.target.clone(),t0=performance.now();if(anim)cancelAnimationFrame(anim);const ease=t=>1-Math.pow(1-t,4);function step(now){const q=Math.min(1,(now-t0)/duration),e=ease(q);camera.position.lerpVectors(startP,pos,e);controls.target.lerpVectors(startT,target,e);if(q<1)anim=requestAnimationFrame(step)}anim=requestAnimationFrame(step)}
+function selectObject(obj){const d=data[obj.userData.id];if(!d)return;selected=obj;const p=obj.getWorldPosition(new THREE.Vector3());const cam=new THREE.Vector3(p.x+9,p.y+15,p.z+11);moveCamera(cam,new THREE.Vector3(p.x,p.y,p.z),1100);title.textContent=d.title;desc.textContent=d.desc;cap.textContent=d.cap;type.textContent=d.type;card.classList.add('open');document.querySelector('#hintdot').classList.remove('show')}
+function closeCard(){card.classList.remove('open');selected=null}
+close.onclick=()=>{closeCard();setView(current)};book.onclick=()=>{if(selected)location.href='booking.html?object='+encodeURIComponent(selected.userData.id)};
+light.onclick=()=>{lightOn=!lightOn;sun.intensity=lightOn?4.5:.65;hemi.intensity=lightOn?2.4:.75;renderer.toneMappingExposure=lightOn?1.05:.7;light.textContent=lightOn?'☾ Ночной свет':'☀ Дневной свет'};
+renderer.domElement.addEventListener('pointerdown',e=>{if(e.button!==0)return;mouse.x=e.clientX/innerWidth*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mouse,camera);const hits=ray.intersectObjects(selectable,true);if(hits.length)selectObject(hits[0].object)});
+setView('space');
+function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}addEventListener('resize',resize);
+function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}animate();
+</script>
+</body></html>
