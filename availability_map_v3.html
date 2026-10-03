@@ -1,252 +1,150 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>FreeDom — пространство</title>
 <style>
 :root{--ink:#173326;--muted:#718078;--green:#4c956f;--gold:#c9a86b;--glass:rgba(255,255,255,.72);--shadow:0 24px 70px rgba(20,48,35,.16)}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#edf4ef}body{overflow-x:hidden}.page{min-height:100vh;background:radial-gradient(circle at 15% 0%,#e7f4e9,transparent 32%),linear-gradient(180deg,#fbfdfb,#e8f1eb)}.top{position:fixed;z-index:50;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;pointer-events:none}.top>*{pointer-events:auto}.brand,.home{padding:9px 13px;border-radius:999px;font-size:10px;font-weight:800;backdrop-filter:blur(18px)}.brand{background:rgba(24,49,38,.78);color:#fff;letter-spacing:.16em}.home{border:1px solid #fff9;background:#fff9;color:var(--ink);text-decoration:none}.layout{min-height:100vh}.side{position:fixed;z-index:30;left:18px;top:78px;width:182px;padding:13px;border:1px solid #fff;background:#ffffffa8;border-radius:24px;backdrop-filter:blur(24px);box-shadow:var(--shadow)}.side-title{font-size:9px;font-weight:850;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:2px 5px 9px}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;text-align:left;border-radius:14px;padding:11px 10px;color:var(--muted);font:inherit;font-size:11px;font-weight:750;cursor:pointer}.nav button:hover{background:#fff}.nav button.active{background:var(--ink);color:#fff;box-shadow:0 9px 22px #1733262e}.main{margin-left:218px;padding:82px 28px 36px 18px}.heading,.datebar{max-width:760px;margin-left:auto;margin-right:auto}.eyebrow{font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:var(--green);font-weight:850}.heading h1{font-size:clamp(34px,5vw,62px);line-height:.95;letter-spacing:-.06em;margin:7px 0 8px}.heading p{max-width:620px;margin:0 0 15px;color:var(--muted);font-size:12px;line-height:1.55}.datebar{display:flex;align-items:end;gap:8px;flex-wrap:wrap;padding:10px;margin-bottom:12px;border:1px solid #fff;border-radius:18px;background:#ffffff94;backdrop-filter:blur(20px)}.field{display:grid;gap:4px}.field label{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}input{border:1px solid #dce6df;border-radius:10px;padding:8px 9px;background:#fff;color:var(--ink);font:inherit;font-size:11px}.primary,.cta,.ghost{border:0;border-radius:10px;padding:9px 12px;font-size:10px;font-weight:800;cursor:pointer}.primary,.cta{background:var(--ink);color:#fff}.period{margin-left:auto;font-size:9px;color:var(--muted);padding:0 4px 8px}.map-shell{position:relative;max-width:1080px;height:min(72vh,690px);min-height:510px;margin:auto;border:1px solid #fff;border-radius:30px;overflow:hidden;background:linear-gradient(145deg,#e8efe5,#d4e2d5);box-shadow:0 30px 90px #1c3d2b29}.map{position:absolute;inset:0;transition:transform 1.05s cubic-bezier(.2,.8,.2,1);transform-origin:50% 50%}.map-art-svg{position:absolute;inset:0;width:100%;height:100%;padding:10px;filter:saturate(.88) contrast(.98);overflow:visible}.area-label{font:750 14px Inter,system-ui,sans-serif;letter-spacing:.22em;fill:#526c58;text-anchor:middle}.sub-label{font:500 8px Inter,system-ui,sans-serif;letter-spacing:.08em;fill:#78877b;text-anchor:middle}.room-label{font:750 10px Inter,system-ui,sans-serif;letter-spacing:.08em;fill:#665640;text-anchor:middle}.room-label.small{font-size:8px;letter-spacing:.04em}.facility-label{font:800 10px Inter,system-ui,sans-serif;letter-spacing:.1em;fill:#5c5142}.facility-sub{font:500 8px Inter,system-ui,sans-serif;fill:#718077;text-anchor:middle}.pool-label{font:800 13px Inter,system-ui,sans-serif;letter-spacing:.2em;fill:#fff}.pool-sub{font:500 8px Inter,system-ui,sans-serif;fill:#e8fbf8}.route text{font:750 10px Inter,system-ui,sans-serif;fill:#708174;text-anchor:middle;letter-spacing:.04em}.floor-filter{position:absolute;inset:0;background:#18312659;opacity:0;pointer-events:none;transition:.6s}.map.floor-1 .floor-filter,.map.floor-2 .floor-filter,.map.floor-3 .floor-filter,.map.attic .floor-filter{opacity:.42}.markers{position:absolute;inset:0}.marker{position:absolute;transform:translate(-50%,-50%);z-index:6;border:0;background:none;padding:0;cursor:pointer}.dot{display:block;width:13px;height:13px;border-radius:50%;background:#fff;border:2px solid var(--gold);box-shadow:0 0 0 6px #c9a86b21,0 5px 15px #1e3c2d38;animation:pulse 2.2s infinite}.marker .label{margin-top:6px}.marker:hover .dot,.marker.active .dot{transform:scale(1.2);background:#fff7df}.label{display:block;margin-top:7px;padding:5px 7px;border-radius:8px;background:#ffffffc7;backdrop-filter:blur(10px);font-size:8px;font-weight:800;white-space:nowrap;box-shadow:0 5px 14px #1e3c2d1a}@keyframes pulse{50%{box-shadow:0 0 0 12px #c9a86b00,0 7px 18px #1e3c2d38}}.map-caption,.floor-note{position:absolute;z-index:8;border-radius:999px;background:#183126c9;color:#fff;font-size:9px;font-weight:800;backdrop-filter:blur(14px)}.map-caption{left:18px;bottom:17px;padding:9px 12px}.map-shell:after{content:"N";position:absolute;right:18px;top:18px;width:30px;height:30px;border:1px solid #ffffffaa;border-radius:50%;display:grid;place-items:center;font-size:9px;font-weight:900;color:#526c58;background:#ffffff99;backdrop-filter:blur(8px);pointer-events:none}.architectural-key{position:absolute;left:18px;top:18px;z-index:8;padding:9px 11px;border-radius:12px;background:#ffffffa8;border:1px solid #fff;backdrop-filter:blur(12px);font-size:8px;letter-spacing:.1em;color:#637268;text-transform:uppercase}.floor-note{top:18px;left:50%;transform:translateX(-50%);padding:8px 12px;opacity:0;transition:.3s}.floor-note.show{opacity:1}.detail{position:absolute;z-index:20;right:20px;bottom:20px;width:min(390px,calc(100% - 40px));padding:10px;border:1px solid #fff;border-radius:22px;background:#ffffffc7;backdrop-filter:blur(25px);box-shadow:0 25px 65px #13302233;opacity:0;transform:translateY(35px) scale(.94);pointer-events:none;transition:.65s}.detail.open{opacity:1;transform:none;pointer-events:auto}.detail img{width:100%;height:145px;object-fit:cover;border-radius:15px;display:block}.detail-body{padding:10px 4px 3px}.detail-type{font-size:8px;color:var(--green);font-weight:850;letter-spacing:.14em}.detail h2{font-size:24px;line-height:1;margin:5px 0 7px;letter-spacing:-.04em}.detail p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}.facts{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0}.fact{padding:6px 8px;border-radius:9px;background:#eef5ef;font-size:9px}.detail-actions{display:flex;gap:7px}.ghost{background:#17332614;color:var(--ink)}.close{position:absolute;right:20px;top:20px;border:0;width:28px;height:28px;border-radius:50%;background:#fff;cursor:pointer;font-weight:800}.legend{max-width:1080px;margin:9px auto 0;color:var(--muted);font-size:9px;text-align:center}@media(max-width:850px){.side{left:10px;right:10px;top:auto;bottom:10px;width:auto;padding:6px;border-radius:18px}.side-title{display:none}.nav{grid-template-columns:repeat(5,1fr)}.nav button{text-align:center;padding:9px 4px;font-size:9px}.main{margin:0;padding:72px 10px 85px}.map-shell{height:calc(100vh - 250px);min-height:500px;border-radius:24px}.map-art-svg{padding:4px}.period{width:100%;margin:0}.label{font-size:7px}.detail{right:10px;bottom:10px;width:calc(100% - 20px)}}@media(max-width:500px){.datebar{display:grid;grid-template-columns:1fr 1fr}.datebar .primary{grid-column:1/-1}.map-shell{height:calc(100vh - 275px)}.detail img{height:125px}.detail h2{font-size:20px}.marker .label{display:none}}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#edf4ef}body{overflow-x:hidden}.page{min-height:100vh;background:radial-gradient(circle at 15% 0%,#e7f4e9,transparent 32%),linear-gradient(180deg,#fbfdfb,#e8f1eb)}.top{position:fixed;z-index:50;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;pointer-events:none}.top>*{pointer-events:auto}.brand,.home{padding:9px 13px;border-radius:999px;font-size:10px;font-weight:800;backdrop-filter:blur(18px)}.brand{background:rgba(24,49,38,.78);color:#fff;letter-spacing:.16em}.home{border:1px solid #fff9;background:#fff9;color:var(--ink);text-decoration:none}.layout{min-height:100vh}.side{position:fixed;z-index:30;left:18px;top:78px;width:182px;padding:13px;border:1px solid #fff;background:#ffffffa8;border-radius:24px;backdrop-filter:blur(24px);box-shadow:var(--shadow)}.side-title{font-size:9px;font-weight:850;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:2px 5px 9px}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;text-align:left;border-radius:14px;padding:11px 10px;color:var(--muted);font:inherit;font-size:11px;font-weight:750;cursor:pointer}.nav button:hover{background:#fff}.nav button.active{background:var(--ink);color:#fff;box-shadow:0 9px 22px #1733262e}.main{margin-left:218px;padding:82px 28px 36px 18px}.heading,.datebar{max-width:760px;margin-left:auto;margin-right:auto}.eyebrow{font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:var(--green);font-weight:850}.heading h1{font-size:clamp(34px,5vw,62px);line-height:.95;letter-spacing:-.06em;margin:7px 0 8px}.heading p{max-width:620px;margin:0 0 15px;color:var(--muted);font-size:12px;line-height:1.55}.datebar{display:flex;align-items:end;gap:8px;flex-wrap:wrap;padding:10px;margin-bottom:12px;border:1px solid #fff;border-radius:18px;background:#ffffff94;backdrop-filter:blur(20px)}.field{display:grid;gap:4px}.field label{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}input{border:1px solid #dce6df;border-radius:10px;padding:8px 9px;background:#fff;color:var(--ink);font:inherit;font-size:11px}.primary,.cta,.ghost{border:0;border-radius:10px;padding:9px 12px;font-size:10px;font-weight:800;cursor:pointer}.primary,.cta{background:var(--ink);color:#fff}.period{margin-left:auto;font-size:9px;color:var(--muted);padding:0 4px 8px}.map-shell{position:relative;max-width:1080px;height:min(72vh,690px);min-height:510px;margin:auto;border:1px solid #fff;border-radius:30px;overflow:hidden;background:linear-gradient(145deg,#e8efe5,#d4e2d5);box-shadow:0 30px 90px #1c3d2b29}.map{position:absolute;inset:0;transition:transform 1.05s cubic-bezier(.2,.8,.2,1);transform-origin:50% 50%}.map-art-svg{position:absolute;inset:0;width:100%;height:100%;padding:0;display:block;filter:saturate(.9) contrast(.99);overflow:visible}.area-label{font:750 14px Inter,system-ui,sans-serif;letter-spacing:.22em;fill:#526c58;text-anchor:middle}.sub-label{font:500 8px Inter,system-ui,sans-serif;letter-spacing:.08em;fill:#78877b;text-anchor:middle}.room-label{font:750 10px Inter,system-ui,sans-serif;letter-spacing:.08em;fill:#665640;text-anchor:middle}.room-label.small{font-size:8px;letter-spacing:.04em}.facility-label{font:800 10px Inter,system-ui,sans-serif;letter-spacing:.1em;fill:#5c5142}.facility-sub{font:500 8px Inter,system-ui,sans-serif;fill:#718077;text-anchor:middle}.pool-label{font:800 13px Inter,system-ui,sans-serif;letter-spacing:.2em;fill:#fff}.pool-sub{font:500 8px Inter,system-ui,sans-serif;fill:#e8fbf8}.route text{font:750 10px Inter,system-ui,sans-serif;fill:#708174;text-anchor:middle;letter-spacing:.04em}.floor-filter{position:absolute;inset:0;background:#18312659;opacity:0;pointer-events:none;transition:.6s}.map.floor-1 .floor-filter,.map.floor-2 .floor-filter,.map.floor-3 .floor-filter,.map.attic .floor-filter{opacity:.42}.markers{position:absolute;inset:0}.marker{position:absolute;transform:translate(-50%,-50%);z-index:6;border:0;background:none;padding:0;cursor:pointer}.dot{display:block;width:15px;height:15px;border-radius:50%;background:#fffdf4;border:2px solid var(--gold);box-shadow:0 0 0 5px #c9a86b20,0 5px 16px #1e3c2d40;animation:pulse 2.2s infinite}.marker .label{margin-top:6px}.marker:hover .dot,.marker.active .dot{transform:scale(1.2);background:#fff7df}.label{display:block;margin-top:7px;padding:5px 7px;border-radius:8px;background:#ffffffc7;backdrop-filter:blur(10px);font-size:8px;font-weight:800;white-space:nowrap;box-shadow:0 5px 14px #1e3c2d1a}@keyframes pulse{50%{box-shadow:0 0 0 12px #c9a86b00,0 7px 18px #1e3c2d38}}.map-caption,.floor-note{position:absolute;z-index:8;border-radius:999px;background:#183126c9;color:#fff;font-size:9px;font-weight:800;backdrop-filter:blur(14px)}.map-caption{left:18px;bottom:17px;padding:9px 12px}.map-shell:after{content:"N";position:absolute;right:18px;top:18px;width:30px;height:30px;border:1px solid #ffffffaa;border-radius:50%;display:grid;place-items:center;font-size:9px;font-weight:900;color:#526c58;background:#ffffff99;backdrop-filter:blur(8px);pointer-events:none}.architectural-key{position:absolute;left:18px;top:18px;z-index:8;padding:9px 11px;border-radius:12px;background:#ffffffa8;border:1px solid #fff;backdrop-filter:blur(12px);font-size:8px;letter-spacing:.1em;color:#637268;text-transform:uppercase}.floor-note{top:18px;left:50%;transform:translateX(-50%);padding:8px 12px;opacity:0;transition:.3s}.floor-note.show{opacity:1}.detail{position:absolute;z-index:20;right:20px;bottom:20px;width:min(390px,calc(100% - 40px));padding:10px;border:1px solid #fff;border-radius:22px;background:#ffffffc7;backdrop-filter:blur(25px);box-shadow:0 25px 65px #13302233;opacity:0;transform:translateY(35px) scale(.94);pointer-events:none;transition:.65s}.detail.open{opacity:1;transform:none;pointer-events:auto}.detail img{width:100%;height:145px;object-fit:cover;border-radius:15px;display:block}.detail-body{padding:10px 4px 3px}.detail-type{font-size:8px;color:var(--green);font-weight:850;letter-spacing:.14em}.detail h2{font-size:24px;line-height:1;margin:5px 0 7px;letter-spacing:-.04em}.detail p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}.facts{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0}.fact{padding:6px 8px;border-radius:9px;background:#eef5ef;font-size:9px}.detail-actions{display:flex;gap:7px}.ghost{background:#17332614;color:var(--ink)}.close{position:absolute;right:20px;top:20px;border:0;width:28px;height:28px;border-radius:50%;background:#fff;cursor:pointer;font-weight:800}.legend{max-width:1080px;margin:9px auto 0;color:var(--muted);font-size:9px;text-align:center}@media(max-width:850px){.side{left:10px;right:10px;top:auto;bottom:10px;width:auto;padding:6px;border-radius:18px}.side-title{display:none}.nav{grid-template-columns:repeat(5,1fr)}.nav button{text-align:center;padding:9px 4px;font-size:9px}.main{margin:0;padding:72px 10px 85px}.map-shell{height:calc(100vh - 250px);min-height:500px;border-radius:24px}.map-art-svg{padding:4px}.period{width:100%;margin:0}.label{font-size:7px}.detail{right:10px;bottom:10px;width:calc(100% - 20px)}}@media(max-width:500px){.datebar{display:grid;grid-template-columns:1fr 1fr}.datebar .primary{grid-column:1/-1}.map-shell{height:calc(100vh - 275px)}.detail img{height:125px}.detail h2{font-size:20px}.marker .label{display:none}}
 </style></head><body>
 <div class="page"><div class="top"><div class="brand">FreeDom · Сочи</div><a class="home" href="freedom-home-v14.html">На главную</a></div>
 <aside class="side"><div class="side-title">Дом и пространство</div><div class="nav"><button class="active" data-level="all">Пространство</button><button data-level="1">1 этаж</button><button data-level="2">2 этаж</button><button data-level="3">3 этаж</button><button data-level="attic">Мансарда</button></div></aside>
 <main class="main"><div class="heading"><div class="eyebrow">FreeDom · карта места</div><h1>Дом, который можно почувствовать.</h1><p>Выберите этаж или пространство слева. Точка на карте ведёт к месту, а при приближении открывается его история, фотография и подробности.</p></div>
 <div class="datebar"><div class="field"><label>Заезд</label><input id="from" type="date"></div><div class="field"><label>Выезд</label><input id="to" type="date"></div><button class="primary" id="apply">Показать доступность комнат</button><div class="period" id="period"></div></div>
-<div class="map-shell"><div class="architectural-key">FreeDom · site plan</div><div class="map" id="map">
-<svg class="map-art-svg" id="houseMap" viewBox="0 0 1200 820" role="img" aria-label="Авторская карта FreeDom сверху">
+<div class="map-shell"><div class="architectural-key">FreeDom · ARCHITECTURAL MASTERPLAN</div><div class="map" id="map">
+<svg class="map-art-svg" id="houseMap" viewBox="0 0 1200 820" preserveAspectRatio="none" role="img" aria-label="Концептуальный мастерплан FreeDom сверху">
 <defs>
- <filter id="ds" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="14" stdDeviation="15" flood-color="#19372a" flood-opacity=".18"/></filter>
- <filter id="ds2" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#19372a" flood-opacity=".12"/></filter>
- <linearGradient id="land" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf4e9"/><stop offset=".55" stop-color="#dcebd9"/><stop offset="1" stop-color="#c8dec7"/></linearGradient>
- <linearGradient id="roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e6d3b0"/><stop offset="1" stop-color="#b89261"/></linearGradient>
- <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffdf7"/><stop offset="1" stop-color="#eee8dc"/></linearGradient>
- <linearGradient id="water" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a9dcd7"/><stop offset=".55" stop-color="#6db8b5"/><stop offset="1" stop-color="#4d9795"/></linearGradient>
- <pattern id="paper" width="34" height="34" patternUnits="userSpaceOnUse"><rect width="34" height="34" fill="#dcebd9"/><circle cx="5" cy="8" r="1.2" fill="#b8d1b6" opacity=".35"/><circle cx="25" cy="22" r="1" fill="#b8d1b6" opacity=".28"/></pattern>
- <pattern id="deck" width="18" height="18" patternUnits="userSpaceOnUse"><rect width="18" height="18" fill="#e5d4b7"/><path d="M0 4h18M0 13h18" stroke="#c8af8c" stroke-width="1"/></pattern>
+<linearGradient id="site" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eff4ea"/><stop offset=".55" stop-color="#dbe8d7"/><stop offset="1" stop-color="#c7d9c4"/></linearGradient>
+<linearGradient id="roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eadfc9"/><stop offset=".5" stop-color="#cbb58e"/><stop offset="1" stop-color="#9e7e55"/></linearGradient>
+<linearGradient id="roof2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b99362"/><stop offset="1" stop-color="#79583b"/></linearGradient>
+<linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fffdf8"/><stop offset="1" stop-color="#e6e0d3"/></linearGradient>
+<linearGradient id="water" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b7e1dd"/><stop offset=".55" stop-color="#70b8b4"/><stop offset="1" stop-color="#477f7c"/></linearGradient>
+<pattern id="grain" width="34" height="34" patternUnits="userSpaceOnUse"><rect width="34" height="34" fill="#dce9d8"/><circle cx="6" cy="8" r="1" fill="#a9c4a7" opacity=".35"/><circle cx="25" cy="22" r="1" fill="#a9c4a7" opacity=".25"/></pattern>
+<pattern id="deck" width="18" height="18" patternUnits="userSpaceOnUse"><rect width="18" height="18" fill="#d9c29a"/><path d="M0 5h18M0 13h18" stroke="#ae8c5d" stroke-width="1" opacity=".55"/></pattern>
+<filter id="shadow" x="-40%" y="-40%" width="190%" height="200%"><feDropShadow dx="13" dy="18" stdDeviation="11" flood-color="#173326" flood-opacity=".22"/></filter>
+<filter id="soft" x="-40%" y="-40%" width="190%" height="200%"><feDropShadow dx="6" dy="9" stdDeviation="6" flood-color="#173326" flood-opacity=".16"/></filter>
+<filter id="blur"><feGaussianBlur stdDeviation="5"/></filter>
 </defs>
 
-<!-- landscaped plot -->
-<rect x="26" y="25" width="1148" height="770" rx="54" fill="url(#land)" filter="url(#ds)"/>
-<rect x="42" y="41" width="1116" height="738" rx="44" fill="url(#paper)" opacity=".38"/>
-<path d="M72 690 C165 660 185 590 252 558 C334 519 408 565 476 594 C556 629 621 590 696 548 C776 504 837 528 901 569 C978 619 1054 651 1124 622" fill="none" stroke="#b9d1b6" stroke-width="28" stroke-linecap="round" opacity=".38"/>
-<path d="M58 665 C145 638 188 548 262 530 C344 510 407 557 476 581 C560 610 632 568 705 535 C782 501 842 518 918 559 C1000 604 1060 635 1140 600" fill="none" stroke="#f5f1e6" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 10" opacity=".9"/>
+<!-- presentation terrain -->
+<rect x="25" y="25" width="1150" height="770" rx="44" fill="url(#site)" filter="url(#shadow)"/>
+<rect x="41" y="41" width="1118" height="738" rx="35" fill="url(#grain)" opacity=".45"/>
+<rect x="56" y="56" width="1088" height="708" rx="27" fill="none" stroke="#fff" stroke-width="3" opacity=".8"/>
+<path d="M72 740 C185 700 260 690 350 713 C445 738 520 691 615 705 C710 720 790 676 884 694 C974 712 1052 726 1128 696" fill="none" stroke="#b3cbae" stroke-width="36" stroke-linecap="round" opacity=".22"/>
 
-<!-- garden canopy / professional tree clusters -->
-<g opacity=".96">
- <g fill="#6f9b70" stroke="#4f7d58" stroke-width="2.5">
-  <circle cx="118" cy="108" r="25"/><circle cx="176" cy="78" r="20"/><circle cx="238" cy="112" r="27"/>
-  <circle cx="306" cy="76" r="22"/><circle cx="370" cy="108" r="26"/><circle cx="433" cy="77" r="20"/>
-  <circle cx="98" cy="178" r="21"/><circle cx="161" cy="206" r="28"/><circle cx="232" cy="174" r="23"/>
-  <circle cx="302" cy="215" r="27"/><circle cx="379" cy="177" r="22"/><circle cx="447" cy="207" r="28"/>
- </g>
- <g fill="#9fc29d" opacity=".55">
- <circle cx="106" cy="98" r="9"/><circle cx="169" cy="70" r="7"/><circle cx="228" cy="105" r="10"/><circle cx="298" cy="72" r="8"/><circle cx="362" cy="100" r="10"/><circle cx="426" cy="70" r="7"/>
-</g>
-<g fill="none" stroke="#9fc29d" stroke-width="4" opacity=".65">
-  <path d="M95 124q35-45 70 0t70 0t70 0t70 0t70 0"/>
-  <path d="M115 190q38-42 76 0t76 0t76 0t76 0"/>
- </g>
-</g>
-
-<!-- north garden / orchard labels -->
-<text x="270" y="265" class="area-label">САД</text>
-<text x="270" y="283" class="sub-label">яблони · мандарины · хурма · фейхоа</text>
-<path d="M70 330 C150 300 235 310 315 338" fill="none" stroke="#a4bd9f" stroke-width="2" stroke-dasharray="1 8"/>
-
-<!-- main house, upper centre -->
-<g id="house" filter="url(#ds)">
- <path d="M420 105 H775 L826 157 V394 L781 434 H420 L374 394 V157 Z" fill="url(#roof)" stroke="#866b49" stroke-width="9"/>
- <path d="M400 146 H798 V382 L755 413 H441 L400 382 Z" fill="url(#wall)" stroke="#9a8a72" stroke-width="5"/>
- <!-- architectural rooms / walls -->
- <path d="M410 255 H790 M590 148 V413 M685 148 V255 M510 255 V413" fill="none" stroke="#b0a18a" stroke-width="6"/>
- <path d="M400 326 H590 M685 326 H790" fill="none" stroke="#b0a18a" stroke-width="5"/>
- <!-- rooms -->
- <rect x="417" y="158" width="165" height="89" rx="4" fill="#eee1cb"/><rect x="597" y="158" width="78" height="89" rx="4" fill="#f3e9d8"/><rect x="690" y="158" width="99" height="89" rx="4" fill="#e8d8ba"/>
- <rect x="417" y="264" width="87" height="145" rx="4" fill="#e9dfd0"/><rect x="512" y="264" width="72" height="145" rx="4" fill="#f1e7d7"/>
- <rect x="595" y="264" width="85" height="145" rx="4" fill="#eee4d3"/><rect x="691" y="264" width="98" height="145" rx="4" fill="#e4d3b7"/>
- <!-- veranda / porch -->
- <path d="M445 414 H752 V444 H431 Q431 414 445 414Z" fill="url(#deck)" stroke="#866b49" stroke-width="5"/>
- <path d="M470 444h245" stroke="#b18d63" stroke-width="4"/>
- <!-- doors -->
- <path d="M586 247v18M681 247v18M400 320h16M789 320h-16" stroke="#a07850" stroke-width="7" stroke-linecap="round"/>
-</g>
-<text x="582" y="204" class="room-label">ГОСТИНАЯ</text>
-<text x="635" y="204" class="room-label small">КУХНЯ</text>
-<text x="740" y="204" class="room-label small">КАМИННЫЙ ЗАЛ</text>
-<text x="458" y="340" class="room-label small">ХОСТЕЛ</text>
-<text x="548" y="340" class="room-label small">ЛЕСТНИЦА</text>
-<text x="637" y="340" class="room-label small">ОБЩАЯ ЗОНА</text>
-<text x="740" y="340" class="room-label small">КОМНАТЫ</text>
-<text x="590" y="434" class="area-label">КРЫЛЬЦО · ВХОД</text>
-
-<!-- lower route from gate -->
-<path d="M600 760 C600 690 600 646 574 600 C548 553 507 521 475 477" fill="none" stroke="#efe5d1" stroke-width="34" stroke-linecap="round" filter="url(#ds2)"/>
-<path d="M574 600 C492 584 403 560 325 520 C272 493 228 456 199 413" fill="none" stroke="#efe5d1" stroke-width="29" stroke-linecap="round"/>
-<path d="M574 600 C657 578 735 554 809 522 C876 493 921 454 953 409" fill="none" stroke="#efe5d1" stroke-width="29" stroke-linecap="round"/>
-<path d="M475 477 C506 460 537 451 575 445" fill="none" stroke="#efe5d1" stroke-width="25" stroke-linecap="round"/>
-<path d="M809 522 C833 481 846 445 849 406" fill="none" stroke="#efe5d1" stroke-width="25" stroke-linecap="round"/>
-
-<!-- central split / orientation -->
-<circle cx="574" cy="600" r="18" fill="#d0b98f" stroke="#fff8ec" stroke-width="7"/>
-<text x="574" y="632" text-anchor="middle" class="sub-label">РАЗВИЛКА</text>
-
-<!-- left branch: gym -->
-<g filter="url(#ds2)">
- <rect x="118" y="365" width="188" height="112" rx="22" fill="#d7d3c5" stroke="#75877a" stroke-width="6"/>
- <path d="M145 445h135M165 405v50M260 405v50M178 394h70" stroke="#607267" stroke-width="8" stroke-linecap="round"/>
- <path d="M183 388l-17-17M235 388l17-17" stroke="#607267" stroke-width="7" stroke-linecap="round"/>
-</g>
-<text x="212" y="430" text-anchor="middle" class="facility-label">ТРЕНАЖЁРНАЯ</text>
-<text x="212" y="449" text-anchor="middle" class="facility-sub">навес · спорт</text>
-
-<!-- left lower: fountain -->
-<g filter="url(#ds2)">
- <circle cx="166" cy="570" r="48" fill="url(#water)" stroke="#5f9994" stroke-width="6"/>
- <circle cx="166" cy="570" r="18" fill="#d8eeeb" stroke="#5f9994" stroke-width="4"/>
- <path d="M166 552 C142 520 151 510 166 541 C181 510 190 520 166 552" fill="none" stroke="#fff" stroke-width="5"/>
-</g>
-<text x="166" y="642" text-anchor="middle" class="facility-label">ФОНТАН</text>
-
-<!-- left lower: playground -->
-<g filter="url(#ds2)">
- <rect x="232" y="622" width="176" height="88" rx="24" fill="#d9c29e" stroke="#98784f" stroke-width="5"/>
- <path d="M270 681V648h45v33M292 648l-22-24h45zM342 683v-40M329 652h26M355 652l18-22M350 666l17 18" fill="none" stroke="#8c6a43" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-<text x="320" y="739" text-anchor="middle" class="facility-label">ДЕТСКАЯ ПЛОЩАДКА</text>
-<text x="320" y="755" text-anchor="middle" class="sub-label">зона развития</text>
-
-<!-- right branch: summer kitchen + pool -->
-<g filter="url(#ds2)">
- <rect x="820" y="355" width="205" height="116" rx="20" fill="url(#deck)" stroke="#876a4a" stroke-width="6"/>
- <path d="M850 435h145M850 392h145" stroke="#b58e62" stroke-width="4"/>
- <path d="M870 380v55M925 380v55M980 380v55" stroke="#8e7659" stroke-width="3"/>
- <path d="M842 370h162" stroke="#6e8874" stroke-width="7"/>
-</g>
-<text x="922" y="418" text-anchor="middle" class="facility-label">ЛЕТНЯЯ КУХНЯ</text>
-<text x="922" y="438" text-anchor="middle" class="facility-sub">диваны · столы · вид на бассейн</text>
-
-<ellipse cx="884" cy="535" rx="139" ry="77" fill="url(#water)" stroke="#559692" stroke-width="7" filter="url(#ds2)"/>
-<path d="M780 530q55-38 110 0t110 0" fill="none" stroke="#dff5f2" stroke-width="4" opacity=".8"/>
-<text x="884" y="540" text-anchor="middle" class="pool-label">БАССЕЙН</text>
-<text x="884" y="559" text-anchor="middle" class="pool-sub">рядом с летней кухней</text>
-
-<!-- lower right: hammock + bungalow about 20m from pool -->
-<path d="M675 625 Q720 665 765 625" fill="none" stroke="#806246" stroke-width="8"/>
-<path d="M682 630 Q720 662 758 630" fill="none" stroke="#f6eee1" stroke-width="22"/>
-<text x="720" y="690" text-anchor="middle" class="facility-label">ГАМАК</text>
-
-<g filter="url(#ds2)">
- <path d="M814 640 L890 612 L970 640 V720 H814Z" fill="#d8b68a" stroke="#866a48" stroke-width="6"/>
- <path d="M800 642 L891 598 L983 642" fill="#b88959" stroke="#76593b" stroke-width="7"/>
- <rect x="862" y="662" width="54" height="58" rx="7" fill="#b5d7d1" stroke="#745a42" stroke-width="5"/>
- <path d="M840 690h30M922 690h28" stroke="#b18a5c" stroke-width="8"/>
-</g>
-<text x="892" y="751" text-anchor="middle" class="facility-label">БУНГАЛО</text>
-<text x="892" y="767" text-anchor="middle" class="sub-label">≈ 20 м от бассейна</text>
-
-<!-- gate at bottom -->
-<g filter="url(#ds2)">
- <path d="M548 792V756h104v36" fill="none" stroke="#745b42" stroke-width="10"/>
- <path d="M556 756v36M576 756v36M600 756v36M624 756v36M644 756v36" stroke="#a98157" stroke-width="6"/>
-</g>
-<text x="600" y="734" text-anchor="middle" class="facility-label">ВОРОТА</text>
-<text x="600" y="752" text-anchor="middle" class="sub-label">вход на территорию</text>
-
-<!-- route labels -->
-<g class="route">
- <text x="476" y="548">← к тренажёрной зоне · фонтану · детской площадке</text>
- <text x="690" y="548">к летней кухне · бассейну →</text>
- <text x="600" y="674">от ворот ↑</text>
-</g>
-
-<!-- refined architectural illustration details -->
-<g id="object-relief" pointer-events="none">
-<!-- dimensional pool: raised coping, deep water, reflected light -->
-<g filter="url(#ds)">
- <ellipse cx="884" cy="550" rx="142" ry="79" fill="#345f5d" opacity=".24" transform="translate(0 14)"/>
- <path d="M742 535 Q744 458 884 456 Q1024 458 1026 535 Q1022 612 884 614 Q746 612 742 535Z" fill="#477f7d" stroke="#365f5d" stroke-width="5"/>
- <path d="M750 525 Q760 462 884 462 Q1008 462 1018 525 Q1008 584 884 590 Q760 584 750 525Z" fill="url(#water)" stroke="#d8f1ec" stroke-width="6"/>
- <path d="M790 500q42-17 84 0t84 0M775 535q55-19 110 0t110 0M805 565q40-13 80 0t80 0" fill="none" stroke="#e8fbf7" stroke-width="4" opacity=".75"/>
- <path d="M760 508 Q884 470 1008 508" fill="none" stroke="#fff" stroke-width="3" opacity=".65"/>
-</g>
-<!-- dimensional summer kitchen with roof overhang -->
-<g filter="url(#ds2)">
- <path d="M812 360 L922 325 L1033 360 L1018 378 L827 378Z" fill="#8a6848" opacity=".5"/>
- <path d="M820 350 L922 318 L1025 350 L1010 368 L835 368Z" fill="#b48757" stroke="#74573c" stroke-width="5"/>
- <path d="M835 368v78h175v-78" fill="#e8d5b5" stroke="#765a40" stroke-width="5"/>
- <path d="M852 374v69M907 374v69M970 374v69" stroke="#8a6a49" stroke-width="5"/>
- <path d="M842 397h157" stroke="#f7ebd6" stroke-width="5"/>
-</g>
-<!-- dimensional gym canopy -->
-<g filter="url(#ds2)">
- <path d="M112 374 L212 340 L313 374 L300 389 L126 389Z" fill="#6f7c70" opacity=".5"/>
- <path d="M120 364 L212 334 L304 364 L294 380 L130 380Z" fill="#8f9b8e" stroke="#52665a" stroke-width="5"/>
- <path d="M132 380v82M205 380v82M286 380v82" stroke="#586b60" stroke-width="7"/>
- <path d="M144 423h140M160 405h45v35M230 405h40v35" fill="none" stroke="#46594f" stroke-width="7" stroke-linecap="round"/>
- <circle cx="174" cy="403" r="10" fill="#a4b99a"/><circle cx="256" cy="403" r="10" fill="#a4b99a"/>
-</g>
-<!-- dimensional fountain -->
-<g filter="url(#ds2)">
- <ellipse cx="166" cy="586" rx="54" ry="19" fill="#405b50" opacity=".28"/>
- <path d="M112 570 Q166 548 220 570 L212 592 Q166 611 120 592Z" fill="#d9ddd2" stroke="#7e9182" stroke-width="5"/>
- <ellipse cx="166" cy="570" rx="39" ry="13" fill="#67aaa3" stroke="#78998e" stroke-width="3"/>
- <path d="M166 562 C142 525 154 515 166 550 C178 515 190 525 166 562" fill="none" stroke="#f8ffff" stroke-width="5"/>
-</g>
-<!-- dimensional playground -->
-<g filter="url(#ds2)">
- <ellipse cx="320" cy="701" rx="94" ry="19" fill="#765b40" opacity=".18"/>
- <path d="M232 635 L320 612 L408 635 L400 714 L240 714Z" fill="#d4bd95" stroke="#8a6a44" stroke-width="5"/>
- <path d="M263 687V650h43v37M284 650l-22-25h45zM345 687v-48M331 651h28M361 650l20-23M355 667l18 18" fill="none" stroke="#795b3b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-<!-- dimensional hammock -->
-<g filter="url(#ds2)">
- <path d="M665 631v78M775 631v78" stroke="#73563d" stroke-width="8"/>
- <path d="M666 642 Q720 674 774 642" fill="none" stroke="#d8b88c" stroke-width="18"/>
- <path d="M675 644 Q720 664 765 644" fill="none" stroke="#fff1d9" stroke-width="4"/>
-</g>
-<!-- dimensional bungalow -->
-<g filter="url(#ds2)">
- <path d="M804 644 L891 603 L983 644 L970 732 L816 732Z" fill="#b88a5a" opacity=".48"/>
- <path d="M804 635 L891 588 L983 635 L970 655 L816 655Z" fill="#9b6e47" stroke="#684c35" stroke-width="6"/>
- <path d="M820 654h150v70H820z" fill="#ead9bd" stroke="#74583f" stroke-width="5"/>
- <path d="M842 667h27v38h-27zM924 667h27v38h-27z" fill="#8dbab5" stroke="#6d5b48" stroke-width="4"/>
- <path d="M880 682h27v42h-27z" fill="#9c7956" stroke="#6d5039" stroke-width="4"/>
- <path d="M808 726h176" stroke="#76583e" stroke-width="8"/>
-</g>
-<!-- dimensional banya, added as a readable 3D object -->
-<g filter="url(#ds2)">
- <path d="M1010 462 L1070 432 L1130 462 L1120 520 L1020 520Z" fill="#a97d55" opacity=".48"/>
- <path d="M1008 455 L1070 421 L1132 455 L1122 472 L1018 472Z" fill="#8e6041" stroke="#674832" stroke-width="5"/>
- <path d="M1018 472h104v48h-104z" fill="#e1c59e" stroke="#704f38" stroke-width="5"/>
- <rect x="1058" y="484" width="27" height="36" fill="#8bb3ad" stroke="#684c38" stroke-width="4"/>
-</g>
-<!-- dimensional pond -->
-<g filter="url(#ds2)">
- <ellipse cx="1038" cy="665" rx="92" ry="46" fill="#385f5d" opacity=".2"/>
- <ellipse cx="1038" cy="650" rx="92" ry="43" fill="#72aaa5" stroke="#4d817e" stroke-width="6"/>
- <path d="M975 645q30-13 60 0t60 0M985 667q28-10 56 0t56 0" fill="none" stroke="#e2f5f0" stroke-width="4" opacity=".7"/>
-</g>
-<!-- tree trunks and layered canopies -->
+<!-- orchard, layered like a physical landscape model -->
 <g>
- <g stroke="#76573e" stroke-width="8" stroke-linecap="round">
-  <path d="M90 135v42M150 104v42M214 138v43M278 104v44M342 138v43M405 105v42"/>
- </g>
- <g fill="#587f5d" stroke="#46694c" stroke-width="3">
-  <circle cx="90" cy="117" r="29"/><circle cx="150" cy="86" r="25"/><circle cx="214" cy="120" r="31"/>
-  <circle cx="278" cy="86" r="27"/><circle cx="342" cy="120" r="30"/><circle cx="405" cy="88" r="26"/>
- </g>
- <g fill="#a8c9a1" opacity=".65">
-  <circle cx="81" cy="108" r="10"/><circle cx="142" cy="77" r="9"/><circle cx="204" cy="110" r="11"/><circle cx="269" cy="77" r="10"/><circle cx="333" cy="110" r="11"/><circle cx="396" cy="79" r="9"/>
- </g>
+<g fill="#456d4b" opacity=".2" filter="url(#blur)">
+<ellipse cx="120" cy="111" rx="31" ry="16"/><ellipse cx="181" cy="84" rx="25" ry="14"/><ellipse cx="247" cy="122" rx="31" ry="17"/><ellipse cx="316" cy="91" rx="27" ry="15"/><ellipse cx="385" cy="120" rx="31" ry="17"/><ellipse cx="449" cy="91" rx="25" ry="14"/>
+<ellipse cx="109" cy="187" rx="26" ry="14"/><ellipse cx="174" cy="211" rx="31" ry="17"/><ellipse cx="246" cy="180" rx="28" ry="16"/><ellipse cx="318" cy="216" rx="31" ry="17"/><ellipse cx="390" cy="178" rx="27" ry="15"/>
 </g>
-<!-- house 3D depth: wall base + lifted roof -->
-<g pointer-events="none">
- <path d="M397 151 L420 126 H778 L826 174 V410 L780 450 H420 L397 410Z" fill="#8b7357" opacity=".32" transform="translate(0 14)"/>
- <path d="M382 151 L420 105 H775 L826 157 V394 L781 434 H420 L374 394 V157Z" fill="none" stroke="#765c40" stroke-width="11" opacity=".65"/>
- <path d="M426 119H766" stroke="#f8e8c5" stroke-width="5"/>
- <path d="M452 135h42M520 135h42M632 135h42M700 135h42" stroke="#9b7b51" stroke-width="4"/>
+<g stroke="#70563d" stroke-width="6" stroke-linecap="round"><path d="M120 102v36M181 78v32M247 113v35M316 83v32M385 111v35M449 83v30"/><path d="M109 180v29M174 204v35M246 173v30M318 209v34M390 172v30"/></g>
+<g fill="#638c64" stroke="#4b7352" stroke-width="2.5">
+<circle cx="120" cy="96" r="27"/><circle cx="181" cy="72" r="23"/><circle cx="247" cy="108" r="29"/><circle cx="316" cy="77" r="26"/><circle cx="385" cy="106" r="29"/><circle cx="449" cy="77" r="23"/>
+<circle cx="109" cy="168" r="24"/><circle cx="174" cy="194" r="29"/><circle cx="246" cy="165" r="26"/><circle cx="318" cy="201" r="29"/><circle cx="390" cy="166" r="25"/>
 </g>
+<g fill="#b0cda6" opacity=".65"><circle cx="112" cy="87" r="9"/><circle cx="174" cy="65" r="8"/><circle cx="238" cy="99" r="10"/><circle cx="308" cy="69" r="9"/><circle cx="376" cy="97" r="10"/><circle cx="442" cy="69" r="8"/><circle cx="102" cy="160" r="8"/><circle cx="165" cy="185" r="10"/><circle cx="238" cy="156" r="9"/><circle cx="309" cy="192" r="10"/></g>
 </g>
 
+<!-- garden contour / planting beds -->
+<path d="M72 266 C170 235 294 246 390 275 C423 285 454 289 480 283" fill="none" stroke="#f5f0e4" stroke-width="11" stroke-linecap="round"/>
+<path d="M72 266 C170 235 294 246 390 275 C423 285 454 289 480 283" fill="none" stroke="#a9c0a5" stroke-width="2" stroke-dasharray="3 9"/>
+
+<!-- MAIN HOUSE: volumetric architectural mass -->
+<g filter="url(#shadow)">
+<path d="M373 154 L418 103 L772 103 L830 154 L830 394 L782 438 L418 438 L370 394Z" fill="#6e5840" opacity=".25" transform="translate(0 16)"/>
+<path d="M370 153 L418 101 L772 101 L831 153 L831 392 L782 434 L418 434 L369 392Z" fill="#d2c0a0" stroke="#765e43" stroke-width="6"/>
+<!-- roof -->
+<path d="M383 151 L420 112 L769 112 L817 151 L786 174 L419 174Z" fill="url(#roof)" stroke="#92734c" stroke-width="5"/>
+<path d="M383 151 L419 174 L419 392 L384 387Z" fill="#b08e60" stroke="#846746" stroke-width="4"/>
+<path d="M817 151 L786 174 L786 393 L820 387Z" fill="#94724d" stroke="#72553b" stroke-width="4"/>
+<!-- walls -->
+<path d="M419 174 H786 V393 L755 419 H449 L419 393Z" fill="url(#wall)" stroke="#89998e" stroke-width="5"/>
+<!-- internal architectural lines -->
+<path d="M590 175V418M685 175V418M419 257H786M419 330H786M510 257V418" fill="none" stroke="#aab6ac" stroke-width="4"/>
+<!-- roof ridge and skylights -->
+<path d="M429 128H758" stroke="#f7ecd5" stroke-width="5"/>
+<g fill="#8e7453" stroke="#6f5a42" stroke-width="2"><rect x="459" y="128" width="49" height="10" rx="4"/><rect x="535" y="128" width="49" height="10" rx="4"/><rect x="631" y="128" width="49" height="10" rx="4"/><rect x="706" y="128" width="38" height="10" rx="4"/></g>
+<!-- glazing -->
+<g fill="#9bbcb6" stroke="#6c857e" stroke-width="3">
+<rect x="442" y="188" width="112" height="44" rx="3"/><rect x="604" y="188" width="61" height="44" rx="3"/><rect x="700" y="188" width="61" height="44" rx="3"/>
+<rect x="438" y="274" width="58" height="37" rx="3"/><rect x="524" y="274" width="43" height="37" rx="3"/><rect x="605" y="274" width="56" height="37" rx="3"/><rect x="700" y="274" width="61" height="37" rx="3"/>
+<rect x="438" y="347" width="58" height="39" rx="3"/><rect x="605" y="347" width="56" height="39" rx="3"/><rect x="700" y="347" width="61" height="39" rx="3"/>
+</g>
+<!-- veranda -->
+<path d="M438 420 H761 V451 H426 Q426 431 438 420Z" fill="url(#deck)" stroke="#7e6242" stroke-width="5"/>
+<path d="M455 420v31M495 420v31M710 420v31M748 420v31" stroke="#8c6d49" stroke-width="4"/>
+<path d="M428 452H766" stroke="#6b5239" stroke-width="6"/>
+<rect x="574" y="401" width="35" height="49" rx="3" fill="#8b6a49" stroke="#644a35" stroke-width="4"/>
+</g>
+
+<!-- restrained room labels -->
+<g fill="#63736a" font-family="Inter,system-ui,sans-serif" text-anchor="middle">
+<text x="500" y="211" font-size="11" font-weight="800" letter-spacing="2">ГОСТИНАЯ</text><text x="635" y="211" font-size="9" font-weight="750" letter-spacing="1.5">КУХНЯ</text><text x="740" y="211" font-size="9" font-weight="750" letter-spacing="1.2">КАМИННЫЙ ЗАЛ</text>
+<text x="465" y="300" font-size="8" font-weight="750">ХОСТЕЛ</text><text x="548" y="300" font-size="7" font-weight="700">ЛЕСТНИЦА</text><text x="635" y="300" font-size="7" font-weight="700">ОБЩАЯ ЗОНА</text><text x="739" y="300" font-size="8" font-weight="750">КОМНАТЫ</text>
+</g>
+
+<!-- pedestrian spine and fork -->
+<g filter="url(#soft)">
+<path d="M600 754 C600 695 598 649 575 605 C552 561 517 528 476 475" fill="none" stroke="#c7b79a" stroke-width="42" stroke-linecap="round"/>
+<path d="M575 605 C498 586 414 556 333 516 C274 487 230 452 199 407" fill="none" stroke="#c7b79a" stroke-width="35" stroke-linecap="round"/>
+<path d="M575 605 C657 582 735 555 808 521 C876 490 920 453 954 407" fill="none" stroke="#c7b79a" stroke-width="35" stroke-linecap="round"/>
+</g>
+<g fill="none" stroke="#f8f1e4" stroke-width="4" stroke-linecap="round"><path d="M600 754 C600 695 598 649 575 605 C552 561 517 528 476 475"/><path d="M575 605 C498 586 414 556 333 516 C274 487 230 452 199 407"/><path d="M575 605 C657 582 735 555 808 521 C876 490 920 453 954 407"/></g>
+<circle cx="575" cy="605" r="16" fill="#d0b487" stroke="#fff8ea" stroke-width="6"/>
+
+<!-- LEFT GYM -->
+<g filter="url(#soft)">
+<path d="M105 372L212 335L319 372L304 392L121 392Z" fill="#5e6c61" opacity=".35"/>
+<path d="M112 359L212 326L312 359L299 378L125 378Z" fill="#8a988c" stroke="#52665a" stroke-width="5"/>
+<path d="M126 378V463M205 378V463M290 378V463" stroke="#586b60" stroke-width="8"/>
+<path d="M143 431H278M160 409h44v38M230 409h42v38" fill="none" stroke="#405449" stroke-width="8" stroke-linecap="round"/>
+<circle cx="175" cy="401" r="11" fill="#b2c7a9"/><circle cx="256" cy="401" r="11" fill="#b2c7a9"/>
+</g>
+<text x="212" y="480" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.5">ТРЕНАЖЁРНАЯ ЗОНА</text>
+
+<!-- FOUNTAIN -->
+<g filter="url(#soft)"><ellipse cx="166" cy="590" rx="59" ry="20" fill="#314c42" opacity=".22"/><path d="M108 567Q166 545 224 567L214 592Q166 615 118 592Z" fill="#d9ddd3" stroke="#7b8d81" stroke-width="5"/><ellipse cx="166" cy="568" rx="43" ry="14" fill="url(#water)" stroke="#5d9590" stroke-width="3"/><path d="M166 558C143 523 154 514 166 548C178 514 190 523 166 558" fill="none" stroke="#f7ffff" stroke-width="5"/></g>
+<text x="166" y="630" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.5">ФОНТАН</text>
+
+<!-- PLAYGROUND -->
+<g filter="url(#soft)"><ellipse cx="320" cy="709" rx="98" ry="20" fill="#765b40" opacity=".17"/><path d="M229 639L320 612L411 639L400 714L240 714Z" fill="#d6bd91" stroke="#896942" stroke-width="5"/><path d="M262 689V650h45v39M284 650l-23-25h47zM343 688v-50M330 650h27M359 650l20-23M354 668l18 18" fill="none" stroke="#795b3b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g>
+<text x="320" y="743" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.2">ДЕТСКАЯ ПЛОЩАДКА</text>
+
+<!-- SUMMER KITCHEN -->
+<g filter="url(#soft)"><path d="M808 365L922 326L1037 365L1020 385L826 385Z" fill="#74583e" opacity=".35"/><path d="M814 351L922 315L1030 351L1014 372L830 372Z" fill="url(#roof2)" stroke="#6f5339" stroke-width="5"/><path d="M830 372H1014V461H830Z" fill="#e8d5b5" stroke="#765b40" stroke-width="5"/><path d="M851 375V455M914 375V455M977 375V455" stroke="#8c6b4a" stroke-width="5"/><path d="M841 397H1003" stroke="#f7ead4" stroke-width="5"/><rect x="855" y="414" width="50" height="22" rx="5" fill="#b29a79"/><rect x="924" y="414" width="50" height="22" rx="5" fill="#b29a79"/></g>
+<text x="922" y="478" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.3">ЛЕТНЯЯ КУХНЯ</text>
+
+<!-- POOL -->
+<g filter="url(#shadow)"><ellipse cx="884" cy="562" rx="149" ry="84" fill="#365f5c" opacity=".24"/><path d="M738 535Q741 459 884 454Q1027 459 1030 535Q1024 613 884 620Q744 613 738 535Z" fill="#547c79" stroke="#3e6967" stroke-width="5"/><path d="M750 525Q758 468 884 464Q1010 468 1018 525Q1008 585 884 595Q760 585 750 525Z" fill="url(#water)" stroke="#e8f7f4" stroke-width="6"/><path d="M772 504q55-20 110 0t110 0M765 537q60-21 119 0t119 0M792 568q46-14 92 0t92 0" fill="none" stroke="#effcf9" stroke-width="4" opacity=".75"/></g>
+<text x="884" y="537" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="850" fill="#fff" letter-spacing="2.5">БАССЕЙН</text>
+
+<!-- BANYA -->
+<g filter="url(#soft)"><path d="M1007 470L1070 438L1133 470L1122 528L1018 528Z" fill="#8b6544" opacity=".4"/><path d="M1008 459L1070 421L1132 459L1120 479L1019 479Z" fill="url(#roof2)" stroke="#644932" stroke-width="5"/><path d="M1019 479H1121V526H1019Z" fill="#e1c59e" stroke="#6f5038" stroke-width="5"/><rect x="1058" y="489" width="27" height="37" fill="#8fb9b3" stroke="#654b37" stroke-width="4"/></g>
+<text x="1070" y="548" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.5">БАНЯ</text>
+
+<!-- HAMMOCK -->
+<g filter="url(#soft)"><path d="M665 625V710M775 625V710" stroke="#73563d" stroke-width="9" stroke-linecap="round"/><path d="M667 638Q720 675 773 638" fill="none" stroke="#d7b688" stroke-width="19"/><path d="M675 640Q720 664 765 640" fill="none" stroke="#fff2dd" stroke-width="4"/></g>
+<text x="720" y="735" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.5">ГАМАК</text>
+
+<!-- BUNGALOW -->
+<g filter="url(#shadow)"><path d="M801 651L891 603L985 651L972 736L814 736Z" fill="#9b744d" opacity=".45"/><path d="M801 640L891 588L985 640L972 662L814 662Z" fill="url(#roof2)" stroke="#644a34" stroke-width="6"/><path d="M814 662H972V730H814Z" fill="#ead9bd" stroke="#73573e" stroke-width="5"/><rect x="838" y="676" width="28" height="39" rx="4" fill="#91b9b3" stroke="#6d5642" stroke-width="4"/><rect x="922" y="676" width="28" height="39" rx="4" fill="#91b9b3" stroke="#6d5642" stroke-width="4"/><rect x="879" y="688" width="31" height="42" rx="3" fill="#9d7956" stroke="#694e38" stroke-width="4"/><path d="M808 731H978" stroke="#684e38" stroke-width="8"/></g>
+<text x="891" y="757" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.4">БУНГАЛО · ~20 М</text>
+
+<!-- POND + BRIDGE -->
+<g filter="url(#soft)"><ellipse cx="1038" cy="674" rx="97" ry="49" fill="#365f5c" opacity=".2"/><ellipse cx="1038" cy="658" rx="96" ry="45" fill="url(#water)" stroke="#4f8782" stroke-width="6"/><path d="M976 649q31-14 62 0t62 0M986 671q28-10 56 0t56 0" fill="none" stroke="#e4f6f2" stroke-width="4" opacity=".72"/><path d="M980 620H1096" stroke="#a47b4f" stroke-width="12" stroke-linecap="round"/><path d="M980 614H1096" stroke="#e3c79d" stroke-width="5"/></g>
+<text x="1038" y="730" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="800" fill="#5b6d61" letter-spacing="1.4">ПРУД · МОСТИК</text>
+
+<!-- secondary planting -->
+<g fill="#5d855f" stroke="#496f50" stroke-width="2"><circle cx="540" cy="520" r="17"/><circle cx="600" cy="540" r="14"/><circle cx="690" cy="505" r="19"/><circle cx="760" cy="472" r="15"/><circle cx="1070" cy="340" r="18"/><circle cx="1120" cy="300" r="14"/><circle cx="1045" cy="255" r="20"/><circle cx="450" cy="680" r="18"/><circle cx="510" cy="700" r="13"/><circle cx="1120" cy="585" r="18"/></g>
+<g fill="#aecaa4" opacity=".65"><circle cx="535" cy="514" r="6"/><circle cx="596" cy="535" r="5"/><circle cx="684" cy="498" r="7"/><circle cx="756" cy="467" r="6"/><circle cx="1065" cy="333" r="7"/><circle cx="1116" cy="295" r="5"/><circle cx="1038" cy="247" r="8"/></g>
+
+<!-- gate -->
+<g filter="url(#soft)"><path d="M542 793V758H658V793" fill="#765b40" stroke="#59432f" stroke-width="6"/><path d="M552 759V793M574 759V793M600 759V793M626 759V793M648 759V793" stroke="#c29a69" stroke-width="6"/></g>
+<text x="600" y="739" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="850" fill="#5b6d61" letter-spacing="2">ГЛАВНЫЕ ВОРОТА</text>
+
+<!-- exhibition notation -->
+<g font-family="Inter,system-ui,sans-serif" fill="#718077"><text x="78" y="738" font-size="8" font-weight="800" letter-spacing="2">LANDSCAPE MASTERPLAN · FREEDOM SOCHI</text><text x="1122" y="738" text-anchor="end" font-size="8" letter-spacing="1.4">КОНЦЕПТ · НЕ МАСШТАБ</text></g>
 </svg>
 <div class="floor-filter"></div><div class="markers" id="markers"></div></div><div class="floor-note" id="floorNote"></div><div class="map-caption">Нажмите на светящуюся точку — карта приблизится к объекту</div>
 <div class="detail" id="detail"><button class="close" id="close">×</button><img id="detailImage" src="images/room-family.jpg" alt=""><div class="detail-body"><div class="detail-type" id="detailType">ПРОСТРАНСТВО FREEDOM</div><h2 id="detailName">Выберите место</h2><p id="detailDesc"></p><div class="facts" id="detailFacts"></div><div class="detail-actions"><button class="cta" id="detailAction" style="display:none">Забронировать</button><button class="ghost" id="back">Вернуться к карте</button></div></div></div></div>
-<div class="legend">Иллюстрированная карта FreeDom · архитектурная версия · геометрию уточним по реальному плану.</div></main></div>
+<div class="legend">Концептуальный мастерплан FreeDom · вид сверху · презентационная архитектурная модель</div></main></div>
 <script>
 const API='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability',RAW='https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/e99cd293-38f1-46dd-9060-c299368daa4c.png';
 const ROOM_DATA={'Хостел эконом':['images/room-hostel.jpg','Эконом-хостел для тех, кому важнее атмосфера дома, люди и сама поездка.','1','ХОСТЕЛ'],'Хостел стандарт':['images/room-hostel.jpg','Стандартный хостел — удобный вариант для проживания в доме FreeDom.','1','ХОСТЕЛ'],'Хостел стандарт №2':['images/room-hostel-2.jpg','Второй стандартный хостел.','1','ХОСТЕЛ'],'Семейная комната':['images/room-family.jpg','Уютная семейная комната на 2 основных места. При необходимости — до 4 гостей.','2','КОМНАТА'],'Двухместный с балконом №1':['images/room-balcony.jpg','Двухместная комната с балконом и видом на природу.','2','КОМНАТА'],'Двухместный с балконом №2':['images/room-balcony-bed.jpg','Двухместная комната с балконом и собственным санузлом.','2','КОМНАТА'],'Место под звёздами':['images/room-attic.jpg','Особенное место FreeDom для необычного проживания.','attic','ОСОБЕННОЕ'],'Мансардная комната №1':['images/room-attic.jpg','Тихая мансардная комната на 2 места.','attic','КОМНАТА'],'Мансардная комната №2':['images/room-attic.jpg','Небольшая мансардная комната на 1 место.','attic','КОМНАТА'],'Бунгало в саду':['images/room-bungalow.jpg','Отдельное жилое пространство в саду, примерно в 20 метрах от бассейна.','space','ОТДЕЛЬНОЕ ПРОСТРАНСТВО']};
