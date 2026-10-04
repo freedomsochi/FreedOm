@@ -41,7 +41,8 @@ rbox(terrain,'pond',-31,.22,-11,12,.35,8,M.water,.32);rbox(terrain,'pondEdge',-3
 rbox(terrain,'bridge',-31,.72,-7,5,.28,3.2,M.wood2,.08);
 rbox(terrain,'bathhouse',-35,2.35,-2,8,4.7,7,M.wood,.35);roof(terrain,-35,5.2,-2,9,8);
 rbox(terrain,'futurePlayground',-8,.18,34,12,.25,8,M.floor,.25);
-\n// House massing. The current verified project brief establishes the house as a brick building with a red roof; exact architectural dimensions remain subject to the real plan/photos. The red roof is modeled as a pitched gable; dimensions remain provisional until the measured plan is recovered.
+
+// House massing. The current verified project brief establishes the house as a brick building with a red roof; exact architectural dimensions remain subject to the real plan/photos. The red roof is modeled as a pitched gable; dimensions remain provisional until the measured plan is recovered.
 const W=34,D=24,H=5.1;
 function materialAt(a,m){const q=m.clone();q.transparent=a<1;q.opacity=a;return q}
 function wall(g,n,x,y,z,w,h,d,m,a=1){return rbox(g,n,x,y,z,w,h,d,materialAt(a,m),.06)}
