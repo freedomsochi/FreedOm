@@ -81,24 +81,50 @@ function tree(x,z,s=1){const g=new THREE.Group();g.position.set(x,0,z);cyl(g,0,2
 
 // Building footprints — intentionally proportional, based on sketches, not fabricated metric dimensions.
 const floorDefs={
- '-1':{y:1,rooms:[[-1,0,18,12,'Бассейн / нижняя зона'],[12,0,7,12,'Кухня'],[16,-6,5,5,'Баня / душ — уточняется'],[0,9,18,5,'Терраса']]},
- '1':{y:5,rooms:[[0,0,13,12,'Гостиная'],[8,-5,6,4,'Кухня'],[-7,-4,5,5,'Коридор'],[8,3,4,4,'Санузел'],[0,8,17,5,'Закрытая веранда']]},
- '2':{y:9,rooms:[[-5,-1,8,9,'Хостел стандарт — левый'],[5,-1,8,9,'Хостел стандарт — правый'],[-5,6,7,4,'Администрация'],[5,6,7,4,'Семейная'],[0,6,3,3,'Санузел']]},
- '3':{y:13,rooms:[[-5,-1,7,9,'Практика / йога — левая часть'],[5,-1,7,9,'Практика / йога — правая часть'],[0,5,10,5,'Йога / общее пространство'],[-8,6,3,3,'Боковая зона'],[8,6,3,3,'Боковая зона']]},
+ // Proportional placeholders only. These encode the CONFIRMED adjacency/semantics from the architectural summary,
+ // not invented metric dimensions. Each floor is intentionally different.
+ '-1':{y:1,rooms:[
+   [-1,0,17,11,'Бассейн / нижняя зона'],
+   [8,-6,7,5,'Кухня / летняя кухня'],
+   [-8,-6,5,5,'Баня / душ'],
+   [0,8,18,4,'Терраса']
+ ]},
+ '1':{y:5,rooms:[
+   [0,-1,13,11,'Гостиная'],
+   [7,-5,6,4,'Кухня'],
+   [-7,-4,5,5,'Коридор'],
+   [7,3,4,4,'Санузел'],
+   [0,8,18,5,'Закрытая веранда']
+ ]},
+ '2':{y:9,rooms:[
+   [-5,-1,8,9,'Хостел стандарт — левый'],
+   [5,-1,8,9,'Хостел стандарт — правый'],
+   [-5,6,7,4,'Администрация'],
+   [5,6,7,4,'Семейная комната'],
+   [0,6,3,3,'Санитарная зона']
+ ]},
+ '3':{y:13,rooms:[
+   [0,3,12,8,'Йога / практика'],
+   [-7,-1,4,8,'Боковая зона'],
+   [7,-1,4,8,'Боковая зона'],
+   [0,9,12,3,'Балкон / верхняя зона']
+ ]},
  'attic':{y:17,rooms:[[0,0,15,12,'Мансарда — план уточняется']]}
 };
 for(const [id,def] of Object.entries(floorDefs)){
  const g=new THREE.Group();g.position.y=def.y;levels[id]=g;root.add(g);
  for(const r of def.rooms){const [x,z,w,d,label]=r;room(g,x,z,w,d,3.2,label);const sp=labelSprite(label);sp.position.set(x,3.9,z);g.add(sp)}
- // slab outline
- box(g,0,-.15,0,24,.3,20,mat.wall2,{cast:false});
+ // Temporary floor slab follows the room envelope rather than a universal 24×20 rectangle.
+ const minX=Math.min(...def.rooms.map(r=>r[0]-r[2]/2)), maxX=Math.max(...def.rooms.map(r=>r[0]+r[2]/2));
+ const minZ=Math.min(...def.rooms.map(r=>r[1]-r[3]/2)), maxZ=Math.max(...def.rooms.map(r=>r[1]+r[3]/2));
+ box(g,(minX+maxX)/2,-.15,(minZ+maxZ)/2,maxX-minX+.5,.3,maxZ-minZ+.5,mat.wall2,{cast:false});
 }
 // Exterior facade cues and windows
 for(const id of Object.keys(floorDefs)){const y=floorDefs[id].y+1.9; for(let x=-8;x<=8;x+=4){box(root,x,y,-10.12,2.2,1.5,.12,mat.glass)} box(root,12,y,0,.12,1.5,2.2,mat.glass);}
 // porch and stairs
 box(root,11,1.4,12,7,1,4,mat.wood);for(let i=0;i<4;i++)box(root,11,.25+i*.28,14+i*.55,8-i*.4,.3,1,mat.path,{cast:false});
 // roof hint
-const roofHouse=box(root,0,19.3,0,26,1,22,mat.roof);roofHouse.rotation.z=.02;
+const roofHouse=box(root,0,19.3,0,24,1,21,mat.roof);roofHouse.rotation.z=.02;
 
 // room hotspots
 const hs=[
