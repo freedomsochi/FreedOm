@@ -54,13 +54,26 @@ box('porch',11,.25,12,7,.5,5,mats.wood);for(let i=-2;i<=2;i++)box('porchpost',11
 // upper-level visual slabs, slightly transparent to communicate floors
 const floors={minus:-1,one:0,two:5.8,three:11.6,attic:17.4};
 const slabs={};for(const [key,y] of Object.entries(floors)){if(key==='minus')continue;const slab=new THREE.Mesh(new THREE.BoxGeometry(HW+.4,.22,HD+.4),new THREE.MeshStandardMaterial({color:0xd8c9ab,transparent:true,opacity:key==='one'?0.12:0.055,roughness:.9}));slab.position.set(0,y,0);slab.visible=key==='one';slab.name='slab-'+key;group.add(slab);slabs[key]=slab}
-// terrace / summer kitchen on left of pool near house
-box('summerKitchen',-19,2.3,-4,8,4.6,11,mats.wood);box('summerRoof',-19,5.1,-4,9,1,12,mats.roof);path(-19,0,4,25);
+// Internal −1 floor: the summer kitchen and bath/sauna are INSIDE the main house.
+// This is deliberately represented as a lower internal level, not as separate territory buildings.
+const basementY=-5.0, basementH=4.6;
+box('minusFloor',0,-7.35,0,HW-.6,.35,HD-.6,mats.floor);
+box('minusNorthWall',0,basementY+basementH/2,-HD/2+.45,HW-.8,basementH,.65,mats.wall);
+box('minusSouthWall',0,basementY+basementH/2,HD/2-.45,HW-.8,basementH,.65,mats.wall);
+box('minusWestWall',-HW/2+.45,basementY+basementH/2,0,.65,basementH,HD-1.3,mats.wall);
+box('minusEastWall',HW/2-.45,basementY+basementH/2,0,.65,basementH,HD-1.3,mats.wall);
+// Proportional room partitions only — exact dimensions remain pending the measured plan.
+box('minusPartitionNorth',-2.5,basementY+basementH/2,-2.0,.55,basementH,HD/2-1.0,mats.wall2);
+box('minusPartitionSouth',7.0,basementY+basementH/2,3.5,HW/2-1.5,.55,5.5,mats.wall2);
+box('minusSummerKitchen',-8.0,basementY+1.4,-6.0,12,2.7,7,mats.wood);
+box('minusSauna',8.5,basementY+1.4,-5.8,5.5,2.7,5.5,mats.wood);
+box('minusStairwell',0,basementY+1.1,5.8,3.6,2.2,5.0,mats.wood);
+path(0,0,4,24);
 // pool right of sport road / beside house
 box('poolDeck',19,.15,2,13,.3,24,mats.floor);box('pool',19,.2,2,9,.35,19,mats.water);box('poolRim',19,.4,2,10,.25,20,mats.glass);
-// sport zone left/down from house
+// sport zone below/right of the house route
 box('sportBase',-22,.25,25,15,.5,12,mats.wood);for(let i=0;i<3;i++){cyl('sportPole',-26+i*4,2.2,25,.22,4,mats.wall);box('sportBar',-24+i*4,4,25,4,.22,.22,mats.wall)}
-// bungalow in garden, upper left
+// bungalow in garden, upper part of the territory
 box('bungalow',-25,2.3,-25,12,4.5,9,mats.wood);box('bungalowRoof',-25,5.2,-25,14,1,11,mats.roof);
 // fountain / garden center
 cyl('fountain',12,.7,-25,3.5,1.1,mats.water);cyl('fountainCore',12,1.4,-25,.65,1.4,mats.wall);for(let i=0;i<12;i++){const a=i*Math.PI/6;cyl('tree',36+Math.cos(a)*9,2,-22+Math.sin(a)*9,.45,4,mats.wood);cyl('treeTop',36+Math.cos(a)*9,4.7,-22+Math.sin(a)*9,2.2,3,mats.grass)}
@@ -77,15 +90,21 @@ hotspot('Семейная',8,-6,{floor:'2 этаж',cap:'целиком',type:'�
 hotspot('Балконная комната',-8,-6,{floor:'3 этаж',cap:'2 места',type:'Целиком',desc:'Двухместная комната с балконом.'});
 hotspot('Мансарда',8,0,{floor:'Мансарда',cap:'целиком',type:'Целиком',desc:'Мансардная комната.'});
 hotspot('Бассейн',19,2,{floor:'Территория',cap:'общая зона',type:'Пространство',desc:'Бассейн рядом с домом.'});
-hotspot('Летняя кухня',-19,-4,{floor:'Территория',cap:'общая зона',type:'Пространство',desc:'Летняя кухня с панорамным открыванием окон.'});
+hotspot('Летняя кухня',-8,-6,{floor:'−1 этаж',cap:'общая зона',type:'Пространство',desc:'Летняя кухня находится внутри главного дома, в северной части −1 этажа. Точная геометрия будет уточнена по исходному плану.'});
+hotspot('Баня / сауна',8.5,-5.8,{floor:'−1 этаж',cap:'общая зона',type:'Пространство',desc:'Баня находится внутри главного дома на −1 этаже. Она не является отдельным зданием на территории.'});
 hotspot('Тренажёрная зона',-22,25,{floor:'Территория',cap:'общая зона',type:'Пространство',desc:'Спортивная зона на территории.'});
 hotspot('Бунгало',-25,-25,{floor:'Территория',cap:'2 места',type:'Целиком',desc:'Бунгало в саду.'});hotspot('Гамак',33,-10,{floor:'Территория',cap:'общая зона',type:'Пространство',desc:'Тихая зона сада.'});hotspot('Фонтан',12,-25,{floor:'Территория',cap:'общая зона',type:'Пространство',desc:'Фонтан в саду.'});
 // simple label sprites as HTML-like sprites using canvas textures
 function label(text){const c=document.createElement('canvas');c.width=512;c.height=128;const ctx=c.getContext('2d');ctx.fillStyle='rgba(4,18,13,.72)';ctx.roundRect(8,18,496,90,28);ctx.fill();ctx.fillStyle='#f2f7f4';ctx.font='600 34px Arial';ctx.textAlign='center';ctx.fillText(text,256,73);const t=new THREE.CanvasTexture(c);const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false}));s.scale.set(7.5,1.8,1);s.userData.label=true;return s}
-function addLabel(text,x,z){const s=label(text);s.position.set(x,6.8,z);group.add(s)}addLabel('FreeDom',0,-17);addLabel('Бассейн',19,2);addLabel('Летняя кухня',-19,-4);addLabel('Тренажёрная зона',-22,25);addLabel('Бунгало',-25,-25);addLabel('Гамак',33,-10);addLabel('Фонтан',12,-25);
-const nav=document.querySelector('#nav');const navItems=[['space','Пространство','Территория + дом'],['attic','Мансарда','5 этаж'],['three','3 этаж','4 этаж'],['two','2 этаж','3 этаж'],['one','1 этаж','2 этаж'],['minus','−1 этаж','1 этаж'],['territory','Территория','сад · бассейн · баня']];
+function addLabel(text,x,z){const s=label(text);s.position.set(x,6.8,z);group.add(s)}addLabel('FreeDom',0,-17);addLabel('Бассейн',19,2);addLabel('−1 · Летняя кухня',-8,-6);addLabel('−1 · Баня',8.5,-5.8);addLabel('Тренажёрная зона',-22,25);addLabel('Бунгало',-25,-25);addLabel('Гамак',33,-10);addLabel('Фонтан',12,-25);
+const nav=document.querySelector('#nav');const navItems=[['space','Пространство','Территория + дом'],['attic','Мансарда','верхний уровень'],['three','3 этаж','практика · балконы'],['two','2 этаж','хостел · семья · admin'],['one','1 этаж','гостиная · кухня · веранда'],['minus','−1 этаж','внутри дома'],['territory','Территория','сад · бассейн · спорт']];
 let active='space';function renderNav(){nav.innerHTML='';for(const [id,title,sub] of navItems){const b=document.createElement('button');b.className='nav '+(id===active?'active':'');b.innerHTML='<strong>'+title+'</strong><span>'+sub+'</span>';b.onclick=()=>selectLayer(id);nav.appendChild(b)}}renderNav();
-function selectLayer(id){active=id;renderNav();closeCard();const territory=id==='space'||id==='territory';for(const [key,slab] of Object.entries(slabs))slab.visible=!territory&&key===id;const target=territory?new THREE.Vector3(0,0,0):new THREE.Vector3(0, id==='minus'?1.5:(floors[id]||0)+2,0);const dist=territory?62:48;animateCamera(target,dist);hotspots.forEach(h=>{h.material.opacity=territory||h.userData.floor===id?1:.2})}
+function selectLayer(id){active=id;renderNav();closeCard();const territory=id==='space'||id==='territory';for(const [key,slab] of Object.entries(slabs))slab.visible=!territory&&key===id;
+// The −1 level is a real internal floor. When selected, lift the camera enough to reveal its cutaway representation.
+const target=territory?new THREE.Vector3(0,0,0):new THREE.Vector3(0, id==='minus'?-4.0:(floors[id]||0)+2,0);const dist=territory?62:(id==='minus'?40:48);animateCamera(target,dist);hotspots.forEach(h=>{h.material.opacity=territory||h.userData.floor===id?1:.2});
+// Emphasize the selected level without changing the architectural geometry.
+if(id==='minus'){for(const [key,slab] of Object.entries(slabs))slab.visible=false;}
+}
 function animateCamera(target,dist){const start=camera.position.clone(),end=target.clone().add(new THREE.Vector3(dist*.55,dist*.82,dist*.55));const startT=controls.target.clone();let t0=performance.now();function f(now){const t=Math.min(1,(now-t0)/850),e=1-Math.pow(1-t,3);camera.position.lerpVectors(start,end,e);controls.target.lerpVectors(startT,target,e);if(t<1)requestAnimationFrame(f)}requestAnimationFrame(f)}
 const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();renderer.domElement.addEventListener('pointerup',e=>{if(Math.abs((e.clientX-(window._sx||e.clientX)))>5)return;mouse.x=e.clientX/innerWidth*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(hotspots,false)[0];if(hit)selectHotspot(hit.object)});renderer.domElement.addEventListener('pointerdown',e=>{window._sx=e.clientX});
 function selectHotspot(h){const d=h.userData;title.textContent=d.name;eyebrow.textContent=d.floor;desc.textContent=d.desc;cap.textContent=d.cap;type.textContent=d.type;document.querySelector('#card').classList.add('open');hotspots.forEach(x=>x.material.opacity=x===h?1:.14);animateCamera(h.position.clone().setY(0),26)}
