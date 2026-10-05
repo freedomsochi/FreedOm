@@ -18,7 +18,7 @@ The geometry below comes directly from the user's hand-drawn floor/territory pla
 - Bungalow in the upper part of the territory.
 - Hammock in the garden area.
 - Fountain in the garden area.
-- Sauna is a separate territory object and is currently under development.
+- Sauna / bath is INSIDE the main house on −1; it is not a separate territory building.
 
 ## −1 floor
 The sketch shows a lower level with pool-related area, kitchen, sauna/shower-related area, terrace and stair connection. Some handwritten labels are not reliably legible; do not invent their names.
