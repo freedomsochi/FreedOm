@@ -87,17 +87,79 @@ function houseShell(id,def){
 }
 const floorDefs={
  '-1':{y:1,rooms:[[-2,0,13,10,'Бассейн / нижняя зона'],[6,-4.8,6,4,'Кухня / летняя кухня'],[-6,-4.8,4,4,'Баня / душ'],[0,7,17,4,'Терраса']]},
- '1':{y:5,rooms:[[-1,0,10,9,'Гостиная'],[7,-2.5,4,5,'Кухня'],[-7,-2.5,4,5,'Коридор'],[7,3.5,4,3,'Санузел'],[0,7,17,4,'Закрытая веранда'],[5.8,0.5,2.4,4.2,'Хостел эконом']]},
+ '1':{y:5,rooms:[
+   [-3.0,2.6,7.4,6.0,'Гостиная'],
+   [1.65,4.7,2.4,2.0,'Санузел'],
+   [-1.0,-3.5,9.8,3.4,'Кухня'],
+   [0.5,-0.2,11.0,2.0,'Коридор'],
+   [5.7,3.0,3.4,4.4,'Хостел эконом'],
+   [5.7,-2.7,3.4,4.0,'Лестница'],
+   [-7.0,1.0,1.6,12.0,'Прихожая'],
+   [0.0,7.0,14.0,2.0,'Веранда']
+ ]},
  '2':{y:9,rooms:[[-4.5,-1.5,8,8,'Хостел стандарт — левый'],[4.5,-1.5,8,8,'Хостел стандарт — правый'],[-4.5,5.5,7,4,'Администрация'],[4.5,5.5,7,4,'Семейная комната'],[0,5.5,2,4,'Санитарная зона']]},
  '3':{y:13,rooms:[[0,2.5,11,8,'Йога / практика'],[-6.5,-1.5,4,7,'Боковая зона'],[6.5,-1.5,4,7,'Боковая зона'],[0,8.5,11,3,'Балкон']]},
  'attic':{y:17,rooms:[[0,0,14,10,'Мансарда — план уточняется']]}
 };
+function doorMark(g,x,z,rot=0){
+ const d=new THREE.Group(); d.position.set(x,.09,z); d.rotation.y=rot;
+ const m=new THREE.MeshBasicMaterial({color:0x3b3329,transparent:true,opacity:.9});
+ const a=box(d,-.16,0,0,.06,.035,.55,m,{cast:false});
+ const b=box(d,.16,0,0,.06,.035,.55,m,{cast:false});
+ a.rotation.y=.62; b.rotation.y=-.62;
+ g.add(d);
+}
+function wallH(g,x,z,w){box(g,x,1.6,z,w,.24,3.2,mat.wall);}
+function wallV(g,x,z,d){box(g,x,1.6,z,.24,3.2,d,mat.wall);}
+function firstFloorArchitecture(g){
+ const X=16,Z=14,t=.24,h=3.2;
+ // Один непрерывный внешний контур.
+ wallH(g,0,-7,X); wallH(g,0,7,X); wallV(g,-8,0,Z); wallV(g,8,0,Z);
+ // Веранда — северная полоса внутри общего контура.
+ wallH(g,0,6,14);
+ // Узкая прихожая вдоль всей западной стороны.
+ wallV(g,-6.2,0,12);
+ // Гостиная / санузел: санузел в правом верхнем углу гостиной.
+ wallH(g,-2.0,-.35,7.8);
+ wallV(g,1.9,2.5,5.0);
+ wallH(g,-2.0,5.0,7.8);
+ // Санузел отделён от гостиной; дверь только из гостиной.
+ wallH(g,1.9,3.7,2.2);
+ // Коридор.
+ wallH(g,1.0,-1.2,12.0);
+ // Кухня ниже коридора.
+ wallH(g,0,-5.0,10.4);
+ // Восточный блок: хостел эконом выше, лестница ниже.
+ wallV(g,3.95,2.9,4.6);
+ wallV(g,3.95,-4.0,5.2);
+ wallH(g,5.95,.7,4.1);
+ // Дверные обозначения //.
+ doorMark(g,-6.2,-6.15,Math.PI/2);      // вход в прихожую
+ doorMark(g,-5.35,6.0,0);               // прихожая → веранда
+ doorMark(g,-5.0,-.35,Math.PI/2);       // прихожая → коридор
+ doorMark(g,3.95,2.0,Math.PI/2);        // коридор → хостел
+ doorMark(g,1.9,3.1,0);                  // гостиная → санузел
+ doorMark(g,3.95,-1.2,Math.PI/2);       // коридор → лестница
+ return {bounds:{minX:-8,maxX:8,minZ:-7,maxZ:7}};
+}
 for(const [id,def] of Object.entries(floorDefs)){
  const g=new THREE.Group();g.position.y=def.y;levels[id]=g;root.add(g);
- for(const r of def.rooms){const [x,z,w,d,label]=r;room(g,x,z,w,d,3.2,label);const sp=labelSprite(label);sp.position.set(x,3.45,z);sp.scale.set(5.8,1.4,1);g.add(sp)}
- const minX=Math.min(...def.rooms.map(r=>r[0]-r[2]/2)), maxX=Math.max(...def.rooms.map(r=>r[0]+r[2]/2));
- const minZ=Math.min(...def.rooms.map(r=>r[1]-r[3]/2)), maxZ=Math.max(...def.rooms.map(r=>r[1]+r[3]/2));
- box(g,(minX+maxX)/2,-.15,(minZ+maxZ)/2,maxX-minX+.5,.3,maxZ-minZ+.5,mat.wall2,{cast:false});
+ if(id==='1'){
+   firstFloorArchitecture(g);
+   for(const r of def.rooms){
+     const [x,z,w,d,label]=r;
+     const sp=labelSprite(label);
+     sp.position.set(x,3.45,z);
+     sp.scale.set(label==='Прихожая'?4.0:label==='Веранда'?5.2:5.0,1.15,1);
+     g.add(sp);
+   }
+   box(g,0,-.15,0,16.5,.3,14.5,mat.wall2,{cast:false});
+ }else{
+   for(const r of def.rooms){const [x,z,w,d,label]=r;room(g,x,z,w,d,3.2,label);const sp=labelSprite(label);sp.position.set(x,3.45,z);sp.scale.set(5.8,1.4,1);g.add(sp)}
+   const minX=Math.min(...def.rooms.map(r=>r[0]-r[2]/2)), maxX=Math.max(...def.rooms.map(r=>r[0]+r[2]/2));
+   const minZ=Math.min(...def.rooms.map(r=>r[1]-r[3]/2)), maxZ=Math.max(...def.rooms.map(r=>r[1]+r[3]/2));
+   box(g,(minX+maxX)/2,-.15,(minZ+maxZ)/2,maxX-minX+.5,.3,maxZ-minZ+.5,mat.wall2,{cast:false});
+ }
 }
 
 for(const [id,def] of Object.entries(floorDefs)) houseShell(id,def);
@@ -126,7 +188,6 @@ function stairMesh(g){
  stair.userData.stair=true; g.add(stair); return stair;
 }
 stairMesh(levels['1']);
-stairMesh(levels['2']);
 
 for(const [id,def] of Object.entries(floorDefs)){
   const y=def.y+1.85; const xs=[]; const zs=[];
