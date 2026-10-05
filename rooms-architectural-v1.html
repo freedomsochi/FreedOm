@@ -46,7 +46,15 @@ const levels={}; const hotspots=[]; const floorY={'-1':1,'1':5,'2':9,'3':13,'att
 const mat={ground:new THREE.MeshStandardMaterial({color:0x71806f,roughness:.96}), path:new THREE.MeshStandardMaterial({color:0xb2a58d,roughness:.9}), wall:new THREE.MeshStandardMaterial({color:0xd4c6ab,roughness:.72}), wall2:new THREE.MeshStandardMaterial({color:0xb7aa92,roughness:.78}), floor:new THREE.MeshStandardMaterial({color:0x8f7357,roughness:.9}), glass:new THREE.MeshPhysicalMaterial({color:0x75a9b0,roughness:.16,metalness:.05,transmission:.18,transparent:true,opacity:.8}), water:new THREE.MeshPhysicalMaterial({color:0x3f8994,roughness:.08,metalness:.05,transmission:.35,transparent:true,opacity:.82}), roof:new THREE.MeshStandardMaterial({color:0x514b43,roughness:.82}), wood:new THREE.MeshStandardMaterial({color:0x765d45,roughness:.85}), leaf:new THREE.MeshStandardMaterial({color:0x47634a,roughness:1}), dark:new THREE.MeshStandardMaterial({color:0x272b28,roughness:.95}), accent:new THREE.MeshStandardMaterial({color:0xc7a46d,roughness:.7})};
 function box(g,x,y,z,sx,sy,sz,m,opts={}){const q=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),m);q.position.set(x,y,z);q.castShadow=opts.cast!==false;q.receiveShadow=true;g.add(q);return q}
 function cyl(g,x,y,z,r,h,m){const q=new THREE.Mesh(new THREE.CylinderGeometry(r,r*.88,h,12),m);q.position.set(x,y,z);q.castShadow=true;q.receiveShadow=true;g.add(q);return q}
-function room(g,x,z,w,d,h,label){const r=box(g,x,h/2,z,w,h,d,mat.floor,{cast:false}); r.userData.label=label; const t=.22; box(g,x,h,z-d/2,w,t,h,mat.wall); box(g,x,h,z+d/2,w,t,h,mat.wall); box(g,x-w/2,h,z,t,h,d,mat.wall); box(g,x+w/2,h,z,t,h,d,mat.wall); return r}
+function room(g,x,z,w,d,h,label){
+  const r=box(g,x,.05,z,w,.12,d,mat.floor,{cast:false}); r.userData.label=label;
+  const t=.24, wh=h;
+  box(g,x,wh/2,z-d/2,w,t,wh,mat.wall);
+  box(g,x,wh/2,z+d/2,w,t,wh,mat.wall);
+  box(g,x-w/2,wh/2,z,t,wh,d,mat.wall);
+  box(g,x+w/2,wh/2,z,t,wh,d,mat.wall);
+  return r
+}
 function labelSprite(text,color='#fff'){const c=document.createElement('canvas');c.width=512;c.height=128;const x=c.getContext('2d');x.clearRect(0,0,512,128);x.font='600 34px Arial';x.fillStyle=color;x.textAlign='center';x.fillText(text,256,62);const tx=new THREE.CanvasTexture(c);const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthTest:false}));sp.scale.set(7,1.75,1);return sp}
 function hotspot(name,pos,text,level){const g=new THREE.Group();g.position.set(...pos);const ring=new THREE.Mesh(new THREE.RingGeometry(.36,.49,32),new THREE.MeshBasicMaterial({color:0xf0d39a,transparent:true,opacity:.9,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;g.add(ring);const dot=new THREE.Mesh(new THREE.SphereGeometry(.18,16,16),new THREE.MeshBasicMaterial({color:0xffffff}));g.add(dot);g.userData={hotspot:true,name,text,level};root.add(g);hotspots.push(g);return g}
 
@@ -72,7 +80,7 @@ const floorDefs={
 };
 for(const [id,def] of Object.entries(floorDefs)){
  const g=new THREE.Group();g.position.y=def.y;levels[id]=g;root.add(g);
- for(const r of def.rooms){const [x,z,w,d,label]=r;room(g,x,z,w,d,3.2,label);const sp=labelSprite(label);sp.position.set(x,3.9,z);g.add(sp)}
+ for(const r of def.rooms){const [x,z,w,d,label]=r;room(g,x,z,w,d,3.2,label);const sp=labelSprite(label);sp.position.set(x,3.45,z);sp.scale.set(5.8,1.4,1);g.add(sp)}
  const minX=Math.min(...def.rooms.map(r=>r[0]-r[2]/2)), maxX=Math.max(...def.rooms.map(r=>r[0]+r[2]/2));
  const minZ=Math.min(...def.rooms.map(r=>r[1]-r[3]/2)), maxZ=Math.max(...def.rooms.map(r=>r[1]+r[3]/2));
  box(g,(minX+maxX)/2,-.15,(minZ+maxZ)/2,maxX-minX+.5,.3,maxZ-minZ+.5,mat.wall2,{cast:false});
