@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FreeDom — Rooms / Architectural 3D Foundation</title>
+<style>
+:root{--glass:rgba(19,23,24,.68);--line:rgba(255,255,255,.13);--text:#f2eee5;--muted:#b9b6ad;--accent:#e8c98c}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101512;color:var(--text);font-family:Inter,Arial,sans-serif}#scene{position:fixed;inset:0}canvas{display:block}
+.ui{position:fixed;z-index:5;inset:0;pointer-events:none}.panel{pointer-events:auto;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(18px);box-shadow:0 18px 60px #0007;border-radius:18px}.levels{position:absolute;left:22px;top:50%;transform:translateY(-50%);padding:10px;display:flex;flex-direction:column;gap:6px}.levels button,.actions button{border:0;background:transparent;color:var(--muted);padding:12px 14px;border-radius:12px;text-align:left;font-size:14px;cursor:pointer}.levels button:hover,.levels button.active{background:#ffffff12;color:#fff}.levels button.active{box-shadow:inset 2px 0 0 var(--accent)}
+.brand{position:absolute;left:22px;top:22px;padding:12px 16px}.brand b{letter-spacing:.16em;font-size:12px}.brand span{display:block;color:var(--muted);font-size:11px;margin-top:4px}.actions{position:absolute;right:22px;top:22px;padding:8px;display:flex;gap:4px}.actions button{text-align:center}.hint{position:absolute;right:22px;bottom:22px;padding:13px 16px;color:var(--muted);font-size:12px}.hint strong{color:#fff}.card{position:absolute;right:22px;bottom:72px;width:min(340px,calc(100vw - 44px));padding:18px;display:none}.card.show{display:block}.card h2{margin:0 0 6px;font-size:21px}.card p{margin:0;color:var(--muted);line-height:1.5;font-size:13px}.card .meta{margin-top:12px;color:#ddd6c7;font-size:12px}.card button{margin-top:14px;width:100%;border:0;border-radius:12px;padding:12px;background:#eee2c7;color:#201c16;font-weight:700;cursor:pointer}.legend{position:absolute;left:22px;bottom:22px;padding:10px 13px;font-size:11px;color:var(--muted)}
+@media(max-width:700px){.levels{left:10px}.brand,.actions{top:10px}.brand{left:10px}.actions{right:10px}.hint,.legend{display:none}.card{right:10px;bottom:10px}}
+</style>
+</head>
+<body>
+<div id="scene"></div>
+<div class="ui">
+  <div class="panel brand"><b>FREEDOM</b><span>ROOMS · 3D SPACE</span></div>
+  <div class="panel levels" id="levels">
+    <button data-level="space" class="active">Пространство</button>
+    <button data-level="-1">−1 этаж</button>
+    <button data-level="1">1 этаж</button>
+    <button data-level="2">2 этаж</button>
+    <button data-level="3">3 этаж</button>
+    <button data-level="attic">Мансарда</button>
+  </div>
+  <div class="panel actions"><button id="home">← На главную</button><button id="light">☼</button></div>
+  <div class="panel legend">Вращайте карту · колесо — масштаб · нажмите на объект</div>
+  <div class="panel hint"><strong>FreeDom</strong> · виртуальное пространство</div>
+  <div class="panel card" id="card"><h2 id="cardTitle"></h2><p id="cardText"></p><div class="meta" id="cardMeta"></div><button>Забронировать</button></div>
+</div>
+<script type="module">
+import * as THREE from "https://esm.sh/three@0.180.0";
+import {OrbitControls} from "https://esm.sh/three@0.180.0/examples/jsm/controls/OrbitControls.js";
+
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x9aa99c); scene.fog=new THREE.Fog(0x9aa99c,70,170);
+const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.1,500); camera.position.set(42,55,48);
+const renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.setSize(innerWidth,innerHeight); renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap; document.querySelector('#scene').appendChild(renderer.domElement);
+const controls=new OrbitControls(camera,renderer.domElement); controls.target.set(0,0,0); controls.enableDamping=true; controls.dampingFactor=.07; controls.minDistance=24; controls.maxDistance=105; controls.maxPolarAngle=Math.PI*.46;
+scene.add(new THREE.HemisphereLight(0xf4efe2,0x34433a,2.1));
+const sun=new THREE.DirectionalLight(0xffe9c4,3.1); sun.position.set(-35,65,30); sun.castShadow=true; sun.shadow.mapSize.set(2048,2048); scene.add(sun);
+
+const root=new THREE.Group();scene.add(root), root.rotation.y=0.0;
+const levels={}; const hotspots=[]; const floorY={'-1':1,'1':5,'2':9,'3':13,'attic':17};
+const mat={ground:new THREE.MeshStandardMaterial({color:0x71806f,roughness:.96}), path:new THREE.MeshStandardMaterial({color:0xb2a58d,roughness:.9}), wall:new THREE.MeshStandardMaterial({color:0xd4c6ab,roughness:.72}), wall2:new THREE.MeshStandardMaterial({color:0xb7aa92,roughness:.78}), floor:new THREE.MeshStandardMaterial({color:0x8f7357,roughness:.9}), glass:new THREE.MeshPhysicalMaterial({color:0x75a9b0,roughness:.16,metalness:.05,transmission:.18,transparent:true,opacity:.8}), water:new THREE.MeshPhysicalMaterial({color:0x3f8994,roughness:.08,metalness:.05,transmission:.35,transparent:true,opacity:.82}), roof:new THREE.MeshStandardMaterial({color:0x514b43,roughness:.82}), wood:new THREE.MeshStandardMaterial({color:0x765d45,roughness:.85}), leaf:new THREE.MeshStandardMaterial({color:0x47634a,roughness:1}), dark:new THREE.MeshStandardMaterial({color:0x272b28,roughness:.95}), accent:new THREE.MeshStandardMaterial({color:0xc7a46d,roughness:.7})};
+function box(g,x,y,z,sx,sy,sz,m,opts={}){const q=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),m);q.position.set(x,y,z);q.castShadow=opts.cast!==false;q.receiveShadow=true;g.add(q);return q}
+function cyl(g,x,y,z,r,h,m){const q=new THREE.Mesh(new THREE.CylinderGeometry(r,r*.88,h,12),m);q.position.set(x,y,z);q.castShadow=true;q.receiveShadow=true;g.add(q);return q}
+function room(g,x,z,w,d,h,label){const r=box(g,x,h/2,z,w,h,d,mat.floor,{cast:false}); r.userData.label=label; // perimeter walls
+ const t=.22; box(g,x,h,z-d/2,w,t,h,mat.wall); box(g,x,h,z+d/2,w,t,h,mat.wall); box(g,x-w/2,h,z,t,h,d,mat.wall); box(g,x+w/2,h,z,t,h,d,mat.wall); return r}
+function labelSprite(text,color='#fff'){const c=document.createElement('canvas');c.width=512;c.height=128;const x=c.getContext('2d');x.clearRect(0,0,512,128);x.font='600 34px Arial';x.fillStyle=color;x.textAlign='center';x.fillText(text,256,62);const tx=new THREE.CanvasTexture(c);const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthTest:false}));sp.scale.set(7,1.75,1);return sp}
+function hotspot(name,pos,text,level){const g=new THREE.Group();g.position.set(...pos);const ring=new THREE.Mesh(new THREE.RingGeometry(.36,.49,32),new THREE.MeshBasicMaterial({color:0xf0d39a,transparent:true,opacity:.9,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;g.add(ring);const dot=new THREE.Mesh(new THREE.SphereGeometry(.18,16,16),new THREE.MeshBasicMaterial({color:0xffffff}));g.add(dot);g.userData={hotspot:true,name,text,level};root.add(g);hotspots.push(g);return g}
+
+// Site
+const site=box(root,0,-.7,0,88,1.4,70,mat.ground,{cast:false});
+// main approach
+box(root,0,.05,28,10,.12,28,mat.path,{cast:false});
+box(root,-11,.06,8,3,.12,30,mat.path,{cast:false});
+// gates
+box(root,0,2.2,32,9,4,.35,mat.dark);box(root,-4.1,1.8,32,7,.35,.3,mat.accent);box(root,4.1,1.8,32,7,.35,.3,mat.accent);
+// pool right of house/route
+box(root,18,.25,5,18,.5,9,mat.water,{cast:false});box(root,18,.52,5,19,.12,10,mat.path,{cast:false});box(root,18,.27,5,17,.12,8,mat.water,{cast:false});
+// sport zone left
+const sport=box(root,-18,.1,13,17,.22,12,mat.path,{cast:false});
+box(root,-22,3,10,.25,6,.25,mat.dark);box(root,-22,5.9,10,6,.25,.25,mat.dark);box(root,-25,3,10,.25,6,.25,mat.dark);box(root,-19,2,15,.35,.3,3,mat.dark);
+cyl(root,-16,.8,14,.65,1.2,mat.dark);
+hotspot('Спортивная площадка',[-18,.9,13],'Гиря, турник и оборудование для отжиманий','space');
+// pond upper-left
+box(root,-27,.18,-22,12,.35,9,mat.water,{cast:false});
+hotspot('Пруд',[-27,.7,-22],'Садовый пруд рядом с деревьями','space');
+// bungalow upper
+const bun=box(root,22,2,-23,10,4,7,mat.wood);box(bun,0,0,0,0,0,0,mat.wood);const roof=box(root,22,4.3,-23,11,.5,8,mat.roof);roof.rotation.z=.02;
+hotspot('Бунгало',[22,4.8,-23],'Отдельное пространство на территории','space');
+// Баня находится ВНУТРИ главного дома на −1 этаже. Отдельное здание на территории не создаём.
+// hammock
+box(root,0,2,-19,.18,4,.18,mat.wood);box(root,8,2,-19,.18,4,.18,mat.wood);const ham=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,7,10),mat.accent);ham.rotation.z=Math.PI/2;ham.position.set(4,1.5,-19);root.add(ham);hotspot('Гамак',[4,2.2,-19],'Зона отдыха в саду','space');
+// fountain
+cyl(root,-9,.5,-18,1.4,.6,mat.accent);cyl(root,-9,1.15,-18,.28,1.2,mat.water);hotspot('Фонтан',[-9,1.8,-18],'Фонтан в садовой части','space');
+// trees
+function tree(x,z,s=1){const g=new THREE.Group();g.position.set(x,0,z);cyl(g,0,2.4,0,.34*s,4.8*s,mat.wood);cyl(g,0,5.2,0,1.7*s,2.7*s,mat.leaf);cyl(g,.8,6.1,.2,1.2*s,2.2*s,mat.leaf);root.add(g)}
+[[-34,-28,1.1],[-30,-14,.9],[-24,-29,.8],[-17,-27,1],[-6,-28,.9],[31,-18,1],[30,-28,.9],[28,-8,.8],[-31,1,.7],[31,9,.8]].forEach(a=>tree(...a));
+
+// Building footprints — intentionally proportional, based on sketches, not fabricated metric dimensions.
+const floorDefs={
+ '-1':{y:1,rooms:[[-1,0,18,12,'Бассейн / нижняя зона'],[12,0,7,12,'Кухня'],[16,-6,5,5,'Баня / душ — уточняется'],[0,9,18,5,'Терраса']]},
+ '1':{y:5,rooms:[[0,0,13,12,'Гостиная'],[8,-5,6,4,'Кухня'],[-7,-4,5,5,'Коридор'],[8,3,4,4,'Санузел'],[0,8,17,5,'Закрытая веранда']]},
+ '2':{y:9,rooms:[[-5,-1,8,9,'Хостел стандарт — левый'],[5,-1,8,9,'Хостел стандарт — правый'],[-5,6,7,4,'Администрация'],[5,6,7,4,'Семейная'],[0,6,3,3,'Санузел']]},
+ '3':{y:13,rooms:[[-5,-1,7,9,'Практика / йога — левая часть'],[5,-1,7,9,'Практика / йога — правая часть'],[0,5,10,5,'Йога / общее пространство'],[-8,6,3,3,'Боковая зона'],[8,6,3,3,'Боковая зона']]},
+ 'attic':{y:17,rooms:[[0,0,15,12,'Мансарда — план уточняется']]}
+};
+for(const [id,def] of Object.entries(floorDefs)){
+ const g=new THREE.Group();g.position.y=def.y;levels[id]=g;root.add(g);
+ for(const r of def.rooms){const [x,z,w,d,label]=r;room(g,x,z,w,d,3.2,label);const sp=labelSprite(label);sp.position.set(x,3.9,z);g.add(sp)}
+ // slab outline
+ box(g,0,-.15,0,24,.3,20,mat.wall2,{cast:false});
+}
+// Exterior facade cues and windows
+for(const id of Object.keys(floorDefs)){const y=floorDefs[id].y+1.9; for(let x=-8;x<=8;x+=4){box(root,x,y,-10.12,2.2,1.5,.12,mat.glass)} box(root,12,y,0,.12,1.5,2.2,mat.glass);}
+// porch and stairs
+box(root,11,1.4,12,7,1,4,mat.wood);for(let i=0;i<4;i++)box(root,11,.25+i*.28,14+i*.55,8-i*.4,.3,1,mat.path,{cast:false});
+// roof hint
+const roofHouse=box(root,0,19.3,0,26,1,22,mat.roof);roofHouse.rotation.z=.02;
+
+// room hotspots
+const hs=[
+ ['Гостиная',[0,6.2,0],'Основное общее пространство первого этажа','1'],
+ ['Закрытая веранда',[0,6.2,8],'Отдельная закрытая веранда','1'],
+ ['Хостел стандарт — левый',[-5,10.2,-1],'Размещение на втором этаже','2'],
+ ['Хостел стандарт — правый',[5,10.2,-1],'Размещение на втором этаже','2'],
+ ['Семейная комната',[5,10.2,6],'Отдельная семейная комната','2'],
+ ['Йога / практика',[0,14.2,5],'Большое пространство практик на третьем этаже','3']
+]; hs.forEach(h=>hotspot(...h));
+
+let current='space', dark=false, selected=null;
+function setLevel(id){current=id;document.querySelectorAll('#levels button').forEach(b=>b.classList.toggle('active',b.dataset.level===id));for(const [k,g] of Object.entries(levels)){const active=id==='space'||k===id;g.visible=true;g.traverse(o=>{if(o.material){o.material.transparent=true;o.material.opacity=active?1:.12}})}hotspots.forEach(h=>h.visible=id==='space'||h.userData.level===id);document.querySelector('#card').classList.remove('show');selected=null;}
+function focusHotspot(h){selected=h;controls.target.lerp(h.position,.35);camera.position.lerp(new THREE.Vector3(h.position.x+12,h.position.y+16,h.position.z+15),.35);document.querySelector('#cardTitle').textContent=h.userData.name;document.querySelector('#cardText').textContent=h.userData.text;document.querySelector('#cardMeta').textContent=h.userData.level==='space'?'Пространство территории':'Этаж '+h.userData.level;document.querySelector('#card').classList.add('show')}
+document.querySelectorAll('#levels button').forEach(b=>b.onclick=()=>setLevel(b.dataset.level));
+document.querySelector('#light').onclick=()=>{dark=!dark;scene.background.set(dark?0x101715:0x9aa99c);sun.intensity=dark?1.1:3.1;scene.traverse(o=>{if(o.isMesh&&o.material&&o.material.emissive){}})};
+document.querySelector('#home').onclick=()=>location.href='index.html';
+const ray=new THREE.Raycaster(), mouse=new THREE.Vector2();renderer.domElement.addEventListener('pointerdown',e=>{mouse.x=e.clientX/innerWidth*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mouse,camera);const hits=ray.intersectObjects(hotspots,true);if(hits.length){let o=hits[0].object;while(o&&o.parent&&!o.userData.hotspot)o=o.parent;if(o?.userData.hotspot)focusHotspot(o)}});
+setLevel('space');
+function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}animate();
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+</script>
+</body></html>
