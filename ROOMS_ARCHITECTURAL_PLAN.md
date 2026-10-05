@@ -19,12 +19,12 @@ Orientation used in the user's sketch:
 - bungalow is in the upper part of the territory;
 - hammock is in the garden area;
 - fountain is in the garden area;
-- sauna is a separate territory object and is still under development.
+- sauna / bath is INSIDE the main house on the −1 floor; it is not a separate territory building.
 
 ### Territory object semantics
 - **Sport zone** is one spatial object/zone, not one kettlebell object. The visible equipment includes a kettlebell, pull-up bar and push-up equipment.
 - **Pool** is the rectangular object drawn to the right of the house/route.
-- **Sauna** is a separate object whose detailed geometry is not final yet.
+- **Sauna / bath** is an internal room of the main house on −1; do not create a separate sauna building on the site.
 - **Pond** is the water feature drawn beside the trees in the upper-left part of the site.
 
 ## Building levels
@@ -38,10 +38,10 @@ The house has the following levels:
 The model must preserve different footprints and internal layouts where shown in the sketches. Do not force every floor into the same rectangle.
 
 ## −1 floor
-The hand-drawn plan shows a lower level containing:
+The hand-drawn plan shows a lower level INSIDE the main house containing:
 - pool-related area;
-- kitchen;
-- sauna/shower-related area as labelled in the sketch;
+- kitchen / summer-kitchen area in the north part;
+- sauna / shower-related area;
 - terrace;
 - stair connection.
 
