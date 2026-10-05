@@ -126,7 +126,24 @@ const hs=[
 ]; hs.forEach(h=>hotspot(...h));
 
 let current='space', dark=false, selected=null;
-function setLevel(id){current=id;document.querySelectorAll('#levels button').forEach(b=>b.classList.toggle('active',b.dataset.level===id));for(const [k,g] of Object.entries(levels)){const active=id==='space'||k===id;g.visible=true;g.traverse(o=>{if(o.material){o.material.transparent=true;o.material.opacity=active?1:.12}})}hotspots.forEach(h=>h.visible=id==='space'||h.userData.level===id);document.querySelector('#card').classList.remove('show');selected=null;}
+function frameLevel(id){
+  if(id==='space'){controls.target.set(0,3,0);camera.position.set(42,55,48);controls.minDistance=24;controls.maxDistance=105;return;}
+  const def=floorDefs[id]; if(!def) return;
+  const xs=[],zs=[]; def.rooms.forEach(r=>{xs.push(r[0]-r[2]/2,r[0]+r[2]/2);zs.push(r[1]-r[3]/2,r[1]+r[3]/2)});
+  const cx=(Math.min(...xs)+Math.max(...xs))/2, cz=(Math.min(...zs)+Math.max(...zs))/2;
+  const span=Math.max(Math.max(...xs)-Math.min(...xs),Math.max(...zs)-Math.min(...zs));
+  const y=def.y+1.2; controls.target.set(cx,y,cz);
+  camera.position.set(cx+span*0.95,y+span*1.05,cz+span*0.95);
+  controls.minDistance=Math.max(9,span*.55); controls.maxDistance=Math.max(35,span*3.2);
+}
+function setLevel(id){
+  current=id;
+  document.querySelectorAll('#levels button').forEach(b=>b.classList.toggle('active',b.dataset.level===id));
+  for(const [k,g] of Object.entries(levels)) g.visible=(id==='space'||k===id);
+  root.children.forEach(o=>{if(Object.values(levels).includes(o)) return;o.visible=(id==='space');});
+  hotspots.forEach(h=>h.visible=id==='space');
+  document.querySelector('#card').classList.remove('show'); selected=null; frameLevel(id);
+}
 function focusHotspot(h){selected=h;controls.target.lerp(h.position,.35);camera.position.lerp(new THREE.Vector3(h.position.x+12,h.position.y+16,h.position.z+15),.35);document.querySelector('#cardTitle').textContent=h.userData.name;document.querySelector('#cardText').textContent=h.userData.text;document.querySelector('#cardMeta').textContent=h.userData.level==='space'?'Пространство территории':'Этаж '+h.userData.level;document.querySelector('#card').classList.add('show')}
 document.querySelectorAll('#levels button').forEach(b=>b.onclick=()=>setLevel(b.dataset.level));
 document.querySelector('#light').onclick=()=>{dark=!dark;scene.background.set(dark?0x101715:0x9aa99c);sun.intensity=dark?1.1:3.1;};
