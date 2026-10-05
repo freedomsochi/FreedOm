@@ -86,33 +86,27 @@ for(const [id,def] of Object.entries(floorDefs)){
  box(g,(minX+maxX)/2,-.15,(minZ+maxZ)/2,maxX-minX+.5,.3,maxZ-minZ+.5,mat.wall2,{cast:false});
 }
 
-// Единственная лестница FreeDom: двухмаршевая, V-образная.
-// Узел расположен в юго-восточном / правом нижнем углу дома.
-// На 1 этаже рядом находится хостел эконом; на 2 этаже лестница между двумя стандартными хостелами.
-function stairMesh(g,y0,flip=false){
- const stair=new THREE.Group(); stair.position.y=y0;
- const steps=9, rise=.42, run=.62, width=1.7;
- const startX=4.6, startZ=-3.9;
+// Единственная лестница FreeDom: двухмаршевая, V-образная, с одной площадкой.
+// Положение — юго-восточная часть дома; это один лестничный узел, не две разные лестницы.
+function stairMesh(g){
+ const stair=new THREE.Group();
+ const steps=8, rise=.38, run=.48, width=1.65;
+ const x0=4.55, z0=-3.45;
  for(let i=0;i<steps;i++){
-   const s=box(stair,startX+i*run*.72,rise*(i+.5),startZ+i*run*.72,width,rise*(i+1),run,mat.wood);
+   const s=box(stair,x0,rise*(i+.5),z0+i*run,width,rise*(i+1),run,mat.wood);
    s.castShadow=true;
  }
- // промежуточная площадка
- box(stair,startX+steps*run*.72,rise*steps,startZ+steps*run*.72,width,0.22,width,mat.wall2);
- // второй марш уходит немного вбок и вверх — формируя V
+ const landingZ=z0+steps*run;
+ box(stair,x0,rise*steps,landingZ,width+.15,.22,1.35,mat.wall2);
+ const x1=x0+.9;
  for(let i=0;i<steps;i++){
-   const s=box(stair,startX+steps*run*.72-i*run*.72,rise*(steps+i+.5),startZ+steps*run*.72+i*run*.72,width,rise*(i+1),run,mat.wood);
+   const s=box(stair,x1,rise*(steps+i+.5),landingZ-(i+1)*run,width,rise*(i+1),run,mat.wood);
    s.castShadow=true;
  }
- stair.userData.stair=true;
- g.add(stair);
- return stair;
+ stair.userData.stair=true; g.add(stair); return stair;
 }
-// 1→2: видимая лестница в юго-восточном углу.
-// Внутри реального плана её точная длина/угол будут скорректированы после сверки с исходным рисунком.
-stairMesh(levels['1'],0);
-// 2→3: тот же единственный лестничный узел, продолжающийся выше.
-stairMesh(levels['2'],0);
+stairMesh(levels['1']);
+stairMesh(levels['2']);
 
 for(const [id,def] of Object.entries(floorDefs)){
   const y=def.y+1.85; const xs=[]; const zs=[];
