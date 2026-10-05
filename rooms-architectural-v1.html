@@ -81,35 +81,35 @@ function tree(x,z,s=1){const g=new THREE.Group();g.position.set(x,0,z);cyl(g,0,2
 
 // Building footprints — intentionally proportional, based on sketches, not fabricated metric dimensions.
 const floorDefs={
- // Proportional placeholders only. These encode the CONFIRMED adjacency/semantics from the architectural summary,
- // not invented metric dimensions. Each floor is intentionally different.
+ // Structural pass: proportions preserve the confirmed adjacency from the plans.
+ // Dimensions remain NON-AUTHORITATIVE until a measured drawing is supplied.
  '-1':{y:1,rooms:[
-   [-1,0,17,11,'Бассейн / нижняя зона'],
-   [8,-6,7,5,'Кухня / летняя кухня'],
-   [-8,-6,5,5,'Баня / душ'],
-   [0,8,18,4,'Терраса']
+   [-2,0,13,10,'Бассейн / нижняя зона'],
+   [6,-4.8,6,4,'Кухня / летняя кухня'],
+   [-6,-4.8,4,4,'Баня / душ'],
+   [0,7,17,4,'Терраса']
  ]},
  '1':{y:5,rooms:[
-   [0,-1,13,11,'Гостиная'],
-   [7,-5,6,4,'Кухня'],
-   [-7,-4,5,5,'Коридор'],
-   [7,3,4,4,'Санузел'],
-   [0,8,18,5,'Закрытая веранда']
+   [-1,0,10,9,'Гостиная'],
+   [7,-2.5,4,5,'Кухня'],
+   [-7,-2.5,4,5,'Коридор'],
+   [7,3.5,4,3,'Санузел'],
+   [0,7,17,4,'Закрытая веранда']
  ]},
  '2':{y:9,rooms:[
-   [-5,-1,8,9,'Хостел стандарт — левый'],
-   [5,-1,8,9,'Хостел стандарт — правый'],
-   [-5,6,7,4,'Администрация'],
-   [5,6,7,4,'Семейная комната'],
-   [0,6,3,3,'Санитарная зона']
+   [-4.5,-1.5,8,8,'Хостел стандарт — левый'],
+   [4.5,-1.5,8,8,'Хостел стандарт — правый'],
+   [-4.5,5.5,7,4,'Администрация'],
+   [4.5,5.5,7,4,'Семейная комната'],
+   [0,5.5,2,4,'Санитарная зона']
  ]},
  '3':{y:13,rooms:[
-   [0,3,12,8,'Йога / практика'],
-   [-7,-1,4,8,'Боковая зона'],
-   [7,-1,4,8,'Боковая зона'],
-   [0,9,12,3,'Балкон / верхняя зона']
+   [0,2.5,11,8,'Йога / практика'],
+   [-6.5,-1.5,4,7,'Боковая зона'],
+   [6.5,-1.5,4,7,'Боковая зона'],
+   [0,8.5,11,3,'Балкон']
  ]},
- 'attic':{y:17,rooms:[[0,0,15,12,'Мансарда — план уточняется']]}
+ 'attic':{y:17,rooms:[[0,0,14,10,'Мансарда — план уточняется']]}
 };
 for(const [id,def] of Object.entries(floorDefs)){
  const g=new THREE.Group();g.position.y=def.y;levels[id]=g;root.add(g);
@@ -120,11 +120,19 @@ for(const [id,def] of Object.entries(floorDefs)){
  box(g,(minX+maxX)/2,-.15,(minZ+maxZ)/2,maxX-minX+.5,.3,maxZ-minZ+.5,mat.wall2,{cast:false});
 }
 // Exterior facade cues and windows
-for(const id of Object.keys(floorDefs)){const y=floorDefs[id].y+1.9; for(let x=-8;x<=8;x+=4){box(root,x,y,-10.12,2.2,1.5,.12,mat.glass)} box(root,12,y,0,.12,1.5,2.2,mat.glass);}
+for(const [id,def] of Object.entries(floorDefs)){
+  const y=def.y+1.85;
+  const xs=[]; const zs=[];
+  def.rooms.forEach(r=>{xs.push(r[0]-r[2]/2,r[0]+r[2]/2);zs.push(r[1]-r[3]/2,r[1]+r[3]/2)});
+  const minX=Math.min(...xs),maxX=Math.max(...xs),minZ=Math.min(...zs),maxZ=Math.max(...zs);
+  for(let x=Math.ceil(minX+1);x<=maxX-1;x+=3.2) box(root,x,y,minZ-.07,1.9,1.35,.12,mat.glass);
+  for(let x=Math.ceil(minX+1);x<=maxX-1;x+=3.2) box(root,x,y,maxZ+.07,1.9,1.35,.12,mat.glass);
+}
 // porch and stairs
 box(root,11,1.4,12,7,1,4,mat.wood);for(let i=0;i<4;i++)box(root,11,.25+i*.28,14+i*.55,8-i*.4,.3,1,mat.path,{cast:false});
 // roof hint
-const roofHouse=box(root,0,19.3,0,24,1,21,mat.roof);roofHouse.rotation.z=.02;
+const roofHouse=box(root,0,19.35,1.0,18,1,18,mat.roof);roofHouse.rotation.z=.02;
+const roofRidge=box(root,0,20.25,1.0,1.1,.55,19,mat.roof);
 
 // room hotspots
 const hs=[
