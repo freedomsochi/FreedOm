@@ -12,16 +12,21 @@ The geometry below comes directly from the user's hand-drawn floor/territory pla
 - Porch on the right side of the house.
 - Road/path down toward the sport/training zone.
 - Swimming pool to the right of that route.
-- Summer kitchen adjacent to the house.
+- Summer kitchen is NOT a separate territory object; latest correction places it inside the house on the north part of the −1 floor.
 - Sport zone is one zone containing a kettlebell, pull-up bar and push-up equipment.
 - Pond in the upper-left garden area near trees.
 - Bungalow in the upper part of the territory.
 - Hammock in the garden area.
 - Fountain in the garden area.
-- Sauna is a separate territory object and is currently under development.
+- Sauna/bath is NOT a separate territory object; latest correction places it inside the house on the −1 floor.
 
-## −1 floor
-The sketch shows a lower level with pool-related area, kitchen, sauna/shower-related area, terrace and stair connection. Some handwritten labels are not reliably legible; do not invent their names.
+## −1 floor — latest correction
+The −1 floor is inside the main house:
+- summer kitchen — north part of the −1 floor;
+- bath/sauna — inside the −1 floor;
+- other rooms remain according to the original hand-drawn plan;
+- pool-related area, terrace and stair connection remain where shown.
+Do not model summer kitchen or bath/sauna as separate territory buildings.
 
 ## 1 floor
 Confirmed:
