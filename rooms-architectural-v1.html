@@ -74,7 +74,7 @@ function tree(x,z,s=1){const g=new THREE.Group();g.position.set(x,0,z);cyl(g,0,2
 const shadowShellMat=new THREE.MeshStandardMaterial({color:0x161a18,roughness:1,metalness:0,transparent:true,opacity:.72,depthWrite:true});
 const shadowRoofMat=new THREE.MeshStandardMaterial({color:0x171a18,roughness:1,metalness:0,transparent:true,opacity:.68,depthWrite:true});
 const shellMat=new THREE.MeshStandardMaterial({color:0x353936,roughness:.98,metalness:0,transparent:true,opacity:.96,depthWrite:true});
-const shellFloorMat=new THREE.MeshStandardMaterial({color:0x202522,roughness:1,transparent:true,opacity:.98,depthWrite:true});
+const shellFloorMat=new THREE.MeshStandardMaterial({color:0x202522,roughness:1,transparent:true,opacity:.22,depthWrite:false});
 function houseShell(id,def){
  const g=new THREE.Group();g.position.y=def.y;shells[id]=g;root.add(g);
  const xs=[],zs=[];def.rooms.forEach(r=>{xs.push(r[0]-r[2]/2,r[0]+r[2]/2);zs.push(r[1]-r[3]/2,r[1]+r[3]/2)});
@@ -164,15 +164,21 @@ function setLevel(id){
   if(id==='space'){
     // Цельный дом без просвечивания внутренних комнат.
     for(const g of Object.values(levels)) g.visible=false;
-    for(const g of Object.values(shells)) g.visible=false;
+    for(const g of Object.values(shells)) g.visible=true;
+    for(const g of Object.values(shells)) g.traverse(o=>{if(o.isMesh)o.material=shellMat;});
     roofShell.visible=true;
+    roofShell.children.forEach(o=>o.material=mat.roof);
     root.children.forEach(o=>{if(Object.values(levels).includes(o)||Object.values(shells).includes(o)||o===roofShell)return;o.visible=true;});
     hotspots.forEach(h=>h.visible=true);
   }else{
-    // Остальной дом затемнён как оболочка; выбранный этаж открыт.
+    // Выбранный этаж открыт. Этаж непосредственно над ним убираем,
+    // нижние этажи и более высокие уровни оставляем в тени.
+    const order=['-1','1','2','3','attic'];
+    const idx=order.indexOf(id);
+    const hiddenAbove=idx>=0&&idx<order.length-1?order[idx+1]:null;
     for(const [k,g] of Object.entries(levels)) g.visible=(k===id);
-    for(const [k,g] of Object.entries(shells)) g.visible=(k!==id);
-    roofShell.visible=(id!=='attic');
+    for(const [k,g] of Object.entries(shells)) g.visible=(k!==id && k!==hiddenAbove);
+    roofShell.visible=false;
     roofShell.children.forEach(o=>o.material=shadowRoofMat);
     for(const g of Object.values(shells)) g.traverse(o=>{if(o.isMesh)o.material=shadowShellMat;});
     root.children.forEach(o=>{if(Object.values(levels).includes(o)||Object.values(shells).includes(o)||o===roofShell)return;o.visible=false;});
