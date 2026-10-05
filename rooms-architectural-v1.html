@@ -29,10 +29,9 @@
   <div class="panel hint"><strong>FreeDom</strong> · виртуальное пространство</div>
   <div class="panel card" id="card"><h2 id="cardTitle"></h2><p id="cardText"></p><div class="meta" id="cardMeta"></div><button>Забронировать</button></div>
 </div>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
 <script type="module">
-import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import * as THREE from "https://esm.sh/three@0.180.0";
+import {OrbitControls} from "https://esm.sh/three@0.180.0/examples/jsm/controls/OrbitControls.js";
 
 const scene=new THREE.Scene(); scene.background=new THREE.Color(0x9aa99c); scene.fog=new THREE.Fog(0x9aa99c,70,170);
 const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.1,500); camera.position.set(42,55,48);
@@ -71,8 +70,7 @@ hotspot('Пруд',[-27,.7,-22],'Садовый пруд рядом с дере�
 // bungalow upper
 const bun=box(root,22,2,-23,10,4,7,mat.wood);box(bun,0,0,0,0,0,0,mat.wood);const roof=box(root,22,4.3,-23,11,.5,8,mat.roof);roof.rotation.z=.02;
 hotspot('Бунгало',[22,4.8,-23],'Отдельное пространство на территории','space');
-// sauna under development
-const sauna=box(root,6,2,-25,8,4,6,mat.wood);box(root,6,4.3,-25,8,.5,6,mat.roof);hotspot('Баня',[6,4.7,-25],'Отдельный объект. Геометрия пока в разработке.','space');
+// Баня находится ВНУТРИ главного дома на −1 этаже. Отдельное здание на территории не создаём.
 // hammock
 box(root,0,2,-19,.18,4,.18,mat.wood);box(root,8,2,-19,.18,4,.18,mat.wood);const ham=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,7,10),mat.accent);ham.rotation.z=Math.PI/2;ham.position.set(4,1.5,-19);root.add(ham);hotspot('Гамак',[4,2.2,-19],'Зона отдыха в саду','space');
 // fountain
