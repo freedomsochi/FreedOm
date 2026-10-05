@@ -13,13 +13,13 @@ Orientation used in the user's sketch:
 - porch is on the right side of the house;
 - a road/path runs down toward the sport/training zone;
 - swimming pool is to the right of this route;
-- summer kitchen is adjacent to the house in the known position;
+- the summer kitchen is NOT a separate territory building; latest user correction places it **inside the house on the north part of the −1 floor**;
 - sport zone is a separate area and contains a kettlebell, pull-up bar and equipment for push-ups;
 - pond is in the upper-left garden area near the trees;
 - bungalow is in the upper part of the territory;
 - hammock is in the garden area;
 - fountain is in the garden area;
-- sauna is a separate territory object and is still under development.
+- sauna is NOT a separate territory object; latest user correction places the **bath/sauna inside the house on the −1 floor**.
 
 ### Territory object semantics
 - **Sport zone** is one spatial object/zone, not one kettlebell object. The visible equipment includes a kettlebell, pull-up bar and push-up equipment.
@@ -37,13 +37,15 @@ The house has the following levels:
 
 The model must preserve different footprints and internal layouts where shown in the sketches. Do not force every floor into the same rectangle.
 
-## −1 floor
-The hand-drawn plan shows a lower level containing:
-- pool-related area;
-- kitchen;
-- sauna/shower-related area as labelled in the sketch;
-- terrace;
-- stair connection.
+## −1 floor — latest confirmed correction
+The −1 floor is **inside the main house**. The latest user correction overrides the older territory interpretation:
+- **summer kitchen** — inside the house, in the **north part of the −1 floor**;
+- **bath/sauna** — inside the house, on the −1 floor;
+- other −1 floor rooms remain according to the user's original hand-drawn plan;
+- terrace and stair connection remain where shown by the plan;
+- pool-related area remains part of the −1 floor model where shown by the plan.
+
+Do not represent the summer kitchen or bath/sauna as separate buildings on the territory.
 
 Some handwritten labels are not fully legible in the photograph. Do not invent names for unreadable rooms. Preserve their geometry and mark their semantic label as pending until confirmed.
 
@@ -106,6 +108,6 @@ Before adding high-detail art, the user should be able to inspect the model from
 - administration and family room on level 2;
 - sanitary area;
 - yoga/practice area on level 3;
-- territory objects.
+- territory objects, with no separate summer-kitchen or sauna building.
 
 Only after this structural approval should the model move into the high-detail visual pass.
