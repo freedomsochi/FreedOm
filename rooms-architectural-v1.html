@@ -42,7 +42,7 @@ scene.add(new THREE.HemisphereLight(0xf4efe2,0x34433a,2.1));
 const sun=new THREE.DirectionalLight(0xffe9c4,3.1); sun.position.set(-35,65,30); sun.castShadow=true; sun.shadow.mapSize.set(2048,2048); scene.add(sun);
 
 const root=new THREE.Group();scene.add(root), root.rotation.y=0.0;
-const levels={}; const hotspots=[]; const floorY={'-1':1,'1':5,'2':9,'3':13,'attic':17};
+const levels={}; const shells={}; const hotspots=[]; const floorY={'-1':1,'1':5,'2':9,'3':13,'attic':17};
 const mat={ground:new THREE.MeshStandardMaterial({color:0x71806f,roughness:.96}), path:new THREE.MeshStandardMaterial({color:0xb2a58d,roughness:.9}), wall:new THREE.MeshStandardMaterial({color:0xd4c6ab,roughness:.72}), wall2:new THREE.MeshStandardMaterial({color:0xb7aa92,roughness:.78}), floor:new THREE.MeshStandardMaterial({color:0x8f7357,roughness:.9}), glass:new THREE.MeshPhysicalMaterial({color:0x75a9b0,roughness:.16,metalness:.05,transmission:.18,transparent:true,opacity:.8}), water:new THREE.MeshPhysicalMaterial({color:0x3f8994,roughness:.08,metalness:.05,transmission:.35,transparent:true,opacity:.82}), roof:new THREE.MeshStandardMaterial({color:0x514b43,roughness:.82}), wood:new THREE.MeshStandardMaterial({color:0x765d45,roughness:.85}), leaf:new THREE.MeshStandardMaterial({color:0x47634a,roughness:1}), dark:new THREE.MeshStandardMaterial({color:0x272b28,roughness:.95}), accent:new THREE.MeshStandardMaterial({color:0xc7a46d,roughness:.7})};
 function box(g,x,y,z,sx,sy,sz,m,opts={}){const q=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),m);q.position.set(x,y,z);q.castShadow=opts.cast!==false;q.receiveShadow=true;g.add(q);return q}
 function cyl(g,x,y,z,r,h,m){const q=new THREE.Mesh(new THREE.CylinderGeometry(r,r*.88,h,12),m);q.position.set(x,y,z);q.castShadow=true;q.receiveShadow=true;g.add(q);return q}
@@ -71,6 +71,20 @@ cyl(root,-9,.5,-18,1.4,.6,mat.accent);cyl(root,-9,1.15,-18,.28,1.2,mat.water);ho
 function tree(x,z,s=1){const g=new THREE.Group();g.position.set(x,0,z);cyl(g,0,2.4,0,.34*s,4.8*s,mat.wood);cyl(g,0,5.2,0,1.7*s,2.7*s,mat.leaf);cyl(g,.8,6.1,.2,1.2*s,2.2*s,mat.leaf);root.add(g)}
 [[-34,-28,1.1],[-30,-14,.9],[-24,-29,.8],[-17,-27,1],[-6,-28,.9],[31,-18,1],[30,-28,.9],[28,-8,.8],[-31,1,.7],[31,9,.8]].forEach(a=>tree(...a));
 
+const shadowShellMat=new THREE.MeshStandardMaterial({color:0x161a18,roughness:1,metalness:0,transparent:true,opacity:.72,depthWrite:true});
+const shadowRoofMat=new THREE.MeshStandardMaterial({color:0x171a18,roughness:1,metalness:0,transparent:true,opacity:.68,depthWrite:true});
+const shellMat=new THREE.MeshStandardMaterial({color:0x353936,roughness:.98,metalness:0,transparent:true,opacity:.96,depthWrite:true});
+const shellFloorMat=new THREE.MeshStandardMaterial({color:0x202522,roughness:1,transparent:true,opacity:.98,depthWrite:true});
+function houseShell(id,def){
+ const g=new THREE.Group();g.position.y=def.y;shells[id]=g;root.add(g);
+ const xs=[],zs=[];def.rooms.forEach(r=>{xs.push(r[0]-r[2]/2,r[0]+r[2]/2);zs.push(r[1]-r[3]/2,r[1]+r[3]/2)});
+ const minX=Math.min(...xs),maxX=Math.max(...xs),minZ=Math.min(...zs),maxZ=Math.max(...zs),t=.34,h=3.2;
+ box(g,(minX+maxX)/2,h/2,minZ,maxX-minX,t,h,shellMat);
+ box(g,(minX+maxX)/2,h/2,maxZ,maxX-minX,t,h,shellMat);
+ box(g,minX,h/2,(minZ+maxZ)/2,t,h,maxZ-minZ,shellMat);
+ box(g,maxX,h/2,(minZ+maxZ)/2,t,h,maxZ-minZ,shellMat);
+ box(g,(minX+maxX)/2,-.08,(minZ+maxZ)/2,maxX-minX+.5,.28,maxZ-minZ+.5,shellFloorMat,{cast:false});
+}
 const floorDefs={
  '-1':{y:1,rooms:[[-2,0,13,10,'Бассейн / нижняя зона'],[6,-4.8,6,4,'Кухня / летняя кухня'],[-6,-4.8,4,4,'Баня / душ'],[0,7,17,4,'Терраса']]},
  '1':{y:5,rooms:[[-1,0,10,9,'Гостиная'],[7,-2.5,4,5,'Кухня'],[-7,-2.5,4,5,'Коридор'],[7,3.5,4,3,'Санузел'],[0,7,17,4,'Закрытая веранда'],[5.8,0.5,2.4,4.2,'Хостел эконом']]},
@@ -85,6 +99,12 @@ for(const [id,def] of Object.entries(floorDefs)){
  const minZ=Math.min(...def.rooms.map(r=>r[1]-r[3]/2)), maxZ=Math.max(...def.rooms.map(r=>r[1]+r[3]/2));
  box(g,(minX+maxX)/2,-.15,(minZ+maxZ)/2,maxX-minX+.5,.3,maxZ-minZ+.5,mat.wall2,{cast:false});
 }
+
+for(const [id,def] of Object.entries(floorDefs)) houseShell(id,def);
+
+const roofShell=new THREE.Group();root.add(roofShell);
+box(roofShell,0,19.35,1.0,18,1,18,mat.roof);
+box(roofShell,0,20.25,1.0,1.1,.55,19,mat.roof);
 
 // Единственная лестница FreeDom: двухмаршевая, V-образная, с одной площадкой.
 // Положение — юго-восточная часть дома; это один лестничный узел, не две разные лестницы.
@@ -116,7 +136,7 @@ for(const [id,def] of Object.entries(floorDefs)){
   for(let x=Math.ceil(minX+1);x<=maxX-1;x+=3.2) box(root,x,y,maxZ+.07,1.9,1.35,.12,mat.glass);
 }
 box(root,11,1.4,12,7,1,4,mat.wood);for(let i=0;i<4;i++)box(root,11,.25+i*.28,14+i*.55,8-i*.4,.3,1,mat.path,{cast:false});
-const roofHouse=box(root,0,19.35,1.0,18,1,18,mat.roof);roofHouse.rotation.z=.02;const roofRidge=box(root,0,20.25,1.0,1.1,.55,19,mat.roof);
+
 
 const hs=[
  ['Гостиная',[0,6.2,0],'Основное общее пространство первого этажа','1'],
@@ -141,10 +161,24 @@ function frameLevel(id){
 function setLevel(id){
   current=id;
   document.querySelectorAll('#levels button').forEach(b=>b.classList.toggle('active',b.dataset.level===id));
-  for(const [k,g] of Object.entries(levels)) g.visible=(id==='space'||k===id);
-  root.children.forEach(o=>{if(Object.values(levels).includes(o)) return;o.visible=(id==='space');});
-  hotspots.forEach(h=>h.visible=id==='space');
-  document.querySelector('#card').classList.remove('show'); selected=null; frameLevel(id);
+  if(id==='space'){
+    // Цельный дом без просвечивания внутренних комнат.
+    for(const g of Object.values(levels)) g.visible=false;
+    for(const g of Object.values(shells)) g.visible=false;
+    roofShell.visible=true;
+    root.children.forEach(o=>{if(Object.values(levels).includes(o)||Object.values(shells).includes(o)||o===roofShell)return;o.visible=true;});
+    hotspots.forEach(h=>h.visible=true);
+  }else{
+    // Остальной дом затемнён как оболочка; выбранный этаж открыт.
+    for(const [k,g] of Object.entries(levels)) g.visible=(k===id);
+    for(const [k,g] of Object.entries(shells)) g.visible=(k!==id);
+    roofShell.visible=(id!=='attic');
+    roofShell.children.forEach(o=>o.material=shadowRoofMat);
+    for(const g of Object.values(shells)) g.traverse(o=>{if(o.isMesh)o.material=shadowShellMat;});
+    root.children.forEach(o=>{if(Object.values(levels).includes(o)||Object.values(shells).includes(o)||o===roofShell)return;o.visible=false;});
+    hotspots.forEach(h=>h.visible=false);
+  }
+  document.querySelector('#card').classList.remove('show');selected=null;frameLevel(id);
 }
 function focusHotspot(h){selected=h;controls.target.lerp(h.position,.35);camera.position.lerp(new THREE.Vector3(h.position.x+12,h.position.y+16,h.position.z+15),.35);document.querySelector('#cardTitle').textContent=h.userData.name;document.querySelector('#cardText').textContent=h.userData.text;document.querySelector('#cardMeta').textContent=h.userData.level==='space'?'Пространство территории':'Этаж '+h.userData.level;document.querySelector('#card').classList.add('show')}
 document.querySelectorAll('#levels button').forEach(b=>b.onclick=()=>setLevel(b.dataset.level));
