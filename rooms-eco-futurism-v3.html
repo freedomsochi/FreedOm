@@ -18,6 +18,7 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
 
 /* V3 — cinematic holographic room interface. The original V1 remains untouched. */
+.hero>section[aria-label="Поиск свободного размещения"]{grid-column:1/-1;position:relative;z-index:3;width:100%;margin-top:-4px}.hero>section[aria-label="Поиск свободного размещения"] .message{margin-bottom:0}.holo-side{appearance:none;-webkit-appearance:none;border:0;background:transparent;color:inherit;text-align:left;padding:0;font:inherit;width:100%;display:block}
 :root{--holo:#7ee8dc;--holo-soft:rgba(126,232,220,.16);--holo-line:rgba(126,232,220,.28);--glass:rgba(8,22,24,.74)}
 body{background:radial-gradient(ellipse at 50% 15%,#153a3a 0,transparent 42%),radial-gradient(ellipse at 10% 70%,#183427 0,transparent 38%),linear-gradient(160deg,#050d12,#0b1919 55%,#09120f);overflow-x:hidden}
 body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.2;background-image:linear-gradient(rgba(126,232,220,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(126,232,220,.06) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(to bottom,black,transparent 85%)}
@@ -115,8 +116,8 @@ h1 span{color:#a6eee3;text-shadow:0 0 32px #7ee8dc25}
 <section class="hero">
 <div class="hero-copy"><div class="eyebrow">A place to reconnect</div><h1>Ближе к природе.<br><span>Ближе к себе.</span></h1><p class="intro">Дом, где технологии помогают открыть живое пространство. Исследуйте FreeDom, выберите даты и найдите место, которое подходит именно вам.</p><div class="micro"><span><i></i> Живое пространство</span><span><i></i> Свои люди</span><span><i></i> Свой ритм</span></div></div>
 <div class="scene-wrap" aria-label="Концептуальная объёмная иллюстрация дома и сада FreeDom"><div class="scene-glow"></div><div class="scene-label">FreeDom / spatial preview<b>Природа × технологии</b></div><div class="terrain"><div class="land"><div class="pathway"></div></div><div class="pond"></div><div class="deck"></div><div class="house"><div class="house-base"></div><div class="roof"></div><div class="glass-wall"></div><div class="window"></div></div><i class="tree t1"></i><i class="tree t2"></i><i class="tree t3"></i><i class="tree t4"></i><i class="tree small t5"></i><div class="pin housepin">⌂ Дом</div><div class="pin poolpin">≈ Бассейн</div><div class="pin gardenpin">✳ Сад</div></div><div class="scene-index">SOCHI / BLACK SEA<br>SPATIAL CONCEPT · 01</div></div>
-</section>
 <section aria-label="Поиск свободного размещения"><div class="booking-bar"><div class="field"><label for="checkin">Заезд</label><input id="checkin" type="date" required></div><div class="field"><label for="checkout">Выезд</label><input id="checkout" type="date" required></div><button class="primary" id="search">Показать доступные ↗</button></div><div id="notice" class="message" role="status" aria-live="polite">Выберите даты — проверим доступность по системе бронирования.</div></section>
+</section>
 <section id="availability" class="availability-section">
   <div class="sectionhead"><div><div class="eyebrow">FreeDom / spatial interface</div><h2>Выберите своё место.</h2></div><p>Прокручивайте пространство вверх и вниз. Остановитесь на том месте, которое вам откликается.</p></div>
   <div class="resultsmeta"><span id="resultcount">Доступность ещё не проверена</span><span id="period"></span></div>
