@@ -121,6 +121,7 @@ function focusHotspot(h){controls.target.set(h.position.x,Math.max(1,h.position.
 document.querySelectorAll('#levels button').forEach(b=>b.onclick=()=>setLevel(b.dataset.level));
 document.querySelector('#light').onclick=()=>{dark=!dark;scene.background.set(dark?0x101715:0x96a699);sun.intensity=dark?1.15:3.2};
 document.querySelector('#home').onclick=()=>location.href='index.html';
+document.querySelector('#returnToRooms').addEventListener('click',e=>{if(window.parent!==window){e.preventDefault();window.parent.postMessage({type:'freedom-room-close'},location.origin)}});
 const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();renderer.domElement.addEventListener('pointerdown',e=>{mouse.x=e.clientX/innerWidth*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mouse,camera);const hits=ray.intersectObjects(hotspots,true);if(hits.length){let o=hits[0].object;while(o&&!o.userData.hotspot)o=o.parent;if(o?.userData.hotspot)focusHotspot(o)}});
 setLevel('space');function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 </script>
