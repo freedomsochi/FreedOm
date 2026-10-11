@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FreeDom — Rooms 3D Foundation</title>
+<style>
+:root{--mint:#b8e8cf;--ink:#10251e;--muted:#b6c6bf;--glass:rgba(10,28,22,.72);--line:rgba(255,255,255,.16)}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071610;color:#fff;font-family:Inter,system-ui,sans-serif}#app{position:fixed;inset:0}canvas{display:block}.ui{position:fixed;inset:0;pointer-events:none}.brand{position:absolute;left:30px;top:25px}.brand a{color:#fff;text-decoration:none;font-size:27px;font-weight:600;letter-spacing:-.04em}.brand small{display:block;color:#b9c8c1;margin-top:3px;font-size:11px}.back{position:absolute;left:30px;top:84px;pointer-events:auto;color:#dce8e2;text-decoration:none;font-size:13px;padding:10px 13px;border:1px solid var(--line);border-radius:13px;background:rgba(6,20,15,.45);backdrop-filter:blur(12px)}.back:hover{background:rgba(184,232,207,.13)}.left{position:absolute;left:28px;top:145px;width:205px;pointer-events:auto;display:grid;gap:8px}.nav{border:1px solid var(--line);border-radius:17px;padding:12px 13px;background:rgba(5,20,15,.5);backdrop-filter:blur(15px);color:#e8f0ec;cursor:pointer;text-align:left;transition:.25s}.nav strong{display:block;font-size:13px}.nav span{font-size:10px;color:#9fb2aa}.nav.active{border-color:rgba(184,232,207,.7);background:rgba(184,232,207,.12);box-shadow:0 0 30px rgba(184,232,207,.08)}.light{position:absolute;right:28px;top:25px;pointer-events:auto;border:1px solid var(--line);border-radius:30px;padding:10px 15px;background:rgba(5,20,15,.48);color:#fff;backdrop-filter:blur(15px);cursor:pointer}.card{position:absolute;right:27px;top:90px;width:355px;max-height:calc(100vh - 140px);overflow:auto;pointer-events:auto;border:1px solid rgba(255,255,255,.2);border-radius:25px;background:var(--glass);backdrop-filter:blur(24px);box-shadow:0 30px 90px rgba(0,0,0,.35);padding:15px;transform:translateX(120%);opacity:0;transition:.55s cubic-bezier(.2,.8,.2,1)}.card.open{transform:none;opacity:1}.card .photo{height:190px;border-radius:17px;background:linear-gradient(145deg,#b6cbbd,#45675a);display:grid;place-items:center;color:#dcebe3;font-size:11px;overflow:hidden}.photo:before{content:"PHOTO SLOT";padding:8px 11px;border:1px solid rgba(255,255,255,.25);border-radius:9px}.close{float:right;border:0;background:rgba(255,255,255,.1);color:#fff;border-radius:50%;width:32px;height:32px;cursor:pointer;position:relative;z-index:2}.eyebrow{font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:var(--mint);font-weight:800;margin:15px 0 5px}.card h1{font-size:29px;margin:0 0 8px;letter-spacing:-.05em}.card p{color:#b9c7c1;font-size:13px;line-height:1.55}.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:13px 0}.fact{padding:10px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.045)}.fact b{display:block;font-size:12px}.fact span{font-size:9px;color:#8fa39a}.book{width:100%;border:0;border-radius:14px;background:var(--mint);color:#10251e;font-weight:800;padding:13px;cursor:pointer}.quote{position:absolute;right:30px;bottom:30px;font-family:cursive;font-size:24px;line-height:1.15;max-width:240px;color:#e7e1cc;transform:rotate(-5deg);text-align:right}.quote:after{content:"♡";display:block;font-size:43px;line-height:.8;margin-top:8px}.hint{position:absolute;left:30px;bottom:27px;color:#a8b8b0;font-size:10px;letter-spacing:.04em}.crosshair{position:absolute;left:50%;top:50%;width:0;height:0}.hot{position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid rgba(232,255,243,.95);box-shadow:0 0 0 6px rgba(184,232,207,.13),0 0 24px rgba(184,232,207,.7);transform:translate(-50%,-50%);animation:pulse 2s infinite;pointer-events:none}.legend{position:absolute;right:30px;bottom:27px;font-size:9px;color:#94a69d}@keyframes pulse{50%{box-shadow:0 0 0 12px rgba(184,232,207,.03),0 0 34px rgba(184,232,207,.85)}}@media(max-width:800px){.brand{left:15px;top:15px}.brand a{font-size:22px}.back{left:15px;top:62px}.left{left:12px;top:auto;bottom:18px;width:calc(100% - 24px);display:flex;overflow:auto}.nav{min-width:105px;padding:9px}.nav span{display:none}.card{left:12px;right:12px;top:auto;bottom:15px;width:auto;max-height:64vh}.quote,.hint,.legend{display:none}.light{right:15px;top:15px}}
+</style>
+</head>
+<body><div id="app"></div><div class="ui">
+<div class="brand"><a href="index.html">FreeDom</a><small>дом в котором живет любовь</small></div>
+<a class="back" href="index.html">← Вернуться на главную</a>
+<button class="light" id="light">☾ Тёмная тема</button>
+<div class="left" id="nav"></div>
+<div class="card" id="card"><button class="close" id="close">×</button><div class="photo"></div><div class="eyebrow" id="eyebrow">Объект FreeDom</div><h1 id="title">Исследуйте пространство</h1><p id="desc">Поверните карту, приблизьте её и выберите светящуюся точку. Это фундамент будущей интерактивной модели.</p><div class="facts"><div class="fact"><b id="cap">—</b><span>вместимость</span></div><div class="fact"><b id="type">—</b><span>тип объекта</span></div></div><button class="book" id="book">Забронировать →</button></div>
+<div class="quote">Здесь начинается<br>твоя история...</div><div class="hint">Перетаскивайте карту · колесо — масштаб · ПКМ/движение — обзор</div><div class="legend">3D foundation · spatial prototype</div></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js';
+
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x071610);scene.fog=new THREE.Fog(0x071610,75,145);
+const camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,300);camera.position.set(43,52,48);
+const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;document.querySelector('#app').appendChild(renderer.domElement);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.075;controls.minDistance=22;controls.maxDistance=105;controls.maxPolarAngle=Math.PI*.48;controls.target.set(0,0,0);
+const hemi=new THREE.HemisphereLight(0xcfe7d9,0x14241d,2.2);scene.add(hemi);const sun=new THREE.DirectionalLight(0xfff1d1,4.2);sun.position.set(-35,60,-25);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-65;sun.shadow.camera.right=65;sun.shadow.camera.top=65;sun.shadow.camera.bottom=-65;scene.add(sun);
+const mats={ground:new THREE.MeshStandardMaterial({color:0x274633,roughness:.95}),grass:new THREE.MeshStandardMaterial({color:0x456d4c,roughness:1}),wall:new THREE.MeshStandardMaterial({color:0xd8c8a9,roughness:.75}),wall2:new THREE.MeshStandardMaterial({color:0xb9a783,roughness:.8}),wood:new THREE.MeshStandardMaterial({color:0x76583d,roughness:.72}),roof:new THREE.MeshStandardMaterial({color:0x34352e,roughness:.9}),floor:new THREE.MeshStandardMaterial({color:0xcdbf9f,roughness:.8}),water:new THREE.MeshPhysicalMaterial({color:0x54b7c8,roughness:.15,metalness:.05,transparent:true,opacity:.86}),glass:new THREE.MeshPhysicalMaterial({color:0xa7dfe0,roughness:.08,transmission:.25,transparent:true,opacity:.72}),path:new THREE.MeshStandardMaterial({color:0x9c927a,roughness:1}),hot:new THREE.MeshStandardMaterial({color:0xb8e8cf,emissive:0x76d8a8,emissiveIntensity:2})};
+const group=new THREE.Group();scene.add(group);
+function box(name,x,y,z,sx,sy,sz,mat,opts={}){const m=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),mat);m.position.set(x,y,z);m.name=name;m.castShadow=true;m.receiveShadow=true;if(opts.userData)m.userData=opts.userData;group.add(m);return m}
+function cyl(name,x,y,z,r,h,mat,opts={}){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,24),mat);m.position.set(x,y,z);m.name=name;m.castShadow=true;m.receiveShadow=true;if(opts.userData)m.userData=opts.userData;group.add(m);return m}
+function path(x,z,sx,sz,rot=0){const m=box('path',x,.12,z,sx,.12,sz,mats.path);m.rotation.y=rot;return m}
+// Terrain foundation: gates at bottom, house central, garden above/right.
+box('terrain',0,-.9,0,112,1.5,86,mats.ground);
+// boundary / coastline suggestion
+const water=new THREE.Mesh(new THREE.PlaneGeometry(38,86),mats.water);water.rotation.x=-Math.PI/2;water.position.set(57,-.05,0);water.receiveShadow=true;group.add(water);
+// main access road from bottom gates to house
+path(0,.0,8,82);path(0,30,27,5);path(0,-31,35,6);
+// gates
+box('gate',0,1.2,40,9,2.4,1,mats.wood);
+// house footprint 30 x 22; walls 0.8 thick, open roof
+const HW=30,HD=22,wallH=5;
+box('houseFloor',0,.15,0,HW,0.35,HD,mats.floor);
+box('northWall',0,wallH/2,-HD/2,HW,wallH,.8,mats.wall);
+box('southWall',0,wallH/2,HD/2,HW,wallH,.8,mats.wall);
+box('westWall',-HW/2,wallH/2,0,.8,wallH,HD,mats.wall);
+box('eastWall',HW/2,wallH/2,0,.8,wallH,HD,mats.wall);
+// internal plan: central stair/circulation; rooms around it
+box('centralWall',0,wallH/2,0,.7,wallH,HD-.8,mats.wall2);
+box('crossWallL',-7,wallH/2,0,HW/2-1,.7,.7,mats.wall2);
+box('crossWallR',7,wallH/2,0,HW/2-1,.7,.7,mats.wall2);
+// stairs
+for(let i=0;i<9;i++)box('stair',-1.6+i*.4,0.25+i*.25,0,0.32,0.5,4,mats.wood);
+// porch to right/front side
+box('porch',11,.25,12,7,.5,5,mats.wood);for(let i=-2;i<=2;i++)box('porchpost',11+i*3,2.7,14,.22,5.2,.22,mats.wood);
+// upper-level visual slabs, slightly transparent to communicate floors
+const floors={minus:-1,one:0,two:5.8,three:11.6,attic:17.4};
+const slabs={};for(const [key,y] of Object.entries(floors)){if(key==='minus')continue;const slab=new THREE.Mesh(new THREE.BoxGeometry(HW+.4,.22,HD+.4),new THREE.MeshStandardMaterial({color:0xd8c9ab,transparent:true,opacity:key==='one'?0.12:0.055,roughness:.9}));slab.position.set(0,y,0);slab.visible=key==='one';slab.name='slab-'+key;group.add(slab);slabs[key]=slab}
+// Internal −1 floor: the summer kitchen and bath/sauna are INSIDE the main house.
+// This is deliberately represented as a lower internal level, not as separate territory buildings.
+const basementY=-5.0, basementH=4.6;
+box('minusFloor',0,-7.35,0,HW-.6,.35,HD-.6,mats.floor);
+box('minusNorthWall',0,basementY+basementH/2,-HD/2+.45,HW-.8,basementH,.65,mats.wall);
+box('minusSouthWall',0,basementY+basementH/2,HD/2-.45,HW-.8,basementH,.65,mats.wall);
+box('minusWestWall',-HW/2+.45,basementY+basementH/2,0,.65,basementH,HD-1.3,mats.wall);
+box('minusEastWall',HW/2-.45,basementY+basementH/2,0,.65,basementH,HD-1.3,mats.wall);
+// Proportional room partitions only — exact dimensions remain pending the measured plan.
+box('minusPartitionNorth',-2.5,basementY+basementH/2,-2.0,.55,basementH,HD/2-1.0,mats.wall2);
+box('minusPartitionSouth',7.0,basementY+basementH/2,3.5,HW/2-1.5,.55,5.5,mats.wall2);
+box('minusSummerKitchen',-8.0,basementY+1.4,-6.0,12,2.7,7,mats.wood);
+box('minusSauna',8.5,basementY+1.4,-5.8,5.5,2.7,5.5,mats.wood);
+box('minusStairwell',0,basementY+1.1,5.8,3.6,2.2,5.0,mats.wood);
+path(0,0,4,24);
+// pool right of sport road / beside house
+box('poolDeck',19,.15,2,13,.3,24,mats.floor);box('pool',19,.2,2,9,.35,19,mats.water);box('poolRim',19,.4,2,10,.25,20,mats.glass);
+// sport zone below/right of the house route
+box('sportBase',-22,.25,25,15,.5,12,mats.wood);for(let i=0;i<3;i++){cyl('sportPole',-26+i*4,2.2,25,.22,4,mats.wall);box('sportBar',-24+i*4,4,25,4,.22,.22,mats.wall)}
+// bungalow in garden, upper part of the territory
+box('bungalow',-25,2.3,-25,12,4.5,9,mats.wood);box('bungalowRoof',-25,5.2,-25,14,1,11,mats.roof);
+// fountain / garden center
+cyl('fountain',12,.7,-25,3.5,1.1,mats.water);cyl('fountainCore',12,1.4,-25,.65,1.4,mats.wall);for(let i=0;i<12;i++){const a=i*Math.PI/6;cyl('tree',36+Math.cos(a)*9,2,-22+Math.sin(a)*9,.45,4,mats.wood);cyl('treeTop',36+Math.cos(a)*9,4.7,-22+Math.sin(a)*9,2.2,3,mats.grass)}
+// hammock
+const h1=box('hammockPost1',29,2,-10,.25,4,.25,mats.wood),h2=box('hammockPost2',37,2,-10,.25,4,.25,mats.wood);const ham=new THREE.Mesh(new THREE.BoxGeometry(7,.15,2),mats.glass);ham.position.set(33,1.4,-10);ham.rotation.z=.04;group.add(ham);
+// garden trees for depth
+for(let i=0;i<55;i++){const x=-50+Math.random()*94,z=-40+Math.random()*72;if(Math.abs(x)<18&&Math.abs(z)<16)continue;const s=.7+Math.random()*1.4;cyl('tree',x,1.8,z,.28*s,3.6*s,mats.wood);cyl('crown',x,4.5*s,z,1.3*s,2.4*s,mats.grass)}
+// hotspots are small 3D emissive discs; userData controls card
+const hotspots=[];function hotspot(name,x,z,data){const m=new THREE.Mesh(new THREE.CylinderGeometry(.65,.65,.12,32),mats.hot);m.rotation.x=Math.PI/2;m.position.set(x,6,z);m.userData={hotspot:true,name,...data};group.add(m);hotspots.push(m);return m}
+hotspot('Гостиная',-8,-6,{floor:'1 этаж',cap:'общая зона',type:'Пространство',desc:'Гостиная FreeDom — общая живая зона дома. Здесь позже появится реальная фотография, описание и актуальные условия.'});
+hotspot('Хостел эконом',-8,6,{floor:'1 этаж',cap:'8 мест',type:'По местам',desc:'Эконом-хостел на первом этаже.'});
+hotspot('Стандарт',8,6,{floor:'2 этаж',cap:'4 места',type:'По местам',desc:'Стандартный хостел.'});
+hotspot('Семейная',8,-6,{floor:'2 этаж',cap:'целиком',type:'Целиком',desc:'Семейная комната.'});
+hotspot('Балконная комната',-8,-6,{floor:'3 этаж',cap:'2 места',type:'Целиком',desc:'Двухместная комната с балконом.'});
+hotspot('Мансарда',8,0,{floor:'Мансарда',cap:'целиком',type:'Целиком',desc:'Мансардная комната.'});
+hotspot('Бассейн',19,2,{floor:'Территория',cap:'общая зона',type:'Пространство',desc:'Бассейн рядом с домом.'});
+hotspot('Летняя кухня',-8,-6,{floor:'−1 этаж',cap:'общая зона',type:'Пространство',desc:'Летняя кухня находится внутри главного дома, в северной части −1 этажа. Точная геометрия будет уточнена по исходному плану.'});
+hotspot('Баня / сауна',8.5,-5.8,{floor:'−1 этаж',cap:'общая зона',type:'Пространство',desc:'Баня находится внутри главного дома на −1 этаже. Она не является отдельным зданием на территории.'});
+hotspot('Тренажёрная зона',-22,25,{floor:'Территория',cap:'общая зона',type:'Пространство',desc:'Спортивная зона на территории.'});
+hotspot('Бунгало',-25,-25,{floor:'Территория',cap:'2 места',type:'Целиком',desc:'Бунгало в саду.'});hotspot('Гамак',33,-10,{floor:'Территория',cap:'общая зона',type:'Пространство',desc:'Тихая зона сада.'});hotspot('Фонтан',12,-25,{floor:'Территория',cap:'общая зона',type:'Пространство',desc:'Фонтан в саду.'});
+// simple label sprites as HTML-like sprites using canvas textures
+function label(text){const c=document.createElement('canvas');c.width=512;c.height=128;const ctx=c.getContext('2d');ctx.fillStyle='rgba(4,18,13,.72)';ctx.roundRect(8,18,496,90,28);ctx.fill();ctx.fillStyle='#f2f7f4';ctx.font='600 34px Arial';ctx.textAlign='center';ctx.fillText(text,256,73);const t=new THREE.CanvasTexture(c);const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false}));s.scale.set(7.5,1.8,1);s.userData.label=true;return s}
+function addLabel(text,x,z){const s=label(text);s.position.set(x,6.8,z);group.add(s)}addLabel('FreeDom',0,-17);addLabel('Бассейн',19,2);addLabel('−1 · Летняя кухня',-8,-6);addLabel('−1 · Баня',8.5,-5.8);addLabel('Тренажёрная зона',-22,25);addLabel('Бунгало',-25,-25);addLabel('Гамак',33,-10);addLabel('Фонтан',12,-25);
+const nav=document.querySelector('#nav');const navItems=[['space','Пространство','Территория + дом'],['attic','Мансарда','верхний уровень'],['three','3 этаж','практика · балконы'],['two','2 этаж','хостел · семья · admin'],['one','1 этаж','гостиная · кухня · веранда'],['minus','−1 этаж','внутри дома'],['territory','Территория','сад · бассейн · спорт']];
+let active='space';function renderNav(){nav.innerHTML='';for(const [id,title,sub] of navItems){const b=document.createElement('button');b.className='nav '+(id===active?'active':'');b.innerHTML='<strong>'+title+'</strong><span>'+sub+'</span>';b.onclick=()=>selectLayer(id);nav.appendChild(b)}}renderNav();
+function selectLayer(id){active=id;renderNav();closeCard();const territory=id==='space'||id==='territory';for(const [key,slab] of Object.entries(slabs))slab.visible=!territory&&key===id;
+// The −1 level is a real internal floor. When selected, lift the camera enough to reveal its cutaway representation.
+const target=territory?new THREE.Vector3(0,0,0):new THREE.Vector3(0, id==='minus'?-4.0:(floors[id]||0)+2,0);const dist=territory?62:(id==='minus'?40:48);animateCamera(target,dist);hotspots.forEach(h=>{h.material.opacity=territory||h.userData.floor===id?1:.2});
+// Emphasize the selected level without changing the architectural geometry.
+if(id==='minus'){for(const [key,slab] of Object.entries(slabs))slab.visible=false;}
+}
+function animateCamera(target,dist){const start=camera.position.clone(),end=target.clone().add(new THREE.Vector3(dist*.55,dist*.82,dist*.55));const startT=controls.target.clone();let t0=performance.now();function f(now){const t=Math.min(1,(now-t0)/850),e=1-Math.pow(1-t,3);camera.position.lerpVectors(start,end,e);controls.target.lerpVectors(startT,target,e);if(t<1)requestAnimationFrame(f)}requestAnimationFrame(f)}
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();renderer.domElement.addEventListener('pointerup',e=>{if(Math.abs((e.clientX-(window._sx||e.clientX)))>5)return;mouse.x=e.clientX/innerWidth*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(hotspots,false)[0];if(hit)selectHotspot(hit.object)});renderer.domElement.addEventListener('pointerdown',e=>{window._sx=e.clientX});
+function selectHotspot(h){const d=h.userData;title.textContent=d.name;eyebrow.textContent=d.floor;desc.textContent=d.desc;cap.textContent=d.cap;type.textContent=d.type;document.querySelector('#card').classList.add('open');hotspots.forEach(x=>x.material.opacity=x===h?1:.14);animateCamera(h.position.clone().setY(0),26)}
+function closeCard(){document.querySelector('#card').classList.remove('open')};document.querySelector('#close').onclick=closeCard;document.querySelector('#book').onclick=()=>alert('Здесь будет подключён существующий booking flow.');
+let bright=false;document.querySelector('#light').onclick=()=>{bright=!bright;sun.intensity=bright?6:2.5;hemi.intensity=bright?3:1.4;document.querySelector('#light').textContent=bright?'☀ Светлая тема':'☾ Тёмная тема'};
+selectLayer('space');
+function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}animate();
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+</script></body></html>
