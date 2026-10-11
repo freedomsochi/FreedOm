@@ -20,7 +20,7 @@
 <button data-level="-1">−1 этаж</button><button data-level="1">1 этаж</button><button data-level="2">2 этаж</button><button data-level="3">3 этаж</button><button data-level="attic">Мансарда</button>
 </div>
 <div class="panel actions"><button id="home">← К кругу главной · Комнаты</button><button id="light">☼</button></div>
-<div class="panel legend">Вращайте карту · колесо — масштаб · нажмите на точку</div>
+<div class="panel legend">Перетаскивайте для вращения · щипок/колесо — масштаб · нажмите на точку</div>
 <div class="panel hint"><strong>FreeDom</strong> · план территории по ручному эскизу</div>
 <div class="panel card" id="card"><h2 id="cardTitle"></h2><p id="cardText"></p><div class="meta" id="cardMeta"></div><button>Забронировать</button></div>
 </div>
@@ -30,9 +30,9 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x96a699);scene.fog=new THREE.Fog(0x96a699,85,190);
-const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.1,600);camera.position.set(58,68,62);
+const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.1,600);camera.position.set(66,54,70);
 const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;document.querySelector('#scene').appendChild(renderer.domElement);
-const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,2,0);controls.enableDamping=true;controls.dampingFactor=.07;controls.minDistance=28;controls.maxDistance=125;controls.maxPolarAngle=Math.PI*.47;
+const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,2,0);controls.enableDamping=true;controls.dampingFactor=.07;controls.enableRotate=true;controls.rotateSpeed=.9;controls.enableZoom=true;controls.zoomSpeed=1.15;controls.enablePan=true;controls.panSpeed=.8;controls.minDistance=22;controls.maxDistance=125;controls.minPolarAngle=.12;controls.maxPolarAngle=Math.PI*.49;renderer.domElement.style.touchAction='none';
 scene.add(new THREE.HemisphereLight(0xf4efe2,0x34433a,2.1));const sun=new THREE.DirectionalLight(0xffe7bf,3.2);sun.position.set(-40,75,35);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);scene.add(sun);
 const root=new THREE.Group();scene.add(root);
 const levels={};const hotspots=[];
@@ -41,7 +41,15 @@ function box(g,x,y,z,sx,sy,sz,m,cast=true){const q=new THREE.Mesh(new THREE.BoxG
 function cyl(g,x,y,z,r,h,m){const q=new THREE.Mesh(new THREE.CylinderGeometry(r,r*.88,h,14),m);q.position.set(x,y,z);q.castShadow=true;q.receiveShadow=true;g.add(q);return q}
 function tree(x,z,s=1){const g=new THREE.Group();g.position.set(x,0,z);cyl(g,0,2.3,0,.34*s,4.6*s,mat.wood);cyl(g,0,5.1,0,1.65*s,2.7*s,mat.leaf);cyl(g,.75,6,.15,1.15*s,2.1*s,mat.leaf);root.add(g)}
 function hotspot(name,x,z,text,level='space'){const g=new THREE.Group();g.position.set(x,.9,z);const ring=new THREE.Mesh(new THREE.RingGeometry(.42,.56,32),new THREE.MeshBasicMaterial({color:0xf0d39a,transparent:true,opacity:.95,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;g.add(ring);g.add(new THREE.Mesh(new THREE.SphereGeometry(.18,16,16),new THREE.MeshBasicMaterial({color:0xffffff})));g.userData={hotspot:true,name,text,level};root.add(g);hotspots.push(g);return g}
-function room(g,x,z,w,d,h,label){box(g,x,h/2,z,w,h,d,mat.floor,false);const t=.22;box(g,x,h,z-d/2,w,t,h,mat.wall);box(g,x,h,z+d/2,w,t,h,mat.wall);box(g,x-w/2,h,z,t,h,d,mat.wall);box(g,x+w/2,h,z,t,h,d,mat.wall);}
+function room(g,x,z,w,d,h,label){
+  // A thin, walkable floor slab and four upright walls create real room volume.
+  const t=.22;
+  box(g,x,.08,z,w,.16,d,mat.floor,false);
+  box(g,x,h/2,z-d/2,w,h,t,mat.wall);
+  box(g,x,h/2,z+d/2,w,h,t,mat.wall);
+  box(g,x-w/2,h/2,z,t,h,d,mat.wall);
+  box(g,x+w/2,h/2,z,t,h,d,mat.wall);
+}
 
 // ========================= TERRITORY =========================
 // North is the top of the drawing. South is the gates/front approach.
