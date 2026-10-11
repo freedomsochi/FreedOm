@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#12251f">
+<title>FreeDom — Комнаты будущего</title>
+<style>
+:root{--ink:#f2f4e9;--muted:#bac8bd;--green:#a9d7b1;--aqua:#a2e0d8;--amber:#e8c28a;--glass:rgba(16,34,29,.72);--line:rgba(229,244,225,.19)}
+*{box-sizing:border-box}
+html{min-height:100%;background:#12251f;scroll-behavior:smooth}
+body{margin:0;min-height:100vh;overflow-x:hidden;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 50% 10%,#4e7564 0,#203f34 38%,#0c1916 100%)}
+button,input{font:inherit}button{cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.page{min-height:100svh;position:relative;isolation:isolate;overflow:hidden}
+.ambient{position:absolute;inset:0;z-index:-4;background:radial-gradient(ellipse at 48% 36%,#d6d8b51a,transparent 38%),linear-gradient(180deg,#a9b8a81c 0%,transparent 45%,#07110f 100%)}
+.topbar{position:absolute;z-index:10;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:24px clamp(18px,4vw,58px);gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-size:12px;font-weight:750;letter-spacing:.25em}
+.brandmark{width:29px;height:29px;border:1px solid #bde0bc;border-radius:50% 50% 50% 7px;transform:rotate(-45deg);display:grid;place-items:center;box-shadow:0 0 28px #a9d7b126}
+.brandmark:after{content:"";width:8px;height:12px;border-radius:100% 0 100% 0;background:var(--green)}
+.toplink{border:1px solid var(--line);background:#0d211c66;color:#e2ece1;border-radius:999px;padding:10px 15px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(14px)}
+.toplink:hover{background:#234137}
+.scene{position:relative;min-height:100svh;display:grid;place-items:center;padding:84px 24px 30px;perspective:1300px;isolation:isolate}
+.room{position:absolute;inset:0;z-index:-2;overflow:hidden;background:linear-gradient(180deg,#607d72 0%,#9ba88f 46%,#263c31 47%,#12231d 100%)}
+.window-light{position:absolute;inset:8% 9% 22%;border:clamp(7px,1vw,15px) solid #263d34;border-bottom-width:clamp(10px,1.5vw,22px);border-radius:8px 8px 2px 2px;overflow:hidden;box-shadow:0 0 0 1px #d6e1c44d,0 0 90px #d4d8ad30,inset 0 0 50px #f1e3b92e;transform:rotateX(-1deg)}
+.sky{position:absolute;inset:0;background:linear-gradient(180deg,#b8c9b7 0%,#e0d7b6 55%,#94b5a0 100%)}
+.sun{position:absolute;width:15vw;height:15vw;max-width:170px;max-height:170px;min-width:70px;min-height:70px;top:8%;left:61%;border-radius:50%;background:#f2d8a1;box-shadow:0 0 65px 22px #f3d7a166,0 0 160px 60px #e5c99435}
+.haze{position:absolute;inset:30% 0 0;background:linear-gradient(180deg,transparent,#c0d2b99c 40%,#829e8c 100%)}
+.city{position:absolute;left:0;right:0;bottom:0;height:82%;display:flex;align-items:flex-end;justify-content:space-around;gap:1.3%;padding:0 2%;filter:drop-shadow(0 10px 10px #314e4130)}
+.tower{position:relative;flex:1;max-width:12%;height:var(--h);background:linear-gradient(90deg,#6f9382,#b1c5a8 45%,#789887);clip-path:polygon(10% 5%,38% 0,100% 8%,100% 100%,0 100%,0 20%);border-top:2px solid #dce0c2}
+.tower:before{content:"";position:absolute;inset:12% 12% 0;background:repeating-linear-gradient(180deg,transparent 0 14px,#d7e4c77d 14px 16px),repeating-linear-gradient(90deg,transparent 0 14px,#d7e4c75a 14px 16px)}
+.tower:after{content:"";position:absolute;bottom:0;left:10%;right:10%;height:35%;background:linear-gradient(180deg,#426d5a55,#d1ddad77);border-radius:45% 45% 0 0}
+.tower.t1{--h:53%;clip-path:polygon(20% 0,85% 4%,100% 100%,0 100%,7% 12%)}
+.tower.t2{--h:78%;max-width:9%;background:linear-gradient(90deg,#6c9380,#b7c8ac,#668c7b)}
+.tower.t3{--h:61%;clip-path:polygon(0 8%,65% 0,100% 20%,100% 100%,0 100%)}
+.tower.t4{--h:92%;max-width:10%;background:linear-gradient(90deg,#739481,#cad1ad,#779687)}
+.tower.t5{--h:67%}
+.tower.t6{--h:80%;max-width:8%}
+.tower.t7{--h:48%}
+.green-roofs{position:absolute;left:0;right:0;bottom:0;height:27%;background:linear-gradient(180deg,#52795e,#284e3b);clip-path:polygon(0 45%,8% 28%,17% 50%,24% 12%,34% 45%,46% 20%,57% 48%,70% 9%,83% 43%,92% 23%,100% 40%,100% 100%,0 100%)}
+.terrace-tree{position:absolute;bottom:10%;width:10%;height:32%;background:linear-gradient(90deg,#4e7458,#9db78a);clip-path:polygon(46% 0,58% 0,64% 45%,100% 100%,0 100%,36% 45%)}
+.terrace-tree.a{left:10%}.terrace-tree.b{right:14%;height:24%;width:8%}
+.window-mullion{position:absolute;z-index:3;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 49.6%,#263d34 49.6% 50.2%,transparent 50.2%),linear-gradient(180deg,transparent 63%,#263d34 63% 64%,transparent 64%);opacity:.8}
+.sidewall{position:absolute;z-index:1;top:0;bottom:0;width:16%;background:linear-gradient(90deg,#10251e,#345346 78%,#243c32);box-shadow:inset -25px 0 40px #0b1712aa}
+.sidewall.left{left:0;clip-path:polygon(0 0,100% 8%,100% 100%,0 100%);background:linear-gradient(90deg,#11231d,#314a3e)}
+.sidewall.right{right:0;clip-path:polygon(0 8%,100% 0,100% 100%,0 100%);transform:scaleX(-1)}
+.ceiling{position:absolute;z-index:2;left:0;right:0;top:0;height:23%;background:linear-gradient(180deg,#0e211b,#203a2e 72%,transparent);clip-path:polygon(0 0,100% 0,89% 100%,11% 100%);opacity:.9}
+.ceiling:after{content:"";position:absolute;left:13%;right:13%;bottom:18%;height:2px;background:linear-gradient(90deg,transparent,#e7d3a5aa,#a9d7b1aa,transparent);box-shadow:0 0 16px #dfd3a766}
+.floor{position:absolute;z-index:0;left:-10%;right:-10%;bottom:-4%;height:37%;background:linear-gradient(180deg,#263f33,#0c1b16 86%);transform:rotateX(57deg);transform-origin:top center;border-top:1px solid #a5c5a252;box-shadow:0 -20px 50px #08130f6e}
+.floor:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 12%,#b9d3b014 12.1% 12.25%),repeating-linear-gradient(180deg,transparent 0 22%,#b9d3b010 22.1% 22.25%)}
+.console{position:absolute;z-index:4;left:50%;bottom:8%;width:min(660px,61vw);height:clamp(90px,15vh,150px);transform:translateX(-50%) rotateX(8deg);transform-style:preserve-3d}
+.console-top{position:absolute;inset:0;background:linear-gradient(115deg,#314f40,#1d382e 45%,#4b6852);clip-path:polygon(8% 0,92% 0,100% 70%,0 70%);border-top:1px solid #d1e0c755;box-shadow:0 18px 38px #06110d99}
+.console-top:after{content:"";position:absolute;left:13%;right:13%;top:13%;height:1px;background:linear-gradient(90deg,transparent,#e8c58b99,#a2e0d866,transparent)}
+.console-front{position:absolute;top:57%;left:0;right:0;height:43%;background:linear-gradient(180deg,#1d342a,#0c1a15);clip-path:polygon(0 0,100% 0,94% 100%,6% 100%);border-bottom:1px solid #b6d5b42a}
+.screen{position:absolute;z-index:5;left:50%;top:45%;transform:translate(-50%,-50%) translateZ(35px);width:min(500px,54vw);min-height:230px;max-height:42vh;overflow:auto;border:1px solid #d5e8d24d;border-radius:20px;background:linear-gradient(145deg,rgba(17,39,31,.91),rgba(10,25,21,.88));box-shadow:0 20px 70px #07140e80,0 0 50px #b4d5b51b,inset 0 1px #fff2;backdrop-filter:blur(22px);padding:clamp(20px,3vw,34px);transition:width .45s ease,min-height .4s ease}
+.screen:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 100% 0%,#a4d7bd13,transparent 45%)}
+.screen-head{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#b9d1bd;font-size:9px;letter-spacing:.19em;text-transform:uppercase}
+.status-dot{display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-right:7px;box-shadow:0 0 12px var(--green)}
+.screen h1{font-size:clamp(30px,4vw,49px);font-weight:450;letter-spacing:-.055em;line-height:1.04;margin:24px 0 12px}
+.screen h1 em{font-family:Georgia,serif;font-weight:400;color:var(--amber)}
+.screen p{font-size:13px;line-height:1.7;color:#c0d0c3;max-width:390px;margin:0 0 22px}
+.primary{border:1px solid #d7e6c86b;border-radius:999px;padding:12px 17px;background:linear-gradient(100deg,#c9d7a5,#9ecbb1);color:#14271d;font-size:12px;font-weight:700;box-shadow:0 6px 22px #9bc4a51b;transition:transform .2s,filter .2s}
+.primary:hover{transform:translateY(-2px);filter:brightness(1.07)}
+.secondary{border:1px solid var(--line);border-radius:999px;padding:10px 14px;background:#ffffff06;color:#e1ece0;font-size:11px}
+.date-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 14px}
+.field{display:grid;gap:7px;color:#b7cbb9;font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.field input{width:100%;min-width:0;border:1px solid #e0eddd30;border-radius:12px;background:#08191399;color:#f4f2e7;padding:12px 10px;font-size:13px;color-scheme:dark}
+.note{font-size:11px;color:#d7c39c;line-height:1.5;margin-top:10px}
+.result-layout{display:grid;grid-template-columns:minmax(135px,1fr) minmax(280px,1.45fr) minmax(135px,1fr);gap:14px;align-items:center;width:min(1150px,100%);position:relative;z-index:6}
+.result-layout[hidden]{display:none}
+.wheel{height:min(56vh,470px);overflow:auto;scrollbar-width:thin;scrollbar-color:#8eb79a44 transparent;display:flex;flex-direction:column;gap:10px;padding:6px 4px;mask-image:linear-gradient(transparent,#000 7%,#000 93%,transparent)}
+.wheel-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#d4dfc9a8;padding:0 6px 6px}
+.room-option{border:1px solid #dbe9d82b;border-radius:14px;background:linear-gradient(135deg,#19362cce,#0e211bd9);color:#e7eee3;text-align:left;padding:13px;min-height:96px;transition:transform .25s,border-color .25s,background .25s;backdrop-filter:blur(12px)}
+.room-option:hover,.room-option.active{border-color:#c7dfb9a3;background:linear-gradient(135deg,#345343ed,#142c23f2);transform:translateY(-2px)}
+.room-option strong{display:block;font-size:12px;line-height:1.35;font-weight:600;margin-bottom:8px}
+.room-option small{display:block;font-size:10px;color:#b8cbbb;line-height:1.5}
+.room-option .state{display:inline-flex;align-items:center;gap:6px;font-size:9px;color:#bce4b5;margin-top:8px}
+.room-option .state:before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.room-option.unavailable .state{color:#d9b99b}
+.detail{border:1px solid #dbe9d83b;border-radius:22px;background:linear-gradient(145deg,#112b22ee,#0b1b16ee);backdrop-filter:blur(25px);padding:clamp(19px,2.4vw,29px);box-shadow:0 30px 80px #06120d6b;min-height:300px;position:relative;overflow:hidden}
+.detail:before{content:"";position:absolute;top:-80px;right:-70px;width:220px;height:220px;border-radius:50%;background:#a8d8b20b;box-shadow:0 0 0 1px #d4e7cf0b}
+.detail-kicker{font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:#b6d8b5;margin-bottom:18px}
+.detail h2{font-size:clamp(23px,2.5vw,34px);font-weight:450;letter-spacing:-.04em;line-height:1.08;margin:0 0 12px}
+.detail p{font-size:12px;color:#c3d0c4;line-height:1.7;margin:0 0 16px}
+.facts{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 20px}
+.fact{border:1px solid #dce9d927;background:#ffffff05;padding:7px 9px;border-radius:999px;font-size:10px;color:#d3dfd0}
+.detail-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.detail .price{color:#e8d2a6;font-size:12px;margin:0 0 15px}
+.detail .price strong{font-size:19px;font-weight:550}
+.detail-empty{color:#c4d0c4;font-size:12px;line-height:1.7}
+.bottom-caption{position:absolute;z-index:7;bottom:21px;left:clamp(18px,4vw,58px);right:clamp(18px,4vw,58px);display:flex;align-items:end;justify-content:space-between;gap:20px;pointer-events:none}
+.caption-main{font-family:Georgia,serif;font-style:italic;font-size:14px;color:#dce7d6c7}
+.caption-meta{font-size:9px;letter-spacing:.17em;color:#d2dfd09c;text-transform:uppercase;text-align:right}
+.toast{font-size:11px;line-height:1.5;color:#c6d8c7;margin-top:12px}
+.modal{position:fixed;inset:0;z-index:30;background:#06110ed9;backdrop-filter:blur(12px);display:none;place-items:center;padding:18px}
+.modal.open{display:grid}
+.dialog{width:min(470px,100%);max-height:90svh;overflow:auto;border:1px solid #dbe9d844;border-radius:22px;background:linear-gradient(145deg,#18352a,#0a1b15);padding:24px;box-shadow:0 25px 90px #0008}
+.dialog-top{display:flex;align-items:start;justify-content:space-between;gap:15px}
+.dialog h2{font-weight:450;font-size:27px;letter-spacing:-.04em;margin:0 0 9px}
+.close{border:1px solid var(--line);border-radius:50%;width:35px;height:35px;color:var(--ink);background:#ffffff08;font-size:19px}
+.dialog p{font-size:12px;line-height:1.6;color:#c1d0c2}
+.form{display:grid;gap:13px;margin-top:20px}
+.form label{display:grid;gap:7px;font-size:11px;color:#c4d3c5}
+.form input{width:100%;padding:12px;border-radius:11px;border:1px solid #e0eddd30;background:#08191399;color:#fff}
+.formresult{font-size:12px;line-height:1.6;color:#d8d5b8}
+@media(min-width:1200px){.screen{top:43%}.result-layout{transform:translateY(-1%)}}
+@media(max-width:800px){.topbar{padding:16px 17px}.scene{padding:76px 13px 70px;align-items:start;min-height:100svh}.window-light{inset:9% 4% 25%;border-width:8px}.sidewall{width:7%}.ceiling{height:17%}.console{width:85vw;bottom:8%;height:100px}.screen{top:43%;width:min(560px,88vw);max-height:48svh;padding:22px;min-height:245px}.screen h1{font-size:35px;margin:21px 0 10px}.screen p{font-size:12px}.result-layout{grid-template-columns:1fr 1fr;gap:10px;align-items:stretch;padding-top:5px}.detail{grid-column:1/-1;grid-row:1;min-height:0;padding:19px}.wheel{height:180px;grid-row:2;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);flex-direction:row;overflow-x:auto;overflow-y:hidden;padding:4px}.room-option{min-width:145px;min-height:130px}.wheel-label{position:absolute;top:0}.wheel-wrap{padding-top:20px;min-width:0}.bottom-caption{bottom:12px}.caption-main{font-size:12px}.caption-meta{font-size:8px}.result-layout{margin-top:1vh}.result-layout[hidden]{display:none}}
+@media(max-width:420px){.brand{font-size:10px;letter-spacing:.19em}.brandmark{width:25px;height:25px}.toplink{font-size:9px;padding:9px 11px}.screen{top:41%;padding:19px;min-height:250px}.screen h1{font-size:32px}.screen-head{font-size:8px}.date-grid{gap:8px}.field input{padding:10px 7px;font-size:12px}.result-layout{grid-template-columns:1fr}.detail{grid-column:auto}.wheel{height:145px}.wheel-wrap:nth-child(3){grid-row:3}.room-option{min-width:132px;min-height:120px}.bottom-caption{align-items:center}.caption-main{max-width:65%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="ambient"></div>
+<header class="topbar">
+  <div class="brand"><span class="brandmark"></span><span>FreeDom</span><span style="font-weight:400;color:#b8cbbb;letter-spacing:.13em">/ ROOMS</span></div>
+  <button class="toplink" id="restart" type="button">↶ Сначала</button>
+</header>
+<div class="room" aria-hidden="true">
+  <div class="window-light">
+    <div class="sky"></div><div class="sun"></div><div class="haze"></div>
+    <div class="city">
+      <div class="tower t1"></div><div class="tower t2"></div><div class="tower t3"></div><div class="tower t4"></div><div class="tower t5"></div><div class="tower t6"></div><div class="tower t7"></div>
+    </div>
+    <div class="green-roofs"></div><div class="terrace-tree a"></div><div class="terrace-tree b"></div><div class="window-mullion"></div>
+  </div>
+  <div class="sidewall left"></div><div class="sidewall right"></div><div class="ceiling"></div><div class="floor"></div>
+  <div class="console"><div class="console-top"></div><div class="console-front"></div></div>
+</div>
+<main class="scene">
+  <section class="screen" id="main-screen" aria-live="polite">
+    <div class="screen-head"><span><i class="status-dot"></i>FreeDom / пространство</span><span id="screen-step">Добро пожаловать</span></div>
+    <div id="screen-content">
+      <h1>Твоё место<br>в мире <em>будущего.</em></h1>
+      <p>Спокойное пространство, живой дом и свобода выбрать свой ритм. Давай найдём комнату, в которой тебе будет хорошо.</p>
+      <button class="primary" id="start" type="button">Выбрать даты <span aria-hidden="true">↗</span></button>
+    </div>
+  </section>
+  <section class="result-layout" id="result-layout" hidden>
+    <div class="wheel-wrap"><div class="wheel-label">Пространства · A</div><div class="wheel" id="wheel-left" aria-label="Варианты комнат, часть первая"></div></div>
+    <article class="detail" id="detail">
+      <div class="detail-kicker">Ваше пространство · FreeDom</div>
+      <div class="detail-empty">Выберите доступную комнату с одной из сторон.</div>
+    </article>
+    <div class="wheel-wrap"><div class="wheel-label">Пространства · B</div><div class="wheel" id="wheel-right" aria-label="Варианты комнат, часть вторая"></div></div>
+  </section>
+</main>
+<div class="bottom-caption"><div class="caption-main">«Здесь начинается твоя история…»</div><div class="caption-meta">Пространство · Свобода · Твой ритм</div></div>
+</div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+  <div class="dialog">
+    <div class="dialog-top"><div><div class="detail-kicker">FreeDom · Заявка на размещение</div><h2 id="dialog-title">Давай знакомиться</h2></div><button class="close" id="close-modal" type="button" aria-label="Закрыть">×</button></div>
+    <p id="booking-info"></p>
+    <form class="form" id="booking-form">
+      <label>Твоё имя<input name="guest_name" autocomplete="name" required></label>
+      <label>Телефон<input name="guest_phone" autocomplete="tel" required></label>
+      <label>Email (необязательно)<input name="guest_email" type="email" autocomplete="email"></label>
+      <label id="guestcount-wrap">Количество мест<input id="guest-count" name="guest_count" type="number" min="1" value="1" required></label>
+      <button class="primary" id="submit-booking" type="submit">Отправить заявку ↗</button>
+      <div class="formresult" id="form-result" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+<script>
+(()=>{
+const $=s=>document.querySelector(s);
+const content=$('#screen-content'),screenStep=$('#screen-step'),screen=$('#main-screen'),layout=$('#result-layout'),left=$('#wheel-left'),right=$('#wheel-right'),detail=$('#detail');
+let step='intro',rooms=[],selected=null,lastDates=null;
+const pad=n=>String(n).padStart(2,'0');
+const dateString=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const pretty=d=>{const x=new Date(d+'T12:00:00');return x.toLocaleDateString('ru-RU',{day:'numeric',month:'short'}).replace('.','')};
+const today=new Date(),arrival=new Date(today);arrival.setDate(today.getDate()+1);const departure=new Date(arrival);departure.setDate(arrival.getDate()+1);
+function setIntro(){step='intro';selected=null;layout.hidden=true;screen.hidden=false;screen.style.display='';screenStep.textContent='Добро пожаловать';content.innerHTML='<h1>Твоё место<br>в мире <em>будущего.</em></h1><p>Спокойное пространство, живой дом и свобода выбрать свой ритм. Давай найдём комнату, в которой тебе будет хорошо.</p><button class="primary" id="start" type="button">Выбрать даты <span aria-hidden="true">↗</span></button>';$('#start').addEventListener('click',setDates);}
+function setDates(){step='dates';screenStep.textContent='Шаг 01 / Даты';content.innerHTML='<h1>Когда хочется<br><em>остаться?</em></h1><p>Выбери даты — мы проверим реальные варианты в системе бронирования FreeDom.</p><div class="date-grid"><label class="field">Заезд<input id="checkin" type="date" required></label><label class="field">Выезд<input id="checkout" type="date" required></label></div><button class="primary" id="search" type="button">Найти свободное ↗</button><div class="toast" id="notice" role="status"></div><div class="note">Покажем только те варианты, которые вернёт система доступности.</div>';const ci=$('#checkin'),co=$('#checkout');ci.min=dateString(today);ci.value=dateString(arrival);co.min=dateString(arrival);co.value=dateString(departure);ci.addEventListener('change',()=>{co.min=ci.value;const d=new Date(ci.value+'T12:00:00');d.setDate(d.getDate()+1);if(co.value<=ci.value)co.value=dateString(d)});$('#search').addEventListener('click',loadAvailability);}
+function safe(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function available(r){return r.available===true||Number(r.free_places)>0;}
+function nights(){return Math.max(1,Math.round((new Date(lastDates.checkout+'T12:00:00')-new Date(lastDates.checkin+'T12:00:00'))/86400000));}
+function modeLabel(r){return r.booking_mode==='places'?'Бронирование по местам':'Бронирование целиком';}
+async function loadAvailability(){
+ const ci=$('#checkin').value,co=$('#checkout').value,n=Math.round((new Date(co+'T12:00:00')-new Date(ci+'T12:00:00'))/86400000),notice=$('#notice'),btn=$('#search');
+ if(!ci||!co||n<=0){notice.textContent='Дата выезда должна быть позже даты заезда.';return;}
+ btn.disabled=true;btn.textContent='Проверяем…';notice.textContent='Связываемся с системой бронирования…';
+ try{
+  const response=await fetch('/api/availability',{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify({check_in:ci,check_out:co})});
+  const data=await response.json();if(!response.ok||data.ok===false)throw new Error(data.error||'Сервис доступности временно недоступен.');
+  rooms=Array.isArray(data.rooms)?data.rooms:[];lastDates={checkin:ci,checkout:co};selected=null;
+  if(!rooms.length)throw new Error('Система не вернула варианты для этих дат. Попробуй другой период.');
+  renderRooms();step='results';screen.hidden=true;layout.hidden=false;
+ }catch(e){notice.textContent=e.message+' Демонстрационные статусы не подставляем.';notice.style.color='#e7c4a3';}
+ finally{btn.disabled=false;btn.textContent='Найти свободное ↗';}
+}
+function renderRooms(){
+ left.innerHTML='';right.innerHTML='';
+ const split=Math.ceil(rooms.length/2);
+ rooms.forEach((r,i)=>{const target=i<split?left:right,el=document.createElement('button'),ok=available(r);el.type='button';el.className='room-option'+(!ok?' unavailable':'');el.dataset.index=i;el.innerHTML='<strong>'+safe(r.name||'Комната FreeDom')+'</strong><small>'+safe(r.booking_mode==='places'?'По местам':'Целиком')+' · '+(Number(r.capacity)>0?'до '+safe(r.capacity)+' гостей':'вместимость уточняется')+'</small><span class="state">'+(ok?'Доступно':'Нет мест')+'</span>';el.disabled=!ok;el.addEventListener('click',()=>selectRoom(i));target.appendChild(el);});
+ const first=rooms.findIndex(available);if(first>=0)selectRoom(first);else detail.innerHTML='<div class="detail-kicker">FreeDom · Доступность</div><h2>На эти даты<br>мест не найдено.</h2><p>Попробуй изменить даты. Мы не показываем выдуманную доступность.</p><button class="secondary" id="change-dates" type="button">Изменить даты</button>';
+}
+function selectRoom(i){
+ selected=rooms[i];document.querySelectorAll('.room-option').forEach(el=>el.classList.toggle('active',Number(el.dataset.index)===i));
+ const r=selected,ok=available(r),price=Number(r.price_per_night??r.price??0),image=r.image_url||r.imageUrl||'';
+ detail.innerHTML='<div class="detail-kicker">Твоё пространство · '+String(i+1).padStart(2,'0')+'</div><h2>'+safe(r.name||'Комната FreeDom')+'</h2><p>'+safe(r.description||'Уютное пространство в доме FreeDom. Детали и условия можно уточнить при бронировании.')+'</p><div class="facts"><span class="fact">'+safe(modeLabel(r))+'</span><span class="fact">'+(Number(r.capacity)>0?'До '+safe(r.capacity)+' гостей':'Вместимость уточняется')+'</span><span class="fact">'+(ok?'Доступно на выбранные даты':'Нет свободных мест')+'</span></div>'+(price>0?'<div class="price"><strong>'+new Intl.NumberFormat('ru-RU').format(price)+' ₽</strong> / ночь</div>':'<div class="price">Стоимость уточняется при подтверждении</div>')+'<div class="detail-actions"><button class="primary" id="book-room" type="button" '+(!ok?'disabled':'')+'>Оставить заявку ↗</button><button class="secondary" id="change-dates" type="button">Даты</button></div>';
+ $('#book-room').addEventListener('click',()=>openBooking(r));$('#change-dates').addEventListener('click',()=>{layout.hidden=true;screen.hidden=false;setDates();});
+ if(image){detail.style.backgroundImage='linear-gradient(180deg,#10291fe8,#10291fe8),url("'+safe(image)+'")';detail.style.backgroundSize='cover';}else{detail.style.backgroundImage='';}
+}
+function openBooking(r){
+ if(!lastDates||!selected)return;
+ $('#dialog-title').textContent=r.name||'Забронировать';$('#booking-info').textContent=pretty(lastDates.checkin)+' — '+pretty(lastDates.checkout)+' · '+nights()+' '+(nights()===1?'ночь':nights()<5?'ночи':'ночей')+' · '+modeLabel(r)+'. После отправки заявка будет передана в систему FreeDom.';
+ const count=$('#guest-count');count.value=1;count.min=1;count.max=r.booking_mode==='places'?Math.max(1,Number(r.free_places||1)):1;$('#guestcount-wrap').style.display=r.booking_mode==='places'?'grid':'none';$('#form-result').textContent='';$('#modal').classList.add('open');
+}
+$('#close-modal').addEventListener('click',()=>$('#modal').classList.remove('open'));$('#modal').addEventListener('click',e=>{if(e.target===$('#modal'))$('#modal').classList.remove('open')});document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#modal').classList.remove('open')});
+$('#booking-form').addEventListener('submit',async e=>{
+ e.preventDefault();const out=$('#form-result');if(!selected||!lastDates)return;
+ const payload=Object.fromEntries(new FormData(e.currentTarget));Object.assign(payload,{room_id:selected.room_id||selected.id,check_in:lastDates.checkin,check_out:lastDates.checkout,guest_count:selected.booking_mode==='places'?Math.min(Number($('#guest-count').value||1),Number(selected.free_places||1)):1});
+ const submit=$('#submit-booking');submit.disabled=true;out.textContent='Отправляем заявку…';
+ try{const response=await fetch('/api/booking',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await response.json();if(!response.ok||data.ok===false)throw new Error(data.error||'Не удалось отправить заявку. Попробуйте позже.');out.textContent='Заявка отправлена в систему FreeDom.';setTimeout(()=>$('#modal').classList.remove('open'),1200);}
+ catch(err){out.textContent=err.message;}finally{submit.disabled=false;}
+});
+$('#restart').addEventListener('click',setIntro);setIntro();
+})();
+</script>
+</body>
+</html>
