@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101b17">
+<title>FreeDom — Eco Futurism · Пространство</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1511;--line:rgba(207,235,213,.16);--text:#edf5eb;--muted:#9fb3a3;--mint:#bce6a9;--aqua:#8adbd0;--shadow:0 24px 80px rgba(0,0,0,.24)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#213b2c 0,transparent 38%),radial-gradient(ellipse at 92% 26%,#183b38 0,transparent 34%),linear-gradient(180deg,#0b1511,#101c17 56%,#0a120f);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}button,input{font:inherit}button{cursor:pointer}.shell{width:min(1500px,calc(100% - 42px));margin:auto}.topbar{height:78px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px;font-weight:850;letter-spacing:.22em;font-size:14px}.brandmark{width:34px;height:34px;border:1px solid #a9d8b0;border-radius:50% 50% 50% 8px;transform:rotate(-45deg);display:grid;place-items:center;background:linear-gradient(135deg,#bce6a93d,#8adbd00d);box-shadow:0 0 30px #bce6a91c}.brandmark i{display:block;width:10px;height:15px;background:var(--mint);border-radius:100% 0 100% 0}.topright{display:flex;align-items:center;gap:18px;color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase}.live{display:flex;align-items:center;gap:7px}.live:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px var(--mint)}
+.hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:34px;align-items:center;padding:38px 0 28px}.eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--mint);display:flex;align-items:center;gap:10px}.eyebrow:before{content:"";width:28px;height:1px;background:var(--mint)}h1{font-size:clamp(44px,6vw,86px);letter-spacing:-.075em;line-height:.91;font-weight:550;margin:18px 0;max-width:700px}h1 span{color:var(--mint);font-family:Georgia,serif;font-style:italic;font-weight:400;letter-spacing:-.08em}.intro{max-width:480px;color:#b4c5b8;font-size:14px;line-height:1.8}.micro{display:flex;gap:18px;align-items:center;margin-top:28px;color:#b2c8b5;font-size:10px;letter-spacing:.12em;text-transform:uppercase}.micro span{display:flex;gap:7px;align-items:center}.micro i{width:5px;height:5px;background:var(--aqua);border-radius:50%;display:inline-block}
+.scene-wrap{height:440px;min-width:0;position:relative;isolation:isolate}.scene-glow{position:absolute;width:72%;height:66%;left:15%;top:17%;background:#6bc79d22;filter:blur(60px);border-radius:50%}.scene-label{position:absolute;z-index:3;left:8px;top:14px;font-size:9px;letter-spacing:.18em;color:#a6c3ac;text-transform:uppercase}.scene-label b{display:block;font-size:12px;color:#e5f2e5;letter-spacing:.08em;margin-top:8px;font-weight:550}.scene-index{position:absolute;z-index:3;right:6px;bottom:10px;text-align:right;font-size:9px;line-height:1.8;color:#9ab3a0;letter-spacing:.12em}
+.terrain{position:absolute;left:50%;top:50%;width:min(510px,100%);height:350px;transform:translate(-50%,-50%);filter:drop-shadow(0 30px 24px #0005)}.land{position:absolute;inset:8% 5%;border:1px solid #c1e2bb38;border-radius:34px 54px 40px 50px;background:linear-gradient(135deg,#294b38,#1b382c 52%,#23473c);transform:rotateX(58deg) rotateZ(-35deg) scale(.93);box-shadow:inset 0 0 0 12px #ffffff05,inset 0 0 0 13px #b8d9a51b,0 0 55px #7dd5ad0b;overflow:hidden}.land:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(130deg,transparent 0 22px,#d4edc80a 23px 24px)}.pathway{position:absolute;z-index:1;left:12%;top:10%;width:76%;height:82%;border:13px solid #d9d4b24b;border-left-color:transparent;border-bottom-color:transparent;border-radius:48%;transform:rotate(24deg)}.pond{position:absolute;z-index:2;right:10%;top:17%;width:27%;height:25%;border-radius:55% 45% 48% 52%;background:linear-gradient(135deg,#8ce1d4,#327d7b);box-shadow:inset 0 0 0 5px #b5f1e32a,0 0 25px #6be5d328;transform:rotateX(58deg) rotateZ(-35deg)}.pond:after{content:"";position:absolute;inset:20%;border-top:1px solid #e0fff7a8;border-radius:50%;transform:rotate(25deg)}.house{position:absolute;z-index:4;left:24%;top:24%;width:48%;height:45%;transform:rotateX(58deg) rotateZ(-35deg);transform-style:preserve-3d}.house-base{position:absolute;inset:0;background:#a8b9a0;border:1px solid #e7f0dd8a;box-shadow:12px 14px 0 #07130f88,0 0 0 8px #c9e7bd0b}.house-base:before{content:"";position:absolute;inset:8px;background:linear-gradient(135deg,#314b3b,#24392e);border:1px solid #c4dfb65c}.roof{position:absolute;left:-5%;top:-8%;width:110%;height:54%;background:linear-gradient(135deg,#d0c8a5,#748c70);border:1px solid #e9e8c6;transform:translateZ(20px);box-shadow:0 10px 0 #4a6550,0 0 30px #c4e4b51b}.roof:after{content:"";position:absolute;left:50%;top:0;height:100%;width:1px;background:#536e57a6}.glass-wall{position:absolute;right:4%;bottom:6%;width:32%;height:40%;background:linear-gradient(135deg,#a4e2d1aa,#437d6c88);border:1px solid #d7f3db;transform:translateZ(12px);box-shadow:inset 0 0 12px #d0f4da2a}.window{position:absolute;left:10%;bottom:6%;width:24%;height:30%;background:linear-gradient(135deg,#9ddac6,#386958);border:1px solid #d7f3db;transform:translateZ(12px)}.deck{position:absolute;z-index:3;left:20%;top:65%;width:38%;height:12%;background:#bba77d;border:1px solid #e6d6a7;transform:rotateX(58deg) rotateZ(-35deg);box-shadow:0 8px 0 #6b7252}.tree{position:absolute;z-index:5;width:25px;height:25px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#a8d7a0,#477c56 58%,#224d3c 80%);box-shadow:0 7px 0 #101d15,0 0 15px #92d69b26}.tree:after{content:"";position:absolute;width:5px;height:13px;background:#8d7954;left:10px;top:20px;z-index:-1}.t1{left:17%;top:26%}.t2{left:78%;top:31%;width:33px;height:33px}.t3{left:16%;top:69%;width:31px;height:31px}.t4{right:13%;bottom:18%}.t5{left:66%;bottom:12%;width:19px;height:19px}.tree.small{width:17px;height:17px}.tree.small:after{left:7px;top:13px}.pin{position:absolute;z-index:8;display:flex;align-items:center;gap:7px;border:1px solid #b9e7c45e;background:#12251fdb;backdrop-filter:blur(10px);border-radius:30px;padding:7px 11px;color:#e8f4e8;font-size:9px;letter-spacing:.05em;box-shadow:0 7px 22px #0002;white-space:nowrap}.pin:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px var(--mint)}.pin.housepin{left:48%;top:37%}.pin.poolpin{right:0;top:20%}.pin.gardenpin{left:5%;bottom:12%}
+.booking-bar{display:grid;grid-template-columns:1fr 1fr auto;align-items:end;gap:10px;padding:13px;border:1px solid #c8e8d01e;border-radius:22px;background:linear-gradient(110deg,#1a2d24e8,#10221fef);box-shadow:var(--shadow);backdrop-filter:blur(20px);position:relative;z-index:5}.field{display:grid;gap:7px;padding:0 8px}.field label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#a9c1ae}.field input{min-width:0;width:100%;background:#0c1914;border:1px solid #d2e8d41d;color:#f0f6ec;border-radius:11px;padding:12px 11px;outline:none;color-scheme:dark}.field input:focus{border-color:#bce6a9a3;box-shadow:0 0 0 3px #bce6a914}.primary{border:0;background:linear-gradient(135deg,#d7edb3,#a8d9b2);color:#12251b;font-weight:800;padding:14px 19px;border-radius:13px;font-size:12px;transition:transform .2s,filter .2s;white-space:nowrap}.primary:hover{transform:translateY(-2px);filter:brightness(1.06)}.primary:disabled{opacity:.55;cursor:wait;transform:none}.message{font-size:11px;color:#adc3b2;min-height:18px;padding:9px 4px 0}.message.error{color:#ffb8a7}.message.good{color:#bfeab0}
+.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:54px 0 18px}.sectionhead .eyebrow{margin-bottom:10px}.sectionhead h2{font-size:clamp(28px,3.4vw,44px);letter-spacing:-.06em;line-height:1;margin:0;font-weight:550}.sectionhead p{max-width:330px;color:var(--muted);font-size:12px;line-height:1.7;margin:0}.resultsmeta{display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--muted);font-size:11px;padding:0 2px 12px}.roomgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.roomcard{overflow:hidden;position:relative;border:1px solid var(--line);border-radius:19px;background:linear-gradient(155deg,#1b2c23e8,#12201ae8);transition:transform .25s,border-color .25s,box-shadow .25s;cursor:pointer;min-width:0}.roomcard:hover,.roomcard.selected{transform:translateY(-3px);border-color:#bce6a967;box-shadow:0 18px 40px #0002,0 0 0 1px #bce6a91b}.roomimg{height:180px;position:relative;overflow:hidden;background:linear-gradient(135deg,#45664d,#172c22)}.roomimg img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s;filter:saturate(.78)}.roomcard:hover .roomimg img{transform:scale(1.04)}.roomimg:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#122019d9)}.statuspill{position:absolute;z-index:2;left:12px;top:12px;border:1px solid #d9f1d535;border-radius:30px;background:#0d1b15d9;backdrop-filter:blur(10px);padding:7px 10px;font-size:9px;letter-spacing:.06em}.statuspill:before{content:"";display:inline-block;width:5px;height:5px;background:var(--mint);border-radius:50%;margin-right:6px;box-shadow:0 0 9px var(--mint)}.statuspill.busy:before{background:#f0a99b;box-shadow:0 0 9px #f0a99b}.roomtag{position:absolute;z-index:2;right:12px;bottom:12px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#d8ead8}.roombody{padding:15px}.roomtitle{display:flex;align-items:start;justify-content:space-between;gap:10px}.roomtitle h3{font-size:18px;letter-spacing:-.04em;font-weight:600;margin:0}.arrow{color:var(--mint);font-size:18px;line-height:1}.roomdesc{color:#a6b9aa;font-size:11px;line-height:1.65;min-height:36px;margin:9px 0 13px}.roomfacts{display:flex;gap:7px;flex-wrap:wrap}.roomfacts span{font-size:9px;color:#c5d7c8;padding:6px 8px;border:1px solid #d3e8d41b;border-radius:8px}.empty{border:1px dashed #d0e7d12c;border-radius:18px;padding:30px;color:var(--muted);font-size:13px;line-height:1.7}.foot{display:flex;justify-content:space-between;gap:16px;align-items:center;border-top:1px solid var(--line);margin-top:56px;padding:22px 0 32px;color:#789080;font-size:10px;letter-spacing:.08em}.foot strong{color:#d4e6d2;letter-spacing:.2em}
+.modal{position:fixed;z-index:50;inset:0;background:#06100de0;backdrop-filter:blur(14px);display:none;place-items:center;padding:18px}.modal.open{display:grid}.dialog{width:min(520px,100%);border:1px solid #d1e9d62c;border-radius:24px;background:linear-gradient(145deg,#20362a,#101d17);padding:24px;box-shadow:0 30px 100px #0008}.dialoghead{display:flex;justify-content:space-between;align-items:start;gap:14px}.dialog h2{font-size:30px;letter-spacing:-.06em;margin:7px 0 8px}.close{width:35px;height:35px;border-radius:50%;border:1px solid var(--line);background:#ffffff08;color:var(--text);font-size:19px}.dialogsub{font-size:12px;line-height:1.7;color:var(--muted);margin-bottom:20px}.form{display:grid;gap:12px}.form label{display:grid;gap:6px;font-size:10px;color:#b5cbb8;letter-spacing:.08em}.form input{width:100%;border:1px solid #d5e8d524;background:#0b1711;color:var(--text);border-radius:11px;padding:12px;outline:none}.form input:focus{border-color:#bce6a9a3}.formrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form .primary{margin-top:4px}.formresult{font-size:12px;line-height:1.6;color:var(--muted)}.formresult.error{color:#ffb8a7}.formresult.good{color:#bfeab0}
+@media(min-width:1200px){.hero{padding-top:48px}.scene-wrap{height:480px}.terrain{width:560px;height:390px}.roomimg{height:200px}}
+@media(max-width:900px){.shell{width:min(100% - 28px,720px)}.hero{grid-template-columns:1fr;gap:12px;padding-top:35px}.hero-copy{max-width:650px}.scene-wrap{height:370px}.terrain{height:320px;width:min(500px,100%)}.booking-bar{grid-template-columns:1fr 1fr}.booking-bar .primary{grid-column:1/-1}.roomgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.sectionhead{margin-top:42px}}
+@media(max-width:560px){.shell{width:calc(100% - 22px)}.topbar{height:64px}.topright{font-size:9px;gap:9px}.topright .live{display:none}.hero{padding-top:28px;gap:3px}.hero h1{font-size:clamp(46px,13vw,68px);margin-top:15px}.intro{font-size:13px}.micro{gap:10px;font-size:8px;flex-wrap:wrap;margin-top:20px}.scene-wrap{height:310px;margin:0 -6px}.terrain{width:390px;height:285px;max-width:100%}.land{inset:10% 2%}.pin{font-size:8px;padding:6px 8px}.pin.housepin{left:42%;top:39%}.pin.poolpin{right:0;top:16%}.pin.gardenpin{left:0;bottom:12%}.scene-label{left:10px;top:8px}.booking-bar{padding:10px;gap:8px;border-radius:17px}.field{padding:0 3px}.field input{padding:11px 8px;font-size:12px}.primary{padding:13px 10px;font-size:11px}.sectionhead{display:block;margin:38px 0 15px}.sectionhead p{margin-top:11px}.roomgrid{grid-template-columns:1fr;gap:10px}.roomcard{display:grid;grid-template-columns:42% 58%;min-height:155px}.roomimg{height:100%;min-height:155px}.roombody{padding:12px}.roomtitle h3{font-size:16px}.roomdesc{font-size:10px;min-height:0;margin:7px 0 10px}.roomfacts span{font-size:8px;padding:5px 6px}.foot{margin-top:40px;align-items:start;flex-direction:column;gap:10px}.dialog{padding:19px}.dialog h2{font-size:27px}.formrow{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+/* V3 — cinematic holographic room interface. The original V1 remains untouched. */
+.hero>section[aria-label="Поиск свободного размещения"]{grid-column:1/-1;position:relative;z-index:3;width:100%;margin-top:-4px}.hero>section[aria-label="Поиск свободного размещения"] .message{margin-bottom:0}.holo-side{appearance:none;-webkit-appearance:none;border:0;background:transparent;color:inherit;text-align:left;padding:0;font:inherit;width:100%;display:block}
+:root{--holo:#7ee8dc;--holo-soft:rgba(126,232,220,.16);--holo-line:rgba(126,232,220,.28);--glass:rgba(8,22,24,.74)}
+body{background:radial-gradient(ellipse at 50% 15%,#153a3a 0,transparent 42%),radial-gradient(ellipse at 10% 70%,#183427 0,transparent 38%),linear-gradient(160deg,#050d12,#0b1919 55%,#09120f);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.2;background-image:linear-gradient(rgba(126,232,220,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(126,232,220,.06) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(to bottom,black,transparent 85%)}
+.shell{width:min(1540px,calc(100% - 48px))}
+.topbar{height:72px;border-color:rgba(126,232,220,.18);position:relative}
+.brand{letter-spacing:.26em}.brandmark{border-color:#7ee8dc;border-radius:50%;transform:none;box-shadow:0 0 26px #7ee8dc24}.brandmark i{border-radius:100% 0 100% 0;background:#7ee8dc}
+.topright{letter-spacing:.16em}.live{color:#a7eee5}.live:before{background:#7ee8dc;box-shadow:0 0 12px #7ee8dc}
+.hero{position:relative;min-height:calc(100svh - 108px);padding:clamp(24px,4vh,48px) clamp(20px,3vw,48px);gap:clamp(20px,3vw,50px);grid-template-columns:minmax(300px,.76fr) minmax(0,1.24fr);align-items:center;border:1px solid rgba(126,232,220,.23);border-radius:28px;margin:24px 0 20px;background:linear-gradient(125deg,rgba(10,28,28,.72),rgba(8,17,24,.42) 60%,rgba(18,48,43,.42));box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),0 30px 100px #0005;overflow:hidden;isolation:isolate}
+.hero:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(115deg,transparent 20%,rgba(126,232,220,.045) 48%,transparent 74%),repeating-linear-gradient(0deg,transparent 0 5px,rgba(126,232,220,.025) 6px 7px)}
+.hero:after{content:"";position:absolute;top:-30%;bottom:-30%;left:0;width:1px;background:linear-gradient(transparent,#7ee8dc,transparent);box-shadow:0 0 24px #7ee8dc;opacity:.7;animation:holoSweep 8s linear infinite;pointer-events:none}
+@keyframes holoSweep{0%{left:0;opacity:0}12%{opacity:.7}88%{opacity:.7}100%{left:100%;opacity:0}}
+.hero-copy{position:relative;z-index:2}.eyebrow{color:#7ee8dc;letter-spacing:.24em;font-size:9px}.eyebrow:before{background:#7ee8dc;box-shadow:0 0 10px #7ee8dc}
+h1{font-size:clamp(42px,5.2vw,76px);line-height:.96;letter-spacing:-.07em;font-weight:520}
+h1 span{color:#a6eee3;text-shadow:0 0 32px #7ee8dc25}
+.intro{color:#b2c9c7;font-size:14px;line-height:1.85;max-width:430px}
+.micro{color:#a7c9c4;font-size:9px;letter-spacing:.12em;gap:13px;flex-wrap:wrap}.micro i{background:#7ee8dc;box-shadow:0 0 10px #7ee8dc}
+.scene-wrap{height:min(64vh,590px);min-height:400px;border:1px solid rgba(126,232,220,.2);border-radius:22px;background:radial-gradient(ellipse at 52% 50%,rgba(36,113,101,.17),transparent 64%),linear-gradient(180deg,rgba(6,19,25,.18),rgba(6,17,20,.4));box-shadow:inset 0 0 60px rgba(77,216,201,.045);overflow:hidden}
+.scene-wrap:before{content:"";position:absolute;inset:14px;border:1px solid rgba(126,232,220,.11);border-radius:15px;pointer-events:none}
+.scene-glow{background:#4be5d022;filter:blur(75px)}
+.scene-label{left:26px;top:26px;color:#83bdb7;font-size:8px;letter-spacing:.2em}.scene-label b{font-size:11px;color:#d5fff7;letter-spacing:.12em}
+.scene-index{right:25px;bottom:25px;color:#75aaa4;font-size:8px;letter-spacing:.16em}
+.terrain{filter:drop-shadow(0 30px 24px #0008);transform:translate(-50%,-50%) scale(1.08)}
+.land{border-color:#8ee9ce48;background:linear-gradient(135deg,#244b3e,#142f2c 52%,#1c4b45);box-shadow:inset 0 0 0 1px #9eead51b,0 0 60px #7ee8dc10}
+.pond{background:linear-gradient(135deg,#b5fff0,#338e8e);box-shadow:inset 0 0 0 5px #d4fff42a,0 0 34px #6be5d34a}
+.pin{border:1px solid #8de8d77a;background:rgba(6,26,28,.83);color:#d9fff6;box-shadow:0 0 22px #4de0ce16;backdrop-filter:blur(12px);letter-spacing:.1em}
+.booking-bar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:18px;align-items:end;padding:18px 22px;border:1px solid rgba(126,232,220,.26);border-radius:18px;background:linear-gradient(110deg,rgba(9,30,31,.88),rgba(8,21,27,.76));box-shadow:0 18px 50px #0003}
+.field label{color:#7fb7b0;font-size:9px;letter-spacing:.2em;text-transform:uppercase}.field input{width:100%;margin-top:8px;border:1px solid rgba(126,232,220,.22);background:rgba(4,16,21,.78);color:#e5fff9;border-radius:10px;padding:13px 14px;outline:none;color-scheme:dark}.field input:focus{border-color:#7ee8dc;box-shadow:0 0 0 3px #7ee8dc17}
+.primary{border:1px solid #a1f5e7;background:linear-gradient(135deg,#a5f3df,#6bd6d1);color:#062021;border-radius:11px;padding:14px 20px;font-size:11px;letter-spacing:.06em;font-weight:750;box-shadow:0 0 28px #7ee8dc20;transition:transform .25s,box-shadow .25s,filter .25s}.primary:hover{transform:translateY(-2px);box-shadow:0 0 36px #7ee8dc38;filter:brightness(1.04)}
+.message{color:#83aaa5;font-size:11px;margin:12px 5px 0;min-height:20px}.message.good{color:#a9f1d7}.message.error{color:#ffb9ad}
+.sectionhead{align-items:end;margin:30px 0 14px}.sectionhead h2{font-size:clamp(30px,4vw,52px);font-weight:500;letter-spacing:-.06em;margin:13px 0 0}.sectionhead p{max-width:420px;color:#9bbab6;font-size:12px;line-height:1.7}
+.resultsmeta{display:flex;justify-content:space-between;gap:12px;color:#8fbcb5;font-size:10px;letter-spacing:.1em;padding:12px 0;border-bottom:1px solid rgba(126,232,220,.17)}
+.roomgrid{display:block;min-height:0}
+.availability-section{padding:12px 0 48px}
+.foot{border-top:1px solid rgba(126,232,220,.16);color:#71938e;font-size:9px;letter-spacing:.15em}
+.modal{background:rgba(1,9,12,.82);backdrop-filter:blur(20px)}.dialog{border:1px solid rgba(126,232,220,.28);background:linear-gradient(145deg,#102625,#08161b);box-shadow:0 30px 120px #0009}.dialog h2{font-weight:500}.dialogsub{color:#9dc0bb}.close{border-color:#4b8f87;background:#102b2b;color:#baf9ee}.form input{border-color:#295451;background:#08191c;color:#e9fff9}
+.holo-stage{--room-image:none;position:relative;min-height:min(66vh,680px);display:grid;grid-template-columns:minmax(140px,.55fr) minmax(280px,1.35fr) minmax(140px,.55fr);align-items:center;gap:clamp(12px,2.5vw,36px);padding:28px 0 24px;perspective:1200px;outline:none;isolation:isolate}
+.holo-stage:before{content:"";position:absolute;z-index:-1;left:12%;right:12%;top:50%;height:1px;background:linear-gradient(90deg,transparent,#7ee8dc45,transparent);box-shadow:0 0 24px #7ee8dc15}
+.holo-stage:after{content:"";position:absolute;z-index:-1;inset:10% 20%;border:1px solid rgba(126,232,220,.09);border-radius:50%;transform:rotateX(68deg);pointer-events:none}
+.holo-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 0}
+.holo-back,.holo-small{border:1px solid rgba(126,232,220,.25);border-radius:999px;padding:9px 13px;background:rgba(9,28,30,.7);color:#a8d9d2;font-size:10px;letter-spacing:.06em}
+.holo-counter{color:#6ea7a0;font-size:9px;letter-spacing:.18em;text-align:center}
+.holo-side{min-width:0;opacity:.64;transform:scale(.84) rotateY(var(--tilt,0deg));filter:saturate(.7);transition:opacity .45s,transform .55s,filter .45s;cursor:pointer;outline:none}
+.holo-side:hover,.holo-side:focus-visible{opacity:.92;transform:scale(.9) rotateY(var(--tilt,0deg));filter:saturate(1)}
+.holo-side.left{--tilt:10deg}.holo-side.right{--tilt:-10deg}
+.holo-side .holo-photo{height:clamp(130px,22vh,230px);border-radius:14px}
+.holo-side .holo-roomname{font-size:12px;margin:12px 0 5px}
+.holo-side .holo-roommeta{font-size:9px}
+.holo-side .holo-index{color:#69a59d;font-size:8px;letter-spacing:.2em}
+.holo-main{position:relative;min-width:0;border:1px solid rgba(126,232,220,.34);border-radius:23px;background:linear-gradient(145deg,rgba(15,42,43,.82),rgba(7,19,26,.9));box-shadow:0 0 0 1px rgba(255,255,255,.025),0 0 65px rgba(57,221,201,.09),inset 0 0 45px rgba(57,221,201,.035);overflow:hidden;transform:translateZ(30px);animation:holoArrive .55s both}
+@keyframes holoArrive{from{opacity:.2;transform:translateY(10px) translateZ(0) scale(.97)}to{opacity:1;transform:translateY(0) translateZ(30px) scale(1)}}
+.holo-main:before{content:"";position:absolute;z-index:2;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,#b3fff1,transparent);box-shadow:0 0 18px #7ee8dc66}
+.holo-photo{height:clamp(210px,34vh,360px);position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#214e49,#091a1d)}
+.holo-photo img{display:block;width:100%;height:100%;object-fit:cover;opacity:.82;filter:saturate(.82) contrast(1.05);transition:transform .8s,opacity .5s}
+.holo-main:hover .holo-photo img{transform:scale(1.035);opacity:.94}
+.holo-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,18,21,.04),rgba(5,17,20,.14) 48%,rgba(5,18,21,.94)),linear-gradient(90deg,rgba(76,230,207,.1),transparent 45%,rgba(76,230,207,.07));pointer-events:none}
+.holo-badge{position:absolute;z-index:1;top:14px;left:14px;border:1px solid #8ee8d86b;background:rgba(3,22,25,.78);backdrop-filter:blur(12px);border-radius:999px;padding:7px 10px;font-size:9px;letter-spacing:.08em;color:#c6fff4}
+.holo-badge.busy{color:#ffc1b4;border-color:#ff9c8a66}
+.holo-photo-label{position:absolute;z-index:1;right:14px;top:17px;color:#a8ded5;font-size:8px;letter-spacing:.2em}
+.holo-content{padding:clamp(18px,2.5vw,30px)}
+.holo-content-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.holo-roomname{font-size:clamp(24px,3vw,40px);font-weight:520;letter-spacing:-.055em;line-height:1.04;margin:0;color:#e4fff8}
+.holo-description{font-size:12px;line-height:1.75;color:#a8c4bf;margin:12px 0 18px;max-width:620px}
+.holo-specs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.holo-specs span{border:1px solid rgba(126,232,220,.2);background:rgba(126,232,220,.045);border-radius:999px;padding:8px 10px;color:#b7ded7;font-size:9px}
+.holo-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.holo-actions .primary{padding:13px 18px}
+.holo-locked{grid-template-columns:minmax(0,1fr);max-width:980px;margin:0 auto;min-height:0}
+.holo-locked .holo-side{display:none}
+.holo-locked .holo-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.88fr);align-items:stretch}
+.holo-locked .holo-photo{height:100%;min-height:380px}
+.holo-locked .holo-content{align-self:center}
+.results-mode .hero,.results-mode main>section[aria-label="Поиск свободного размещения"]{display:none}
+.results-mode .availability-section{padding-top:22px;min-height:calc(100svh - 150px)}
+.results-mode .sectionhead{margin:0 0 10px}
+.results-mode .sectionhead p{display:none}
+.results-mode .sectionhead h2{font-size:clamp(30px,4vw,48px)}
+.results-mode .resultsmeta{padding:10px 0}
+.results-mode .holo-stage{min-height:calc(100svh - 310px)}
+.results-mode .holo-locked{min-height:0}
+.empty{border:1px solid rgba(126,232,220,.2);background:rgba(6,22,24,.68);border-radius:18px;padding:24px;color:#9ebcb7;line-height:1.7}
+@media(max-width:900px){
+ .shell{width:calc(100% - 28px)}.hero{grid-template-columns:1fr;min-height:0;padding:24px 20px;gap:10px}.hero-copy{max-width:700px}.scene-wrap{height:430px;min-height:350px}.terrain{width:min(560px,100%);height:350px}.booking-bar{grid-template-columns:1fr 1fr;gap:12px}.booking-bar .primary{grid-column:1/-1}.holo-stage{grid-template-columns:minmax(80px,.48fr) minmax(240px,1.7fr) minmax(80px,.48fr);gap:8px;min-height:520px}.holo-side{transform:scale(.93)!important}.holo-side .holo-photo{height:140px}.holo-locked .holo-main{grid-template-columns:1fr}.holo-locked .holo-photo{height:300px;min-height:0}.results-mode .holo-stage{min-height:calc(100svh - 300px)}
+}
+@media(max-width:600px){
+ .shell{width:calc(100% - 20px)}.topbar{height:60px}.topright{font-size:8px}.hero{border-radius:18px;margin:12px 0;padding:23px 16px}.hero h1{font-size:clamp(40px,12vw,62px)}.intro{font-size:12px}.micro{font-size:8px}.scene-wrap{height:310px;min-height:290px;margin:0}.scene-wrap:before{inset:8px}.terrain{height:260px;width:360px;max-width:100%;transform:translate(-50%,-50%) scale(.92)}.scene-label{left:17px;top:18px}.scene-index{right:17px;bottom:15px;font-size:7px}.booking-bar{grid-template-columns:1fr 1fr;padding:12px;gap:9px}.booking-bar .primary{grid-column:1/-1;width:100%}.field input{font-size:12px;padding:11px 8px}.sectionhead{display:block;margin:25px 0 10px}.sectionhead h2{font-size:32px}.sectionhead p{display:none}.resultsmeta{font-size:8px;letter-spacing:.04em}.holo-toolbar{margin-top:12px}.holo-stage{grid-template-columns:54px minmax(0,1fr) 54px;gap:4px;min-height:0;padding:22px 0 12px;align-items:center}.holo-stage:after{inset:18% 5%}.holo-side{opacity:.68;transform:scale(.9)!important}.holo-side .holo-photo{height:94px;border-radius:9px}.holo-side .holo-roomname{font-size:9px;line-height:1.2;margin:8px 0 4px}.holo-side .holo-roommeta{display:none}.holo-side .holo-index{font-size:7px}.holo-main{border-radius:15px;transform:none}.holo-photo{height:clamp(180px,27vh,260px)}.holo-content{padding:14px}.holo-roomname{font-size:23px}.holo-description{font-size:11px;margin:9px 0 13px}.holo-specs{gap:5px;margin-bottom:14px}.holo-specs span{font-size:8px;padding:7px}.holo-actions{gap:7px}.holo-actions .primary{width:100%;padding:13px}.holo-back,.holo-small{font-size:9px;padding:8px 10px}.holo-counter{font-size:7px;letter-spacing:.08em}.holo-locked .holo-main{display:block}.holo-locked .holo-photo{height:260px;min-height:0}.results-mode .availability-section{padding-top:12px}.results-mode .sectionhead h2{font-size:28px}.results-mode .holo-stage{min-height:0}.results-mode .holo-locked{padding-top:14px}.results-mode .resultsmeta{display:flex;flex-direction:column;gap:5px}.foot{margin-top:25px;padding:18px 0}
+}
+@media(prefers-reduced-motion:reduce){.hero:after,.holo-main{animation:none!important}}
+
+
+/* V4 — sunlit eco interface: technology is a quiet layer over living nature */
+:root{color-scheme:light;--bg:#f6f1e5;--line:rgba(67,105,77,.2);--text:#244635;--muted:#66816d;--mint:#477e58;--aqua:#79bdb0;--shadow:0 24px 70px rgba(61,86,57,.12)}
+html{background:#f6f1e5}
+body{background:radial-gradient(ellipse at 18% 0%,#fff9e8 0,transparent 42%),radial-gradient(ellipse at 88% 24%,#d9eee0 0,transparent 38%),linear-gradient(180deg,#f8f4e8 0%,#eef2e3 54%,#f7f1e1 100%);color:#244635}
+.topbar{border-bottom-color:rgba(67,105,77,.17)}
+.brandmark{border-color:#8dbb8b;background:linear-gradient(135deg,#e5f2c8aa,#b9ded033);box-shadow:0 0 25px #8ebf7b1f}
+.brandmark i{background:#4f8a5b}
+.topright,.micro{color:#698573}
+.live:before{background:#72a66b;box-shadow:0 0 10px #a4ce8b}
+.hero{background:linear-gradient(120deg,rgba(255,253,242,.86),rgba(238,245,225,.78));border:1px solid rgba(255,255,255,.8);box-shadow:0 22px 65px rgba(81,111,71,.09);border-radius:30px;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 12% 88%,rgba(159,199,145,.19),transparent 40%);z-index:-1}
+.eyebrow{color:#568260}
+.eyebrow:before{background:#8dbb82}
+h1 span{color:#568a5d}
+.intro{color:#5e7865}
+.micro i{background:#7ab8a6}
+.scene-wrap{overflow:hidden;border:1px solid rgba(255,255,255,.82);border-radius:28px;background:linear-gradient(180deg,#d9eee4 0%,#f9edcc 58%,#eee2bd 100%);box-shadow:0 24px 60px rgba(77,113,81,.15),inset 0 0 0 1px rgba(104,149,111,.1)}
+.scene-wrap:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(130deg,rgba(255,255,255,.25),transparent 45%,rgba(255,255,255,.12));}
+.scene-wrap:after{content:"";position:absolute;inset:14px;border:1px solid rgba(255,255,255,.55);border-radius:19px;pointer-events:none;z-index:2}
+.scene-glow{width:55%;height:52%;left:50%;top:12%;background:#fff1b5;filter:blur(64px);opacity:.9}
+.scene-label{color:#53765e;left:25px;top:25px;letter-spacing:.14em}
+.scene-label b{color:#284b37}
+.scene-index{color:#587761;right:24px;bottom:24px;letter-spacing:.13em}
+.shore-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9);z-index:1}
+.nature-chip{position:absolute;z-index:3;padding:9px 13px;border:1px solid rgba(255,255,255,.82);border-radius:999px;background:rgba(255,252,236,.72);backdrop-filter:blur(14px);box-shadow:0 8px 26px rgba(61,101,73,.1);color:#3e7050;font-size:10px;letter-spacing:.035em}
+.chip-lake{left:7%;top:52%}.chip-sand{right:8%;top:68%}.chip-garden{left:14%;bottom:13%}
+.booking-bar{border:1px solid rgba(255,255,255,.9);background:rgba(255,253,242,.82);box-shadow:0 12px 36px rgba(70,104,72,.09);backdrop-filter:blur(18px)}
+.field label{color:#63816a}
+.field input{background:rgba(248,249,237,.92);border:1px solid rgba(98,137,99,.24);color:#244635}
+.field input:focus{border-color:#82ad7b;box-shadow:0 0 0 3px rgba(130,173,123,.15)}
+.primary{border:1px solid #679c6a;background:linear-gradient(135deg,#dcebb9,#a8d1a0);color:#264c34;box-shadow:0 8px 22px rgba(93,139,86,.14)}
+.primary:hover{filter:saturate(1.06);box-shadow:0 12px 28px rgba(93,139,86,.2)}
+.message{color:#66816d}.message.good{color:#3e7950}.message.error{color:#a24d3b}
+.availability-section{background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(232,241,223,.35));border:1px solid rgba(255,255,255,.65);border-radius:28px;padding:clamp(20px,3vw,42px);margin-top:28px}
+.sectionhead h2{color:#244635}
+.sectionhead p,.resultsmeta{color:#718875}
+.holo-toolbar{color:#6b8770}
+.holo-counter{color:#698671}
+.holo-back,.holo-small{border-color:rgba(88,133,92,.25);background:rgba(255,253,240,.78);color:#52775b;backdrop-filter:blur(12px)}
+.holo-stage{background:radial-gradient(ellipse at 50% 52%,rgba(199,226,184,.42),transparent 62%);border-radius:24px}
+.holo-stage:after{border-color:rgba(109,163,116,.18);background:repeating-linear-gradient(0deg,transparent 0 35px,rgba(90,142,99,.045) 36px 37px)}
+.holo-side{color:#345941;filter:drop-shadow(0 12px 18px rgba(62,98,64,.1))}
+.holo-side .holo-photo{background:linear-gradient(145deg,#e6efda,#b8d5b4);border:1px solid rgba(255,255,255,.8)}
+.holo-side .holo-roomname{color:#45684d}
+.holo-side .holo-roommeta,.holo-index{color:#7c997f}
+.holo-main{border:1px solid rgba(255,255,255,.95);background:linear-gradient(145deg,rgba(255,255,247,.96),rgba(237,245,226,.94));box-shadow:0 22px 60px rgba(61,100,67,.16),inset 0 0 0 1px rgba(116,164,116,.12);color:#294a35;backdrop-filter:blur(20px)}
+.holo-main:before{border-color:rgba(105,161,108,.18)}
+.holo-photo{background:linear-gradient(145deg,#d7e8d1,#b4d4bd)}
+.holo-photo:after{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(32,73,48,.08))}
+.holo-photo-label{color:#fffdf0;text-shadow:0 1px 10px rgba(20,58,36,.4)}
+.holo-badge{border-color:rgba(255,255,255,.8);background:rgba(249,250,232,.88);color:#47794f}
+.holo-badge.busy{color:#9d614d;background:rgba(255,244,231,.92)}
+.holo-content{color:#294a35}
+.holo-roomname{color:#294a35}
+.holo-description{color:#6a806b}
+.holo-specs span{border-color:rgba(95,143,95,.18);background:rgba(215,233,203,.5);color:#4c7353}
+.empty{border:1px solid rgba(255,255,255,.9);background:rgba(255,253,241,.8);color:#6b866d}
+.foot{border-top:1px solid rgba(67,105,77,.17);color:#78907a}
+.foot strong{color:#365c40}
+.modal{background:rgba(229,239,219,.78);backdrop-filter:blur(18px)}
+.dialog{border:1px solid rgba(255,255,255,.95);background:linear-gradient(145deg,#fffdf2,#eaf2df);box-shadow:0 30px 100px rgba(49,80,50,.22);color:#294a35}
+.dialogsub{color:#6d856e}
+.form label{color:#63816a}
+.form input{background:#f9f8eb;border-color:rgba(88,133,92,.24);color:#244635}
+.close{border-color:rgba(88,133,92,.24);background:#eef4e5;color:#52775b}
+.formresult{color:#67816a}
+.formresult.good{color:#3f8051}.formresult.error{color:#a24d3b}
+@media(max-width:760px){.hero{border-radius:22px}.scene-wrap{border-radius:20px}.nature-chip{font-size:8px;padding:7px 9px}.chip-lake{left:5%;top:57%}.chip-sand{right:5%;top:70%}.chip-garden{left:8%;bottom:12%}.scene-label{left:18px;top:18px}.scene-index{right:18px;bottom:18px;font-size:7px}.availability-section{padding:17px;border-radius:20px}}
+@media(prefers-reduced-motion:reduce){.shore-art{scroll-behavior:auto}}
+
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar"><div class="brand"><span class="brandmark"><i></i></span><span>FreeDom</span></div><div class="topright"><span>Sochi · Мамайка</span><span class="live">Living nature / 01</span></div></header>
+<main>
+<section class="hero">
+<div class="hero-copy"><div class="eyebrow">A place to reconnect</div><h1>Ближе к природе.<br><span>Ближе к себе.</span></h1><p class="intro">Дом, где технологии помогают открыть живое пространство. Исследуйте FreeDom, выберите даты и найдите место, которое подходит именно вам.</p><div class="micro"><span><i></i> Живое пространство</span><span><i></i> Свои люди</span><span><i></i> Свой ритм</span></div></div>
+<div class="scene-wrap" aria-label="Тёплый солнечный пейзаж у озера с белым песком, цветами и птицами"><div class="scene-glow"></div><div class="scene-label">FreeDom / living landscape<b>У воды · среди зелени</b></div><svg class="shore-art" viewBox="0 0 900 650" role="img" aria-label="Солнечный берег, спокойное озеро, белый песок и цветущий сад" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="warmSky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d5eee3"/><stop offset=".62" stop-color="#fff0c9"/><stop offset="1" stop-color="#f8e7c2"/></linearGradient><linearGradient id="lake" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9bd6c8"/><stop offset=".45" stop-color="#78bdb0"/><stop offset="1" stop-color="#b4d9c4"/></linearGradient><linearGradient id="sand" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#fffdf0"/><stop offset="1" stop-color="#e9d9b2"/></linearGradient><linearGradient id="hill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9fc59a"/><stop offset="1" stop-color="#4f8d70"/></linearGradient><radialGradient id="sun"><stop stop-color="#fff9d8" stop-opacity=".98"/><stop offset=".45" stop-color="#ffe6a2" stop-opacity=".55"/><stop offset="1" stop-color="#ffe6a2" stop-opacity="0"/></radialGradient></defs><rect width="900" height="650" fill="url(#warmSky)"/><circle cx="682" cy="118" r="150" fill="url(#sun)"/><circle cx="682" cy="118" r="45" fill="#fff3bf"/><path d="M0 290 Q130 230 245 272 T470 260 T690 245 T900 266 V420 H0Z" fill="#b8d7b0"/><path d="M0 334 Q120 284 255 316 T500 303 T720 295 T900 310 V465 H0Z" fill="url(#hill)"/><path d="M0 352 Q170 326 315 354 T600 342 T900 348 V515 H0Z" fill="url(#lake)"/><path d="M0 383 Q160 360 300 386 T600 378 T900 383" fill="none" stroke="#e8f5dc" stroke-width="4" opacity=".55"/><path d="M0 412 Q160 394 330 417 T630 410 T900 415" fill="none" stroke="#e8f5dc" stroke-width="2" opacity=".5"/><path d="M0 465 Q135 425 255 458 T470 466 T690 452 T900 470 V650 H0Z" fill="url(#sand)"/><path d="M0 492 Q130 458 250 491 T510 495 T740 485 T900 493" fill="none" stroke="#c9b88e" stroke-width="3" opacity=".48"/><g fill="#3f7959"><path d="M70 385 Q38 328 65 280 Q100 325 86 374Z"/><path d="M100 390 Q85 320 126 274 Q147 337 111 385Z"/><path d="M145 390 Q142 332 176 306 Q187 358 155 391Z"/><path d="M802 386 Q778 322 811 267 Q850 324 824 385Z"/><path d="M835 394 Q827 322 867 295 Q882 355 846 392Z"/></g><g fill="#6da878"><ellipse cx="85" cy="340" rx="37" ry="18" transform="rotate(-35 85 340)"/><ellipse cx="125" cy="337" rx="36" ry="17" transform="rotate(26 125 337)"/><ellipse cx="822" cy="333" rx="37" ry="18" transform="rotate(35 822 333)"/><ellipse cx="856" cy="346" rx="33" ry="17" transform="rotate(-24 856 346)"/></g><g fill="none" stroke="#528b66" stroke-width="4" stroke-linecap="round"><path d="M110 640 Q106 590 125 548"/><path d="M154 642 Q167 586 152 562"/><path d="M742 646 Q729 589 744 548"/><path d="M795 646 Q806 594 789 560"/><path d="M208 647 Q205 606 223 582"/><path d="M688 647 Q674 610 688 586"/></g><g fill="#fffdf5" stroke="#e7dcc4" stroke-width="1.5"><g transform="translate(126 548)"><ellipse cy="-8" rx="6" ry="10"/><ellipse cx="8" cy="-2" rx="6" ry="10" transform="rotate(60 8 -2)"/><ellipse cx="5" cy="8" rx="6" ry="10" transform="rotate(120 5 8)"/><ellipse cx="-5" cy="8" rx="6" ry="10" transform="rotate(180 -5 8)"/><ellipse cx="-8" cy="-2" rx="6" ry="10" transform="rotate(240 -8 -2)"/><circle r="5" fill="#edc65c"/></g><g transform="translate(744 548)"><ellipse cy="-8" rx="6" ry="10"/><ellipse cx="8" cy="-2" rx="6" ry="10" transform="rotate(60 8 -2)"/><ellipse cx="5" cy="8" rx="6" ry="10" transform="rotate(120 5 8)"/><ellipse cx="-5" cy="8" rx="6" ry="10" transform="rotate(180 -5 8)"/><ellipse cx="-8" cy="-2" rx="6" ry="10" transform="rotate(240 -8 -2)"/><circle r="5" fill="#edc65c"/></g></g><g fill="#e9a7a2"><circle cx="153" cy="594" r="7"/><circle cx="168" cy="606" r="5"/><circle cx="706" cy="602" r="7"/><circle cx="723" cy="590" r="5"/><circle cx="225" cy="611" r="5"/><circle cx="689" cy="620" r="5"/></g><g fill="none" stroke="#4e796d" stroke-width="4" stroke-linecap="round"><path d="M390 150 q13 -13 26 0 q13 -13 26 0"/><path d="M455 180 q10 -10 20 0 q10 -10 20 0"/><path d="M535 133 q8 -8 16 0 q8 -8 16 0"/></g><g fill="#d5e6b8" opacity=".8"><circle cx="310" cy="232" r="4"/><circle cx="570" cy="252" r="3"/><circle cx="355" cy="276" r="3"/><circle cx="625" cy="217" r="4"/></g></svg><div class="nature-chip chip-lake">≈ Озеро · тихая вода</div><div class="nature-chip chip-sand">✳ Белый песок</div><div class="nature-chip chip-garden">❀ Цветущий берег</div><div class="scene-index">SUNLIT SHORE<br>WILDFLOWERS · BIRDS · CALM</div></div>
+<section aria-label="Поиск свободного размещения"><div class="booking-bar"><div class="field"><label for="checkin">Заезд</label><input id="checkin" type="date" required></div><div class="field"><label for="checkout">Выезд</label><input id="checkout" type="date" required></div><button class="primary" id="search">Показать доступные ↗</button></div><div id="notice" class="message" role="status" aria-live="polite">Выберите даты — проверим доступность по системе бронирования.</div></section>
+</section>
+<section id="availability" class="availability-section">
+  <div class="sectionhead"><div><div class="eyebrow">FreeDom / spatial interface</div><h2>Выберите своё место.</h2></div><p>Прокручивайте пространство вверх и вниз. Остановитесь на том месте, которое вам откликается.</p></div>
+  <div class="resultsmeta"><span id="resultcount">Доступность ещё не проверена</span><span id="period"></span></div>
+  <div id="rooms" class="roomgrid"><div class="empty">После выбора дат здесь появятся варианты размещения. Мы показываем только данные, полученные от системы бронирования.</div></div>
+</section>
+</main><footer class="foot"><strong>FreeDom</strong><span>Живое пространство. Свободный выбор.</span><span>SOCHI · NATURE × QUIET TECHNOLOGY</span></footer>
+</div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="dialogtitle"><div class="dialog"><div class="dialoghead"><div><div class="eyebrow">Your stay starts here</div><h2 id="dialogtitle">Забронировать</h2></div><button class="close" id="close" aria-label="Закрыть">×</button></div><div class="dialogsub" id="bookinginfo"></div><form class="form" id="bookingform"><div class="formrow"><label>Ваше имя<input name="guest_name" autocomplete="name" required></label><label>Телефон<input name="guest_phone" autocomplete="tel" required></label></div><label>Email (необязательно)<input name="guest_email" type="email" autocomplete="email"></label><label id="guestcountlabel">Количество мест<input id="guestcount" name="guest_count" type="number" min="1" value="1" required></label><button class="primary" id="submitbooking" type="submit">Отправить заявку ↗</button><div class="formresult" id="formresult" role="status" aria-live="polite"></div></form></div></div>
+<script>
+(function(){
+const $=s=>document.querySelector(s),checkin=$('#checkin'),checkout=$('#checkout'),search=$('#search'),notice=$('#notice'),roomsEl=$('#rooms'),resultCount=$('#resultcount'),period=$('#period'),modal=$('#modal'),form=$('#bookingform'),formResult=$('#formresult'),guestCount=$('#guestcount');
+let rooms=[],selected=null,lastDates=null,isLoaded=false,focusIndex=0,explorerLocked=false;
+const pad=n=>String(n).padStart(2,'0');
+const dateString=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=new Date(),arrival=new Date(today);arrival.setDate(today.getDate()+1);const departure=new Date(arrival);departure.setDate(arrival.getDate()+1);
+checkin.value=dateString(arrival);checkout.value=dateString(departure);checkin.min=dateString(today);checkout.min=checkin.value;
+const nights=()=>Math.round((new Date(checkout.value+'T12:00:00')-new Date(checkin.value+'T12:00:00'))/86400000);
+const fmt=v=>{if(!v)return '';const p=v.split('-');return p[2]+'.'+p[1]+'.'+p[0];};
+const roomId=r=>r.id||r.room_id;
+const available=r=>r.booking_mode==='places'?Number(r.free_places||0)>0:r.available===true;
+const modeLabel=r=>r.booking_mode==='places'?'По местам':'Целиком';
+const capacityLabel=r=>Number(r.capacity||0)+' '+(Number(r.capacity||0)===1?'гость':'мест');
+const safe=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function photoFor(name){const n=String(name||'').toLowerCase();if(/под зв[её]зд/.test(n))return '';if(/бунгал|bungalow/.test(n))return 'images/room-bungalow.jpg';if(/семейн|family/.test(n))return 'images/room-family.jpg';if(/балкон|balcony/.test(n))return 'images/room-balcony.jpg';if(/мансард|attic/.test(n))return 'images/room-attic.jpg';if(/эконом|хостел|hostel/.test(n))return 'images/room-hostel.jpg';if(/стандарт|standard/.test(n))return 'images/room-hostel-2.jpg';return '';}
+function setNotice(t,type){notice.textContent=t;notice.className='message'+(type?' '+type:'');}
+function renderRooms(){
+  roomsEl.innerHTML='';
+  const count=rooms.filter(available).length;
+  resultCount.textContent=rooms.length?count+' из '+rooms.length+' вариантов доступны':'Варианты не найдены';
+  period.textContent=fmt(checkin.value)+' — '+fmt(checkout.value)+' · '+nights()+' '+(nights()===1?'ночь':nights()<5?'ночи':'ночей');
+  if(!rooms.length){
+    roomsEl.innerHTML='<div class="empty">На эти даты система бронирования не вернула варианты. Попробуйте другой период или свяжитесь с FreeDom напрямую.</div>';
+    return;
+  }
+  focusIndex=Math.max(0,Math.min(focusIndex,rooms.length-1));
+  const makeSide=(r,index,side)=>{
+    if(!r)return '<div class="holo-side '+side+'"></div>';
+    const photo=photoFor(r.name),ok=available(r);
+    const free=r.booking_mode==='places'?Number(r.free_places||0)+' свободно из '+Number(r.capacity||0):(ok?'Доступно':'Занято');
+    const photoMarkup=photo?'<img src="'+photo+'" alt="'+safe(r.name||'Комната')+'" loading="lazy" onerror="this.style.display=\'none\'">':'';
+    return '<button type="button" class="holo-side '+side+'" data-room-index="'+index+'" aria-label="Показать '+safe(r.name)+'"><div class="holo-photo">'+photoMarkup+'</div><div class="holo-index">SPACE / '+String(index+1).padStart(2,'0')+'</div><h3 class="holo-roomname">'+safe(r.name||'Вариант размещения')+'</h3><div class="holo-roommeta">'+safe(free)+'</div></button>';
+  };
+  const r=rooms[focusIndex],photo=photoFor(r.name),ok=available(r);
+  const free=r.booking_mode==='places'?Number(r.free_places||0)+' свободно из '+Number(r.capacity||0):(ok?'Доступно на выбранные даты':'Занято на выбранные даты');
+  const photoMarkup=photo?'<img src="'+photo+'" alt="'+safe(r.name||'Комната')+'" loading="lazy" onerror="this.style.display=\'none\'">':'';
+  const leftIndex=(focusIndex-1+rooms.length)%rooms.length,rightIndex=(focusIndex+1)%rooms.length;
+  const locked=explorerLocked;
+  roomsEl.innerHTML='<div class="holo-toolbar"><button type="button" class="holo-back" id="holo-backdates">← Изменить даты</button><div class="holo-counter">SPACE SELECTOR · '+String(focusIndex+1).padStart(2,'0')+' / '+String(rooms.length).padStart(2,'0')+'</div><button type="button" class="holo-small" id="holo-unlock" '+(locked?'':'hidden')+'>← Другие места</button></div>'+
+    '<div class="holo-stage '+(locked?'holo-locked':'')+'" id="holo-stage" tabindex="0" aria-label="Выбор комнаты. Используйте прокрутку вверх и вниз">'+
+    makeSide(rooms[leftIndex],leftIndex,'left')+
+    '<article class="holo-main"><div class="holo-photo">'+photoMarkup+'<span class="holo-badge '+(ok?'':'busy')+'">'+(ok?(r.booking_mode==='places'?'Есть свободные места':'Свободно'):'Занято на эти даты')+'</span><span class="holo-photo-label">FREEDOM / SPATIAL ROOM</span></div><div class="holo-content"><div class="holo-content-head"><h3 class="holo-roomname">'+safe(r.name||'Вариант размещения')+'</h3></div><p class="holo-description">'+safe(r.description||'Место в пространстве FreeDom. Узнайте больше и выберите подходящий вариант размещения.')+'</p><div class="holo-specs"><span>'+safe(free)+'</span><span>'+safe(capacityLabel(r))+'</span><span>'+safe(modeLabel(r))+'</span><span>'+nights()+' '+(nights()===1?'ночь':nights()<5?'ночи':'ночей')+'</span></div><div class="holo-actions">'+(locked?'<button type="button" class="primary" id="holo-book" '+(ok?'':'disabled')+'>Забронировать ↗</button><button type="button" class="holo-small" id="holo-unlock-inline">Вернуться к выбору</button>': '<button type="button" class="primary" id="holo-choose" '+(ok?'':'disabled')+'>Выбрать это место ↗</button>')+'</div></div></article>'+
+    makeSide(rooms[rightIndex],rightIndex,'right')+'</div>';
+  const stage=$('#holo-stage');
+  roomsEl.querySelectorAll('[data-room-index]').forEach(el=>el.addEventListener('click',()=>{
+    if(explorerLocked)return;
+    focusIndex=Number(el.dataset.roomIndex);renderRooms();
+  }));
+  const step=delta=>{
+    if(explorerLocked)return;
+    focusIndex=(focusIndex+delta+rooms.length)%rooms.length;
+    renderRooms();
+  };
+  stage.addEventListener('wheel',e=>{
+    if(Math.abs(e.deltaY)>Math.abs(e.deltaX)&&Math.abs(e.deltaY)>8){e.preventDefault();step(e.deltaY>0?1:-1);}
+  },{passive:false});
+  stage.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();step(1);}
+    if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();step(-1);}
+  });
+  let touchY=null;
+  stage.addEventListener('touchstart',e=>{touchY=e.changedTouches[0].clientY;},{passive:true});
+  stage.addEventListener('touchend',e=>{if(touchY===null)return;const dy=e.changedTouches[0].clientY-touchY;touchY=null;if(Math.abs(dy)>35)step(dy<0?1:-1);},{passive:true});
+  $('#holo-choose')?.addEventListener('click',()=>{if(!ok)return;selected=r;explorerLocked=true;renderRooms();});
+  $('#holo-book')?.addEventListener('click',()=>{selected=r;openBooking(r);});
+  $('#holo-unlock')?.addEventListener('click',()=>{explorerLocked=false;renderRooms();});
+  $('#holo-unlock-inline')?.addEventListener('click',()=>{explorerLocked=false;renderRooms();});
+  $('#holo-backdates')?.addEventListener('click',()=>{document.body.classList.remove('results-mode');explorerLocked=false;$('#checkin').scrollIntoView({behavior:'smooth',block:'center'});});
+}
+async function loadAvailability(){
+if(!checkin.value||!checkout.value||nights()<=0){setNotice('Дата выезда должна быть позже даты заезда.','error');return;}
+search.disabled=true;search.textContent='Проверяем…';setNotice('Связываемся с системой бронирования…');
+try{const response=await fetch('/api/availability',{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify({check_in:checkin.value,check_out:checkout.value})});const data=await response.json();if(!response.ok||data.ok===false)throw new Error(data.error||'Сервис доступности временно недоступен.');rooms=Array.isArray(data.rooms)?data.rooms:[];lastDates={checkin:checkin.value,checkout:checkout.value};isLoaded=true;selected=null;focusIndex=Math.max(0,rooms.findIndex(available));explorerLocked=false;document.body.classList.add("results-mode");renderRooms();setNotice(rooms.length?'Доступность обновлена по системе бронирования. Выберите понравившийся вариант, чтобы перейти к заявке.':'На выбранные даты доступных вариантов не найдено. Можно попробовать другие даты.',rooms.length?'good':'');$('#availability').scrollIntoView({behavior:'smooth',block:'start'});}
+catch(error){setNotice(error.message+' Мы не подставляем демонстрационные статусы вместо реальных данных.','error');resultCount.textContent='Не удалось обновить доступность';}
+finally{search.disabled=false;search.textContent='Показать доступные ↗';}
+}
+function openBooking(r){selected=r;$('#dialogtitle').textContent=r.name||'Забронировать';$('#bookinginfo').textContent=fmt(checkin.value)+' — '+fmt(checkout.value)+' · '+nights()+' '+(nights()===1?'ночь':nights()<5?'ночи':'ночей')+' · '+modeLabel(r)+'. После отправки заявка будет передана в систему FreeDom.';guestCount.value=1;guestCount.min=1;guestCount.max=r.booking_mode==='places'?Math.max(1,Number(r.free_places||1)):1;$('#guestcountlabel').style.display=r.booking_mode==='places'?'grid':'none';formResult.textContent='';formResult.className='formresult';modal.classList.add('open');}
+function closeModal(){modal.classList.remove('open');}
+search.addEventListener('click',loadAvailability);
+checkin.addEventListener('change',()=>{checkout.min=checkin.value;if(checkout.value<=checkin.value){const d=new Date(checkin.value+'T12:00:00');d.setDate(d.getDate()+1);checkout.value=dateString(d);}if(isLoaded)setNotice('Даты изменены. Нажмите «Показать доступные», чтобы обновить результаты.');});
+checkout.addEventListener('change',()=>{if(isLoaded)setNotice('Даты изменены. Нажмите «Показать доступные», чтобы обновить результаты.');});
+$('#close').addEventListener('click',closeModal);modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+form.addEventListener('submit',async e=>{e.preventDefault();if(!selected||!available(selected))return;if(!lastDates||lastDates.checkin!==checkin.value||lastDates.checkout!==checkout.value){formResult.textContent='Сначала обновите доступность для выбранных дат.';formResult.className='formresult error';return;}const payload=Object.fromEntries(new FormData(form));Object.assign(payload,{room_id:roomId(selected),check_in:checkin.value,check_out:checkout.value,guest_count:selected.booking_mode==='places'?Math.min(Number(guestCount.value||1),Number(selected.free_places||1)):1});$('#submitbooking').disabled=true;formResult.textContent='Отправляем заявку…';formResult.className='formresult';
+try{const response=await fetch('/api/booking',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await response.json();if(!response.ok||data.ok===false)throw new Error(data.error||'Не удалось отправить заявку. Попробуйте позже.');formResult.textContent='Заявка отправлена в систему FreeDom.';formResult.className='formresult good';setTimeout(()=>{closeModal();loadAvailability();},1200);}
+catch(error){formResult.textContent=error.message;formResult.className='formresult error';}finally{$('#submitbooking').disabled=false;}
+});
+})();
+</script>
+</body>
+</html>
