@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#18291f">
+<title>FreeDom — Живое пространство</title>
+<style>
+:root{--forest:#17291f;--moss:#82977a;--cream:#f2efe5;--paper:#e5e2d6;--ink:#1c2a20;--muted:#6d796b;--line:#a7b39d;--accent:#c7d5a7;--ease:cubic-bezier(.2,.75,.2,1)}
+*{box-sizing:border-box}html{background:var(--forest);scroll-behavior:smooth}body{margin:0;color:var(--cream);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--forest);min-height:100vh}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}button:disabled{opacity:.45;cursor:not-allowed}
+.site{min-height:100svh;position:relative;overflow:hidden;background:#18291f}.top{position:absolute;z-index:10;top:0;left:0;right:0;height:82px;padding:0 clamp(18px,4vw,62px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff25}.brand{display:flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.22em;font-weight:750}.mark{width:29px;height:29px;border:1px solid #d0dcb7;border-radius:50% 50% 50% 8%;transform:rotate(-45deg);position:relative}.mark:after{content:"";position:absolute;inset:7px 9px;background:#c7d5a7;border-radius:100% 0 100% 0}.top-note{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#c1cbb9}.top-action{border:0;border-bottom:1px solid #d5dfc4;background:none;color:#f1f0e7;padding:8px 0;font-size:11px}
+.experience{min-height:100svh;position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,37%);align-items:stretch}.visual{position:relative;min-height:100svh;overflow:hidden;background:#293a2d}.visual-image{position:absolute;inset:0;background-image:linear-gradient(90deg,#14251a12,#14251a22),url('/images/room-balcony.jpg');background-size:cover;background-position:center;transform:scale(1.04);transition:background-image .5s,transform 1.3s var(--ease),filter .7s;animation:sceneIn 1.1s var(--ease) both}.visual-image:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#14251af0 0%,#14251a65 26%,transparent 62%),linear-gradient(90deg,#14251a35,transparent 55%,#14251a20)}@keyframes sceneIn{from{transform:scale(1.12);filter:brightness(.7)}to{transform:scale(1.04);filter:brightness(1)}}
+.visual-grain{position:absolute;inset:0;pointer-events:none;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E")}
+.photo-index{position:absolute;top:110px;left:clamp(20px,4vw,60px);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#e6e9d9;display:flex;align-items:center;gap:12px}.photo-index:before{content:"";width:32px;height:1px;background:#d4dfbc}.photo-copy{position:absolute;left:clamp(22px,5vw,78px);bottom:clamp(150px,21vh,220px);z-index:2;max-width:min(700px,80%);transition:opacity .3s,transform .6s var(--ease)}.eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#d4dfb9;margin-bottom:18px}.photo-copy h1{font-size:clamp(42px,6.4vw,92px);font-weight:480;letter-spacing:-.075em;line-height:.92;margin:0 0 22px;max-width:760px}.photo-copy h1 em{font-family:Georgia,serif;font-weight:400;letter-spacing:-.07em;color:#d2dfb5}.photo-copy p{font-size:14px;line-height:1.8;color:#e0e3d6;max-width:410px;margin:0}.image-caption{position:absolute;bottom:34px;left:clamp(22px,5vw,78px);font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:#c1ccb7;z-index:2}.vertical-word{position:absolute;right:24px;top:50%;writing-mode:vertical-rl;transform:translateY(-50%);font-size:9px;letter-spacing:.25em;color:#e2e8d3a0;text-transform:uppercase}
+.panel{position:relative;z-index:3;background:var(--cream);color:var(--ink);min-height:100svh;padding:112px clamp(22px,3vw,48px) 28px;display:flex;flex-direction:column;box-shadow:-22px 0 70px #0d1b1430}.panel-top{display:flex;justify-content:space-between;align-items:center;gap:10px;color:#64715e;font-size:9px;letter-spacing:.16em;text-transform:uppercase}.leaf-icon{width:24px;height:24px;border:1px solid #9aa78c;border-radius:50% 50% 50% 8%;transform:rotate(-45deg);display:grid;place-items:center}.panel h2{font-size:clamp(27px,3vw,40px);letter-spacing:-.06em;line-height:1.03;font-weight:500;margin:30px 0 12px}.panel-intro{font-size:12px;line-height:1.8;color:#687366;margin:0 0 25px;max-width:360px}
+.date-block{border-top:1px solid #c8cbbd;border-bottom:1px solid #c8cbbd;padding:17px 0 19px;margin-bottom:23px}.date-title{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#697565;margin-bottom:13px}.date-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.date-field{display:grid;gap:6px;color:#788173;font-size:9px;text-transform:uppercase;letter-spacing:.08em}.date-field input{width:100%;min-width:0;border:0;border-bottom:1px solid #b3b9a9;background:transparent;padding:10px 0;color:#233326;font-size:12px;color-scheme:light}.find{width:100%;display:flex;align-items:center;justify-content:space-between;border:0;background:var(--forest);color:#f3f1e7;padding:16px 17px;font-size:11px;letter-spacing:.07em;text-align:left;transition:background .25s,transform .25s}.find:hover{background:#304b37;transform:translateY(-1px)}.find span:last-child{font-size:18px}
+.panel-foot{margin-top:auto;padding-top:24px;display:flex;align-items:end;justify-content:space-between;gap:14px;color:#87907f;font-size:9px;letter-spacing:.09em;line-height:1.7}.panel-foot strong{display:block;color:#344535;font-size:10px;font-weight:600;letter-spacing:.03em}
+.explore{display:none;position:relative;z-index:4;min-height:100svh;grid-template-columns:minmax(0,1fr) 370px;background:var(--forest)}.explore.active{display:grid;animation:reveal .7s var(--ease) both}@keyframes reveal{from{opacity:0}to{opacity:1}}
+.gallery{position:relative;min-width:0;overflow:hidden;min-height:100svh;background:#25392b}.gallery-image{position:absolute;inset:0;background-size:cover;background-position:center;transition:background-image .3s,transform .9s var(--ease),opacity .5s;transform:scale(1.02)}.gallery-image:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#17291ff5 0%,#17291f99 20%,transparent 62%),linear-gradient(90deg,#17291f30,transparent 80%)}.gallery-meta{position:absolute;z-index:2;top:105px;left:clamp(22px,4vw,60px);right:25px;display:flex;justify-content:space-between;gap:20px;color:#e0e7d7;font-size:9px;letter-spacing:.16em;text-transform:uppercase}.gallery-title{position:absolute;z-index:2;left:clamp(22px,4vw,60px);right:24px;bottom:225px}.gallery-title .eyebrow{margin-bottom:14px}.gallery-title h2{font-size:clamp(36px,5.2vw,72px);font-weight:480;letter-spacing:-.075em;line-height:.95;margin:0 0 13px}.gallery-title p{font-size:13px;line-height:1.7;color:#e0e5d8;max-width:500px;margin:0}.gallery-controls{position:absolute;z-index:4;left:clamp(22px,4vw,60px);right:22px;bottom:30px;display:flex;align-items:end;gap:12px}.room-strip{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;flex:1;padding:8px 2px}.room-strip::-webkit-scrollbar{display:none}.room-chip{position:relative;flex:0 0 108px;height:78px;border:1px solid #e7edd05e;background-size:cover;background-position:center;padding:0;text-align:left;overflow:hidden;transition:flex-basis .4s var(--ease),border-color .3s,transform .3s}.room-chip:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#102018dc,transparent 85%)}.room-chip span{position:absolute;z-index:1;left:8px;right:5px;bottom:8px;color:#f0f1e8;font-size:9px;line-height:1.25}.room-chip.active{flex-basis:155px;border-color:#d5e6ae;transform:translateY(-4px)}.gallery-back{flex:0 0 auto;background:#f0eee4;color:#1e3024;border:0;padding:13px 15px;font-size:10px;letter-spacing:.06em;white-space:nowrap}
+.detail-panel{background:var(--cream);color:var(--ink);padding:112px 28px 27px;display:flex;flex-direction:column;min-height:100svh;position:relative}.detail-panel .panel-top{padding-bottom:20px;border-bottom:1px solid #c8cbbd}.detail-kicker{font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:#77826e;margin-top:25px}.detail-panel h2{font-size:clamp(27px,2.8vw,38px);letter-spacing:-.06em;line-height:1.02;font-weight:500;margin:13px 0}.detail-desc{font-size:12px;line-height:1.8;color:#657160;margin:0 0 22px}.facts{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #c8cbbd;border-bottom:1px solid #c8cbbd;margin-bottom:20px}.fact{padding:13px 6px 13px 0}.fact:nth-child(odd){border-right:1px solid #c8cbbd}.fact:nth-child(even){padding-left:14px}.fact small{display:block;color:#7d8775;font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}.fact strong{font-size:12px;font-weight:600}.price{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 19px;color:#74806f;font-size:10px}.price strong{font-size:24px;letter-spacing:-.04em;color:#263a2b;font-weight:550}.book{width:100%;border:0;background:#273d2d;color:#f3f0e6;padding:16px;text-align:left;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.07em;transition:background .2s}.book:hover{background:#3b5940}.detail-bottom{margin-top:auto;padding-top:20px;display:flex;justify-content:space-between;gap:12px;color:#87907f;font-size:9px;line-height:1.6}.change-dates{border:0;border-bottom:1px solid #aab49f;background:none;color:#455642;padding:0 0 4px;font-size:10px}
+.message{font-size:11px;line-height:1.6;color:#986b4a;margin-top:10px;min-height:16px}.empty{padding:20px 0;font-size:12px;line-height:1.8;color:#6c7768}.modal{display:none;position:fixed;z-index:30;inset:0;background:#102016bd;backdrop-filter:blur(14px);place-items:center;padding:18px}.modal.open{display:grid}.dialog{width:min(460px,100%);max-height:90svh;overflow:auto;background:var(--cream);color:var(--ink);padding:28px;box-shadow:0 25px 80px #0005}.dialog-head{display:flex;justify-content:space-between;gap:15px;align-items:start}.dialog h2{font-size:30px;font-weight:500;letter-spacing:-.06em;margin:0 0 8px}.dialog p{font-size:12px;line-height:1.7;color:#6b7767}.close{width:34px;height:34px;border:1px solid #c0c8b7;background:none;color:#293b2b;font-size:20px}.booking-form{display:grid;gap:13px;margin-top:20px}.booking-form label{display:grid;gap:6px;color:#6e7969;font-size:10px}.booking-form input{width:100%;padding:12px;border:1px solid #c3c9b9;background:#f8f6ee;color:#253729}.form-result{font-size:12px;line-height:1.6;color:#3c6745}
+@media(max-width:900px){.experience{grid-template-columns:1fr}.visual{min-height:58svh}.panel{min-height:auto;padding:32px 24px 25px}.top{position:absolute}.visual{padding-top:80px}.photo-copy{bottom:65px}.image-caption{display:none}.vertical-word{display:none}.panel h2{margin-top:18px}.panel-foot{margin-top:28px}.experience{display:block}.explore.active{grid-template-columns:1fr}.gallery{min-height:72svh}.detail-panel{min-height:auto;padding:30px 24px 24px}.gallery-title{bottom:190px}.gallery-controls{bottom:16px}.detail-bottom{margin-top:26px}}
+@media(max-width:520px){.top{height:68px;padding:0 17px}.brand{font-size:11px;letter-spacing:.16em}.top-note{display:none}.top-action{font-size:10px}.visual{min-height:57svh}.photo-index{top:88px;left:20px}.photo-copy{left:20px;bottom:37px;max-width:90%}.photo-copy h1{font-size:clamp(43px,12vw,62px);margin-bottom:13px}.photo-copy p{font-size:12px;line-height:1.65;max-width:330px}.panel{padding:28px 20px 23px}.panel h2{font-size:32px}.date-grid{gap:15px}.gallery{min-height:75svh}.gallery-meta{top:86px;left:20px;font-size:8px}.gallery-title{left:20px;bottom:190px}.gallery-title h2{font-size:43px}.gallery-title p{font-size:12px}.gallery-controls{left:12px;right:12px;bottom:12px;gap:8px;display:block}.room-strip{padding-bottom:10px}.room-chip{flex-basis:92px;height:65px}.room-chip.active{flex-basis:125px}.gallery-back{position:absolute;right:0;top:-42px;padding:10px 12px}.detail-panel{padding:27px 20px 22px}.facts{margin-bottom:17px}.dialog{padding:22px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="site">
+<header class="top">
+  <div class="brand"><span class="mark"></span><span>FreeDom</span></div>
+  <div class="top-note">Дом, в котором можно выдохнуть</div>
+  <button class="top-action" id="restart" type="button">Начать заново ↗</button>
+</header>
+<main>
+<section class="experience" id="intro">
+  <div class="visual">
+    <div class="visual-image" id="intro-image"></div><div class="visual-grain"></div>
+    <div class="photo-index">01 / Пространство для жизни</div>
+    <div class="photo-copy"><div class="eyebrow">FreeDom · Сочи · Мамайка</div><h1>Найди место,<br><em>где ты — это ты.</em></h1><p>Не просто переночевать. Остановиться, почувствовать дом, познакомиться с людьми и выбрать свой ритм.</p></div>
+    <div class="image-caption">Живой дом · открытое пространство · свободный ритм</div><div class="vertical-word">ROOMS / LIVING SPACE</div>
+  </div>
+  <aside class="panel">
+    <div class="panel-top"><span>Пространство FreeDom</span><span class="leaf-icon"></span></div>
+    <h2>Сначала почувствуй.<br>Потом выбери.</h2>
+    <p class="panel-intro">Посмотри, какие комнаты свободны на твои даты. Выбор не спешит за тебя — можно рассмотреть каждое пространство и найти своё.</p>
+    <div class="date-block"><div class="date-title">Когда ты хочешь приехать?</div><div class="date-grid"><label class="date-field">Заезд<input id="checkin" type="date" required></label><label class="date-field">Выезд<input id="checkout" type="date" required></label></div></div>
+    <button class="find" id="search" type="button"><span>Исследовать свободные комнаты</span><span>↗</span></button>
+    <div class="message" id="notice" role="status" aria-live="polite"></div>
+    <div class="panel-foot"><div><strong>Свободное пространство</strong>Не гостиница. Живой дом.</div><span>43°35′ N<br>39°43′ E</span></div>
+  </aside>
+</section>
+<section class="explore" id="explore" aria-live="polite">
+  <div class="gallery">
+    <div class="gallery-image" id="gallery-image"></div>
+    <div class="gallery-meta"><span id="gallery-count">01 / 00</span><span>Исследуй пространство</span></div>
+    <div class="gallery-title"><div class="eyebrow" id="room-kicker">Твоё место в FreeDom</div><h2 id="gallery-name">Выбери комнату</h2><p id="gallery-summary">Здесь будет описание выбранного пространства.</p></div>
+    <div class="gallery-controls"><div class="room-strip" id="room-strip"></div><button class="gallery-back" id="back" type="button">← Даты</button></div>
+  </div>
+  <aside class="detail-panel" id="detail-panel">
+    <div class="panel-top"><span>Выбранное пространство</span><span id="availability-label">Доступность</span></div>
+    <div class="detail-kicker" id="detail-kicker">FreeDom · Комната</div><h2 id="detail-name">Исследуй дом</h2><p class="detail-desc" id="detail-desc">Выбери свободное пространство на фотографии.</p>
+    <div class="facts"><div class="fact"><small>Вместимость</small><strong id="capacity">—</strong></div><div class="fact"><small>Формат</small><strong id="booking-mode">—</strong></div><div class="fact"><small>Период</small><strong id="period">—</strong></div><div class="fact"><small>Статус</small><strong id="status">—</strong></div></div>
+    <div class="price"><span>Стоимость за ночь</span><strong id="price">Уточняется</strong></div>
+    <button class="book" id="book" type="button" disabled><span>Оставить заявку</span><span>↗</span></button><div class="message" id="detail-message" role="status"></div>
+    <div class="detail-bottom"><span>FreeDom · Мамайка<br>Сочи, рядом с морем и горами</span><button class="change-dates" id="change-dates" type="button">Изменить даты</button></div>
+  </aside>
+</section>
+</main>
+</div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><div class="dialog">
+  <div class="dialog-head"><div><div class="detail-kicker">FreeDom · Заявка</div><h2 id="dialog-title">Давай знакомиться</h2></div><button class="close" id="close-modal" type="button" aria-label="Закрыть">×</button></div>
+  <p id="booking-info"></p>
+  <form class="booking-form" id="booking-form">
+    <label>Твоё имя<input name="guest_name" autocomplete="name" required></label><label>Телефон<input name="guest_phone" autocomplete="tel" required></label><label>Email (необязательно)<input name="guest_email" type="email" autocomplete="email"></label><label id="guestcount-wrap">Количество мест<input id="guest-count" name="guest_count" type="number" min="1" value="1" required></label>
+    <button class="book" id="submit-booking" type="submit"><span>Отправить заявку</span><span>↗</span></button><div class="form-result" id="form-result" role="status" aria-live="polite"></div>
+  </form>
+</div></div>
+<script>
+(()=>{
+const $=s=>document.querySelector(s);
+const intro=$('#intro'),explore=$('#explore'),strip=$('#room-strip');
+let rooms=[],selected=null,lastDates=null;
+const pad=n=>String(n).padStart(2,'0');
+const dateString=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=new Date(),arrival=new Date(today);arrival.setDate(today.getDate()+1);const departure=new Date(arrival);departure.setDate(arrival.getDate()+1);
+$('#checkin').min=dateString(today);$('#checkin').value=dateString(arrival);$('#checkout').min=dateString(arrival);$('#checkout').value=dateString(departure);
+$('#checkin').addEventListener('change',()=>{const ci=$('#checkin').value;$('#checkout').min=ci;const next=new Date(ci+'T12:00:00');next.setDate(next.getDate()+1);if($('#checkout').value<=ci)$('#checkout').value=dateString(next)});
+const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const available=r=>r.available===true||Number(r.free_places)>0;
+const mode=r=>r.booking_mode==='places'?'По местам':'Целиком';
+const pretty=d=>new Date(d+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'short'}).replace('.','');
+const nights=()=>Math.max(1,Math.round((new Date(lastDates.checkout+'T12:00:00')-new Date(lastDates.checkin+'T12:00:00'))/86400000));
+function imageFor(r){
+ const given=r.image_url||r.imageUrl||'';
+ if(given)return given;
+ const s=String(r.name||'').toLowerCase();
+ if(s.includes('бунгало')||s.includes('сад'))return '/images/room-bungalow.jpg';
+ if(s.includes('семейн'))return '/images/room-family.jpg';
+ if(s.includes('мансард'))return '/images/room-attic.jpg';
+ if(s.includes('балкон'))return '/images/room-balcony.jpg';
+ if(s.includes('хостел')&&s.includes('стандарт'))return '/images/room-hostel-2.jpg';
+ if(s.includes('хостел'))return '/images/room-hostel.jpg';
+ if(s.includes('звёзд')||s.includes('звезд'))return '/images/room-bungalow-3.jpg';
+ return '/images/room-balcony.jpg';
+}
+function setImage(el,url){el.style.backgroundImage='linear-gradient(0deg,#17291f25,#17291f00),url("'+String(url).replace(/["\\]/g,'')+'")';}
+function message(el,text){el.textContent=text||''}
+function showIntro(){explore.classList.remove('active');intro.style.display='grid';window.scrollTo({top:0,behavior:'smooth'});}
+async function searchRooms(){
+ const ci=$('#checkin').value,co=$('#checkout').value,btn=$('#search'),notice=$('#notice');
+ if(!ci||!co||co<=ci){message(notice,'Выезд должен быть позже заезда.');return}
+ btn.disabled=true;btn.querySelector('span').textContent='Проверяем доступность…';message(notice,'Запрашиваем актуальные данные FreeDom.');
+ try{
+  const response=await fetch('/api/availability',{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify({check_in:ci,check_out:co})});
+  const data=await response.json();if(!response.ok||data.ok===false)throw new Error(data.error||'Сервис доступности временно недоступен.');
+  rooms=Array.isArray(data.rooms)?data.rooms:[];lastDates={checkin:ci,checkout:co};selected=null;
+  if(!rooms.length)throw new Error('Для этих дат варианты не найдены. Попробуй другой период.');
+  renderRooms();intro.style.display='none';explore.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});
+ }catch(e){message(notice,e.message+' Мы не подставляем выдуманные комнаты или статусы.');}
+ finally{btn.disabled=false;btn.querySelector('span').textContent='Исследовать свободные комнаты';}
+}
+function renderRooms(){
+ strip.innerHTML='';
+ rooms.forEach((r,i)=>{
+  const b=document.createElement('button');b.type='button';b.className='room-chip';b.dataset.index=i;b.style.backgroundImage='linear-gradient(0deg,#17291f55,#17291f12),url("'+imageFor(r).replace(/["\\]/g,'')+'")';
+  b.innerHTML='<span>'+safe(r.name||'Комната FreeDom')+'</span>';
+  if(!available(r)){b.style.filter='grayscale(.6)';b.title='Нет свободных мест на выбранные даты';}
+  b.addEventListener('click',()=>selectRoom(i));strip.appendChild(b);
+ });
+ const first=rooms.findIndex(available);selectRoom(first>=0?first:0);
+}
+function selectRoom(i){
+ selected=rooms[i];const r=selected,ok=available(r),url=imageFor(r),price=Number(r.price_per_night??r.price??0);
+ document.querySelectorAll('.room-chip').forEach(el=>el.classList.toggle('active',Number(el.dataset.index)===i));
+ setImage($('#gallery-image'),url);setImage($('#intro-image'),url);
+ $('#gallery-count').textContent=String(i+1).padStart(2,'0')+' / '+String(rooms.length).padStart(2,'0');
+ $('#gallery-name').textContent=r.name||'Комната FreeDom';$('#detail-name').textContent=r.name||'Комната FreeDom';
+ $('#gallery-summary').textContent=r.description||'Тихое пространство в живом доме FreeDom. Посмотри детали и выбери, подходит ли тебе этот формат.';
+ $('#detail-desc').textContent=r.description||'Уютное пространство в доме FreeDom. Детали можно уточнить при бронировании.';
+ $('#capacity').textContent=Number(r.capacity)>0?'До '+r.capacity+' гостей':'Уточняется';$('#booking-mode').textContent=mode(r);
+ $('#period').textContent=pretty(lastDates.checkin)+' — '+pretty(lastDates.checkout);
+ $('#status').textContent=ok?'Свободно':'Нет мест';$('#availability-label').textContent=ok?'Есть место':'Занято';$('#price').textContent=price>0?new Intl.NumberFormat('ru-RU').format(price)+' ₽':'Уточняется';
+ $('#detail-kicker').textContent='Пространство '+String(i+1).padStart(2,'0')+' · FreeDom';
+ $('#room-kicker').textContent=mode(r)+' · '+nights()+' '+(nights()===1?'ночь':nights()<5?'ночи':'ночей');
+ $('#book').disabled=!ok;$('#book').querySelector('span').textContent=ok?'Оставить заявку':'На эти даты недоступно';
+ message($('#detail-message'),ok?'Доступность проверена для выбранного периода.':'Выбери другой вариант или измени даты.');
+}
+function openBooking(){
+ if(!selected||!lastDates||!available(selected))return;const r=selected;
+ $('#dialog-title').textContent=r.name||'Заявка FreeDom';
+ $('#booking-info').textContent=pretty(lastDates.checkin)+' — '+pretty(lastDates.checkout)+' · '+nights()+' '+(nights()===1?'ночь':nights()<5?'ночи':'ночей')+' · '+mode(r)+'. Мы передадим заявку команде FreeDom.';
+ const count=$('#guest-count');count.value=1;count.min=1;count.max=r.booking_mode==='places'?Math.max(1,Number(r.free_places||1)):1;$('#guestcount-wrap').style.display=r.booking_mode==='places'?'grid':'none';$('#form-result').textContent='';$('#modal').classList.add('open');
+}
+$('#search').addEventListener('click',searchRooms);$('#book').addEventListener('click',openBooking);$('#back').addEventListener('click',showIntro);$('#change-dates').addEventListener('click',showIntro);$('#restart').addEventListener('click',showIntro);
+$('#close-modal').addEventListener('click',()=>$('#modal').classList.remove('open'));$('#modal').addEventListener('click',e=>{if(e.target===$('#modal'))$('#modal').classList.remove('open')});document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#modal').classList.remove('open')});
+$('#booking-form').addEventListener('submit',async e=>{
+ e.preventDefault();if(!selected||!lastDates)return;const out=$('#form-result'),submit=$('#submit-booking');
+ const payload=Object.fromEntries(new FormData(e.currentTarget));Object.assign(payload,{room_id:selected.room_id||selected.id,check_in:lastDates.checkin,check_out:lastDates.checkout,guest_count:selected.booking_mode==='places'?Math.min(Number($('#guest-count').value||1),Number(selected.free_places||1)):1});
+ submit.disabled=true;out.textContent='Передаём заявку…';
+ try{const response=await fetch('/api/booking',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await response.json();if(!response.ok||data.ok===false)throw new Error(data.error||'Не удалось отправить заявку. Попробуй позже.');out.textContent='Заявка отправлена в систему FreeDom.';setTimeout(()=>$('#modal').classList.remove('open'),1400);}
+ catch(err){out.textContent=err.message;}finally{submit.disabled=false;}
+});
+})();
+</script>
+</body>
+</html>
