@@ -1,0 +1,35 @@
+name: Temporary reference image preview
+on:
+  push:
+    branches:
+      - temp/reference-image-preview
+    paths:
+      - .github/workflows/reference-image-preview.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  make-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download reference image
+        run: |
+          curl -fL --retry 3 "https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/8381f151-d201-4cf6-9197-a8201209024a.png" -o reference.png
+          file reference.png
+      - name: Create smaller preview
+        run: |
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from PIL import Image
+          im = Image.open("reference.png").convert("RGB")
+          im.thumbnail((900, 506), Image.Resampling.LANCZOS)
+          im.save("reference-preview.jpg", quality=82, optimize=True)
+          print("Original:", Image.open("reference.png").size)
+          print("Preview:", im.size)
+          PY
+      - name: Upload preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: reference-image-preview
+          path: reference-preview.jpg
+          retention-days: 2
