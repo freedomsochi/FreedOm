@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#9bded2">
-<title>FreeDom Rooms — Sunlit Eco-Futurism V7</title>
+<title>FreeDom Rooms — Nature Selector V8</title>
 <style>
 :root{color-scheme:dark;--bg:#0b1511;--line:rgba(207,235,213,.16);--text:#edf5eb;--muted:#9fb3a3;--mint:#bce6a9;--aqua:#8adbd0;--shadow:0 24px 80px rgba(0,0,0,.24)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#213b2c 0,transparent 38%),radial-gradient(ellipse at 92% 26%,#183b38 0,transparent 34%),linear-gradient(180deg,#0b1511,#101c17 56%,#0a120f);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}button,input{font:inherit}button{cursor:pointer}.shell{width:min(1500px,calc(100% - 42px));margin:auto}.topbar{height:78px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px;font-weight:850;letter-spacing:.22em;font-size:14px}.brandmark{width:34px;height:34px;border:1px solid #a9d8b0;border-radius:50% 50% 50% 8px;transform:rotate(-45deg);display:grid;place-items:center;background:linear-gradient(135deg,#bce6a93d,#8adbd00d);box-shadow:0 0 30px #bce6a91c}.brandmark i{display:block;width:10px;height:15px;background:var(--mint);border-radius:100% 0 100% 0}.topright{display:flex;align-items:center;gap:18px;color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase}.live{display:flex;align-items:center;gap:7px}.live:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px var(--mint)}
@@ -331,15 +331,51 @@ body:after{background:linear-gradient(90deg,rgba(248,247,220,.08),transparent 30
 }
 @media(prefers-reduced-motion:reduce){.holo-main,.hero:after{animation:none!important}}
 
+
+/* V8 refinements: home navigation, project photo and two-way accommodation filters */
+.topbar{display:flex!important;justify-content:space-between!important;gap:14px}
+.home-link{display:inline-flex;align-items:center;gap:8px;color:#315d49;text-decoration:none;border:1px solid rgba(75,128,86,.24);background:rgba(255,255,245,.78);padding:10px 14px;border-radius:999px;font-size:12px;white-space:nowrap;backdrop-filter:blur(14px);box-shadow:0 5px 18px rgba(64,103,68,.08);transition:transform .2s,background .2s}
+.home-link:hover{transform:translateY(-1px);background:#fffdf0}
+.house-photo{object-fit:cover!important;object-position:center!important;border-radius:24px;box-shadow:0 24px 55px rgba(41,83,53,.22);opacity:1!important;filter:saturate(.94) contrast(1.02)!important}
+.scene-wrap{overflow:hidden}
+.category-selector{position:absolute;z-index:8;left:50%;bottom:22px;transform:translateX(-50%);width:min(92%,620px);padding:12px 14px;border:1px solid rgba(255,255,255,.85);border-radius:20px;background:rgba(255,253,239,.88);backdrop-filter:blur(18px);box-shadow:0 12px 35px rgba(48,87,58,.13);color:#315d49;text-align:center;pointer-events:auto}
+.category-label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:9px;color:#65856a}
+.category-buttons{display:flex;justify-content:center;gap:7px;flex-wrap:wrap}
+.category-btn{border:1px solid rgba(73,124,83,.25);border-radius:999px;padding:9px 13px;background:rgba(255,255,250,.75);color:#3e674b;font-size:11px;white-space:nowrap;transition:background .2s,border-color .2s,transform .2s}
+.category-btn:hover{transform:translateY(-1px);border-color:#75a984}
+.category-btn.active{background:#3e795b;border-color:#3e795b;color:#fff;box-shadow:0 5px 16px rgba(48,105,69,.2)}
+.availability-section>.category-selector{position:relative;left:auto;bottom:auto;transform:none;width:100%;margin:0 auto 16px;display:none}
+.results-mode .availability-section>.category-selector{display:block}
+.results-mode .hero{display:none}
+.results-mode main>section[aria-label="Поиск свободного размещения"]{display:none}
+.results-mode .availability-section{padding-top:18px}
+.results-mode .category-selector{max-width:720px}
+@media(max-width:900px){.home-link{font-size:11px;padding:9px 11px}.category-selector{bottom:12px;width:calc(100% - 28px);padding:10px}.category-btn{font-size:10px;padding:8px 11px}.house-photo{border-radius:18px}}
+@media(max-width:620px){
+ .topbar{height:70px!important;display:flex!important;gap:7px;padding:0 1px}
+ .home-link{font-size:9px;padding:8px 9px;gap:4px}
+ .brand{font-size:21px!important}
+ .topright{font-size:8px;gap:4px}
+ .topright .live{display:none}
+ .scene-wrap{inset:180px 12px 48% 12px}
+ .shore-art{inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important}
+ .scene-label{display:none}
+ .category-selector{bottom:8px;width:calc(100% - 16px);padding:8px 7px;border-radius:15px}
+ .category-label{font-size:8px;margin-bottom:6px}
+ .category-buttons{gap:4px}
+ .category-btn{font-size:8px;padding:7px 8px}
+ .availability-section>.category-selector{margin-bottom:12px}
+}
+
 </style>
 </head>
 <body>
 <div class="shell">
-<header class="topbar"><div class="brand"><span class="brandmark"><i></i></span><span>FreeDom</span></div><div class="topright"><span>Sochi · Мамайка</span><span class="live">Living nature / 01</span></div></header>
+<header class="topbar"><a class="home-link" href="index.html" aria-label="Вернуться на главную">← <span>На главную</span></a><div class="brand"><span class="brandmark"><i></i></span><span>FreeDom</span></div><div class="topright"><span>Sochi · Мамайка</span><span class="live">Living nature / 01</span></div></header>
 <main>
 <section class="hero">
 <div class="hero-copy"><div class="eyebrow">A place to reconnect</div><h1>Ближе к природе.<br><span>Ближе к себе.</span></h1><p class="intro">Дом, где технологии помогают открыть живое пространство. Исследуйте FreeDom, выберите даты и найдите место, которое подходит именно вам.</p><div class="micro"><span><i></i> Живое пространство</span><span><i></i> Свои люди</span><span><i></i> Свой ритм</span></div></div>
-<div class="scene-wrap" aria-label="Тёплый солнечный пейзаж у озера с белым песком, цветами и птицами"><div class="scene-glow"></div><div class="scene-label">FreeDom / living landscape<b>У воды · среди зелени</b></div><svg class="shore-art" viewBox="0 0 900 650" role="img" aria-label="Солнечный берег, спокойное озеро, белый песок и цветущий сад" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="warmSky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d5eee3"/><stop offset=".62" stop-color="#fff0c9"/><stop offset="1" stop-color="#f8e7c2"/></linearGradient><linearGradient id="lake" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9bd6c8"/><stop offset=".45" stop-color="#78bdb0"/><stop offset="1" stop-color="#b4d9c4"/></linearGradient><linearGradient id="sand" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#fffdf0"/><stop offset="1" stop-color="#e9d9b2"/></linearGradient><linearGradient id="hill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9fc59a"/><stop offset="1" stop-color="#4f8d70"/></linearGradient><radialGradient id="sun"><stop stop-color="#fff9d8" stop-opacity=".98"/><stop offset=".45" stop-color="#ffe6a2" stop-opacity=".55"/><stop offset="1" stop-color="#ffe6a2" stop-opacity="0"/></radialGradient></defs><rect width="900" height="650" fill="url(#warmSky)"/><circle cx="682" cy="118" r="150" fill="url(#sun)"/><circle cx="682" cy="118" r="45" fill="#fff3bf"/><path d="M0 290 Q130 230 245 272 T470 260 T690 245 T900 266 V420 H0Z" fill="#b8d7b0"/><path d="M0 334 Q120 284 255 316 T500 303 T720 295 T900 310 V465 H0Z" fill="url(#hill)"/><path d="M0 352 Q170 326 315 354 T600 342 T900 348 V515 H0Z" fill="url(#lake)"/><path d="M0 383 Q160 360 300 386 T600 378 T900 383" fill="none" stroke="#e8f5dc" stroke-width="4" opacity=".55"/><path d="M0 412 Q160 394 330 417 T630 410 T900 415" fill="none" stroke="#e8f5dc" stroke-width="2" opacity=".5"/><path d="M0 465 Q135 425 255 458 T470 466 T690 452 T900 470 V650 H0Z" fill="url(#sand)"/><path d="M0 492 Q130 458 250 491 T510 495 T740 485 T900 493" fill="none" stroke="#c9b88e" stroke-width="3" opacity=".48"/><g fill="#3f7959"><path d="M70 385 Q38 328 65 280 Q100 325 86 374Z"/><path d="M100 390 Q85 320 126 274 Q147 337 111 385Z"/><path d="M145 390 Q142 332 176 306 Q187 358 155 391Z"/><path d="M802 386 Q778 322 811 267 Q850 324 824 385Z"/><path d="M835 394 Q827 322 867 295 Q882 355 846 392Z"/></g><g fill="#6da878"><ellipse cx="85" cy="340" rx="37" ry="18" transform="rotate(-35 85 340)"/><ellipse cx="125" cy="337" rx="36" ry="17" transform="rotate(26 125 337)"/><ellipse cx="822" cy="333" rx="37" ry="18" transform="rotate(35 822 333)"/><ellipse cx="856" cy="346" rx="33" ry="17" transform="rotate(-24 856 346)"/></g><g fill="none" stroke="#528b66" stroke-width="4" stroke-linecap="round"><path d="M110 640 Q106 590 125 548"/><path d="M154 642 Q167 586 152 562"/><path d="M742 646 Q729 589 744 548"/><path d="M795 646 Q806 594 789 560"/><path d="M208 647 Q205 606 223 582"/><path d="M688 647 Q674 610 688 586"/></g><g fill="#fffdf5" stroke="#e7dcc4" stroke-width="1.5"><g transform="translate(126 548)"><ellipse cy="-8" rx="6" ry="10"/><ellipse cx="8" cy="-2" rx="6" ry="10" transform="rotate(60 8 -2)"/><ellipse cx="5" cy="8" rx="6" ry="10" transform="rotate(120 5 8)"/><ellipse cx="-5" cy="8" rx="6" ry="10" transform="rotate(180 -5 8)"/><ellipse cx="-8" cy="-2" rx="6" ry="10" transform="rotate(240 -8 -2)"/><circle r="5" fill="#edc65c"/></g><g transform="translate(744 548)"><ellipse cy="-8" rx="6" ry="10"/><ellipse cx="8" cy="-2" rx="6" ry="10" transform="rotate(60 8 -2)"/><ellipse cx="5" cy="8" rx="6" ry="10" transform="rotate(120 5 8)"/><ellipse cx="-5" cy="8" rx="6" ry="10" transform="rotate(180 -5 8)"/><ellipse cx="-8" cy="-2" rx="6" ry="10" transform="rotate(240 -8 -2)"/><circle r="5" fill="#edc65c"/></g></g><g fill="#e9a7a2"><circle cx="153" cy="594" r="7"/><circle cx="168" cy="606" r="5"/><circle cx="706" cy="602" r="7"/><circle cx="723" cy="590" r="5"/><circle cx="225" cy="611" r="5"/><circle cx="689" cy="620" r="5"/></g><g fill="none" stroke="#4e796d" stroke-width="4" stroke-linecap="round"><path d="M390 150 q13 -13 26 0 q13 -13 26 0"/><path d="M455 180 q10 -10 20 0 q10 -10 20 0"/><path d="M535 133 q8 -8 16 0 q8 -8 16 0"/></g><g fill="#d5e6b8" opacity=".8"><circle cx="310" cy="232" r="4"/><circle cx="570" cy="252" r="3"/><circle cx="355" cy="276" r="3"/><circle cx="625" cy="217" r="4"/></g></svg><div class="nature-chip chip-lake">≈ Озеро · тихая вода</div><div class="nature-chip chip-sand">✳ Белый песок</div><div class="nature-chip chip-garden">❀ Цветущий берег</div><div class="scene-index">SUNLIT SHORE<br>WILDFLOWERS · BIRDS · CALM</div></div>
+<div class="scene-wrap" aria-label="Тёплый солнечный пейзаж у озера с белым песком, цветами и птицами"><div class="scene-glow"></div><div class="scene-label">FreeDom / living landscape<b>У воды · среди зелени</b></div><img class="shore-art house-photo" src="images/room-bungalow.jpg" alt="Фотография размещения FreeDom" loading="eager" onerror="this.onerror=null;this.src='images/room-family.jpg'"><div class="nature-chip chip-lake">≈ Озеро · тихая вода</div><div class="nature-chip chip-sand">✳ Белый песок</div><div class="nature-chip chip-garden">❀ Цветущий берег</div><div class="scene-index">FREEDOM · LIVING SPACE</div><div class="category-selector" role="group" aria-label="Категория размещения"><span class="category-label">Найти своё место</span><div class="category-buttons"><button type="button" class="category-btn active" data-category="all" aria-pressed="true">Все варианты</button><button type="button" class="category-btn" data-category="hostel" aria-pressed="false">Хостел</button><button type="button" class="category-btn" data-category="rooms" aria-pressed="false">Комнаты</button><button type="button" class="category-btn" data-category="bungalow" aria-pressed="false">Бунгало</button></div></div></div>
 <section aria-label="Поиск свободного размещения"><div class="booking-bar"><div class="field"><label for="checkin">Заезд</label><input id="checkin" type="date" required></div><div class="field"><label for="checkout">Выезд</label><input id="checkout" type="date" required></div><button class="primary" id="search">Показать доступные ↗</button></div><div id="notice" class="message" role="status" aria-live="polite">Выберите даты — проверим доступность по системе бронирования.</div></section>
 </section>
 <section id="availability" class="availability-section">
@@ -353,7 +389,7 @@ body:after{background:linear-gradient(90deg,rgba(248,247,220,.08),transparent 30
 <script>
 (function(){
 const $=s=>document.querySelector(s),checkin=$('#checkin'),checkout=$('#checkout'),search=$('#search'),notice=$('#notice'),roomsEl=$('#rooms'),resultCount=$('#resultcount'),period=$('#period'),modal=$('#modal'),form=$('#bookingform'),formResult=$('#formresult'),guestCount=$('#guestcount');
-let rooms=[],selected=null,lastDates=null,isLoaded=false,focusIndex=0,explorerLocked=false;
+let rooms=[],allRooms=[],activeCategory='all',selected=null,lastDates=null,isLoaded=false,focusIndex=0,explorerLocked=false;
 const pad=n=>String(n).padStart(2,'0');
 const dateString=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const today=new Date(),arrival=new Date(today);arrival.setDate(today.getDate()+1);const departure=new Date(arrival);departure.setDate(arrival.getDate()+1);
@@ -367,10 +403,41 @@ const capacityLabel=r=>Number(r.capacity||0)+' '+(Number(r.capacity||0)===1?'г�
 const safe=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function photoFor(name){const n=String(name||'').toLowerCase();if(/под зв[её]зд/.test(n))return 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=900&q=85';if(/бунгал|bungalow/.test(n))return 'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=900&q=85';if(/семейн|family/.test(n))return 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=85';if(/балкон|balcony/.test(n))return 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85';if(/мансард|attic/.test(n))return 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=85';if(/эконом|хостел|hostel/.test(n))return 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=900&q=85';if(/стандарт|standard/.test(n))return 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=85';return 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85';}
 function setNotice(t,type){notice.textContent=t;notice.className='message'+(type?' '+type:'');}
+function categoryOf(r){
+  const n=String((r&&r.name)||'').toLowerCase();
+  const t=String((r&&(r.category||r.type||r.accommodation_type))||'').toLowerCase();
+  if(/бунгал|bungalow/.test(n+' '+t)) return 'bungalow';
+  if(/хостел|hostel|спальн\w* место|место на балкон|эконом.?хостел|койк/.test(n+' '+t)) return 'hostel';
+  return 'rooms';
+}
+function syncCategoryButtons(){
+  document.querySelectorAll('.category-btn').forEach(btn=>{
+    const active=btn.dataset.category===activeCategory;
+    btn.classList.toggle('active',active);
+    btn.setAttribute('aria-pressed',String(active));
+  });
+}
+function applyCategory(){
+  rooms=activeCategory==='all'?[...allRooms]:allRooms.filter(r=>categoryOf(r)===activeCategory);
+  focusIndex=Math.max(0,Math.min(focusIndex,rooms.length-1));
+  syncCategoryButtons();
+  if(isLoaded) renderRooms();
+}
+document.querySelectorAll('.category-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  activeCategory=btn.dataset.category||'all';
+  focusIndex=0;
+  applyCategory();
+  if(isLoaded){
+    setNotice(rooms.length?'Показаны варианты выбранной категории. Доступность проверена по системе бронирования.':'В этой категории нет вариантов на выбранные даты. Выберите другую категорию или измените даты.',rooms.length?'good':'');
+    $('#availability').scrollIntoView({behavior:'smooth',block:'start'});
+  } else {
+    setNotice('Категория выбрана. Укажите даты и нажмите «Показать доступные».');
+  }
+}));
 function renderRooms(){
   roomsEl.innerHTML='';
   const count=rooms.filter(available).length;
-  resultCount.textContent=rooms.length?count+' из '+rooms.length+' вариантов доступны':'Варианты не найдены';
+  resultCount.textContent=rooms.length?count+' из '+rooms.length+' вариантов доступны':'В этой категории варианты не найдены';
   period.textContent=fmt(checkin.value)+' — '+fmt(checkout.value)+' · '+nights()+' '+(nights()===1?'ночь':nights()<5?'ночи':'ночей');
   if(!rooms.length){
     roomsEl.innerHTML='<div class="empty">На эти даты система бронирования не вернула варианты. Попробуйте другой период или свяжитесь с FreeDom напрямую.</div>';
@@ -426,7 +493,7 @@ function renderRooms(){
 async function loadAvailability(){
 if(!checkin.value||!checkout.value||nights()<=0){setNotice('Дата выезда должна быть позже даты заезда.','error');return;}
 search.disabled=true;search.textContent='Проверяем…';setNotice('Связываемся с системой бронирования…');
-try{const response=await fetch('/api/availability',{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify({check_in:checkin.value,check_out:checkout.value})});const data=await response.json();if(!response.ok||data.ok===false)throw new Error(data.error||'Сервис доступности временно недоступен.');rooms=Array.isArray(data.rooms)?data.rooms:[];lastDates={checkin:checkin.value,checkout:checkout.value};isLoaded=true;selected=null;focusIndex=Math.max(0,rooms.findIndex(available));explorerLocked=false;document.body.classList.add("results-mode");renderRooms();setNotice(rooms.length?'Доступность обновлена по системе бронирования. Выберите понравившийся вариант, чтобы перейти к заявке.':'На выбранные даты доступных вариантов не найдено. Можно попробовать другие даты.',rooms.length?'good':'');$('#availability').scrollIntoView({behavior:'smooth',block:'start'});}
+try{const response=await fetch('/api/availability',{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify({check_in:checkin.value,check_out:checkout.value})});const data=await response.json();if(!response.ok||data.ok===false)throw new Error(data.error||'Сервис доступности временно недоступен.');allRooms=Array.isArray(data.rooms)?data.rooms:[];lastDates={checkin:checkin.value,checkout:checkout.value};isLoaded=true;selected=null;focusIndex=0;rooms=activeCategory==='all'?[...allRooms]:allRooms.filter(r=>categoryOf(r)===activeCategory);focusIndex=Math.max(0,rooms.findIndex(available));syncCategoryButtons();explorerLocked=false;document.body.classList.add("results-mode");renderRooms();setNotice(rooms.length?'Доступность обновлена по системе бронирования. Выберите понравившийся вариант, чтобы перейти к заявке.':'На выбранные даты доступных вариантов не найдено. Можно попробовать другие даты.',rooms.length?'good':'');$('#availability').scrollIntoView({behavior:'smooth',block:'start'});}
 catch(error){setNotice(error.message+' Мы не подставляем демонстрационные статусы вместо реальных данных.','error');resultCount.textContent='Не удалось обновить доступность';}
 finally{search.disabled=false;search.textContent='Показать доступные ↗';}
 }
