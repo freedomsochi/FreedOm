@@ -155,7 +155,26 @@ body{overflow-x:hidden}
 
 /* Edge-to-edge scene correction: remove the inset that was leaving visible frames */
 html,body{width:100%;max-width:100%;overflow-x:hidden}
-main{width:100%;overflow:clip}
+main{width:100%;overflow-x:clip;overflow-y:visible}
+/* Keep native page scrolling available so mobile browser chrome can react to swipe direction */
+html{
+  height:auto;
+  min-height:100%;
+  overflow-y:auto;
+  overscroll-behavior-y:auto;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:y mandatory;
+}
+body{
+  min-height:100%;
+  overflow-y:visible;
+  touch-action:pan-y;
+}
+.hero,.dark-break,.values,.horizontal-section,.end,
+.story .feature{
+  scroll-snap-align:start;
+  scroll-snap-stop:normal;
+}
 .story{width:100%;padding:0!important;margin:0}
 .story .feature,.story .feature.reverse{
   width:100%;max-width:none;margin:0;
