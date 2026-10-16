@@ -186,10 +186,10 @@ function renderAvailability(){
   if(card){card.classList.toggle('status-free',status.known&&status.available);card.classList.toggle('status-busy',status.known&&!status.available)}
  });
  const bungalowStatus=$('#bungalowstatus');
- if(bungalowStatus){const status=availabilityFor(bungalowDbNames);bungalowStatus.className='availability-status '+status.className;b u n g a l o wStatusFix(status,bungalowStatus)}
+ if(bungalowStatus){const status=availabilityFor(bungalowDbNames);bungalowStatus.className='availability-status '+status.className;bungalowStatus.textContent='• '+status.text}
  updateBookButton();
 }
-function b u n g a l o wStatusFix(status,el){}
+
 function choose(i){
  if(!rooms[i])return;
  active=i;category=i===1?'hostel':'rooms';
