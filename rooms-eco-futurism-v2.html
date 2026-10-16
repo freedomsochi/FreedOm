@@ -173,6 +173,7 @@ function availabilityFor(names){
 }
 function updateBookButton(){
  const btn=$('#book');if(!btn)return;
+ if(availabilityState==='loading'){btn.disabled=true;btn.textContent='Проверяем доступность…';return}
  const status=availabilityFor(selectedDbNames());
  btn.disabled=status.known&&status.available===false;
  btn.textContent=btn.disabled?'Нет мест на эти даты':(status.known&&status.available?'Забронировать  ›':'Уточнить доступность  ›');
@@ -242,6 +243,7 @@ function initDates(){
  checkIn.min=localIso(today);checkOut.min=localIso(today);
  if(!checkIn.value||checkIn.value<localIso(today)){const start=new Date(today);start.setDate(start.getDate()+1);checkIn.value=localIso(start)}
  if(!checkOut.value||checkOut.value<=checkIn.value){const end=new Date(checkIn.value+'T12:00:00');end.setDate(end.getDate()+3);checkOut.value=localIso(end)}
+ checkOut.min=checkIn.value;
  const updateMin=()=>{checkOut.min=checkIn.value; if(checkOut.value<=checkIn.value){const end=new Date(checkIn.value+'T12:00:00');end.setDate(end.getDate()+1);checkOut.value=localIso(end)}};
  checkIn.addEventListener('change',()=>{updateMin();refreshAvailability()});
  checkOut.addEventListener('change',refreshAvailability);
