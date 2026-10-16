@@ -69,6 +69,59 @@ footer{padding:24px;text-align:center;font-size:10px;letter-spacing:.2em;text-tr
 .signature{color:#887344}
 @media(max-width:760px){.hero-art:before{width:180px;height:180px}.dish-copy:before{left:18px;right:18px}}
 
+
+/* Menu categories, product cards and order dialogs */
+.menu-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:28px 0 48px}
+.menu-nav a{display:flex;align-items:center;gap:12px;padding:17px 20px;border:1px solid rgba(255,255,255,.72);border-radius:18px;background:rgba(255,250,238,.52);text-decoration:none;box-shadow:0 8px 24px rgba(61,72,43,.05);transition:transform .22s,background .22s}
+.menu-nav a:hover{transform:translateY(-3px);background:rgba(255,252,240,.86)}
+.menu-nav a>span{font-size:27px}.menu-nav a small{margin-left:auto;color:#8a8d70;font-size:10px;letter-spacing:.04em}
+.menu-section{scroll-margin-top:90px;margin-top:44px}
+.menu-section .section-head{margin-top:0}
+.menu-section .section-head>div{display:grid;gap:9px}
+.menu-section .section-head .eyebrow{font-size:9px}
+.menu-section .section-head h2{margin:0}
+.menu-single{grid-template-columns:repeat(6,minmax(0,1fr))}
+.dish-button{font:inherit;text-align:left;padding:0;cursor:pointer;color:inherit;width:100%;min-width:0}
+.dish-button .dish-visual{display:block;flex-shrink:0}
+.dish-button .dish-visual .dish-number{z-index:2}
+.dish-button .food{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg)}
+.dish-button:hover .food{transform:translate(-50%,-55%) rotate(0) scale(1.07)}
+.dish-button .dish-copy{display:flex;align-items:flex-start;text-align:left}
+.dish-tag{display:inline-flex;align-items:center;max-width:100%;border:1px solid rgba(185,141,77,.3);border-radius:99px;padding:5px 9px;color:#8b7547;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.dish-title{font:400 25px/1.12 Georgia,serif;color:var(--forest);display:block}
+.dish-desc{font-size:13px;line-height:1.65;color:#68735e;display:block}
+.dish-button .signature{display:flex;width:100%;margin-top:auto}
+.open-card{position:absolute;z-index:3;right:12px;bottom:12px;padding:8px 10px;border-radius:99px;background:rgba(255,252,239,.88);border:1px solid rgba(255,255,255,.85);color:#40583d;font-size:10px;opacity:0;transform:translateY(4px);transition:.22s}
+.dish-button:hover .open-card,.dish-button:focus-visible .open-card{opacity:1;transform:translateY(0)}
+.dish-button:focus-visible{outline:3px solid rgba(98,120,90,.8);outline-offset:4px}
+.menu-dialog{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(30,43,31,.42);backdrop-filter:blur(16px)}
+.menu-dialog.open{display:flex}
+.dialog-panel{width:min(100%,720px);max-height:min(90vh,900px);overflow:auto;position:relative;border-radius:28px;border:1px solid rgba(255,255,255,.82);background:linear-gradient(145deg,rgba(255,252,242,.98),rgba(232,239,216,.97));box-shadow:0 30px 100px rgba(22,42,25,.28);padding:clamp(22px,4vw,38px)}
+.dialog-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(53,82,52,.2);background:rgba(255,255,255,.58);font-size:24px;color:var(--forest);cursor:pointer}
+.dialog-kicker{font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:#8b8d68}
+.dialog-panel h2{font:400 clamp(32px,5vw,48px)/1 Georgia,serif;color:var(--forest);margin:13px 44px 18px 0}
+.dialog-description{font-size:14px;line-height:1.7;color:#63705a}
+.dialog-columns{display:grid;grid-template-columns:.8fr 1.2fr;gap:20px;margin:22px 0}
+.dialog-art{min-height:170px;display:grid;place-items:center;border-radius:20px;background:linear-gradient(135deg,#dce4bf,#f2dfad);font-size:72px}
+.dialog-section{margin-top:18px}
+.dialog-section h3{font:400 23px Georgia,serif;color:var(--forest);margin:0 0 10px}
+.ingredient-list{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
+.ingredient-list li{padding:8px 11px;border:1px solid rgba(90,116,73,.18);border-radius:99px;background:rgba(255,255,255,.5);font-size:12px;color:#53654f}
+.dialog-meta{font-size:11px;line-height:1.6;color:#8b7650}
+.dialog-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.primary-action,.secondary-action{border-radius:99px;padding:13px 18px;font:inherit;font-size:12px;cursor:pointer;text-decoration:none;border:1px solid rgba(38,74,58,.35)}
+.primary-action{background:var(--forest);color:#fff;border-color:var(--forest)}
+.secondary-action{background:rgba(255,255,255,.48);color:var(--forest)}
+.order-form{display:grid;gap:13px;margin-top:20px}
+.order-form label{display:grid;gap:6px;font-size:12px;color:#53654f}
+.order-form input,.order-form textarea,.order-form select{width:100%;border:1px solid rgba(77,103,65,.25);border-radius:12px;background:rgba(255,255,255,.72);padding:12px 13px;font:inherit;color:var(--ink)}
+.order-form textarea{min-height:75px;resize:vertical}
+.order-result{display:none;margin-top:18px;padding:16px;border:1px solid rgba(110,140,87,.3);border-radius:16px;background:rgba(255,255,255,.55)}
+.order-result.show{display:block}
+.order-result pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 monospace;color:#53654f}
+body.dialog-open{overflow:hidden}
+@media(max-width:760px){.menu-nav{grid-template-columns:1fr;gap:9px;margin:20px 0 36px}.menu-nav a{padding:13px 15px}.menu-nav a small{margin-left:auto}.menu-section{margin-top:34px}.menu-single{grid-template-columns:1fr}.open-card{opacity:1;transform:none;font-size:9px}.dialog-panel{border-radius:22px;padding:23px 19px}.dialog-columns{grid-template-columns:1fr;gap:13px}.dialog-art{min-height:125px;font-size:60px}.dialog-actions>*{flex:1;text-align:center}.dish-title{font-size:23px}}
+
 </style>
 </head>
 <body>
@@ -85,7 +138,47 @@ footer{padding:24px;text-align:center;font-size:10px;letter-spacing:.2em;text-tr
     </div>
     <div class="hero-art" aria-hidden="true"><span class="leaf one">🌿</span><div class="plate">🥗</div><span class="leaf two">🍃</span></div>
   </section>
-  <div class="section-head"><h2>Что готовим</h2><p>Домашнее меню FreeDom</p></div>
+  <nav class="menu-nav" aria-label="Разделы меню">
+    <a href="#food"><span>🥗</span> Еда <small>2 блюда</small></a>
+    <a href="#drinks"><span>🥤</span> Напитки <small>1 напиток</small></a>
+    <a href="#sweets"><span>🍰</span> Сладости <small>2 десерта</small></a>
+  </nav>
+  <section class="menu-section" id="food">
+    <div class="section-head"><div><span class="eyebrow">01 / На каждый день</span><h2>Еда</h2></div><p>Сытное и домашнее</p></div>
+    <div class="menu">
+      <button class="dish dish-button" type="button" data-dish="shawarma" aria-label="Открыть состав сыроедческой шаурмы">
+        <span class="dish-visual"><span class="dish-number">01 / RAW</span><span class="food">🌯</span><span class="open-card">Состав и заказ ↗</span></span>
+        <span class="dish-copy"><span class="dish-tag">От Джефа</span><span class="dish-title">Сыроедческая шаурма</span><span class="dish-desc">Свежий овощной ролл с ярким соусом.</span><span class="signature">Открыть карточку</span></span>
+      </button>
+      <button class="dish dish-button" type="button" data-dish="soup" aria-label="Открыть состав тыквенного крем-супа">
+        <span class="dish-visual"><span class="dish-number">02 / WARM</span><span class="food">🍲</span><span class="open-card">Состав и заказ ↗</span></span>
+        <span class="dish-copy"><span class="dish-tag">Тёплая кухня</span><span class="dish-title">Тыквенный крем-суп на кокосовом молоке</span><span class="dish-desc">Нежный суп с мягким пряным вкусом.</span><span class="signature">Открыть карточку</span></span>
+      </button>
+    </div>
+  </section>
+  <section class="menu-section" id="drinks">
+    <div class="section-head"><div><span class="eyebrow">02 / Свежесть</span><h2>Напитки</h2></div><p>Фрукты и настроение</p></div>
+    <div class="menu menu-single">
+      <button class="dish dish-button" type="button" data-dish="smoothie" aria-label="Открыть состав фирменного смузи">
+        <span class="dish-visual"><span class="dish-number">03 / FRESH</span><span class="food">🥤</span><span class="open-card">Состав и заказ ↗</span></span>
+        <span class="dish-copy"><span class="dish-tag">Фирменный рецепт Джефа</span><span class="dish-title">Фирменное смузи</span><span class="dish-desc">Фруктовый микс — состав подскажем в карточке после согласования рецепта.</span><span class="signature">Открыть карточку</span></span>
+      </button>
+    </div>
+  </section>
+  <section class="menu-section" id="sweets">
+    <div class="section-head"><div><span class="eyebrow">03 / К чаю</span><h2>Сладости</h2></div><p>Немного радости</p></div>
+    <div class="menu">
+      <button class="dish dish-button" type="button" data-dish="cake" aria-label="Открыть состав сыроедческого фруктового тортика">
+        <span class="dish-visual"><span class="dish-number">04 / SWEET</span><span class="food">🍰</span><span class="open-card">Состав и заказ ↗</span></span>
+        <span class="dish-copy"><span class="dish-tag">Без выпечки</span><span class="dish-title">Сыроедческий тортик из фруктов</span><span class="dish-desc">Фруктовый десерт для общего стола.</span><span class="signature">Открыть карточку</span></span>
+      </button>
+      <button class="dish dish-button" type="button" data-dish="dates" aria-label="Открыть состав конфет из фиников">
+        <span class="dish-visual"><span class="dish-number">05 / SWEET</span><span class="food">🍬</span><span class="open-card">Состав и заказ ↗</span></span>
+        <span class="dish-copy"><span class="dish-tag">К чаю</span><span class="dish-title">Конфеты из фиников</span><span class="dish-desc">Небольшое сладкое угощение.</span><span class="signature">Открыть карточку</span></span>
+      </button>
+    </div>
+  </section>
+  <aside class="note"><span class="note-mark">☀</span><span>Открой карточку блюда, чтобы посмотреть состав и подготовить заказ. Рецептуры ниже пока предварительные — перед запуском их нужно подтвердить с Джефом. Цены и наличие добавим после согласования.</span></aside>
   <section class="menu" aria-label="Меню кухни FreeDom">
     <article class="dish"><div class="dish-visual"><span class="dish-number">01 / RAW</span><span class="food">🌯</span></div><div class="dish-copy"><h3>Сыроедческая шаурма</h3><p>Живой рецепт от Джефа.</p><div class="signature">От Джефа</div></div></article>
     <article class="dish"><div class="dish-visual"><span class="dish-number">02 / FRESH</span><span class="food">🥤</span></div><div class="dish-copy"><h3>Фирменное смузи</h3><p>Фирменный микс от Джефа.</p><div class="signature">От Джефа</div></div></article>
@@ -93,8 +186,83 @@ footer{padding:24px;text-align:center;font-size:10px;letter-spacing:.2em;text-tr
     <article class="dish"><div class="dish-visual"><span class="dish-number">04 / WARM</span><span class="food">🍲</span></div><div class="dish-copy"><h3>Тыквенный крем-суп на кокосовом молоке</h3><p>Тёплый, нежный суп для общего стола.</p><div class="signature">Тёплая кухня</div></div></article>
     <article class="dish"><div class="dish-visual"><span class="dish-number">05 / SWEET</span><span class="food">🍬</span></div><div class="dish-copy"><h3>Конфеты из фиников</h3><p>Небольшое сладкое угощение к чаю.</p><div class="signature">К чаю</div></div></article>
   </section>
-  <aside class="note"><span class="note-mark">☀</span><span>Это меню про домашнюю кухню и удовольствие делиться. Точные состав, стоимость и возможность приготовить блюдо можно будет добавить отдельно — когда согласуем эти детали.</span></aside>
+
 </main>
+
+<div class="menu-dialog" id="dishDialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+  <div class="dialog-panel">
+    <button class="dialog-close" type="button" data-close aria-label="Закрыть">×</button>
+    <div class="dialog-kicker" id="dialogKicker">FreeDom · меню</div>
+    <h2 id="dialogTitle">Блюдо</h2>
+    <p class="dialog-description" id="dialogDescription"></p>
+    <div class="dialog-columns"><div class="dialog-art" id="dialogArt" aria-hidden="true">🥗</div><div>
+      <div class="dialog-section"><h3>Состав</h3><ul class="ingredient-list" id="ingredientList"></ul></div>
+      <p class="dialog-meta">Предварительный состав для согласования с кухней. Возможны изменения рецепта и следы аллергенов.</p>
+      <div class="dialog-section"><h3>О блюде</h3><p class="dialog-description" id="dialogNote"></p></div>
+    </div></div>
+    <div class="dialog-actions"><button class="primary-action" id="orderOpen" type="button">Заказать блюдо ↗</button><button class="secondary-action" type="button" data-close>Вернуться в меню</button></div>
+  </div>
+</div>
+<div class="menu-dialog" id="orderDialog" role="dialog" aria-modal="true" aria-labelledby="orderTitle">
+  <div class="dialog-panel">
+    <button class="dialog-close" type="button" data-close aria-label="Закрыть">×</button>
+    <div class="dialog-kicker">FreeDom · заявка на заказ</div>
+    <h2 id="orderTitle">Оформить заказ</h2>
+    <p class="dialog-description" id="orderIntro">Заполни детали заказа.</p>
+    <form class="order-form" id="orderForm">
+      <label>Как к тебе обращаться<input name="name" autocomplete="name" required placeholder="Твоё имя"></label>
+      <label>Как связаться для подтверждения<input name="contact" required placeholder="Телефон или Telegram"></label>
+      <label>Количество<select name="quantity"><option value="1">1 порция</option><option value="2">2 порции</option><option value="3">3 порции</option><option value="4">4 порции</option><option value="5">5 порций</option></select></label>
+      <label>Комментарий к заказу<textarea name="comment" placeholder="Например, уточнить состав или время"></textarea></label>
+      <button class="primary-action" type="submit">Подготовить заявку</button>
+    </form>
+    <div class="order-result" id="orderResult" aria-live="polite"><strong>Заявка подготовлена</strong><p class="dialog-description">Скопируй текст и отправь его человеку, который принимает заказы на кухне. Автоматическая отправка пока не подключена.</p><pre id="orderText"></pre><button class="primary-action" type="button" id="copyOrder">Скопировать заявку</button></div>
+  </div>
+</div>
 <footer>FreeDom Sochi · добро пожаловать. С доброжелательностью!</footer>
+
+<script>
+(() => {
+  const dishes = {
+    shawarma:{title:'Сыроедческая шаурма от Джефа',category:'Еда · RAW',emoji:'🌯',description:'Свежий овощной ролл с соусом — фирменная идея Джефа.',ingredients:['Листья салата','Огурец','Помидор','Морковь','Зелень','Орехово-семечковый соус','Листовая оболочка'],note:'Это рабочий вариант состава, а не подтверждённая рецептура. Нужно уточнить основу для ролла и соус у Джефа.'},
+    soup:{title:'Тыквенный крем-суп на кокосовом молоке',category:'Еда · WARM',emoji:'🍲',description:'Нежный тёплый суп с кокосовой ноткой и мягкими специями.',ingredients:['Тыква','Кокосовое молоко','Лук','Чеснок','Овощной бульон или вода','Соль','Пряности'],note:'Предварительный состав. Точные специи и способ приготовления согласуем с кухней.'},
+    smoothie:{title:'Фирменное смузи от Джефа',category:'Напитки · FRESH',emoji:'🥤',description:'Фруктовый напиток для завтрака или небольшого перерыва.',ingredients:['Фрукты по сезону','Банан для текстуры','Вода или растительное молоко'],note:'Точный фруктовый микс — часть фирменного рецепта Джефа, поэтому перед заказом его нужно уточнить.'},
+    cake:{title:'Сыроедческий тортик из фруктов',category:'Сладости · SWEET',emoji:'🍰',description:'Фруктовый десерт без выпечки — лёгкое угощение к общему столу.',ingredients:['Фрукты','Финики','Орехи или семена для основы','Кокосовая стружка по рецепту'],note:'Предварительный вариант. Нужно подтвердить основу и возможные орехи в рецепте.'},
+    dates:{title:'Конфеты из фиников',category:'Сладости · SWEET',emoji:'🍬',description:'Небольшие натурально-сладкие конфеты к чаю.',ingredients:['Финики','Орехи или семена','Какао или кокосовая стружка по рецепту'],note:'Предварительный состав: конкретная добавка и возможные аллергены должны быть подтверждены.'}
+  };
+  const dishDialog=document.getElementById('dishDialog'),orderDialog=document.getElementById('orderDialog');
+  let activeDish=null, lastTrigger=null;
+  const open=(el)=>{el.classList.add('open');document.body.classList.add('dialog-open');const close=el.querySelector('[data-close]');if(close)close.focus()};
+  const close=(el)=>{el.classList.remove('open');if(!document.querySelector('.menu-dialog.open'))document.body.classList.remove('dialog-open')};
+  document.querySelectorAll('[data-dish]').forEach(btn=>btn.addEventListener('click',()=>{
+    activeDish=dishes[btn.dataset.dish];lastTrigger=btn;
+    document.getElementById('dialogKicker').textContent='FreeDom · '+activeDish.category;
+    document.getElementById('dialogTitle').textContent=activeDish.title;
+    document.getElementById('dialogDescription').textContent=activeDish.description;
+    document.getElementById('dialogArt').textContent=activeDish.emoji;
+    document.getElementById('dialogNote').textContent=activeDish.note;
+    const list=document.getElementById('ingredientList');list.replaceChildren();
+    activeDish.ingredients.forEach(x=>{const li=document.createElement('li');li.textContent=x;list.append(li)});
+    open(dishDialog);
+  }));
+  document.getElementById('orderOpen').addEventListener('click',()=>{
+    close(dishDialog);document.getElementById('orderIntro').textContent='Заказ: '+activeDish.title+'. Цену и наличие нужно подтвердить перед приготовлением.';
+    document.getElementById('orderResult').classList.remove('show');document.getElementById('orderForm').hidden=false;open(orderDialog);
+  });
+  document.querySelectorAll('[data-close]').forEach(btn=>btn.addEventListener('click',()=>{const dlg=btn.closest('.menu-dialog');close(dlg);if(dlg===orderDialog&&lastTrigger)lastTrigger.focus()}));
+  [dishDialog,orderDialog].forEach(dlg=>dlg.addEventListener('click',e=>{if(e.target===dlg){close(dlg);if(lastTrigger)lastTrigger.focus()}}));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){[dishDialog,orderDialog].forEach(d=>{if(d.classList.contains('open'))close(d)});if(lastTrigger)lastTrigger.focus()}});
+  document.getElementById('orderForm').addEventListener('submit',e=>{
+    e.preventDefault();const form=new FormData(e.currentTarget);
+    const text='ЗАКАЗ — КУХНЯ FREEDOM\nБлюдо: '+activeDish.title+'\nКоличество: '+form.get('quantity')+'\nИмя: '+form.get('name')+'\nКонтакт: '+form.get('contact')+'\nКомментарий: '+(form.get('comment')||'нет')+'\n\nСостав и стоимость прошу подтвердить перед приготовлением.';
+    document.getElementById('orderText').textContent=text;document.getElementById('orderResult').classList.add('show');e.currentTarget.hidden=true;
+  });
+  document.getElementById('copyOrder').addEventListener('click',async()=>{
+    const text=document.getElementById('orderText').textContent;
+    try{await navigator.clipboard.writeText(text);document.getElementById('copyOrder').textContent='Скопировано ✓'}
+    catch{const range=document.createRange(),pre=document.getElementById('orderText');range.selectNodeContents(pre);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);document.getElementById('copyOrder').textContent='Выдели текст и скопируй'}
+  });
+})();
+</script>
 </body>
 </html>
