@@ -53,6 +53,22 @@ h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:clamp(4
 footer{padding:24px;text-align:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#637457}@keyframes orbitBreath{50%{transform:scale(1.035);opacity:.7}}@keyframes plateFloat{50%{transform:translateY(-5px) rotate(-6deg)}}@keyframes glint{50%{transform:translateY(-5px) rotate(35deg);opacity:.55}}
 @media(max-width:760px){.hero{grid-template-columns:1fr;min-height:auto;gap:0;padding:27px 24px 12px}.hero-art{height:190px}.plate{width:175px;height:175px;min-width:0;min-height:0;font-size:70px}.leaf.one{right:12%}.leaf.two{left:12%}.section-head{margin-top:38px;align-items:start;flex-direction:column;gap:9px}.menu{grid-template-columns:1fr;gap:13px}.dish,.dish:nth-child(4),.dish:nth-child(5){grid-column:span 1;min-height:0}.dish-visual{height:145px}.dish-copy{padding:17px 18px 19px}.dish h3{font-size:23px}.note{align-items:flex-start;padding:18px}.topbar{padding:12px 15px}.brand{font-size:10px;letter-spacing:.13em}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Second polish: give the existing composition more depth without changing its layout */
+.hero{background:linear-gradient(118deg,rgba(255,252,239,.91),rgba(239,239,211,.63) 58%,rgba(205,222,183,.48));box-shadow:0 24px 70px rgba(61,72,43,.10),inset 0 1px 0 rgba(255,255,255,.85)}
+.hero-art{isolation:isolate}
+.hero-art:before{width:clamp(190px,22vw,260px);height:clamp(190px,22vw,260px);border-color:rgba(255,255,255,.9);box-shadow:0 0 0 1px rgba(121,151,103,.12),0 0 0 15px rgba(255,255,255,.16),0 0 45px rgba(112,145,91,.12),inset 0 0 34px rgba(255,255,255,.35)}
+.plate{border:1px solid rgba(255,255,255,.88);background:radial-gradient(circle,#f9f5e6 0 43%,#d6c69e 44% 46%,#fff8e8 47% 57%,#b7c59f 58% 60%,rgba(255,255,255,.62) 61%);box-shadow:0 22px 35px rgba(58,70,44,.14),0 0 0 8px rgba(255,255,255,.12),inset 0 0 14px rgba(161,167,124,.12)}
+.dish{background:linear-gradient(155deg,rgba(255,253,246,.86),rgba(246,241,222,.74));box-shadow:0 12px 30px rgba(61,72,43,.07),inset 0 1px 0 rgba(255,255,255,.88)}
+.dish-visual{isolation:isolate}
+.dish-visual:before{width:160px;height:160px;box-shadow:0 0 0 10px rgba(255,255,255,.1),0 0 28px rgba(255,255,255,.12)}
+.dish-visual:after{width:220px;height:220px;transform:rotate(18deg) scaleX(.82);border-style:dashed;opacity:.65}
+.dish-copy{position:relative}
+.dish-copy:before{content:"";position:absolute;top:0;left:21px;right:21px;height:1px;background:linear-gradient(90deg,transparent,rgba(174,148,87,.35),transparent)}
+.dish h3{letter-spacing:-.015em}
+.signature{color:#887344}
+@media(max-width:760px){.hero-art:before{width:180px;height:180px}.dish-copy:before{left:18px;right:18px}}
+
 </style>
 </head>
 <body>
