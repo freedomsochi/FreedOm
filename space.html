@@ -173,7 +173,7 @@ body{
 .hero,.dark-break,.values,.horizontal-section,.end,
 .story .feature{
   scroll-snap-align:start;
-  scroll-snap-stop:normal;
+  scroll-snap-stop:always;
 }
 .story{width:100%;padding:0!important;margin:0}
 .story .feature,.story .feature.reverse{
@@ -342,5 +342,42 @@ article#bath:before{
 
 <section class="end"><div><div class="eyebrow">FREEdom</div><h2>Теперь вы<br>знаете дом.</h2><p>Осталось выбрать комнату и приехать познакомиться с ним вживую.</p><a class="back" href="rooms-architectural-v2.html">Перейти к комнатам →</a></div></section>
 </main>
+
+<script>
+(() => {
+  const sceneSelector = '.hero, .story .feature, .dark-break, .values, .horizontal-section, .end';
+  let startX = 0, startY = 0, lastGestureAt = 0;
+  const threshold = 48;
+  const getScenes = () => Array.from(document.querySelectorAll(sceneSelector));
+  document.addEventListener('touchstart', (event) => {
+    if (event.touches.length !== 1) return;
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', (event) => {
+    if (event.changedTouches.length !== 1) return;
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - startX;
+    const dy = touch.clientY - startY;
+    if (Math.abs(dy) < threshold || Math.abs(dy) < Math.abs(dx) * 1.2) return;
+    if (event.target.closest('.h-scroll')) return;
+    const now = Date.now();
+    if (now - lastGestureAt < 650) return;
+    const scenes = getScenes();
+    if (!scenes.length) return;
+    const viewportMid = window.innerHeight * 0.48;
+    let currentIndex = 0, smallestDistance = Infinity;
+    scenes.forEach((scene, index) => {
+      const rect = scene.getBoundingClientRect();
+      const distance = Math.abs((rect.top + Math.min(rect.height, window.innerHeight) / 2) - viewportMid);
+      if (distance < smallestDistance) { smallestDistance = distance; currentIndex = index; }
+    });
+    const nextIndex = Math.max(0, Math.min(scenes.length - 1, currentIndex + (dy < 0 ? 1 : -1)));
+    if (nextIndex === currentIndex) return;
+    lastGestureAt = now;
+    scenes[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, { passive: true });
+})();
+</script>
 </body>
 </html>
