@@ -94,13 +94,37 @@ body{overflow:hidden;background:#b5d7bd}
  .pin{font-size:8px;padding:6px 7px}
 }
 
+
+/* Final pass: one clean frame, clear layers, comfortable controls */
+.model:before{inset:8px;border:1px solid rgba(238,255,247,.42);border-radius:22px;z-index:2;pointer-events:none}
+.model .orbit{display:none}
+.model .scene{z-index:0}
+.model .staytypes{z-index:7}
+.model .pin{z-index:4}
+.model .modelhint{z-index:4}
+.left,.details{scrollbar-width:thin;scrollbar-color:rgba(232,255,248,.58) rgba(13,69,60,.12)}
+.left::-webkit-scrollbar,.details::-webkit-scrollbar{width:5px;height:5px}
+.left::-webkit-scrollbar-thumb,.details::-webkit-scrollbar-thumb{background:rgba(232,255,248,.58);border-radius:8px}
+.roomcard .roomname{line-height:1.35}
+.roomcard .meta{line-height:1.5}
+.details .heart{z-index:3;box-shadow:0 2px 10px rgba(10,60,52,.12)}
+.book:disabled{opacity:.7;cursor:not-allowed;box-shadow:none}
+.pin:focus-visible,.staytypes button:focus-visible,.roomcard:focus-visible,.book:focus-visible,.homebtn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media(max-width:850px){
+ .model:before{inset:7px;border-radius:17px}
+ .model .orbit{display:none}
+ .model .pin{max-width:42%;white-space:normal;line-height:1.25}
+ .left{scrollbar-width:none}
+ .left::-webkit-scrollbar{display:none}
+}
+
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates"><label class="date">Заезд<input id="checkin" type="date" value="2026-10-20"></label><label class="date">Выезд<input id="checkout" type="date" value="2026-10-23"></label><button class="search" id="search" aria-label="Найти">⌕</button></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="https://freed-om.vercel.app/" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist">
 <article class="roomcard active" data-category="rooms" data-room="0"><img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=600&q=80"><div class="roomname">Семейная</div><div class="meta">♙ 4 гостя &nbsp; ◇ 38 м² <span class="available">• Доступно</span></div></article>
 <article class="roomcard" data-category="hostel" data-room="1"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=600&q=80"><div class="roomname">Хостел (стандарт)</div><div class="meta">♙ 6 гостей &nbsp; ◇ 24 м² <span class="available">• Доступно</span></div></article>
 <article class="roomcard" data-category="rooms" data-room="2"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80"><div class="roomname">Комната с видом</div><div class="meta">♙ 2 гостя &nbsp; ◇ 18 м² <span class="available">• Доступно</span></div></article><div class="emptycategory" id="emptycategory">Бунгало<br><span style="opacity:.86">Информация и фотографии бунгало появятся здесь.</span></div></section>
-<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button class="active" type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="compass">360°</div><button class="pin" style="--x:44%;--y:28%" data-room="0">Семейная</button><button class="pin" style="--x:26%;--y:55%" data-room="1">Хостел</button><button class="pin" style="--x:60%;--y:66%" data-room="2">Комната с видом</button><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><div class="mobiletabs">Модель пространства · 360°</div></section>
+<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button class="active" type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="compass">360°</div><button class="pin" style="--x:44%;--y:40%" data-room="0">Семейная</button><button class="pin" style="--x:25%;--y:58%" data-room="1">Хостел</button><button class="pin" style="--x:61%;--y:70%" data-room="2">Комната с видом</button><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><div class="mobiletabs">Модель пространства · 360°</div></section>
 <aside class="details"><button class="heart" id="heart">♡</button><img class="heroimg" id="heroimg" src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=85"><div class="detailtitle" id="detailtitle">Семейная</div><div class="detailmeta" id="detailmeta">♙ 4 гостя &nbsp; ◇ 38 м² &nbsp; ♧ Вид на сад и море</div><div class="thumbs" id="thumbs"><img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=300&q=70"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=300&q=70"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=300&q=70"></div><p class="description" id="description">Просторный номер для всей семьи. Уют, природа и комфорт в каждом детали.</p><button class="book" id="book">Забронировать&nbsp; ›</button></aside>
 <script>
 const rooms=[
