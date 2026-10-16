@@ -275,6 +275,24 @@ article#bath:before{
  .story .feature-copy{left:22px;right:22px;bottom:clamp(34px,7vh,68px)}
 }
 
+
+/* Final viewport lock: every vertical scene matches the opening screen exactly */
+html,body{margin:0;width:100%;max-width:100%}
+.hero,.story .feature,.dark-break,.values,.horizontal-section,.end{
+  box-sizing:border-box;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  max-height:100dvh!important;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+}
+.story{height:auto!important;min-height:0!important;max-height:none!important}
+@supports not (height:100dvh){
+  .hero,.story .feature,.dark-break,.values,.horizontal-section,.end{
+    height:100vh!important;min-height:100vh!important;max-height:100vh!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -345,43 +363,63 @@ article#bath:before{
 
 <script>
 (() => {
-  const sceneSelector = '.hero, .story .feature, .dark-break, .values, .horizontal-section, .end';
-  let startX = 0, startY = 0, startSceneIndex = 0, lastGestureAt = 0;
+  const selector = '.hero, .story .feature, .dark-break, .values, .horizontal-section, .end';
   const threshold = 48;
-  const getScenes = () => Array.from(document.querySelectorAll(sceneSelector));
-  const nearestSceneIndex = (scenes) => {
-    const viewportMid = window.innerHeight * 0.48;
-    let index = 0, smallestDistance = Infinity;
-    scenes.forEach((scene, i) => {
-      const rect = scene.getBoundingClientRect();
-      const distance = Math.abs((rect.top + Math.min(rect.height, window.innerHeight) / 2) - viewportMid);
-      if (distance < smallestDistance) { smallestDistance = distance; index = i; }
+  let startX = 0, startY = 0, startIndex = 0, startedInGallery = false;
+  let lastGestureAt = 0, settleTimer = 0, programmaticScroll = false;
+  const scenes = () => Array.from(document.querySelectorAll(selector));
+  function nearestSceneIndex(list) {
+    let best = 0, distance = Infinity;
+    list.forEach((scene, i) => {
+      const d = Math.abs(scene.getBoundingClientRect().top);
+      if (d < distance) { distance = d; best = i; }
     });
-    return index;
-  };
-  document.addEventListener('touchstart', (event) => {
+    return best;
+  }
+  function goToScene(scene) {
+    if (!scene) return;
+    programmaticScroll = true;
+    scene.scrollIntoView({behavior:'smooth', block:'start'});
+    window.setTimeout(() => { programmaticScroll = false; }, 700);
+  }
+  function settleToScene() {
+    if (programmaticScroll) return;
+    const list = scenes();
+    if (!list.length) return;
+    const index = nearestSceneIndex(list);
+    const offset = list[index].getBoundingClientRect().top;
+    if (Math.abs(offset) > 10) goToScene(list[index]);
+  }
+  window.addEventListener('scroll', () => {
+    window.clearTimeout(settleTimer);
+    settleTimer = window.setTimeout(settleToScene, 180);
+  }, {passive:true});
+  document.addEventListener('touchstart', event => {
     if (event.touches.length !== 1) return;
     startX = event.touches[0].clientX;
     startY = event.touches[0].clientY;
-    startSceneIndex = nearestSceneIndex(getScenes());
-  }, { passive: true });
-  document.addEventListener('touchend', (event) => {
-    if (event.changedTouches.length !== 1) return;
+    startIndex = nearestSceneIndex(scenes());
+    startedInGallery = !!event.target.closest('.h-scroll');
+  }, {passive:true});
+  document.addEventListener('touchend', event => {
+    if (event.changedTouches.length !== 1 || startedInGallery || event.target.closest('.h-scroll')) return;
     const touch = event.changedTouches[0];
-    const dx = touch.clientX - startX;
-    const dy = touch.clientY - startY;
+    const dx = touch.clientX - startX, dy = touch.clientY - startY;
     if (Math.abs(dy) < threshold || Math.abs(dy) < Math.abs(dx) * 1.2) return;
-    if (event.target.closest('.h-scroll')) return;
     const now = Date.now();
     if (now - lastGestureAt < 650) return;
-    const scenes = getScenes();
-    if (!scenes.length) return;
-    const currentIndex = Math.max(0, Math.min(scenes.length - 1, startSceneIndex));
-    const nextIndex = Math.max(0, Math.min(scenes.length - 1, currentIndex + (dy < 0 ? 1 : -1)));
-    if (nextIndex === currentIndex) return;
+    const list = scenes();
+    if (!list.length) return;
+    const next = Math.max(0, Math.min(list.length - 1, startIndex + (dy < 0 ? 1 : -1)));
+    if (next === startIndex) return;
     lastGestureAt = now;
-    scenes[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, { passive: true });
+    window.clearTimeout(settleTimer);
+    goToScene(list[next]);
+  }, {passive:true});
+  window.addEventListener('resize', () => {
+    window.clearTimeout(settleTimer);
+    settleTimer = window.setTimeout(settleToScene, 220);
+  }, {passive:true});
 })();
 </script>
 </body>
