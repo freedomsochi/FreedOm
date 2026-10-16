@@ -221,7 +221,7 @@ function setCategory(next){
 async function refreshAvailability(){
  const checkIn=$('#checkin').value,checkOut=$('#checkout').value;
  if(!checkIn||!checkOut||checkOut<=checkIn){availabilityState='error';renderAvailability();return}
- availabilityState='loading';renderAvailability();
+ availabilityState='loading';availabilityRows=[];renderAvailability();
  $('.modelhint span').textContent='Проверяем свободные места…';
  try{
   const response=await fetch(availabilityEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({check_in:checkIn,check_out:checkOut})});
@@ -230,7 +230,7 @@ async function refreshAvailability(){
   availabilityRows=payload.rooms;availabilityState='loaded';renderAvailability();
   $('.modelhint span').textContent='Доступность обновлена · '+checkIn+' — '+checkOut;
  }catch(error){
-  availabilityState='error';renderAvailability();
+  availabilityRows=[];availabilityState='error';renderAvailability();
   $('.modelhint span').textContent='Не удалось проверить доступность · можно уточнить у команды';
   console.error('FreeDom live availability:',error);
  }
