@@ -120,10 +120,10 @@ body{overflow:hidden;background:#b5d7bd}
 
 
 /* Header alignment + live availability states */
-.top{align-items:flex-start}
-.top>.brandgroup{align-self:flex-start}
-.top>.dates,.top>div:not(.brandgroup){margin-top:2px}
-.homebtn{position:static;align-self:flex-start;order:4;margin:0}
+.top{align-items:center}
+.top>.brandgroup{align-self:center}
+.top>.dates,.top>div:not(.brandgroup){margin-top:0}
+.homebtn{position:static;align-self:center;order:4;margin:0}
 .availability-status{display:inline-block;float:right;margin-left:5px;font-size:9px;font-weight:750;line-height:1.35;white-space:normal;text-align:right;color:#d9fff0}
 .availability-status.status-free{color:#b5ffe0}
 .availability-status.status-busy{color:#ffe0d5}
@@ -133,10 +133,11 @@ body{overflow:hidden;background:#b5d7bd}
 .roomcard.status-free{border-color:rgba(181,255,224,.75)}
 .book:disabled{opacity:.62;cursor:not-allowed}
 @media(max-width:850px){
- .top{padding-top:14px;align-items:flex-start}
- .brandgroup{order:1}
- .homebtn{position:static;order:2;margin-left:auto;align-self:flex-start}
- .dates{order:3;margin-top:4px}
+ .top{padding-top:14px;align-items:center;flex-wrap:wrap}
+ .brandgroup{order:1;width:auto;flex:1;min-width:0}
+ .logo{font-size:22px}
+ .homebtn{position:static;order:2;margin-left:auto;align-self:center;flex:0 0 auto}
+ .dates{order:3;margin-top:4px;flex:0 0 100%;width:100%}
  .top>div:not(.brandgroup){display:none}
 }
 
