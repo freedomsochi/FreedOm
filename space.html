@@ -346,13 +346,24 @@ article#bath:before{
 <script>
 (() => {
   const sceneSelector = '.hero, .story .feature, .dark-break, .values, .horizontal-section, .end';
-  let startX = 0, startY = 0, lastGestureAt = 0;
+  let startX = 0, startY = 0, startSceneIndex = 0, lastGestureAt = 0;
   const threshold = 48;
   const getScenes = () => Array.from(document.querySelectorAll(sceneSelector));
+  const nearestSceneIndex = (scenes) => {
+    const viewportMid = window.innerHeight * 0.48;
+    let index = 0, smallestDistance = Infinity;
+    scenes.forEach((scene, i) => {
+      const rect = scene.getBoundingClientRect();
+      const distance = Math.abs((rect.top + Math.min(rect.height, window.innerHeight) / 2) - viewportMid);
+      if (distance < smallestDistance) { smallestDistance = distance; index = i; }
+    });
+    return index;
+  };
   document.addEventListener('touchstart', (event) => {
     if (event.touches.length !== 1) return;
     startX = event.touches[0].clientX;
     startY = event.touches[0].clientY;
+    startSceneIndex = nearestSceneIndex(getScenes());
   }, { passive: true });
   document.addEventListener('touchend', (event) => {
     if (event.changedTouches.length !== 1) return;
@@ -365,13 +376,7 @@ article#bath:before{
     if (now - lastGestureAt < 650) return;
     const scenes = getScenes();
     if (!scenes.length) return;
-    const viewportMid = window.innerHeight * 0.48;
-    let currentIndex = 0, smallestDistance = Infinity;
-    scenes.forEach((scene, index) => {
-      const rect = scene.getBoundingClientRect();
-      const distance = Math.abs((rect.top + Math.min(rect.height, window.innerHeight) / 2) - viewportMid);
-      if (distance < smallestDistance) { smallestDistance = distance; currentIndex = index; }
-    });
+    const currentIndex = Math.max(0, Math.min(scenes.length - 1, startSceneIndex));
     const nextIndex = Math.max(0, Math.min(scenes.length - 1, currentIndex + (dy < 0 ? 1 : -1)));
     if (nextIndex === currentIndex) return;
     lastGestureAt = now;
