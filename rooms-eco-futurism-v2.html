@@ -118,18 +118,146 @@ body{overflow:hidden;background:#b5d7bd}
  .left::-webkit-scrollbar{display:none}
 }
 
+
+/* Header alignment + live availability states */
+.top{align-items:flex-start}
+.top>.brandgroup{align-self:flex-start}
+.top>.dates,.top>div:not(.brandgroup){margin-top:2px}
+.homebtn{position:static;align-self:flex-start;order:4;margin:0}
+.availability-status{display:inline-block;float:right;margin-left:5px;font-size:9px;font-weight:750;line-height:1.35;white-space:normal;text-align:right;color:#d9fff0}
+.availability-status.status-free{color:#b5ffe0}
+.availability-status.status-busy{color:#ffe0d5}
+.availability-status.status-checking,.availability-status.status-unknown{color:#fff0bf}
+#bungalowstatus{float:none;display:inline-block;margin-top:10px;padding:5px 8px;border:1px solid rgba(238,255,247,.42);border-radius:12px;background:rgba(12,66,57,.2)}
+.roomcard.status-busy{border-color:rgba(255,204,187,.72);background:linear-gradient(135deg,rgba(255,224,213,.19),rgba(180,246,239,.08))}
+.roomcard.status-free{border-color:rgba(181,255,224,.75)}
+.book:disabled{opacity:.62;cursor:not-allowed}
+@media(max-width:850px){
+ .top{padding-top:14px;align-items:flex-start}
+ .brandgroup{order:1}
+ .homebtn{position:static;order:2;margin-left:auto;align-self:flex-start}
+ .dates{order:3;margin-top:4px}
+ .top>div:not(.brandgroup){display:none}
+}
+
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates"><label class="date">Заезд<input id="checkin" type="date" value="2026-10-20"></label><label class="date">Выезд<input id="checkout" type="date" value="2026-10-23"></label><button class="search" id="search" aria-label="Найти">⌕</button></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="https://freed-om.vercel.app/" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist">
 <article class="roomcard active" data-category="rooms" data-room="0"><img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=600&q=80"><div class="roomname">Семейная</div><div class="meta">♙ 4 гостя &nbsp; ◇ 38 м² <span class="available">• Доступно</span></div></article>
 <article class="roomcard" data-category="hostel" data-room="1"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=600&q=80"><div class="roomname">Хостел (стандарт)</div><div class="meta">♙ 6 гостей &nbsp; ◇ 24 м² <span class="available">• Доступно</span></div></article>
-<article class="roomcard" data-category="rooms" data-room="2"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80"><div class="roomname">Комната с видом</div><div class="meta">♙ 2 гостя &nbsp; ◇ 18 м² <span class="available">• Доступно</span></div></article><div class="emptycategory" id="emptycategory">Бунгало<br><span style="opacity:.86">Информация и фотографии бунгало появятся здесь.</span></div></section>
+<article class="roomcard" data-category="rooms" data-room="2"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80"><div class="roomname">Комната с видом</div><div class="meta">♙ 2 гостя &nbsp; ◇ 18 м² <span class="available">• Доступно</span></div></article><div class="emptycategory" id="emptycategory">Бунгало в саду<br><span style="opacity:.86">Отдельный вариант размещения в саду.</span><br><span id="bungalowstatus" class="availability-status status-checking">Проверяем доступность…</span></div></section>
 <section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button class="active" type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="compass">360°</div><button class="pin" style="--x:44%;--y:40%" data-room="0">Семейная</button><button class="pin" style="--x:25%;--y:58%" data-room="1">Хостел</button><button class="pin" style="--x:61%;--y:70%" data-room="2">Комната с видом</button><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><div class="mobiletabs">Модель пространства · 360°</div></section>
 <aside class="details"><button class="heart" id="heart">♡</button><img class="heroimg" id="heroimg" src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=85"><div class="detailtitle" id="detailtitle">Семейная</div><div class="detailmeta" id="detailmeta">♙ 4 гостя &nbsp; ◇ 38 м² &nbsp; ♧ Вид на сад и море</div><div class="thumbs" id="thumbs"><img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=300&q=70"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=300&q=70"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=300&q=70"></div><p class="description" id="description">Просторный номер для всей семьи. Уют, природа и комфорт в каждом детали.</p><button class="book" id="book">Забронировать&nbsp; ›</button></aside>
 <script>
 const rooms=[
-{name:'Семейная',meta:'♙ 4 гостя &nbsp; ◇ 38 м² &nbsp; ♧ Вид на сад и море',desc:'Просторный номер для всей семьи. Уют, природа и комфорт в каждой детали.',img:'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=85'},
-{name:'Хостел (стандарт)',meta:'♙ 6 гостей &nbsp; ◇ 24 м² &nbsp; ♧ Общая зона',desc:'Светлое пространство для путешественников, новых знакомств и спокойного отдыха.',img:'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=900&q=85'},
-{name:'Комната с видом',meta:'♙ 2 гостя &nbsp; ◇ 18 м² &nbsp; ♧ Панорамное окно',desc:'Тихая комната, где можно замедлиться, смотреть на зелень и отдыхать от суеты.',img:'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=85'}];
-let active=0;let category='rooms';function choose(i){active=i;category=rooms[i].name==='Хостел (стандарт)'?'hostel':'rooms';document.querySelectorAll('.roomcard').forEach(el=>el.classList.toggle('active',Number(el.dataset.room)===i));const r=rooms[i];document.querySelector('#heroimg').src=r.img;document.querySelector('#detailtitle').textContent=r.name;document.querySelector('#detailmeta').innerHTML=r.meta;document.querySelector('#description').textContent=r.desc;document.querySelector('#book').disabled=false;document.querySelector('#book').textContent='Забронировать  ›';document.querySelectorAll('.pin').forEach(p=>p.style.opacity=Number(p.dataset.room)===i?'1':'.72');document.querySelector('.modelhint span').textContent='Найди своё место';document.querySelectorAll('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));document.querySelectorAll('.roomcard').forEach(el=>el.style.display=el.dataset.category===category?'block':'none');document.querySelectorAll('.pin').forEach(p=>{const card=document.querySelector('.roomcard[data-room="'+p.dataset.room+'"]');p.style.display=card&&card.dataset.category===category?'block':'none'});document.querySelector('#emptycategory').style.display='none'}function setCategory(next){category=next;document.querySelectorAll('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===next));const cards=[...document.querySelectorAll('.roomcard')];cards.forEach(el=>el.style.display=(next==='bungalow'||el.dataset.category!==next)?'none':'block');document.querySelector('#emptycategory').style.display=next==='bungalow'?'block':'none';document.querySelectorAll('.pin').forEach(p=>{const roomCard=document.querySelector('.roomcard[data-room="'+p.dataset.room+'"]');p.style.display=(next==='bungalow'||!roomCard||roomCard.dataset.category!==next)?'none':'block'});if(next==='hostel')choose(1);else if(next==='rooms')choose(0);else{document.querySelector('.modelhint span').textContent='Бунгало · информация скоро появится';document.querySelector('#detailtitle').textContent='Бунгало';document.querySelector('#detailmeta').textContent='Новый вариант размещения';document.querySelector('#description').textContent='Фотографии и подробности о бунгало добавим сюда, когда будут готовы реальные материалы.';document.querySelector('#book').disabled=true;document.querySelector('#book').textContent='Скоро появится';document.querySelector('#heroimg').src='https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=900&q=85';document.querySelectorAll('.roomcard').forEach(el=>el.classList.remove('active'))}}document.querySelectorAll('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));document.querySelectorAll('.roomcard,.pin').forEach(el=>el.addEventListener('click',()=>choose(Number(el.dataset.room))));document.querySelector('#heart').addEventListener('click',e=>e.currentTarget.textContent=e.currentTarget.textContent==='♡'?'♥':'♡');document.querySelector('#search').addEventListener('click',()=>{const a=document.querySelector('#checkin').value,b=document.querySelector('#checkout').value;if(a&&b&&b>a){document.querySelector('.modelhint span').textContent='Даты вашего пребывания выбраны';document.querySelector('#description').textContent='Вы выбрали даты: '+a+' — '+b+'. Актуальную доступность и стоимость подтвердит команда FreeDom.'}else{alert('Выберите корректные даты: выезд должен быть позже заезда.')}});document.querySelector('#book').addEventListener('click',()=>{if(category==='bungalow')return;const a=document.querySelector('#checkin').value,b=document.querySelector('#checkout').value;if(!a||!b||b<=a){alert('Сначала выберите корректные даты заезда и выезда.');return}location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+rooms[active].name+'» с '+a+' по '+b+'. Подскажите, пожалуйста, доступность и стоимость.')});document.querySelectorAll('#thumbs img').forEach(img=>img.addEventListener('click',()=>{document.querySelector('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
+{name:'Семейная',meta:'♙ 4 гостя &nbsp; ◇ 38 м² &nbsp; ♧ Вид на сад и море',desc:'Просторный номер для всей семьи. Уют, природа и комфорт в каждой детали.',img:'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=85',dbNames:['Семейная комната']},
+{name:'Хостел (стандарт)',meta:'♙ 6 гостей &nbsp; ◇ 24 м² &nbsp; ♧ Общая зона',desc:'Светлое пространство для путешественников, новых знакомств и спокойного отдыха.',img:'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=900&q=85',dbNames:['Хостел стандарт','Хостел стандарт №2']},
+{name:'Комната с видом',meta:'♙ 2 гостя &nbsp; ◇ 18 м² &nbsp; ♧ Панорамное окно',desc:'Тихая комната, где можно замедлиться, смотреть на зелень и отдыхать от суеты.',img:'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=85',dbNames:['Двухместный с балконом №1','Двухместный с балконом №2']}
+];
+const bungalowDbNames=['Бунгало в саду'];
+const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
+let active=0,category='rooms',availabilityRows=[],availabilityState='loading';
+const $=s=>document.querySelector(s);
+const $$=s=>Array.from(document.querySelectorAll(s));
+function selectedDbNames(){return category==='bungalow'?bungalowDbNames:(rooms[active]?.dbNames||[])}
+function availabilityFor(names){
+ const matches=availabilityRows.filter(r=>names.includes(r.name));
+ if(!matches.length)return {known:false,available:null,text:availabilityState==='loading'?'Проверяем…':availabilityState==='error'?'Статус не получен':'Нет данных',className:'status-unknown',freePlaces:0};
+ const placesMode=matches.some(r=>r.booking_mode==='places');
+ if(placesMode){
+  const freePlaces=matches.reduce((sum,r)=>sum+Math.max(0,Number(r.free_places)||0),0);
+  return {known:true,available:freePlaces>0,text:freePlaces>0?'Есть места · '+freePlaces:'Мест нет',className:freePlaces>0?'status-free':'status-busy',freePlaces};
+ }
+ const free=matches.filter(r=>r.available);
+ return {known:true,available:free.length>0,text:matches.length>1?(free.length?'Есть свободные':'Занято'):(free.length?'Свободно':'Занято'),className:free.length?'status-free':'status-busy',freePlaces:free.length};
+}
+function updateBookButton(){
+ const btn=$('#book');if(!btn)return;
+ const status=availabilityFor(selectedDbNames());
+ btn.disabled=status.known&&status.available===false;
+ btn.textContent=btn.disabled?'Нет мест на эти даты':(status.known&&status.available?'Забронировать  ›':'Уточнить доступность  ›');
+}
+function renderAvailability(){
+ rooms.forEach((room,i)=>{
+  const status=availabilityFor(room.dbNames);
+  const card=$('.roomcard[data-room="'+i+'"]');
+  const label=card?.querySelector('.available');
+  if(label){label.className='availability-status '+status.className;label.textContent='• '+status.text}
+  if(card){card.classList.toggle('status-free',status.known&&status.available);card.classList.toggle('status-busy',status.known&&!status.available)}
+ });
+ const bungalowStatus=$('#bungalowstatus');
+ if(bungalowStatus){const status=availabilityFor(bungalowDbNames);bungalowStatus.className='availability-status '+status.className;b u n g a l o wStatusFix(status,bungalowStatus)}
+ updateBookButton();
+}
+function b u n g a l o wStatusFix(status,el){}
+function choose(i){
+ if(!rooms[i])return;
+ active=i;category=i===1?'hostel':'rooms';
+ $$('.roomcard').forEach(el=>el.classList.toggle('active',Number(el.dataset.room)===i));
+ const r=rooms[i];$('#heroimg').src=r.img;$('#detailtitle').textContent=r.name;$('#detailmeta').innerHTML=r.meta;$('#description').textContent=r.desc;
+ $$('.pin').forEach(p=>p.style.opacity=Number(p.dataset.room)===i?'1':'.72');
+ $('.modelhint span').textContent='Найди своё место';
+ $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
+ $$('.roomcard').forEach(el=>el.style.display=el.dataset.category===category?'block':'none');
+ $$('.pin').forEach(p=>{const card=$('.roomcard[data-room="'+p.dataset.room+'"]');p.style.display=card&&card.dataset.category===category?'block':'none'});
+ $('#emptycategory').style.display='none';renderAvailability();
+}
+function setCategory(next){
+ category=next;
+ $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===next));
+ $$('.roomcard').forEach(el=>el.style.display=(next!=='bungalow'&&el.dataset.category===next)?'block':'none');
+ $('#emptycategory').style.display=next==='bungalow'?'block':'none';
+ $$('.pin').forEach(p=>{const card=$('.roomcard[data-room="'+p.dataset.room+'"]');p.style.display=(next==='bungalow'||!card||card.dataset.category!==next)?'none':'block'});
+ if(next==='hostel'){choose(1);return}
+ if(next==='rooms'){choose(0);return}
+ $('.modelhint span').textContent='Бунгало · место в саду';
+ $('#detailtitle').textContent='Бунгало в саду';
+ $('#detailmeta').textContent='♙ 2 гостя · отдельное размещение';
+ $('#description').textContent='Отдельное пространство в саду FreeDom. Выберите даты, чтобы проверить доступность.';
+ $('#heroimg').src='https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=900&q=85';
+ $$('.roomcard').forEach(el=>el.classList.remove('active'));
+ renderAvailability();
+}
+async function refreshAvailability(){
+ const checkIn=$('#checkin').value,checkOut=$('#checkout').value;
+ if(!checkIn||!checkOut||checkOut<=checkIn){availabilityState='error';renderAvailability();return}
+ availabilityState='loading';renderAvailability();
+ $('.modelhint span').textContent='Проверяем свободные места…';
+ try{
+  const response=await fetch(availabilityEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({check_in:checkIn,check_out:checkOut})});
+  const payload=await response.json();
+  if(!response.ok||!payload.ok||!Array.isArray(payload.rooms))throw new Error(payload.error||'Availability request failed');
+  availabilityRows=payload.rooms;availabilityState='loaded';renderAvailability();
+  $('.modelhint span').textContent='Доступность обновлена · '+checkIn+' — '+checkOut;
+ }catch(error){
+  availabilityState='error';renderAvailability();
+  $('.modelhint span').textContent='Не удалось проверить доступность · можно уточнить у команды';
+  console.error('FreeDom live availability:',error);
+ }
+}
+function initDates(){
+ const checkIn=$('#checkin'),checkOut=$('#checkout');
+ const localIso=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day};
+ const today=new Date();today.setHours(0,0,0,0);
+ checkIn.min=localIso(today);checkOut.min=localIso(today);
+ if(!checkIn.value||checkIn.value<localIso(today)){const start=new Date(today);start.setDate(start.getDate()+1);checkIn.value=localIso(start)}
+ if(!checkOut.value||checkOut.value<=checkIn.value){const end=new Date(checkIn.value+'T12:00:00');end.setDate(end.getDate()+3);checkOut.value=localIso(end)}
+ const updateMin=()=>{checkOut.min=checkIn.value; if(checkOut.value<=checkIn.value){const end=new Date(checkIn.value+'T12:00:00');end.setDate(end.getDate()+1);checkOut.value=localIso(end)}};
+ checkIn.addEventListener('change',()=>{updateMin();refreshAvailability()});
+ checkOut.addEventListener('change',refreshAvailability);
+}
+$$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));
+$$('.roomcard,.pin').forEach(el=>el.addEventListener('click',()=>choose(Number(el.dataset.room))));
+$('#heart').addEventListener('click',e=>e.currentTarget.textContent=e.currentTarget.textContent==='♡'?'♥':'♡');
+$('#search').addEventListener('click',()=>{const a=$('#checkin').value,b=$('#checkout').value;if(a&&b&&b>a)refreshAvailability();else alert('Выберите корректные даты: выезд должен быть позже заезда.')});
+$('#book').addEventListener('click',()=>{
+ const a=$('#checkin').value,b=$('#checkout').value;
+ if(!a||!b||b<=a){alert('Сначала выберите корректные даты заезда и выезда.');return}
+ const title=category==='bungalow'?'Бунгало в саду':rooms[active].name;
+ const status=availabilityFor(selectedDbNames());
+ if(status.known&&!status.available){alert('На выбранные даты нет свободных мест. Выберите другие даты.');return}
+ location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. Проверил доступность на сайте. Подскажите, пожалуйста, стоимость и подтвердите бронь.');
+});
+$$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
+initDates();renderAvailability();refreshAvailability();
 </script></body></html>
