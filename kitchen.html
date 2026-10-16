@@ -71,6 +71,9 @@ footer{padding:24px;text-align:center;font-size:10px;letter-spacing:.2em;text-tr
 
 
 /* Menu categories, product cards and order dialogs */
+.menu-single .dish{grid-column:2 / span 4}
+@media(max-width:760px){.menu-single .dish{grid-column:span 1}}
+
 .menu-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:28px 0 48px}
 .menu-nav a{display:flex;align-items:center;gap:12px;padding:17px 20px;border:1px solid rgba(255,255,255,.72);border-radius:18px;background:rgba(255,250,238,.52);text-decoration:none;box-shadow:0 8px 24px rgba(61,72,43,.05);transition:transform .22s,background .22s}
 .menu-nav a:hover{transform:translateY(-3px);background:rgba(255,252,240,.86)}
