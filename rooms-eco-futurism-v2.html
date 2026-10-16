@@ -14,8 +14,88 @@
 .orbit{border-color:rgba(200,255,247,.9);box-shadow:0 0 24px rgba(98,245,230,.34),inset 0 0 24px rgba(98,245,230,.16)}.orbit{position:absolute;z-index:2;inset:8%;border:1px solid #b5fff3aa;border-radius:30px;transform:perspective(800px) rotateX(10deg);box-shadow:0 0 22px #62f5e655,inset 0 0 20px #62f5e622}.pin{position:absolute;z-index:3;left:var(--x);top:var(--y);border:1px solid #d6fffa;background:#b7fff0cc;color:#154944;padding:7px 10px;border-radius:14px;font-size:10px;box-shadow:0 0 22px #7dfff0aa;cursor:pointer;backdrop-filter:blur(8px)}.pin:hover{background:white;transform:scale(1.06)}.compass{position:absolute;z-index:3;right:7%;top:9%;width:40px;height:40px;border-radius:50%;border:1px solid var(--edge);background:var(--glass);display:grid;place-items:center;font-size:11px}.modelhint{position:absolute;z-index:3;left:20px;bottom:18px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#effffb}.modelhint span{display:block;font-size:12px;letter-spacing:0;text-transform:none;margin-top:5px}.details{position:absolute;z-index:4;right:5%;top:23%;width:20%;border-radius:22px;padding:10px}.heroimg{width:100%;height:124px;object-fit:cover;border-radius:14px;display:block}.heart{position:absolute;right:20px;top:18px;border:0;background:#effff2dd;color:#35776c;border-radius:50%;width:28px;height:28px;font-size:16px;cursor:pointer}.detailtitle{font-size:17px;font-weight:800;margin:10px 3px 6px}.detailmeta{font-size:9px;color:#e6fffa;padding-bottom:10px;border-bottom:1px solid #ffffff55}.thumbs{display:flex;gap:5px;margin:9px 0}.thumbs img{width:calc(33.33% - 3px);height:48px;object-fit:cover;border-radius:7px;cursor:pointer;border:1px solid #ffffff88}.description{font-size:11px;line-height:1.5;color:#f0fffc;margin:10px 3px 12px}.book{width:100%;border:0;border-radius:24px;background:linear-gradient(90deg,#65e4d5,#a3f5dd);color:#14514b;font-weight:800;padding:12px;cursor:pointer;box-shadow:0 5px 18px #36c9b255}.levels{position:absolute;z-index:5;left:50%;bottom:4%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;padding:8px 12px;border-radius:28px;white-space:nowrap}.levels span{font-size:10px;color:#edfffb;padding:8px}.levels button{border:0;background:transparent;color:white;border-radius:20px;padding:8px 13px;cursor:pointer;font-size:11px}.levels button.active,.levels button:hover{background:#eafff4;color:#255e55}.levels .leveltitle{border-right:1px solid #ffffff55;padding-right:14px}.homebtn{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:#f3fffc;font-size:11px;font-weight:700;padding:10px 13px;border:1px solid var(--edge);border-radius:18px;background:var(--glass);backdrop-filter:blur(18px);white-space:nowrap;transition:.2s}.homebtn:hover{background:rgba(235,255,252,.32);transform:translateY(-1px)}
 .homebtn{position:absolute;right:0;top:0;z-index:7}.top{padding-right:0}.brandgroup{gap:0}.staytypes{position:absolute;z-index:6;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:5px;padding:5px;border:1px solid var(--edge);border-radius:24px;background:rgba(235,255,252,.24);backdrop-filter:blur(20px);box-shadow:0 8px 28px #163e3b33;white-space:nowrap;max-width:calc(100% - 28px)}.staytypes button{border:1px solid transparent;background:transparent;color:#f4fffc;border-radius:19px;padding:9px 15px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s}.staytypes button.active,.staytypes button:hover{background:#eafff4;color:#255e55;box-shadow:0 3px 12px #163e3b22}.emptycategory{display:none;border:1px solid var(--edge);background:rgba(235,255,252,.2);backdrop-filter:blur(18px);border-radius:18px;padding:18px;font-size:12px;line-height:1.5;color:#f3fffc}.mobiletabs{display:none}
 @media(max-width:850px){body{overflow:auto;min-height:100%;height:auto}.backdrop{position:fixed}.top{position:relative;left:auto;right:auto;top:auto;padding:14px;gap:10px;flex-wrap:wrap;padding-top:54px}.homebtn{top:10px;right:14px;font-size:10px;padding:8px 10px}.tagline,.place,.menu{display:none}.dates{order:3;width:100%;justify-content:space-around}.date input{width:105px}.staytypes{top:12px;left:50%;transform:translateX(-50%);margin:0;width:max-content;max-width:calc(100% - 24px);gap:2px;padding:4px}.staytypes button{padding:8px 11px;font-size:10px}.mobiletabs{display:none}.left{position:relative;left:auto;top:auto;width:auto;flex-direction:row;overflow-x:auto;padding:10px 14px 14px;gap:10px}.roomcard{min-width:170px;max-width:190px;transform:none}.roomcard img{height:80px}.model{position:relative;left:auto;right:auto;top:auto;bottom:auto;margin:4px 12px;width:calc(100% - 24px);height:42vh;min-height:280px;border-radius:25px}.details{position:relative;left:auto;right:auto;top:auto;width:auto;margin:12px}.heroimg{height:180px}.emptycategory{min-width:170px;max-width:190px;align-self:stretch;display:none}.modelhint{left:14px;bottom:14px}.pin{font-size:9px;padding:6px}.compass{width:32px;height:32px}.mobiletabs{display:block;position:absolute;z-index:4;top:8px;left:8px;background:#164f48aa;border:1px solid #cafff6;border-radius:14px;padding:7px 10px;font-size:9px}}
+
+/* === Final hybrid layout polish: clear hierarchy, no overlapping controls === */
+html,body{min-height:100%;width:100%}
+body{overflow:hidden;background:#b5d7bd}
+.backdrop{filter:saturate(1.06) brightness(1.04)}
+.backdrop:after{background:linear-gradient(90deg,rgba(9,54,50,.18),transparent 42%,rgba(9,54,50,.12)),linear-gradient(0deg,rgba(12,50,46,.18),transparent 38%)}
+.top{left:3%;right:3%;top:18px;min-height:58px;gap:18px;align-items:center}
+.brandgroup{flex:0 0 auto}
+.dates{margin-left:auto;flex:0 0 auto}
+.top>div:last-of-type{gap:10px}
+.homebtn{position:static;right:auto;top:auto;z-index:7;flex:0 0 auto}
+.left{left:3%;top:112px;bottom:24px;width:20%;gap:12px;overflow-y:auto;overflow-x:hidden;padding:2px 5px 2px 2px;justify-content:flex-start}
+.roomcard{flex:0 0 auto;min-height:0;transform:none;border-radius:18px;padding:8px;background:linear-gradient(135deg,rgba(244,255,250,.34),rgba(183,242,228,.18));box-shadow:0 10px 28px rgba(13,54,51,.15),inset 0 0 0 1px rgba(255,255,255,.18)}
+.roomcard:hover,.roomcard.active{transform:translateX(3px);box-shadow:0 0 0 1px rgba(211,255,247,.75),0 12px 28px rgba(13,54,51,.2)}
+.roomcard img{height:clamp(72px,12vh,112px);border-radius:12px}
+.model{left:24.5%;right:25%;top:112px;bottom:24px;border-radius:30px;overflow:hidden;background:rgba(45,112,91,.12);box-shadow:0 16px 48px rgba(13,54,51,.2),0 0 0 1px rgba(255,255,255,.42)}
+.model:before{inset:8px;border-radius:23px;border-color:rgba(238,255,247,.5)}
+.scene{filter:saturate(1.06) brightness(1.04)}
+.scene:before{display:none}
+.scene:after{background:linear-gradient(180deg,rgba(16,63,54,.02),rgba(10,49,43,.12))}
+.orbit{inset:10px;border:1px solid rgba(225,255,248,.38);border-radius:23px;transform:none;animation:none;box-shadow:inset 0 0 30px rgba(98,245,230,.1);pointer-events:none}
+.model .staytypes{top:18px;left:50%;transform:translateX(-50%);gap:4px;padding:5px;background:rgba(18,76,67,.66);border:1px solid rgba(233,255,250,.65);box-shadow:0 8px 24px rgba(10,53,46,.2);z-index:6}
+.staytypes button{padding:9px 16px;font-size:11px}
+.staytypes button.active,.staytypes button:hover{background:#f0fff6;color:#205b50;box-shadow:none}
+.pin{padding:8px 11px;border-radius:12px;background:rgba(230,255,247,.94);border-color:rgba(255,255,255,.92);box-shadow:0 5px 18px rgba(12,68,57,.22);font-weight:700}
+.pin:hover{background:white;transform:translateY(-1px)}
+.compass{top:18px;right:18px;width:35px;height:35px;background:rgba(18,76,67,.55);color:#f4fffb}
+.modelhint{left:22px;bottom:20px;text-shadow:0 1px 8px rgba(7,48,44,.5)}
+.details{right:3%;top:112px;bottom:24px;width:21%;overflow-y:auto;overflow-x:hidden;border-radius:22px;padding:10px;background:linear-gradient(145deg,rgba(239,255,250,.32),rgba(173,238,224,.17));box-shadow:0 14px 38px rgba(13,54,51,.17),inset 0 0 0 1px rgba(255,255,255,.16)}
+.heroimg{height:clamp(100px,17vh,165px);object-fit:cover}
+.detailtitle{font-size:17px;line-height:1.25}
+.detailmeta{line-height:1.6}
+.thumbs img{height:clamp(34px,6vh,56px)}
+.description{line-height:1.55}
+.book{min-height:44px}
+.emptycategory{display:none}
+@media(max-width:1100px) and (min-width:851px){
+ .top{left:2%;right:2%;gap:10px}.logo{font-size:21px}.tagline{display:none}
+ .left{left:2%;width:21%}.model{left:24%;right:25%}.details{right:2%;width:22%}
+ .date input{width:96px}.dates{gap:7px;padding:8px 9px}
+ .homebtn{font-size:10px;padding:9px 10px}
+ .staytypes button{padding:8px 11px}
+ .roomname{font-size:11px}.meta{font-size:8px}
+}
+@media(max-height:720px) and (min-width:851px){
+ .top{top:10px}.left,.model,.details{top:90px;bottom:14px}
+ .roomcard img{height:70px}.details{padding:8px}.heroimg{height:100px}
+ .detailtitle{margin:7px 3px 4px}.thumbs{margin:6px 0}.description{margin:7px 3px 8px;font-size:10px}
+}
+@media(max-width:850px){
+ html,body{height:auto;min-height:100%;width:100%}
+ body{overflow:auto;padding-bottom:18px}
+ .top{position:relative;left:auto;right:auto;top:auto;min-height:0;padding:58px 14px 12px;gap:10px}
+ .brandgroup{width:100%}.logo{font-size:22px}.tagline{display:none}
+ .dates{order:3;margin:0;width:100%;justify-content:space-around}
+ .top>div:last-of-type{display:none}
+ .homebtn{position:absolute;top:10px;right:14px}
+ .left{position:relative;left:auto;top:auto;bottom:auto;width:auto;display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;padding:8px 14px 14px;gap:10px}
+ .roomcard{min-width:165px;max-width:190px;flex:0 0 165px}
+ .roomcard img{height:80px}
+ .model{position:relative;left:auto;right:auto;top:auto;bottom:auto;margin:6px 12px 12px;width:calc(100% - 24px);height:43vh;min-height:300px;max-height:480px;border-radius:24px}
+ .model:before{inset:7px;border-radius:18px}
+ .orbit{inset:8px;border-radius:17px}
+ .model .staytypes{top:14px;max-width:calc(100% - 76px);gap:2px;padding:4px}
+ .staytypes button{padding:8px 10px;font-size:10px}
+ .compass{top:14px;right:14px;width:30px;height:30px;font-size:9px}
+ .pin{font-size:9px;padding:7px 8px}
+ .modelhint{left:14px;bottom:14px}
+ .details{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:auto;max-height:none;overflow:visible;margin:0 12px 14px;padding:10px}
+ .heroimg{height:180px}
+ .thumbs img{height:48px}
+ .emptycategory{min-width:165px;max-width:190px;flex:0 0 165px}
+ .mobiletabs{display:none}
+}
+@media(max-width:380px){
+ .logo{font-size:20px}.dates{gap:4px;padding:8px}.date input{width:94px;font-size:11px}
+ .model .staytypes{max-width:calc(100% - 68px)}.staytypes button{padding:7px 7px;font-size:9px}
+ .pin{font-size:8px;padding:6px 7px}
+}
+
 </style></head><body><div class="backdrop"></div>
-<header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates"><label class="date">Заезд<input id="checkin" type="date" value="2026-10-20"></label><label class="date">Выезд<input id="checkout" type="date" value="2026-10-23"></label><button class="search" id="search" aria-label="Найти">⌕</button></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div></header>
+<header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates"><label class="date">Заезд<input id="checkin" type="date" value="2026-10-20"></label><label class="date">Выезд<input id="checkout" type="date" value="2026-10-23"></label><button class="search" id="search" aria-label="Найти">⌕</button></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div><a class="homebtn" href="https://freed-om.vercel.app/" aria-label="На главную">← На главную</a></div></header>
 <section class="left" id="roomlist">
 <article class="roomcard active" data-category="rooms" data-room="0"><img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=600&q=80"><div class="roomname">Семейная</div><div class="meta">♙ 4 гостя &nbsp; ◇ 38 м² <span class="available">• Доступно</span></div></article>
 <article class="roomcard" data-category="hostel" data-room="1"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=600&q=80"><div class="roomname">Хостел (стандарт)</div><div class="meta">♙ 6 гостей &nbsp; ◇ 24 м² <span class="available">• Доступно</span></div></article>
