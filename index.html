@@ -36,6 +36,7 @@
         <div class="history-tree-wrap">
           <span class="history-ring"></span>
           <span class="history-tree" aria-hidden="true"></span>
+          <div class="history-sign" aria-hidden="true"><span>FREEDOM</span><small>история дома</small></div>
           <span class="gold-dust dust-1"></span><span class="gold-dust dust-2"></span><span class="gold-dust dust-3"></span><span class="gold-dust dust-4"></span><span class="gold-dust dust-5"></span>
         </div>
         <div class="history-text">
@@ -202,6 +203,16 @@
 .gold-dust{position:absolute;width:3px;height:3px;border-radius:50%;background:#f0d27b;box-shadow:0 0 12px 3px rgba(238,205,112,.8);animation:dustFloat 4s ease-in-out infinite}
 .dust-1{left:28%;top:64%;animation-delay:-.4s}.dust-2{left:64%;top:70%;animation-delay:-1.5s}.dust-3{left:48%;top:82%;animation-delay:-2.3s}.dust-4{left:71%;top:53%;animation-delay:-3s}.dust-5{left:35%;top:76%;animation-delay:-2.8s}
 @keyframes dustFloat{50%{transform:translate(7px,-13px) scale(1.8);opacity:.35}}
+
+/* History tree: a warm golden sign, rooted in the existing natural concept */
+.history-sign{position:absolute;z-index:4;left:50%;bottom:12%;transform:translateX(-50%);display:grid;justify-items:center;gap:3px;min-width:190px;padding:10px 22px 9px;border:1px solid rgba(218,184,101,.72);border-radius:4px;background:linear-gradient(115deg,rgba(43,61,37,.82),rgba(55,73,45,.72));box-shadow:0 0 0 4px rgba(220,190,112,.07),0 0 22px rgba(225,190,95,.25),inset 0 0 18px rgba(230,197,110,.08);backdrop-filter:blur(10px);text-align:center}
+.history-sign span{font:500 15px/1 Baskerville,"Palatino Linotype",Palatino,Georgia,serif;letter-spacing:.25em;color:#f0d48a;text-shadow:0 0 7px rgba(247,213,126,.6),0 0 18px rgba(247,213,126,.26)}
+.history-sign small{font:500 7px/1.4 Manrope,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,237,184,.8)}
+.history-tree-wrap:after{content:"";position:absolute;inset:3%;border:1px solid rgba(222,190,108,.28);border-radius:50%;box-shadow:0 0 28px rgba(218,184,101,.08),inset 0 0 35px rgba(218,184,101,.05);pointer-events:none}
+.roots-story{padding-top:24px}
+.roots-story:after{content:"";position:absolute;left:22px;top:0;height:34px;width:1px;background:linear-gradient(rgba(197,164,91,.05),rgba(197,164,91,.85));transform:translateY(-12px)}
+@media(max-width:760px){.history-sign{bottom:10%;min-width:170px;padding:9px 16px}.history-sign span{font-size:13px}.history-sign small{font-size:6px}}
+
 @media(max-width:760px){
   .core{width:148px;height:148px}
   .tree-home{width:112%;height:112%;margin:-6%}
