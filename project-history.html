@@ -294,6 +294,95 @@ body:before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradie
  .ref-tree-area{min-height:440px}.ref-title-sign h1{font-size:28px}
  .ref-people{gap:14px 4px;padding-left:5px;padding-right:5px}
 }
+
+/* Portrait-phone layout: keep the tree central, move the story below it, and give faces room */
+@media(max-width:560px){
+  .reference-page{display:block;padding:0;min-height:100svh}
+  .glass-panel{
+    display:flex;flex-direction:column;gap:0;width:100%;min-height:100svh;
+    border:0;border-radius:0;overflow:hidden;
+    background:linear-gradient(145deg,rgba(231,247,231,.22),rgba(34,87,72,.34) 43%,rgba(26,73,62,.52));
+    backdrop-filter:blur(12px) saturate(112%);-webkit-backdrop-filter:blur(12px) saturate(112%);
+  }
+  .ref-sidebar{
+    order:0;position:relative;flex:0 0 auto;width:100%;min-width:0;
+    display:flex;flex-direction:row;align-items:center;gap:10px;
+    padding:10px 12px 9px;border-right:0;border-bottom:1px solid rgba(255,255,255,.22);
+    background:linear-gradient(90deg,rgba(230,248,236,.16),rgba(14,57,45,.08));
+  }
+  .ref-brand{
+    flex:0 0 72px;width:72px;height:54px;padding:0 8px 0 0;
+    border-bottom:0;border-right:1px solid rgba(255,255,255,.23);
+  }
+  .ref-brand .mark{font-size:20px}
+  .ref-brand strong{font-size:19px}
+  .ref-brand small{font-size:6px;letter-spacing:.2em;margin-top:4px}
+  .ref-nav{
+    flex:1 1 auto;min-width:0;display:flex;flex-direction:row;gap:5px;
+    overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding:2px 0;
+    -webkit-overflow-scrolling:touch;
+  }
+  .ref-nav::-webkit-scrollbar{display:none}
+  .ref-nav button{
+    flex:0 0 54px;width:54px;min-width:54px;min-height:48px;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    gap:3px;padding:5px 3px;border-radius:15px;font-size:7.5px;line-height:1.15;
+  }
+  .ref-nav button .nav-icon{width:auto;flex:0 0 auto;font-size:16px;line-height:1}
+  .ref-home{display:block;position:absolute;z-index:8;left:auto;right:52px;top:14px;font-size:9px;opacity:.9}
+  .ref-close{right:10px;top:10px;width:29px;height:29px;font-size:20px}
+  .ref-tree-area{
+    order:1;flex:0 0 auto;display:flex;width:100%;height:clamp(370px,112vw,470px);
+    min-height:0;align-items:flex-start;justify-content:center;overflow:hidden;
+  }
+  .ref-tree-area:before{inset:40px -10px 0}
+  .ref-tree-photo{
+    left:50%;top:22px;width:100%;height:calc(100% - 18px);max-height:none;
+    object-fit:contain;object-position:center center;opacity:.98;
+    mask-image:linear-gradient(to bottom,transparent 0%,#000 5%,#000 89%,transparent 100%);
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 5%,#000 89%,transparent 100%);
+  }
+  .ref-tree-glow{inset:8% 0 0}
+  .ref-title-sign{top:29%;left:50%;width:min(58vw,220px);transform:translate(-50%,-50%)}
+  .ref-title-sign .leaf{font-size:22px;margin-bottom:4px}
+  .ref-title-sign h1{font-size:clamp(29px,8vw,36px)}
+  .ref-title-sign .ornament{margin-top:10px}
+  .ref-tree-threads{left:0;right:0;bottom:-2px;height:105px;opacity:.8}
+  .ref-story{
+    order:2;position:relative;inset:auto;width:auto;max-width:none;align-self:stretch;
+    margin:0;padding:24px 22px 25px;text-align:left;
+    border-top:1px solid rgba(255,255,255,.2);
+    background:linear-gradient(180deg,rgba(17,59,46,.36),rgba(13,48,39,.24));
+  }
+  .ref-story h2{font-size:clamp(29px,8vw,36px);line-height:1;margin:0 0 12px;padding-right:18px}
+  .ref-story p{font-size:12px;line-height:1.65;margin:0 0 11px;max-width:52ch}
+  .ref-story .story-cta{width:100%;max-width:320px;min-height:44px;margin-top:4px;padding:9px 15px;font-size:11px}
+  .ref-people{
+    order:3;grid-column:auto;grid-row:auto;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:23px 14px;padding:23px 18px 34px;margin:0;
+    border-top:1px solid rgba(255,255,255,.2);
+    background:linear-gradient(180deg,rgba(15,51,40,.16),rgba(10,36,29,.42));
+  }
+  .ref-person{min-width:0;padding:0 4px}
+  .ref-person .face{width:clamp(66px,20vw,86px);padding:3px}
+  .ref-person h3{font-size:21px;margin:8px 0 4px}
+  .ref-person .role{font-size:10px;line-height:1.35;min-height:0;max-width:18ch}
+  .ref-person .quote{font-size:15px;line-height:1.25;margin-top:7px}
+}
+@media(max-width:370px){
+  .ref-sidebar{padding-left:8px;padding-right:8px;gap:6px}
+  .ref-brand{flex-basis:65px;width:65px}
+  .ref-nav{gap:3px}
+  .ref-nav button{flex-basis:50px;width:50px;min-width:50px;font-size:7px}
+  .ref-home{right:46px;top:13px;font-size:8px}
+  .ref-tree-area{height:clamp(350px,108vw,410px)}
+  .ref-title-sign{width:58vw}
+  .ref-story{padding:21px 17px 23px}
+  .ref-story p{font-size:11px}
+  .ref-people{padding-left:12px;padding-right:12px;gap:20px 8px}
+  .ref-person .face{width:68px}
+}
+
 </style></head>
 <body>
 <main class="reference-page">
