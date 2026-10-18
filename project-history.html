@@ -568,18 +568,18 @@ body:before{
 /* Tree-led composition and restrained animated details */
 .glass-panel{position:relative;isolation:isolate}
 .tree-branch-overlay{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:3;opacity:.84}
-.tree-branch-overlay path{fill:none;stroke:url(#rootGold);stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:5 6;filter:drop-shadow(0 0 2px rgba(255,195,83,.4));animation:root-glimmer 18s linear infinite}
-.tree-branch-overlay path:nth-child(2n){animation-duration:23s;animation-direction:reverse;opacity:.72}
-@keyframes root-glimmer{to{stroke-dashoffset:-180}}
+.tree-branch-overlay path{fill:none;stroke:url(#rootGold);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 3px rgba(255,195,83,.48))}
+.tree-branch-overlay path.root-fine{stroke-width:.8;opacity:.65;filter:drop-shadow(0 0 2px rgba(255,195,83,.32))}
+
 .ref-sidebar{position:relative;z-index:5}.ref-tree-area{position:relative;z-index:2}.ref-story{position:relative;z-index:4}.ref-people{position:relative;z-index:4}.ref-person{position:relative;z-index:4}
 .ref-person .face{position:relative;z-index:5;flex-shrink:0}.ref-person h3,.ref-person .role,.ref-person .quote{position:relative;z-index:5}
 .ref-title-sign{animation:sign-breathe 8s ease-in-out infinite}
 @keyframes sign-breathe{0%,100%{filter:drop-shadow(0 0 2px rgba(255,214,127,.12))}50%{filter:drop-shadow(0 0 8px rgba(255,214,127,.32))}}
 .ref-title-sign:before{content:"";position:absolute;inset:-6px;border:1px solid rgba(255,221,142,.35);border-radius:inherit;pointer-events:none;opacity:.45;animation:frame-shimmer 8s ease-in-out infinite}
 @keyframes frame-shimmer{0%,100%{opacity:.2;box-shadow:0 0 4px rgba(255,209,108,.06)}50%{opacity:.75;box-shadow:0 0 15px rgba(255,209,108,.22)}}
-.ref-brand .mark{font-size:clamp(17px,1.5vw,22px)!important}.ref-brand strong{font-size:clamp(20px,1.8vw,25px)!important}.ref-brand small{font-size:7px!important;letter-spacing:.2em}.ref-nav button{font-size:clamp(8px,.72vw,10px)!important}.ref-nav button .nav-icon{font-size:14px!important}
+.ref-brand .mark{font-size:clamp(17px,1.5vw,22px)!important}.ref-brand strong{font-size:clamp(20px,1.8vw,25px)!important}.ref-brand small{font-size:7px!important;letter-spacing:.2em}.ref-nav button{font-size:clamp(8px,.72vw,10px)!important;justify-content:center;text-align:center}.ref-nav button>span{display:block;width:100%;text-align:center}.ref-nav button .nav-icon{font-size:14px!important}
 @media(max-width:900px){.ref-brand .mark{font-size:19px!important}.ref-brand strong{font-size:21px!important}.ref-nav button{font-size:8px!important}}
-@media(max-width:560px){.tree-branch-overlay{opacity:.72}.tree-branch-overlay path{stroke-width:1.05;stroke-dasharray:4 6;filter:drop-shadow(0 0 2px rgba(255,195,83,.35))}.ref-brand .mark{font-size:22px!important}.ref-brand strong{font-size:22px!important}.ref-nav button{font-size:8px!important;min-height:54px}.ref-nav button .nav-icon{font-size:13px!important}.ref-title-sign:before{inset:-5px}}
+@media(max-width:560px){.tree-branch-overlay{opacity:.72}.tree-branch-overlay path{stroke-width:1.2;filter:drop-shadow(0 0 2px rgba(255,195,83,.35))}.ref-brand .mark{font-size:22px!important}.ref-brand strong{font-size:22px!important}.ref-nav button{font-size:8px!important;min-height:54px;justify-content:center;text-align:center}.ref-nav button>span{width:100%;text-align:center}.ref-nav button .nav-icon{font-size:13px!important}.ref-title-sign:before{inset:-5px}}
 @media(prefers-reduced-motion:reduce){.tree-branch-overlay path,.ref-title-sign,.ref-title-sign:before{animation:none!important}}
 
 /* Keep roots visible over translucent panels but always beneath readable labels and portraits. */
@@ -607,7 +607,7 @@ body:before{
   </aside>
   <div class="ref-tree-area" aria-label="Дерево как символ истории FreeDom">
    <div class="ref-tree-glow" aria-hidden="true"></div>
-   <div class="ref-title-sign"><span class="leaf">♧</span><h1>История<br>проекта</h1><span class="ornament"></span></div>
+   <div class="ref-title-sign"><h1>История<br>проекта</h1><span class="ornament"></span></div>
    
   </div>
   <article class="ref-story" aria-live="polite">
@@ -650,9 +650,36 @@ body:before{
  const panel=document.querySelector('.glass-panel'),tree=document.querySelector('.ref-tree-area'),story=document.querySelector('.ref-story'),people=document.querySelector('.ref-people');
  if(!panel||!tree||!people)return;
  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('class','tree-branch-overlay');svg.setAttribute('aria-hidden','true');svg.innerHTML='<defs><linearGradient id="rootGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffe8a1"/><stop offset="50%" stop-color="#f6c85f"/><stop offset="100%" stop-color="#b98632"/></linearGradient></defs>';panel.insertBefore(svg,panel.firstChild);
- function draw(){const pr=panel.getBoundingClientRect(),tr=tree.getBoundingClientRect(),sr=story?story.getBoundingClientRect():null,peopleRect=people.getBoundingClientRect(),cards=[...people.querySelectorAll('.ref-person')];if(!pr.width||!pr.height||!cards.length)return;svg.setAttribute('viewBox','0 0 '+pr.width+' '+pr.height);svg.style.width=pr.width+'px';svg.style.height=pr.height+'px';svg.replaceChildren();svg.innerHTML='<defs><linearGradient id="rootGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffe8a1"/><stop offset="50%" stop-color="#f6c85f"/><stop offset="100%" stop-color="#b98632"/></linearGradient></defs>';const cx=tr.left-pr.left+tr.width*.5,base=tr.top-pr.top+tr.height*.91,split=sr?Math.max(base+8,sr.top-pr.top+7):base+24,left=sr?Math.max(8,sr.left-pr.left+7):Math.max(8,cx-100),right=sr?Math.min(pr.width-8,sr.right-pr.left-7):Math.min(pr.width-8,cx+100),storyBottom=sr?sr.bottom-pr.top:split+60,entry=Math.max(storyBottom+2,peopleRect.top-pr.top+2);function add(d,o){const p=document.createElementNS(ns,'path');p.setAttribute('d',d);if(o)p.setAttribute('opacity',o);svg.appendChild(p)}
- add('M '+cx+' '+base+' C '+(cx-4)+' '+(base+12)+' '+(cx-8)+' '+(split-8)+' '+left+' '+split,'.95');add('M '+cx+' '+base+' C '+(cx+4)+' '+(base+12)+' '+(cx+8)+' '+(split-8)+' '+right+' '+split,'.95');add('M '+left+' '+split+' C '+(left-2)+' '+(split+25)+' '+(left-2)+' '+(entry-15)+' '+left+' '+entry,'.72');add('M '+right+' '+split+' C '+(right+2)+' '+(split+25)+' '+(right+2)+' '+(entry-15)+' '+right+' '+entry,'.72');
- cards.forEach(card=>{const r=card.getBoundingClientRect(),x=r.left-pr.left+r.width/2,y=r.top-pr.top+Math.min(5,r.height*.03),dir=x<cx?-1:1,from=x<cx?left:right,midY=entry+(Math.max(entry+12,y-7)-entry)*.55,endY=Math.max(entry+12,y-7),midX=(from+x)/2;add('M '+from+' '+entry+' C '+(from+dir*10)+' '+(entry+12)+' '+(midX-dir*8)+' '+(midY-4)+' '+x+' '+endY,'.92');if(Math.abs(x-cx)>35)add('M '+(from+(x-from)*.46)+' '+(midY-5)+' q '+(dir*8)+' 6 '+(dir*13)+' 2','.48')});}
+ function draw(){
+  const pr=panel.getBoundingClientRect(),tr=tree.getBoundingClientRect(),sr=story?story.getBoundingClientRect():null,peopleRect=people.getBoundingClientRect(),cards=[...people.querySelectorAll('.ref-person')];
+  if(!pr.width||!pr.height||!cards.length)return;
+  svg.setAttribute('viewBox','0 0 '+pr.width+' '+pr.height);svg.style.width=pr.width+'px';svg.style.height=pr.height+'px';svg.replaceChildren();
+  const defs=document.createElementNS(ns,'defs');
+  defs.innerHTML='<linearGradient id="rootGold" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0%" stop-color="#fff0b2"/><stop offset="48%" stop-color="#f6c85f"/><stop offset="100%" stop-color="#b98632"/></linearGradient>';
+  svg.appendChild(defs);
+  const cx=tr.left-pr.left+tr.width*.5,base=tr.top-pr.top+tr.height*.89;
+  const storyBottom=sr?sr.bottom-pr.top:base+60;
+  const entry=Math.max(storyBottom+5,peopleRect.top-pr.top+4);
+  function add(d,cls,width){const p=document.createElementNS(ns,'path');p.setAttribute('d',d);p.setAttribute('stroke-width',width||1.5);if(cls)p.setAttribute('class',cls);svg.appendChild(p)}
+  const leftCards=cards.filter(c=>{const r=c.getBoundingClientRect();return r.left+r.width/2<pr.left+cx});
+  const rightCards=cards.filter(c=>!leftCards.includes(c));
+  const leftX=leftCards.length?Math.min(...leftCards.map(c=>c.getBoundingClientRect().left-pr.left+c.getBoundingClientRect().width/2)):cx-50;
+  const rightX=rightCards.length?Math.max(...rightCards.map(c=>c.getBoundingClientRect().left-pr.left+c.getBoundingClientRect().width/2)):cx+50;
+  // Two solid, gently tapering root arms, with organic bends rather than dotted connectors.
+  add('M '+cx+' '+base+' C '+(cx-3)+' '+(base+22)+' '+(cx-12)+' '+(entry-34)+' '+(cx-28)+' '+(entry-8)+' C '+(cx-45)+' '+(entry+7)+' '+(leftX+24)+' '+(entry+2)+' '+leftX+' '+(entry+24),'root-main',2.2);
+  add('M '+cx+' '+base+' C '+(cx+4)+' '+(base+23)+' '+(cx+13)+' '+(entry-34)+' '+(cx+29)+' '+(entry-8)+' C '+(cx+46)+' '+(entry+7)+' '+(rightX-24)+' '+(entry+2)+' '+rightX+' '+(entry+24),'root-main',2.2);
+  cards.forEach((card,i)=>{
+   const r=card.getBoundingClientRect(),x=r.left-pr.left+r.width/2,y=r.top-pr.top+Math.min(8,r.height*.05),dir=x<cx?-1:1;
+   const shoulder=cx+dir*Math.min(Math.abs(x-cx)*.36,95);
+   const startY=entry+20;
+   const endY=Math.max(entry+27,y-10);
+   const curve='M '+(cx+dir*24)+' '+(entry-8)+' C '+(cx+dir*38)+' '+(entry+8)+' '+shoulder+' '+(entry+10)+' '+shoulder+' '+(entry+26)+' C '+shoulder+' '+(entry+43)+' '+(x-dir*18)+' '+(endY-18)+' '+x+' '+endY;
+   add(curve,'root-main',1.65);
+   // Fine side roots grow off the main curve, creating a branching, woody silhouette.
+   add('M '+(shoulder-dir*3)+' '+(entry+23)+' Q '+(shoulder-dir*21)+' '+(entry+29)+' '+(shoulder-dir*26)+' '+(entry+43),'root-fine',.8);
+   add('M '+(x-dir*13)+' '+(endY-12)+' Q '+(x-dir*5)+' '+(endY-22)+' '+(x+dir*3)+' '+(endY-27),'root-fine',.8);
+  });
+ }
  draw();window.addEventListener('resize',draw,{passive:true});if('ResizeObserver' in window){const ro=new ResizeObserver(draw);ro.observe(panel);ro.observe(tree);ro.observe(people);if(story)ro.observe(story)}if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
 })();
 </script>
