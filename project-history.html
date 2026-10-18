@@ -168,7 +168,46 @@
  .person p{font-size:9px}
  .person .quote{font-size:14px}
 }
-\n</style></head>
+\n
+/* Tree and roots read as one continuous scene; keep portrait nodes close to the trunk */
+@media(min-width:761px){
+ .hero{padding-bottom:0;min-height:88svh}
+ .tree-stage{height:min(78svh,760px);min-height:600px}
+ .tree-photo{height:108%;top:0;object-position:center 46%;mask-image:linear-gradient(to bottom,#000 0%,#000 82%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 82%,transparent 100%)}
+ .roots-section{margin-top:-125px;padding-top:135px;background:linear-gradient(180deg,rgba(13,43,33,.02),rgba(12,39,30,.46) 15%,rgba(11,37,29,.82) 50%);overflow:visible}
+ .section-heading{display:none}
+ .root-map{margin-top:0}
+ .root-lines{top:-65px;height:calc(100% + 75px);min-height:920px;opacity:.9}
+ .people{padding-top:0}
+}
+@media(max-width:760px){
+ .hero{min-height:88svh;padding-bottom:24px}
+ .tree-stage{height:76svh;min-height:480px;max-height:670px}
+ .tree-photo{height:112%;top:0;object-position:center 42%;mask-image:linear-gradient(to bottom,#000 0%,#000 86%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 86%,transparent 100%)}
+ .roots-section{margin-top:-135px;padding:126px 12px 65px;background:linear-gradient(180deg,rgba(15,46,34,0),rgba(13,43,32,.55) 14%,rgba(11,34,27,.95) 46%,rgba(11,34,27,.98));overflow:visible}
+ .section-heading{display:none}
+ .root-map{margin-top:0;max-width:540px}
+ .mobile-tree-root{height:auto;min-height:0;margin:-8px auto 0;width:100%;max-width:500px}
+ .mobile-tree-root svg{width:100%;height:auto;max-height:none;overflow:visible}
+ .mobile-tree-root span{margin:0 0 2px}
+ .root-lines{display:block;top:0;left:-8%;width:116%;height:100%;min-height:0;opacity:.5}
+ .people{padding-top:0;gap:0 4px}
+ .person:nth-child(1){margin-top:-2px}
+ .person:nth-child(2){margin-top:34px}
+ .person:nth-child(3){margin-top:54px}
+ .person:nth-child(4){margin-top:0}
+ .person:nth-child(5){margin-top:28px}
+ .person:nth-child(6){margin-top:0}
+ .person:after{box-shadow:0 0 0 5px #f6d27b15,0 0 14px #f6d27b9c}
+}
+@media(max-width:390px){
+ .hero{min-height:86svh}
+ .tree-stage{height:73svh;min-height:445px}
+ .roots-section{margin-top:-118px;padding-top:112px}
+ .mobile-tree-root{margin-top:-4px}
+}
+
+</style></head>
 <body>
 <header class="top"><a class="brand" href="index.html" aria-label="FreeDom — на главную"><span class="sun">☼</span><span><b>FreeDom</b><small>SOCHI</small></span></a><a class="home-link" href="index.html"><span aria-hidden="true">←</span> На главную</a></header>
 <main>
