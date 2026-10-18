@@ -639,47 +639,13 @@ body:before{
 
 <script>
 (function(){
- const section=document.querySelector('.ref-people');
- const svg=section&&section.querySelector('.people-roots');
- if(!section||!svg)return;
- function drawBranches(){
-  const sr=section.getBoundingClientRect();
-  const cards=[...section.querySelectorAll('.ref-person')];
-  if(!cards.length||!sr.width||!sr.height)return;
-  svg.setAttribute('viewBox','0 0 '+sr.width+' '+sr.height);
-  svg.setAttribute('preserveAspectRatio','none');
-  const ns='http://www.w3.org/2000/svg';
-  svg.replaceChildren();
-  const pts=cards.map(card=>{
-   const r=card.getBoundingClientRect();
-   return {x:r.left-sr.left+r.width/2,y:Math.max(18,r.top-sr.top+Math.min(12,r.height*.08))};
-  });
-  const cx=sr.width/2;
-  const maxY=Math.min(...pts.map(p=>p.y));
-  // A fine central root stem, with gently curved branches splitting toward each card.
-  const trunk=document.createElementNS(ns,'path');
-  trunk.setAttribute('d',`M ${cx} 0 C ${cx-4} ${maxY*.22}, ${cx+5} ${maxY*.48}, ${cx} ${maxY*.7}`);
-  svg.appendChild(trunk);
-  pts.forEach((p,i)=>{
-   const direction=p.x<cx?-1:1;
-   const startY=Math.max(8,Math.min(p.y-12, maxY*.68 + Math.abs(p.x-cx)*.12));
-   const branch=document.createElementNS(ns,'path');
-   const midX=(cx+p.x)/2;
-   const bend=Math.min(36,Math.abs(p.x-cx)*.12)*direction;
-   branch.setAttribute('d',`M ${cx} ${startY} C ${cx+bend} ${startY+12}, ${midX+bend} ${p.y-20}, ${p.x} ${p.y}`);
-   svg.appendChild(branch);
-   if(Math.abs(p.x-cx)>28){
-    const twig=document.createElementNS(ns,'path');
-    twig.setAttribute('d',`M ${midX+bend*.45} ${startY+13} q ${direction*9} 10 ${direction*15} 10`);
-    twig.setAttribute('opacity','.55');
-    svg.appendChild(twig);
-   }
-  });
- }
- drawBranches();
- window.addEventListener('resize',drawBranches,{passive:true});
- if('ResizeObserver' in window){new ResizeObserver(drawBranches).observe(section);}
- if(document.fonts&&document.fonts.ready)document.fonts.ready.then(drawBranches);
+ const panel=document.querySelector('.glass-panel'),tree=document.querySelector('.ref-tree-area'),story=document.querySelector('.ref-story'),people=document.querySelector('.ref-people');
+ if(!panel||!tree||!people)return;
+ const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('class','tree-branch-overlay');svg.setAttribute('aria-hidden','true');svg.innerHTML='<defs><linearGradient id="rootGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffe8a1"/><stop offset="50%" stop-color="#f6c85f"/><stop offset="100%" stop-color="#b98632"/></linearGradient></defs>';panel.insertBefore(svg,panel.firstChild);
+ function draw(){const pr=panel.getBoundingClientRect(),tr=tree.getBoundingClientRect(),sr=story?story.getBoundingClientRect():null,peopleRect=people.getBoundingClientRect(),cards=[...people.querySelectorAll('.ref-person')];if(!pr.width||!pr.height||!cards.length)return;svg.setAttribute('viewBox','0 0 '+pr.width+' '+pr.height);svg.style.width=pr.width+'px';svg.style.height=pr.height+'px';svg.replaceChildren();svg.innerHTML='<defs><linearGradient id="rootGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffe8a1"/><stop offset="50%" stop-color="#f6c85f"/><stop offset="100%" stop-color="#b98632"/></linearGradient></defs>';const cx=tr.left-pr.left+tr.width*.5,base=tr.top-pr.top+tr.height*.91,split=sr?Math.max(base+8,sr.top-pr.top+7):base+24,left=sr?Math.max(8,sr.left-pr.left+7):Math.max(8,cx-100),right=sr?Math.min(pr.width-8,sr.right-pr.left-7):Math.min(pr.width-8,cx+100),storyBottom=sr?sr.bottom-pr.top:split+60,entry=Math.max(storyBottom+2,peopleRect.top-pr.top+2);function add(d,o){const p=document.createElementNS(ns,'path');p.setAttribute('d',d);if(o)p.setAttribute('opacity',o);svg.appendChild(p)}
+ add('M '+cx+' '+base+' C '+(cx-4)+' '+(base+12)+' '+(cx-8)+' '+(split-8)+' '+left+' '+split,'.95');add('M '+cx+' '+base+' C '+(cx+4)+' '+(base+12)+' '+(cx+8)+' '+(split-8)+' '+right+' '+split,'.95');add('M '+left+' '+split+' C '+(left-2)+' '+(split+25)+' '+(left-2)+' '+(entry-15)+' '+left+' '+entry,'.72');add('M '+right+' '+split+' C '+(right+2)+' '+(split+25)+' '+(right+2)+' '+(entry-15)+' '+right+' '+entry,'.72');
+ cards.forEach(card=>{const r=card.getBoundingClientRect(),x=r.left-pr.left+r.width/2,y=r.top-pr.top+Math.min(5,r.height*.03),dir=x<cx?-1:1,from=x<cx?left:right,midY=entry+(Math.max(entry+12,y-7)-entry)*.55,endY=Math.max(entry+12,y-7),midX=(from+x)/2;add('M '+from+' '+entry+' C '+(from+dir*10)+' '+(entry+12)+' '+(midX-dir*8)+' '+(midY-4)+' '+x+' '+endY,'.92');if(Math.abs(x-cx)>35)add('M '+(from+(x-from)*.46)+' '+(midY-5)+' q '+(dir*8)+' 6 '+(dir*13)+' 2','.48')});}
+ draw();window.addEventListener('resize',draw,{passive:true});if('ResizeObserver' in window){const ro=new ResizeObserver(draw);ro.observe(panel);ro.observe(tree);ro.observe(people);if(story)ro.observe(story)}if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
 })();
 </script>
 
