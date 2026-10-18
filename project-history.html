@@ -207,25 +207,147 @@
  .mobile-tree-root{margin-top:-4px}
 }
 
+
+/* Reference-matched single glass panel */
+:root{--ref-gold:#ffd36f;--ref-white:#fff8e9}
+html,body{width:100%;min-height:100%;margin:0}
+body{font-family:Manrope,Arial,sans-serif;color:#fff8e9;background:#244b3e url('https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=2200&q=88') center/cover fixed no-repeat;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradient(90deg,rgba(13,39,31,.10),rgba(13,39,31,.16) 45%,rgba(13,39,31,.25)),linear-gradient(0deg,rgba(10,38,29,.28),rgba(10,38,29,.05) 65%);pointer-events:none}
+.top{display:none}
+.reference-page{position:relative;z-index:1;min-height:100svh;display:grid;place-items:center;padding:clamp(12px,3.2vh,32px) clamp(10px,4vw,56px)}
+.glass-panel{position:relative;width:min(1480px,100%);min-height:min(86svh,1000px);border:1px solid rgba(255,255,255,.55);border-radius:clamp(28px,5vw,76px);background:linear-gradient(115deg,rgba(231,247,231,.25),rgba(34,87,72,.38) 43%,rgba(26,73,62,.58));box-shadow:0 20px 80px rgba(4,27,21,.25),inset 0 1px 0 rgba(255,255,255,.28);backdrop-filter:blur(15px) saturate(115%);-webkit-backdrop-filter:blur(15px) saturate(115%);overflow:hidden;display:grid;grid-template-columns:168px minmax(350px,1fr) minmax(260px,310px);grid-template-rows:minmax(510px,1fr) auto}
+.ref-sidebar{grid-column:1;grid-row:1/3;position:relative;z-index:4;padding:25px 14px 28px;border-right:1px solid rgba(255,255,255,.3);background:linear-gradient(180deg,rgba(230,248,236,.12),rgba(14,57,45,.18));display:flex;flex-direction:column;gap:26px}
+.ref-brand{height:78px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-decoration:none;color:white;border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:18px}
+.ref-brand .mark{font-size:31px;line-height:1;color:#fff4c9;text-shadow:0 0 18px #fff2bb}
+.ref-brand strong{font:500 30px/.85 'Cormorant Garamond',serif;letter-spacing:.01em}
+.ref-brand small{font-size:9px;letter-spacing:.22em;margin-top:7px}
+.ref-nav{display:flex;flex-direction:column;gap:8px}
+.ref-nav button{width:100%;min-height:48px;display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid transparent;border-radius:30px;background:transparent;color:rgba(255,250,232,.78);font:400 12px/1.25 Manrope,sans-serif;text-align:left;cursor:pointer;transition:background .25s,border-color .25s,transform .25s}
+.ref-nav button .nav-icon{width:22px;flex:0 0 22px;font-size:20px;text-align:center;color:#fff9e8}
+.ref-nav button.active,.ref-nav button:hover{background:linear-gradient(100deg,rgba(224,255,248,.55),rgba(193,244,233,.18));border-color:rgba(255,255,255,.4);box-shadow:0 0 28px rgba(206,255,239,.12);color:#fff}
+.ref-close{position:absolute;right:26px;top:26px;z-index:7;width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(231,249,241,.15);color:#fff;font-size:27px;font-weight:200;cursor:pointer;display:grid;place-items:center}
+.ref-home{position:absolute;left:22px;top:18px;z-index:8;color:#fff;text-decoration:none;font-size:11px;opacity:.9;display:none}
+.ref-tree-area{grid-column:2;grid-row:1;position:relative;min-width:0;min-height:510px;display:flex;align-items:center;justify-content:center;isolation:isolate}
+.ref-tree-area:before{content:"";position:absolute;inset:3% 0 -3%;background:radial-gradient(ellipse at 50% 58%,rgba(255,204,84,.35),transparent 47%),radial-gradient(ellipse at 50% 85%,rgba(255,231,160,.25),transparent 48%);z-index:-1;pointer-events:none}
+.ref-tree-photo{position:absolute;z-index:-1;width:min(108%,780px);height:110%;max-height:820px;object-fit:contain;object-position:center center;filter:saturate(1.13) contrast(1.04) drop-shadow(0 16px 28px rgba(8,35,24,.3));opacity:.98;mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 88%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 88%,transparent 100%)}
+.ref-tree-glow{position:absolute;inset:12% 4% 2%;pointer-events:none;background:radial-gradient(ellipse at 51% 51%,rgba(255,213,105,.20),transparent 37%);mix-blend-mode:screen}
+.ref-title-sign{position:absolute;left:50%;top:32%;transform:translate(-50%,-50%);width:clamp(180px,25vw,300px);aspect-ratio:1.55/1;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:#fff6cb;filter:drop-shadow(0 0 18px rgba(255,174,34,.9));}
+.ref-title-sign:before{content:"";position:absolute;inset:3% 2%;border:2px solid #ffce61;border-radius:46% 46% 43% 43% / 30% 30% 40% 40%;clip-path:polygon(50% 0,95% 28%,100% 72%,50% 100%,0 72%,5% 28%);box-shadow:inset 0 0 22px rgba(255,185,52,.18),0 0 14px rgba(255,190,57,.4)}
+.ref-title-sign .leaf{font-size:28px;line-height:1;margin-bottom:6px}
+.ref-title-sign h1{margin:0;font:500 clamp(31px,3.3vw,48px)/.92 'Cormorant Garamond',serif;text-shadow:0 0 10px #fbb43c,0 0 24px #ffb53d;letter-spacing:-.02em}
+.ref-title-sign .ornament{margin-top:15px;width:56px;height:1px;background:#ffda83;position:relative}
+.ref-title-sign .ornament:after{content:"";position:absolute;left:50%;top:50%;width:7px;height:7px;border:1px solid #ffda83;transform:translate(-50%,-50%) rotate(45deg);background:#85572a}
+.ref-story{grid-column:3;grid-row:1;position:relative;z-index:2;align-self:center;padding:68px 34px 24px 8px;max-width:340px}
+.ref-story h2{margin:0 0 18px;font:500 clamp(27px,2.3vw,36px)/.98 'Cormorant Garamond',serif;color:#fff9e9}
+.ref-story p{margin:0 0 15px;font-size:13px;line-height:1.65;color:rgba(255,251,239,.94)}
+.ref-story .story-cta{margin-top:5px;min-height:50px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;padding:11px 17px 11px 20px;border:1px solid rgba(255,255,255,.3);border-radius:30px;background:linear-gradient(100deg,rgba(231,255,245,.24),rgba(225,250,241,.1));color:#fff;text-decoration:none;font-size:12px;line-height:1.4;box-shadow:inset 0 1px 0 rgba(255,255,255,.15);transition:background .2s}
+.ref-story .story-cta:hover{background:rgba(225,255,243,.3)}
+.ref-story .story-cta span:last-child{font-size:25px;line-height:1}
+.ref-people{grid-column:2/4;grid-row:2;position:relative;z-index:3;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(6px,1.5vw,22px);padding:0 clamp(20px,3vw,48px) 28px 8px;margin-top:-2px;align-items:start}
+.ref-person{min-width:0;text-align:center;display:flex;align-items:center;flex-direction:column;text-shadow:0 1px 7px rgba(8,30,23,.55)}
+.ref-person .face{width:clamp(64px,7.1vw,100px);aspect-ratio:1;border-radius:50%;padding:3px;border:1.5px solid #ffe19a;background:rgba(255,228,155,.25);box-shadow:0 0 18px rgba(255,207,104,.32),0 0 0 4px rgba(255,255,255,.05);overflow:hidden}
+.ref-person img{width:100%;height:100%;display:block;object-fit:cover;border-radius:50%}
+.ref-person h3{font:500 clamp(16px,1.5vw,21px)/1.05 'Cormorant Garamond',serif;margin:9px 0 5px;color:#fff8e7}
+.ref-person .role{font-size:clamp(9px,.82vw,11px);line-height:1.35;color:rgba(255,250,233,.92);min-height:28px}
+.ref-person .quote{font:400 clamp(12px,1.05vw,14px)/1.25 'Cormorant Garamond',serif;margin-top:8px;color:#fff6df}
+.ref-person .quote:before{content:"“"}.ref-person .quote:after{content:"”"}
+.ref-tree-threads{position:absolute;left:0;right:0;bottom:90px;height:160px;z-index:1;pointer-events:none;opacity:.9}
+.ref-tree-threads svg{width:100%;height:100%;overflow:visible}
+.ref-tree-threads path{fill:none;stroke:#ffd16c;stroke-width:1.6;stroke-linecap:round;filter:drop-shadow(0 0 3px #ffb62e)}
+.ref-panel-note{display:none}
+@media(min-width:1200px){.glass-panel{grid-template-columns:174px minmax(400px,1fr) minmax(275px,315px)}.ref-tree-photo{width:112%}.ref-story{padding-right:38px}.ref-people{padding-left:0}}
+@media(max-width:900px){
+ .reference-page{padding:10px}
+ .glass-panel{min-height:calc(100svh - 20px);grid-template-columns:112px minmax(0,1fr);grid-template-rows:minmax(420px,1fr) auto;border-radius:32px}
+ .ref-sidebar{grid-column:1;grid-row:1/3;padding:18px 8px;gap:22px}
+ .ref-brand strong{font-size:25px}.ref-brand{height:70px}.ref-nav button{justify-content:center;padding:10px 5px;gap:5px;font-size:10px;flex-direction:column;min-height:55px}.ref-nav button .nav-icon{font-size:19px}
+ .ref-tree-area{grid-column:2;grid-row:1;min-height:420px}
+ .ref-tree-photo{width:110%;height:105%}
+ .ref-title-sign{top:31%;width:clamp(160px,31vw,245px)}
+ .ref-story{grid-column:2;grid-row:1;align-self:end;justify-self:end;width:min(52%,300px);padding:20px 18px 22px 10px;margin-bottom:8px}
+ .ref-story h2{font-size:29px;margin-bottom:10px}.ref-story p{font-size:11px;line-height:1.5;margin-bottom:9px}.ref-story .story-cta{min-height:42px;padding:8px 12px;font-size:10px}
+ .ref-people{grid-column:2;grid-row:2;padding:12px 14px 20px;gap:6px;margin-top:-8px}
+ .ref-person .face{width:clamp(48px,10vw,78px)}.ref-person .role{font-size:9px;min-height:25px}.ref-person .quote{font-size:12px}
+ .ref-close{right:16px;top:16px;width:38px;height:38px}
+}
+@media(max-width:560px){
+ .reference-page{padding:0;display:block}
+ .glass-panel{width:100%;min-height:100svh;border-radius:0;border:0;grid-template-columns:70px minmax(0,1fr);grid-template-rows:minmax(450px,1fr) auto;overflow:hidden;background:linear-gradient(115deg,rgba(231,247,231,.22),rgba(34,87,72,.34) 43%,rgba(26,73,62,.55))}
+ .ref-sidebar{padding:14px 5px 12px;gap:17px}
+ .ref-brand{height:61px;padding-bottom:12px}.ref-brand .mark{font-size:23px}.ref-brand strong{font-size:19px}.ref-brand small{font-size:7px;margin-top:5px}
+ .ref-nav{gap:6px}.ref-nav button{font-size:8px;min-height:52px;padding:7px 2px;border-radius:20px;gap:4px}.ref-nav button .nav-icon{font-size:17px;width:auto;flex:auto}
+ .ref-home{display:block;left:84px;top:14px;font-size:10px}
+ .ref-tree-area{grid-column:2;grid-row:1;min-height:470px;align-items:flex-start}
+ .ref-tree-photo{width:145%;height:80%;max-height:none;top:90px;object-fit:contain;object-position:center;left:-22%}
+ .ref-tree-area:before{inset:80px -10px 20px}
+ .ref-title-sign{top:31%;width:min(62%,210px);left:48%}
+ .ref-title-sign .leaf{font-size:22px}.ref-title-sign h1{font-size:31px}.ref-title-sign .ornament{margin-top:11px}
+ .ref-story{position:absolute;top:60px;right:8px;bottom:auto;width:48%;padding:0;margin:0;max-width:210px}
+ .ref-story h2{font-size:24px;margin-bottom:8px}.ref-story p{font-size:9px;line-height:1.45;margin-bottom:8px}.ref-story .story-cta{font-size:9px;min-height:36px;padding:6px 9px}.ref-story .story-cta span:last-child{font-size:19px}
+ .ref-close{right:10px;top:10px;width:31px;height:31px;font-size:21px}
+ .ref-people{grid-column:2;grid-row:2;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 6px;padding:0 9px 23px;margin-top:-12px}
+ .ref-person .face{width:clamp(54px,17vw,78px)}.ref-person h3{font-size:17px;margin:7px 0 4px}.ref-person .role{font-size:9px;min-height:23px}.ref-person .quote{font-size:12px;margin-top:5px}
+}
+@media(max-width:370px){
+ .glass-panel{grid-template-columns:62px minmax(0,1fr)}
+ .ref-story{right:5px;width:47%}.ref-story h2{font-size:21px}.ref-story p{font-size:8px}
+ .ref-tree-area{min-height:440px}.ref-title-sign h1{font-size:28px}
+ .ref-people{gap:14px 4px;padding-left:5px;padding-right:5px}
+}
 </style></head>
 <body>
-<header class="top"><a class="brand" href="index.html" aria-label="FreeDom — на главную"><span class="sun">☼</span><span><b>FreeDom</b><small>SOCHI</small></span></a><a class="home-link" href="index.html"><span aria-hidden="true">←</span> На главную</a></header>
-<main>
-<section class="hero" aria-labelledby="tree-title"><div class="tree-stage">
-<img class="tree-photo" src="https://images.unsplash.com/photo-1542544703-60b14024561f?auto=format&fit=crop&w=1000&q=68" alt="Старое дерево с раскидистой кроной, мощным стволом и открытыми корнями" fetchpriority="high" decoding="async">
-<div class="tree-aura" aria-hidden="true"></div><div class="sign"><h1 id="tree-title">История дома</h1><small>FREEDOM · ЛЮДИ · ПРИРОДА · СВОБОДА</small></div>
-<div class="intro"><div class="eyebrow">Всё начинается с корней</div><p>FreeDom растёт благодаря людям, которые однажды поверили в идею, приложили руки, поделились мечтой или просто остались рядом.</p></div>
-</div><a class="scroll-cue" href="#roots-story"><span>Проследить корни</span><i></i></a></section>
-<section class="roots-section" id="roots-story"><div class="section-heading reveal"><div class="eyebrow">Один дом — много историй</div><h2>Корни, которые нас соединяют</h2><p>У каждого человека здесь свой путь и свой вклад. Прокрути страницу вниз — от дерева к историям тех, кто помогает FreeDom расти.</p></div>
-<div class="root-map"><div class="mobile-tree-root" aria-label="Корни дерева соединяют истории участников"><svg viewBox="0 0 360 190" role="img" aria-label="Корни расходятся от ствола к историям людей"><defs><filter id="rootglow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g fill="none" stroke="#f6d27b" stroke-linecap="round" filter="url(#rootglow)"><path stroke-width="2.4" d="M180 4 C178 45 130 58 102 88 S56 123 35 153 M180 4 C183 45 230 59 258 88 S304 123 325 153 M180 8 C160 50 168 83 145 112 S126 146 119 174 M180 8 C200 50 192 83 215 112 S234 146 241 174 M180 25 C180 70 180 112 180 176"/><path stroke-width="1.4" d="M102 88 L77 81 M102 88 L100 112 M258 88 L282 81 M258 88 L260 112 M145 112 L125 105 M215 112 L235 105"/></g><g fill="#f6d27b" stroke="#fff1c5" stroke-width="1"><circle cx="35" cy="153" r="5"/><circle cx="119" cy="174" r="5"/><circle cx="180" cy="176" r="5"/><circle cx="241" cy="174" r="5"/><circle cx="325" cy="153" r="5"/><circle cx="77" cy="81" r="3"/><circle cx="282" cy="81" r="3"/></g><g fill="#f6d27b" opacity=".95"><circle cx="180" cy="13" r="3"/><circle cx="180" cy="13" r="8" fill="none" stroke="#f6d27b" stroke-opacity=".5"/></g></svg><span>ОДНО ДЕРЕВО · ОБЩИЕ КОРНИ</span></div><svg class="root-lines" viewBox="0 0 1000 900" preserveAspectRatio="none" aria-hidden="true"><path d="M500 0 C500 95 320 95 300 190 S175 250 160 360 S270 470 220 570 S130 680 150 850"/><path d="M500 0 C500 110 690 100 700 200 S830 285 790 385 S670 470 735 590 S870 710 835 860"/><path d="M500 0 C470 120 430 185 500 270 S610 360 520 470 S430 620 500 760 S480 820 500 890"/><path d="M500 0 C420 95 245 130 340 255 S400 390 300 490 S335 640 300 780"/><path d="M500 0 C590 90 775 130 650 270 S600 400 700 500 S650 660 700 800"/></svg>
-<div class="people">
-<article class="person reveal"><div class="portrait-wrap"><div class="portrait">01</div></div><span class="role">История участника</span><h3>Имя участника</h3><p>Как человек оказался в FreeDom, что помог создать и чем запомнился проекту.</p><span class="quote">«Здесь начинается наша история»</span></article>
-<article class="person reveal"><div class="portrait-wrap"><div class="portrait">02</div></div><span class="role">Вклад в проект</span><h3>Имя участника</h3><p>Личная история, важный поступок или идея, которая помогла дому стать таким, какой он есть.</p><span class="quote">«Каждый вклад имеет значение»</span></article>
-<article class="person reveal"><div class="portrait-wrap"><div class="portrait">03</div></div><span class="role">Люди и пространство</span><h3>Имя участника</h3><p>Воспоминание о людях, совместной работе и моментах, которые стали частью FreeDom.</p><span class="quote">«Дом создают люди»</span></article>
-<article class="person reveal"><div class="portrait-wrap"><div class="portrait">04</div></div><span class="role">Идея и мечта</span><h3>Имя участника</h3><p>С чего всё началось для этого человека и какую мечту он принёс с собой.</p><span class="quote">«Мечты растут, когда ими делятся»</span></article>
-<article class="person reveal"><div class="portrait-wrap"><div class="portrait">05</div></div><span class="role">Забота о доме</span><h3>Имя участника</h3><p>Небольшие дела и ежедневная забота, из которых складывается ощущение дома.</p><span class="quote">«Важны не только большие дела»</span></article>
-<article class="person reveal"><div class="portrait-wrap"><div class="portrait">06</div></div><span class="role">Творчество и будущее</span><h3>Имя участника</h3><p>Что человек привнёс в атмосферу проекта и каким видит его дальнейший путь.</p><span class="quote">«Продолжение пишем вместе»</span></article>
-</div></div><div class="closing reveal">Каждый оставляет свой след.<br>Вместе мы продолжаем расти.<span>FreeDom · Sochi</span></div></section>
+<main class="reference-page">
+ <section class="glass-panel" aria-label="История проекта FreeDom">
+  <a class="ref-home" href="index.html">← На главную</a>
+  <button class="ref-close" type="button" aria-label="Закрыть" onclick="location.href='index.html'">×</button>
+  <aside class="ref-sidebar">
+   <a class="ref-brand" href="index.html" aria-label="FreeDom Sochi — главная"><span class="mark">☼</span><strong>FreeDom</strong><small>SOCHI</small></a>
+   <nav class="ref-nav" aria-label="Разделы о доме">
+    <button type="button" data-story="home"><span class="nav-icon">♧</span><span>О доме</span></button>
+    <button type="button" data-story="history" class="active"><span class="nav-icon">♧</span><span>История<br>проекта</span></button>
+    <button type="button" data-story="values"><span class="nav-icon">♡</span><span>Ценности</span></button>
+    <button type="button" data-story="team"><span class="nav-icon">♧</span><span>Команда</span></button>
+    <button type="button" data-story="gallery"><span class="nav-icon">▧</span><span>Галерея</span></button>
+   </nav>
+  </aside>
+  <div class="ref-tree-area" aria-label="Дерево как символ истории FreeDom">
+   <img class="ref-tree-photo" src="https://images.unsplash.com/photo-1542544703-60b14024561f?auto=format&fit=crop&w=1400&q=88" alt="Большое дерево в тёплом природном свете" fetchpriority="high" decoding="async">
+   <div class="ref-tree-glow" aria-hidden="true"></div>
+   <div class="ref-title-sign"><span class="leaf">♧</span><h1>История<br>проекта</h1><span class="ornament"></span></div>
+   <div class="ref-tree-threads" aria-hidden="true"><svg viewBox="0 0 900 180" preserveAspectRatio="none"><path d="M450 0 C440 45 320 45 270 85 S160 100 80 170"/><path d="M450 0 C465 45 580 55 630 90 S760 110 830 170"/><path d="M450 0 C425 50 410 90 360 120 S310 145 290 180"/><path d="M450 0 C475 55 490 90 540 120 S600 150 620 180"/><path d="M450 0 C450 60 450 100 450 180"/><path d="M270 85 l-30 -8 M270 85 l-6 25 M630 90 l30 -8 M630 90 l6 25"/></svg></div>
+  </div>
+  <article class="ref-story" aria-live="polite">
+   <h2>Как всё<br>начиналось</h2>
+   <p>FreeDom — это не просто дом. Это проект, который родился из мечты о месте, где люди могут быть собой, поддерживать друг друга и жить в гармонии с природой.</p>
+   <p>Всё началось с одного дерева — символа жизни, свободы и объединения. Оно стало центром нашего пространства, а его корни — связью между всеми, кто вложил в этот проект своё время, энергию и сердце.</p>
+   <a class="story-cta" href="#people"><span>Узнать больше<br>о проекте</span><span aria-hidden="true">→</span></a>
+  </article>
+  <section class="ref-people" id="people" aria-label="Люди FreeDom">
+   <article class="ref-person"><div class="face"><img src="https://i.pravatar.cc/180?img=12" alt="Портрет Ильи" loading="lazy"></div><h3>Илья</h3><div class="role">Идея и основа</div><div class="quote">Всё началось<br>с мечты</div></article>
+   <article class="ref-person"><div class="face"><img src="https://i.pravatar.cc/180?img=47" alt="Портрет Ани" loading="lazy"></div><h3>Аня</h3><div class="role">Природа и гармония</div><div class="quote">Здесь всё<br>дышит</div></article>
+   <article class="ref-person"><div class="face"><img src="https://i.pravatar.cc/180?img=11" alt="Портрет Димы" loading="lazy"></div><h3>Дима</h3><div class="role">Строительство</div><div class="quote">Делать —<br>значит жить</div></article>
+   <article class="ref-person"><div class="face"><img src="https://i.pravatar.cc/180?img=44" alt="Портрет Кати" loading="lazy"></div><h3>Катя</h3><div class="role">Кухня и забота</div><div class="quote">Вкус — это<br>тоже любовь</div></article>
+   <article class="ref-person"><div class="face"><img src="https://i.pravatar.cc/180?img=13" alt="Портрет Саши" loading="lazy"></div><h3>Саша</h3><div class="role">Медиа и творчество</div><div class="quote">Красота<br>в деталях</div></article>
+   <article class="ref-person"><div class="face"><img src="https://i.pravatar.cc/180?img=49" alt="Портрет Лены" loading="lazy"></div><h3>Лена</h3><div class="role">Люди и сообщество</div><div class="quote">Вместе<br>мы — больше</div></article>
+  </section>
+ </section>
 </main>
-<script>(function(){const items=document.querySelectorAll('.reveal');if(!('IntersectionObserver' in window)){items.forEach(el=>el.classList.add('visible'));return}const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.12});items.forEach((el,i)=>{el.style.transitionDelay=(i%3)*90+'ms';observer.observe(el)})})();</script>
+<script>
+(function(){
+ const stories={
+  home:{title:"Дом, где можно быть собой",p1:"FreeDom — пространство среди природы, созданное людьми, которым важно жить свободно, поддерживать друг друга и делиться идеями.",p2:"Здесь соединяются тишина, творчество, движение, общие дела и ощущение дома вдали от привычной суеты.",cta:"Познакомиться с домом"},
+  history:{title:"Как всё начиналось",p1:"FreeDom — это не просто дом. Это проект, который родился из мечты о месте, где люди могут быть собой, поддерживать друг друга и жить в гармонии с природой.",p2:"Всё началось с одного дерева — символа жизни, свободы и объединения. Оно стало центром нашего пространства, а его корни — связью между всеми, кто вложил в этот проект своё время, энергию и сердце.",cta:"Узнать больше о проекте"},
+  values:{title:"Что нас объединяет",p1:"Свобода, доброжелательность, взаимная поддержка и уважение к личному пути каждого — основа атмосферы FreeDom.",p2:"Мы верим в живое общение, самостоятельность, бережное отношение к природе и готовность вместе пробовать новое.",cta:"Наши ценности"},
+  team:{title:"Люди — сердце дома",p1:"FreeDom создают люди с разными историями, талантами и мечтами. Каждый привносит что-то своё — идею, заботу, мастерство или вдохновение.",p2:"Эти корни связывают нас не по крови, а по духу: через совместные дела, дружбу и моменты, которые остаются в памяти.",cta:"Познакомиться с командой"},
+  gallery:{title:"Жизнь в деталях",p1:"У каждого сезона в FreeDom свой ритм: сад, бассейн, общие вечера, творчество, спорт и разговоры до звёздного неба.",p2:"Галерея собирает маленькие истории и настоящие моменты, из которых складывается жизнь этого места.",cta:"Смотреть галерею"}
+ };
+ const title=document.querySelector(".ref-story h2"), ps=document.querySelectorAll(".ref-story p"), cta=document.querySelector(".story-cta span:first-child");
+ document.querySelectorAll(".ref-nav button").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll(".ref-nav button").forEach(b=>b.classList.toggle("active",b===btn));
+  const s=stories[btn.dataset.story]||stories.history;
+  title.innerHTML=s.title.replace(" ","<br>");
+  ps[0].textContent=s.p1;ps[1].textContent=s.p2;cta.innerHTML=s.cta.replace(" ","<br>");
+ }));
+})();
+</script>
 </body></html>
