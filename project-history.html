@@ -602,6 +602,12 @@ body:before{
 .tree-branch-overlay{pointer-events:none!important}
 .ref-story{z-index:10!important}
 .ref-story>*{position:relative;z-index:11}
+/* Final visual tuning: title centered in its tree stage; roots subdued behind content. */
+.ref-title-sign{left:50%!important;right:auto!important;margin-left:0!important;transform:translate(-50%,-50%)!important}
+.tree-branch-overlay{opacity:.28!important}
+.tree-branch-overlay path{opacity:.58!important;filter:drop-shadow(0 0 1px rgba(255,195,83,.18))!important}
+.tree-branch-overlay path.root-fine{opacity:.28!important}
+@media(max-width:900px){.tree-branch-overlay{opacity:.22!important}.tree-branch-overlay path{opacity:.5!important}}
 </style></head>
 <body>
 <main class="reference-page">
