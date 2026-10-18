@@ -581,6 +581,14 @@ body:before{
 @media(max-width:900px){.ref-brand .mark{font-size:19px!important}.ref-brand strong{font-size:21px!important}.ref-nav button{font-size:8px!important}}
 @media(max-width:560px){.tree-branch-overlay{opacity:.72}.tree-branch-overlay path{stroke-width:1.05;stroke-dasharray:4 6;filter:drop-shadow(0 0 2px rgba(255,195,83,.35))}.ref-brand .mark{font-size:22px!important}.ref-brand strong{font-size:22px!important}.ref-nav button{font-size:8px!important;min-height:54px}.ref-nav button .nav-icon{font-size:13px!important}.ref-title-sign:before{inset:-5px}}
 @media(prefers-reduced-motion:reduce){.tree-branch-overlay path,.ref-title-sign,.ref-title-sign:before{animation:none!important}}
+
+/* Keep roots visible over translucent panels but always beneath readable labels and portraits. */
+.tree-branch-overlay{z-index:5!important}
+.ref-title-sign,.ref-story>*{position:relative;z-index:6}
+.ref-sidebar{z-index:7!important}
+.ref-person>*{position:relative;z-index:6}
+.ref-person .face{z-index:7}
+@media(max-width:560px){.tree-branch-overlay{opacity:.66}.ref-story>*{z-index:6}}
 </style></head>
 <body>
 <main class="reference-page">
