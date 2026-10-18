@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#dce9d7">
+<title>FreeDom — Кухня · природный интерфейс</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#294b36;--mint:#dde9d8;--cream:#f4f3e9;--leaf:#a9c99a;--gold:#d4b76d;--ink:#284333;--glass:rgba(226,238,220,.76);--line:rgba(255,255,255,.72)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:Manrope,Arial,sans-serif;background:#739477;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-2;background:linear-gradient(90deg,rgba(24,69,46,.20),rgba(32,71,48,.02) 45%,rgba(24,69,46,.13)),linear-gradient(0deg,rgba(22,62,42,.20),transparent 48%),url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=2400&q=90') center/cover no-repeat}
+body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(255,248,215,.22),transparent 58%)}
+a{color:inherit}
+button{font:inherit}
+.topbar{width:min(1504px,calc(100% - 96px));height:64px;margin:24px auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;color:#fffdf0;text-decoration:none;font-weight:700;letter-spacing:.08em;font-size:17px;text-shadow:0 2px 16px #173b2b80}
+.brand-mark{width:34px;height:34px;border:1px solid #f1dca1;border-radius:50%;display:grid;place-items:center;color:#f5dc91;font-size:20px}
+.brand small{font-size:9px;letter-spacing:.28em;font-weight:500}
+.nav-pill{display:flex;align-items:center;gap:4px;padding:7px;border:1px solid rgba(255,255,255,.72);border-radius:99px;background:rgba(226,238,220,.34);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);box-shadow:0 10px 32px #183f2a20}
+.nav-pill a{padding:11px 17px;border-radius:99px;text-decoration:none;color:#fffdf0;font-size:12px;white-space:nowrap;transition:background .2s,color .2s}
+.nav-pill a:hover,.nav-pill a.active{background:rgba(244,248,225,.9);color:var(--forest)}
+.header-right{justify-self:end;display:flex;align-items:center;gap:14px;color:#fffdf0;font-size:12px;text-shadow:0 1px 8px #183f2a80}
+.weather{white-space:nowrap}.menu-toggle{width:48px;height:48px;border-radius:50%;border:1px solid #ffffffa8;background:#e1eedc55;color:#fff;font-size:20px;backdrop-filter:blur(14px);cursor:pointer}
+.page{width:min(1504px,calc(100% - 96px));margin:0 auto 110px}
+.panels{display:grid;grid-template-columns:225fr 680fr 559fr;gap:20px;align-items:stretch}
+.glass-panel{background:var(--glass);border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(16px) saturate(115%);-webkit-backdrop-filter:blur(16px) saturate(115%);box-shadow:0 12px 32px rgba(25,48,31,.12),inset 0 1px 0 #ffffffb8;min-width:0}
+.category-panel,.catalog-panel,.detail-panel{min-height:650px}
+.category-panel{padding:22px 16px;display:flex;flex-direction:column}
+.kicker{font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:#637e61;font-weight:700}
+h1,h2,h3,p{margin-top:0}
+.category-panel h2{font:500 32px/1.05 'Cormorant Garamond',Georgia,serif;color:var(--forest);margin:12px 0 23px}
+.category-list{display:grid;gap:10px}
+.category-btn{width:100%;min-height:46px;padding:11px 12px;border:1px solid transparent;border-radius:14px;background:transparent;display:flex;align-items:center;gap:10px;text-align:left;color:#3b5b43;cursor:pointer;font-size:12px;transition:.2s}
+.category-btn .cat-icon{font-size:19px;width:25px;text-align:center}
+.category-btn.active{background:rgba(248,251,235,.88);border-color:#ffffffd1;box-shadow:0 5px 16px #315a3b12;color:#294b36}
+.category-btn:hover{background:#f8fbe7a8}
+.category-btn .count{margin-left:auto;font-size:10px;color:#71876b}
+.category-note{margin-top:auto;padding-top:22px}
+.wave-art{height:68px;position:relative;overflow:hidden;margin:0 -16px 13px}
+.wave-art:before,.wave-art:after{content:"";position:absolute;width:130%;height:70px;left:-12%;border:1px solid #8fb28b70;border-radius:50% 50% 0 0}
+.wave-art:before{top:28px;transform:rotate(-5deg);background:linear-gradient(180deg,#a6c99b35,transparent)}
+.wave-art:after{top:42px;left:-22%;transform:rotate(4deg)}
+.category-note p{font-size:11px;line-height:1.65;color:#577153;margin:0}
+.catalog-panel{padding:24px 22px 22px}
+.catalog-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:19px}
+.catalog-head h1{font:500 38px/.95 'Cormorant Garamond',Georgia,serif;color:var(--forest);margin:6px 0 0}
+.catalog-subtitle{font-size:11px;color:#587153;margin:8px 0 0}
+.live-status{font-size:9px;letter-spacing:.06em;color:#52734d;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.live-status:before{content:"";width:6px;height:6px;background:#81a979;border-radius:50%;box-shadow:0 0 0 4px #9ec59535}
+.product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.product-card{padding:0;min-width:0;text-align:left;border:1px solid #ffffffc9;border-radius:17px;overflow:hidden;background:rgba(250,251,240,.72);color:var(--ink);cursor:pointer;display:flex;flex-direction:column;box-shadow:0 8px 20px #2b50350c;transition:transform .22s,box-shadow .22s,border-color .22s}
+.product-card:hover{transform:translateY(-3px);box-shadow:0 13px 24px #2b50351c}
+.product-card.selected{border-color:#789d6c;box-shadow:0 0 0 2px #9fbd8c80,0 12px 24px #2b50351a}
+.product-photo{height:145px;position:relative;display:block;overflow:hidden;background:linear-gradient(135deg,#dce8c8,#f4e4ba)}
+.product-photo img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .5s}
+.product-card:hover .product-photo img{transform:scale(1.05)}
+.product-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#234b3820,transparent 50%);pointer-events:none}
+.product-num{position:absolute;z-index:1;top:10px;left:10px;padding:5px 7px;border-radius:99px;background:#f7f8e6d9;color:#476748;font-size:8px;letter-spacing:.1em}
+.product-info{padding:12px 12px 13px;display:flex;flex-direction:column;gap:7px;flex:1}
+.product-title{font-size:12px;line-height:1.4;font-weight:700;min-height:34px}
+.product-desc{font-size:10px;line-height:1.5;color:#63765d;min-height:30px}
+.product-bottom{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:5px;padding-top:4px}
+.price{font-size:14px;font-weight:700;color:#355a3b;white-space:nowrap}
+.product-plus{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#d8e8ce;color:#355a3b;font-size:17px;border:1px solid #fff}
+.detail-panel{padding:14px;display:flex;flex-direction:column}
+.detail-photo{height:245px;position:relative;overflow:hidden;border-radius:16px;background:linear-gradient(135deg,#dce8c8,#f4e4ba)}
+.detail-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.detail-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#183c2b45,transparent 60%)}
+.detail-badge{position:absolute;z-index:1;left:14px;bottom:13px;border:1px solid #ffffffa8;background:#e6efdbbd;backdrop-filter:blur(10px);padding:7px 10px;border-radius:99px;font-size:9px;letter-spacing:.1em;color:#294b36}
+.detail-copy{padding:20px 12px 8px;display:flex;flex-direction:column;flex:1}
+.detail-kicker{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#718768}
+.detail-copy h2{font:500 34px/1.04 'Cormorant Garamond',Georgia,serif;color:var(--forest);margin:8px 0 8px}
+.detail-subtitle{font-size:12px;line-height:1.6;color:#5a7256;margin:0 0 16px}
+.ingredients-title{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#6b8062;margin-bottom:9px}
+.ingredients{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.ingredient{font-size:10px;padding:7px 10px;border:1px solid #ffffffc9;background:#f6f8e9b8;border-radius:99px;color:#496548}
+.detail-bottom{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:14px;padding-top:13px;border-top:1px solid #5f805128}
+.detail-price{font:500 30px/1 'Cormorant Garamond',Georgia,serif;color:var(--forest)}
+.add-btn{border:0;border-radius:99px;background:var(--forest);color:#fff9e9;padding:14px 20px;min-height:48px;display:flex;align-items:center;gap:9px;justify-content:center;cursor:pointer;font-size:12px;box-shadow:0 7px 16px #294b3625;transition:transform .2s,background .2s}
+.add-btn:hover{transform:translateY(-2px);background:#3d6948}
+.bottom-row{display:grid;grid-template-columns:380fr 1102fr;gap:20px;align-items:center;margin-top:28px}
+.motto{display:flex;align-items:center;gap:12px;color:#fffdf0;text-shadow:0 2px 12px #1a442c70}
+.motto-mark{flex:0 0 38px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid #fff9d8;background:#d7e7c355;color:#fff4bf;font-size:19px}
+.motto strong{font:500 24px/1.05 'Cormorant Garamond',Georgia,serif;display:block}
+.motto small{font-size:9px;letter-spacing:.06em;display:block;margin-top:4px}
+.benefits{padding:0 22px;min-height:58px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;gap:16px}
+.benefit{display:flex;align-items:center;gap:9px;font-size:10px;line-height:1.4;color:#456345}
+.benefit span{font-size:19px}
+.toast{position:fixed;left:50%;bottom:26px;z-index:30;transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:13px 19px;border:1px solid #ffffffd1;border-radius:99px;background:#f6f8e9ed;color:#294b36;box-shadow:0 10px 30px #163b2530;font-size:12px;transition:.25s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1200px){.topbar,.page{width:calc(100% - 48px)}.panels{grid-template-columns:minmax(175px,.7fr) minmax(0,2fr);}.detail-panel{grid-column:2;min-height:0;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1fr);gap:10px}.detail-photo{height:100%;min-height:250px}.detail-copy{padding:16px 12px}.bottom-row{grid-template-columns:1fr}.motto{justify-content:center}.benefits{min-height:62px}.category-panel,.catalog-panel{min-height:630px}}
+@media(max-width:760px){.topbar,.page{width:calc(100% - 28px)}.topbar{height:auto;min-height:54px;margin:14px auto 20px;grid-template-columns:1fr auto;gap:10px}.brand{font-size:14px}.brand-mark{width:30px;height:30px}.nav-pill{grid-column:1/-1;grid-row:2;justify-content:space-between;width:100%;gap:0;padding:5px}.nav-pill a{font-size:10px;padding:10px 9px}.header-right{grid-column:2;grid-row:1;gap:8px}.weather{font-size:10px}.menu-toggle{width:38px;height:38px}.panels{grid-template-columns:1fr;gap:13px}.category-panel{min-height:0;padding:17px}.category-panel h2{font-size:27px;margin:8px 0 14px}.category-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.category-btn{flex-direction:column;justify-content:center;text-align:center;gap:4px;min-height:78px;padding:8px 5px;font-size:10px}.category-btn .cat-icon{font-size:21px}.category-btn .count{margin:0}.category-note{display:none}.catalog-panel{padding:18px 13px;min-height:0}.catalog-head{align-items:start}.catalog-head h1{font-size:32px}.live-status{font-size:8px;margin-top:7px}.product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product-photo{height:125px}.product-info{padding:10px}.product-title{font-size:11px;min-height:31px}.product-desc{font-size:9px;min-height:27px}.product-bottom .price{font-size:13px}.detail-panel{grid-column:auto;display:flex;min-height:0;padding:10px}.detail-photo{height:190px;min-height:0}.detail-copy{padding:17px 9px 8px}.detail-copy h2{font-size:31px}.detail-subtitle{font-size:11px}.detail-bottom{padding-top:12px}.bottom-row{margin-top:20px;gap:13px}.motto{justify-content:flex-start}.motto strong{font-size:22px}.benefits{grid-template-columns:1fr;gap:12px;padding:16px}.benefit{font-size:11px}.page{margin-bottom:42px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="FreeDom — на главную"><span class="brand-mark">☼</span><span>FreeDom<br><small>KITCHEN</small></span></a>
+  <nav class="nav-pill" aria-label="Главная навигация">
+    <a href="index.html">Главная</a><a href="rooms-eco-futurism-v2.html">Комнаты</a><a class="active" href="kitchen-pixel-v1.html">Кухня</a><a href="index.html#events">События</a><a href="project-history.html">О нас</a>
+  </nav>
+  <div class="header-right"><span class="weather">Сочи · ☀ +28°</span><button class="menu-toggle" type="button" aria-label="Открыть меню" onclick="location.href='index.html'">⌂</button></div>
+</header>
+<main class="page">
+  <div class="panels">
+    <aside class="glass-panel category-panel">
+      <span class="kicker">FreeDom · kitchen</span>
+      <h2>Наше меню</h2>
+      <div class="category-list" role="group" aria-label="Категории меню">
+        <button class="category-btn active" data-category="drinks" type="button"><span class="cat-icon">🥤</span><span>Напитки</span><span class="count">06</span></button>
+        <button class="category-btn" data-category="food" type="button"><span class="cat-icon">🥗</span><span>Еда</span><span class="count">02</span></button>
+        <button class="category-btn" data-category="sweets" type="button"><span class="cat-icon">🍰</span><span>Полезные сладости</span><span class="count">02</span></button>
+      </div>
+      <div class="category-note"><div class="wave-art" aria-hidden="true"></div><p>Вкус природы, энергия дня и забота о себе. Здесь можно выбрать что-то свежее, простое и приготовленное с вниманием.</p></div>
+    </aside>
+    <section class="glass-panel catalog-panel" aria-live="polite">
+      <div class="catalog-head"><div><span class="kicker">Свежее · натуральное · живое</span><h1 id="catalogTitle">Напитки</h1><p class="catalog-subtitle" id="catalogSubtitle">Натуральные, свежие, живые</p></div><span class="live-status">МЕНЮ FREEдом</span></div>
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+    <aside class="glass-panel detail-panel" aria-label="Выбранный продукт">
+      <div class="detail-photo"><img id="detailImage" src="https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=1200&q=85" alt="Зелёный смузи"><span class="detail-badge" id="detailBadge">ВЫБОР ДНЯ</span></div>
+      <div class="detail-copy">
+        <span class="detail-kicker" id="detailKicker">FreeDom · fresh</span>
+        <h2 id="detailTitle">Зелёный смузи</h2>
+        <p class="detail-subtitle" id="detailDescription">Энергия природы в каждом глотке. Свежий вкус фруктов и зелени для лёгкого начала дня.</p>
+        <div class="ingredients-title">В составе</div>
+        <div class="ingredients" id="detailIngredients"></div>
+        <div class="detail-bottom"><span class="detail-price" id="detailPrice">250 ₽</span><button class="add-btn" id="addButton" type="button"><span>＋</span> Добавить</button></div>
+      </div>
+    </aside>
+  </div>
+  <div class="bottom-row">
+    <div class="motto"><span class="motto-mark">❧</span><span><strong>Еда, которая поддерживает твои мечты</strong><small>С заботой о себе и друг о друге</small></span></div>
+    <div class="glass-panel benefits"><div class="benefit"><span>🌱</span><span><strong>Свежие ингредиенты</strong><br>Сезонные продукты и местные фермы</span></div><div class="benefit"><span>🍃</span><span><strong>Вегетарианская кухня</strong><br>Растительная основа и молочные продукты</span></div><div class="benefit"><span>☀</span><span><strong>Всё для энергии</strong><br>И хорошего настроения</span></div></div>
+  </div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const products={
+ drinks:[
+  {id:'green',name:'Зелёный смузи',desc:'Шпинат, яблоко и банан',price:'250 ₽',image:'https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=900&q=80',emoji:'🥬',ingredients:['Шпинат','Банан','Яблоко','Чиа'],subtitle:'Энергия природы в каждом глотке',badge:'ВЫБОР ДНЯ'},
+  {id:'mango',name:'Манго-кокосовый смузи',desc:'Тропическая мягкость и свежесть',price:'280 ₽',image:'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=900&q=80',emoji:'🥭',ingredients:['Манго','Кокосовое молоко','Банан'],subtitle:'Солнечный вкус тропиков',badge:'TROPICAL'},
+  {id:'berry',name:'Ягодный смузи',desc:'Ягоды и фрукты с яркой кислинкой',price:'260 ₽',image:'https://images.unsplash.com/photo-1505252585461-04db1f6b0b84?auto=format&fit=crop&w=900&q=80',emoji:'🍓',ingredients:['Ягоды','Банан','Яблоко'],subtitle:'Ягодное настроение в любое время дня',badge:'BERRY MIX'},
+  {id:'herbal',name:'Травяной чай',desc:'Тёплый настой для спокойного вечера',price:'200 ₽',image:'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=900&q=80',emoji:'🌿',ingredients:['Травяной сбор','Горячая вода','Мята по сезону'],subtitle:'Пауза, чтобы выдохнуть и почувствовать момент',badge:'HERBAL'},
+  {id:'green-tea',name:'Зелёный чай',desc:'Лёгкий вкус и тонкий аромат',price:'180 ₽',image:'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=900&q=80',emoji:'🍵',ingredients:['Зелёный чай','Вода'],subtitle:'Чистый вкус без лишнего',badge:'CLASSIC'},
+  {id:'water',name:'Кокосовая вода',desc:'Освежающий напиток с мягким вкусом',price:'220 ₽',image:'https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?auto=format&fit=crop&w=900&q=80',emoji:'🥥',ingredients:['Кокосовая вода'],subtitle:'Лёгкая свежесть на солнечный день',badge:'FRESH'}
+ ],
+ food:[
+  {id:'shawarma',name:'Сыроедческая шаурма',desc:'Овощной ролл с ярким соусом',price:'Уточнить',image:'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=900&q=80',emoji:'🌯',ingredients:['Листья салата','Огурец','Помидор','Зелень','Соус'],subtitle:'Свежий овощной ролл — предварительный состав',badge:'ОТ ДЖЕФА'},
+  {id:'soup',name:'Тыквенный крем-суп',desc:'Нежный суп на кокосовом молоке',price:'Уточнить',image:'https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=900&q=80',emoji:'🍲',ingredients:['Тыква','Кокосовое молоко','Лук','Пряности'],subtitle:'Тёплое блюдо с мягким пряным вкусом',badge:'WARM'}
+ ],
+ sweets:[
+  {id:'cake',name:'Сыроедческий фруктовый тортик',desc:'Фруктовый десерт без выпечки',price:'Уточнить',image:'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=900&q=80',emoji:'🍰',ingredients:['Фрукты','Финики','Орехи или семена'],subtitle:'Небольшой десерт для общего стола',badge:'NO BAKE'},
+  {id:'dates',name:'Конфеты из фиников',desc:'Натурально-сладкое угощение к чаю',price:'Уточнить',image:'https://images.unsplash.com/photo-1548907040-4d42bfc9c2d5?auto=format&fit=crop&w=900&q=80',emoji:'🍬',ingredients:['Финики','Орехи или семена','Какао по рецепту'],subtitle:'Состав и аллергены нужно подтвердить',badge:'SWEET'}
+ ]
+};
+let activeCategory='drinks',activeId='green',cartCount=0;
+const $=id=>document.getElementById(id);
+function currentProduct(){return products[activeCategory].find(p=>p.id===activeId)||products[activeCategory][0]}
+function renderGrid(){
+ const items=products[activeCategory];$('productGrid').innerHTML='';
+ items.forEach((p,i)=>{const b=document.createElement('button');b.type='button';b.className='product-card'+(p.id===activeId?' selected':'');b.setAttribute('aria-pressed',p.id===activeId?'true':'false');b.innerHTML='<span class="product-photo"><img loading="lazy" src="'+p.image+'" alt="'+p.name.replace(/"/g,'&quot;')+'" onerror="this.style.display=\'none\'"><span class="product-num">0'+(i+1)+' / '+p.badge+'</span></span><span class="product-info"><span class="product-title">'+p.name+'</span><span class="product-desc">'+p.desc+'</span><span class="product-bottom"><span class="price">'+p.price+'</span><span class="product-plus">↗</span></span></span>';b.addEventListener('click',()=>{activeId=p.id;renderGrid();renderDetail()});$('productGrid').appendChild(b)});
+}
+function renderDetail(){
+ const p=currentProduct();$('detailImage').src=p.image;$('detailImage').alt=p.name;$('detailBadge').textContent=p.badge;$('detailKicker').textContent='FreeDom · '+activeCategory;$('detailTitle').textContent=p.name;$('detailDescription').textContent=p.subtitle;$('detailPrice').textContent=p.price;$('detailIngredients').innerHTML='';
+ p.ingredients.forEach(i=>{const s=document.createElement('span');s.className='ingredient';s.textContent=i;$('detailIngredients').appendChild(s)});
+}
+document.querySelectorAll('[data-category]').forEach(b=>b.addEventListener('click',()=>{activeCategory=b.dataset.category;activeId=products[activeCategory][0].id;document.querySelectorAll('[data-category]').forEach(x=>{const on=x===b;x.classList.toggle('active',on);x.setAttribute('aria-pressed',on?'true':'false')});const names={drinks:['Напитки','Натуральные, свежие, живые'],food:['Еда','Сытное и домашнее'],sweets:['Полезные сладости','Немного радости к чаю']};$('catalogTitle').textContent=names[activeCategory][0];$('catalogSubtitle').textContent=names[activeCategory][1];renderGrid();renderDetail()}));
+$('addButton').addEventListener('click',()=>{const p=currentProduct();cartCount++;const t=$('toast');t.textContent='«'+p.name+'» добавлено в демонстрационный заказ · '+cartCount+(cartCount===1?' позиция':' позиции');t.classList.add('show');window.clearTimeout(window.__fdToast);window.__fdToast=window.setTimeout(()=>t.classList.remove('show'),2600)});
+renderGrid();renderDetail();
+</script>
+</body>
+</html>
