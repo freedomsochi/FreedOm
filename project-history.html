@@ -589,6 +589,12 @@ body:before{
 .ref-person>*{position:relative;z-index:6}
 .ref-person .face{z-index:7}
 @media(max-width:560px){.tree-branch-overlay{opacity:.66}.ref-story>*{z-index:6}}
+/* Final alignment and legibility corrections */
+.ref-title-sign{left:50%!important;right:auto!important;margin-left:0!important;transform:translate(-50%,-50%)!important;text-align:center!important}
+.ref-title-sign h1{width:100%;text-align:center!important}
+.ref-nav button{display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
+.ref-nav button>span:not(.nav-icon){flex:1;text-align:center!important}
+.tree-branch-overlay{clip-path:none}
 </style></head>
 <body>
 <main class="reference-page">
@@ -656,7 +662,11 @@ body:before{
   svg.setAttribute('viewBox','0 0 '+pr.width+' '+pr.height);svg.style.width=pr.width+'px';svg.style.height=pr.height+'px';svg.replaceChildren();
   const defs=document.createElementNS(ns,'defs');
   defs.innerHTML='<linearGradient id="rootGold" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0%" stop-color="#fff0b2"/><stop offset="48%" stop-color="#f6c85f"/><stop offset="100%" stop-color="#b98632"/></linearGradient>';
-  svg.appendChild(defs);
+  const clip=document.createElementNS(ns,'clipPath');clip.setAttribute('id','rootsPeopleOnly');
+  const clipRect=document.createElementNS(ns,'rect');
+  clipRect.setAttribute('x',peopleRect.left-pr.left);clipRect.setAttribute('y',peopleRect.top-pr.top);
+  clipRect.setAttribute('width',peopleRect.width);clipRect.setAttribute('height',peopleRect.height);
+  clip.appendChild(clipRect);defs.appendChild(clip);svg.appendChild(defs);svg.setAttribute('clip-path','url(#rootsPeopleOnly)');
   const cx=tr.left-pr.left+tr.width*.5,base=tr.top-pr.top+tr.height*.89;
   const storyBottom=sr?sr.bottom-pr.top:base+60;
   const entry=Math.max(storyBottom+5,peopleRect.top-pr.top+4);
