@@ -639,7 +639,7 @@ body:before{
  document.querySelectorAll(".ref-nav button").forEach(btn=>btn.addEventListener("click",()=>{
   document.querySelectorAll(".ref-nav button").forEach(b=>b.classList.toggle("active",b===btn));
   const s=stories[btn.dataset.story]||stories.history;
-  title.innerHTML=s.title.replace(" ","<br>");
+  title.textContent=s.title;
   ps[0].textContent=s.p1;ps[1].textContent=s.p2;cta.innerHTML=s.cta.replace(" ","<br>");
  }));
 })();
