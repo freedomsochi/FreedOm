@@ -117,7 +117,58 @@
  .sign h1{font-size:29px}
  .mobile-tree-root svg{max-height:200px}
 }
-</style></head>
+
+/* Organic family-tree layout: portraits grow from branching roots instead of a regular card grid */
+@media(min-width:761px){
+ .root-map{max-width:1120px}
+ .root-lines{inset:-8px 0 0;height:calc(100% + 40px);min-height:850px;opacity:.72}
+ .people{grid-template-columns:repeat(12,minmax(0,1fr));gap:0;padding:22px 0 0;align-items:start}
+ .person{max-width:245px;min-height:0;padding:14px 14px 16px;border-radius:48% 48% 24px 24px;background:radial-gradient(ellipse at 50% 0%,rgba(221,239,209,.16),rgba(16,53,41,.12) 70%,transparent);border:1px solid #f6d27b52;box-shadow:0 8px 28px #061e1825;backdrop-filter:blur(5px)}
+ .person:nth-child(1){grid-column:1 / span 3;transform:translate(10px,10px)}
+ .person:nth-child(2){grid-column:5 / span 4;transform:translateY(76px)}
+ .person:nth-child(3){grid-column:10 / span 3;transform:translate(-8px,28px)}
+ .person:nth-child(4){grid-column:2 / span 3;transform:translate(20px,80px)}
+ .person:nth-child(5){grid-column:6 / span 3;transform:translate(-4px,118px)}
+ .person:nth-child(6){grid-column:10 / span 3;transform:translate(-12px,98px)}
+ .person:nth-child(1) .portrait-wrap,.person:nth-child(4) .portrait-wrap{width:98px;height:98px}
+ .person:nth-child(2) .portrait-wrap,.person:nth-child(5) .portrait-wrap{width:76px;height:76px}
+ .person:nth-child(3) .portrait-wrap,.person:nth-child(6) .portrait-wrap{width:88px;height:88px}
+ .person:hover,.person:nth-child(3n+2):hover{transform:translateY(-5px)}
+ .person:nth-child(2):hover{transform:translateY(71px)}
+ .person:nth-child(4):hover{transform:translate(20px,75px)}
+ .person:nth-child(5):hover{transform:translate(-4px,113px)}
+ .person:nth-child(6):hover{transform:translate(-12px,93px)}
+}
+@media(max-width:760px){
+ .root-map{max-width:520px}
+ .root-lines{display:block;inset:0 -10px 0;width:calc(100% + 20px);height:100%;min-height:0;opacity:.55}
+ .people{position:relative;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 4px;padding:12px 0 0;align-items:start}
+ .person,.person:nth-child(3n+2){position:relative;max-width:none;width:100%;min-height:0;justify-self:stretch;transform:none;padding:10px 5px 13px;text-align:center;border:0;border-radius:0;background:radial-gradient(ellipse at 50% 10%,rgba(221,239,209,.12),transparent 72%);box-shadow:none;backdrop-filter:none}
+ .person:nth-child(1){margin-top:8px}
+ .person:nth-child(2){margin-top:38px}
+ .person:nth-child(3){margin-top:62px}
+ .person:nth-child(4){margin-top:2px}
+ .person:nth-child(5){margin-top:34px}
+ .person:nth-child(6){margin-top:8px}
+ .portrait-wrap,.person:nth-child(1) .portrait-wrap,.person:nth-child(2) .portrait-wrap,.person:nth-child(3) .portrait-wrap,.person:nth-child(4) .portrait-wrap,.person:nth-child(5) .portrait-wrap,.person:nth-child(6) .portrait-wrap{position:relative;left:auto;top:auto;width:clamp(58px,19vw,82px);height:clamp(58px,19vw,82px);margin:0 auto 9px;padding:3px;border-radius:50%;border:1px solid #f6d27b;box-shadow:0 0 18px #f6d27b35}
+ .portrait{border:1px solid #f6d27b30}
+ .person:before{content:none}
+ .person:after{left:calc(50% + clamp(20px,7vw,31px));top:clamp(45px,15vw,64px);width:7px;height:7px}
+ .person .role,.person h3,.person p,.person .quote{text-align:center}
+ .person .role{font-size:7px;line-height:1.5;letter-spacing:.1em}
+ .person h3{font-size:21px;margin:5px 0 6px}
+ .person p{font-size:10px;line-height:1.55;max-width:210px;margin:0 auto}
+ .person .quote{font-size:15px;margin-top:8px;padding-top:8px}
+ .person:hover,.person:nth-child(3n+2):hover,.person:nth-child(4):hover,.person:nth-child(5):hover,.person:nth-child(6):hover{transform:translateY(-2px)}
+ .closing{margin-top:36px}
+}
+@media(max-width:390px){
+ .people{gap:6px 2px}
+ .person h3{font-size:19px}
+ .person p{font-size:9px}
+ .person .quote{font-size:14px}
+}
+\n</style></head>
 <body>
 <header class="top"><a class="brand" href="index.html" aria-label="FreeDom — на главную"><span class="sun">☼</span><span><b>FreeDom</b><small>SOCHI</small></span></a><a class="home-link" href="index.html"><span aria-hidden="true">←</span> На главную</a></header>
 <main>
