@@ -237,6 +237,9 @@
   ps.forEach((p, j) => p.classList.toggle('selected', j === idx));
   hint.textContent = 'Комнаты выбраны · нажми ещё раз, чтобы открыть';
 })();
+</script><script>
+/* Double-tap the FreeDom wordmark to open the standalone project story. */
+(()=>{const logo=document.querySelector('.brand-top');if(!logo)return;logo.style.cursor='pointer';logo.setAttribute('role','link');logo.setAttribute('tabindex','0');logo.setAttribute('aria-label','Нажми дважды, чтобы открыть историю проекта');let taps=0,timer;const activate=()=>{taps++;if(taps===1){logo.style.textShadow='0 0 18px rgba(255,211,120,.9)';timer=setTimeout(()=>{taps=0;logo.style.textShadow='';},1400)}else{clearTimeout(timer);location.href='project-history.html'}};logo.addEventListener('click',activate);logo.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate()}})})();
 </script></body></html>
 <style>
 /* Reference-inspired project story overlay: preserve the existing home experience. */
