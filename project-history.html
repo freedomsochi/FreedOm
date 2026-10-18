@@ -513,6 +513,43 @@ body:before{position:absolute;inset:0 0 auto;height:100%;min-height:100%;pointer
  .ref-person{position:relative;z-index:1}
 }
 
+
+/* Stable fixed atmosphere and image-free composition prepared for the future tree artwork. */
+body{background:#102d24}
+body:before{
+ position:fixed!important;inset:0!important;height:auto!important;min-height:0!important;
+ background:linear-gradient(180deg,rgba(15,49,38,.23),rgba(13,47,37,.43) 56%,rgba(10,37,29,.78)),radial-gradient(ellipse at 50% 25%,rgba(231,239,195,.18),transparent 55%);
+ pointer-events:none;z-index:-1
+}
+.reference-page{position:relative;isolation:isolate}
+.glass-panel{position:relative}
+.ref-tree-photo{display:none!important}
+.ref-tree-area{
+ position:relative;isolation:isolate;
+ background:radial-gradient(ellipse at 50% 43%,rgba(244,213,133,.13),transparent 38%),radial-gradient(ellipse at 50% 75%,rgba(137,191,148,.12),transparent 52%);
+}
+.ref-tree-area:after{
+ content:"";position:absolute;left:50%;top:9%;bottom:0;width:min(72%,520px);transform:translateX(-50%);
+ border:1px solid rgba(246,210,123,.13);border-bottom:0;
+ border-radius:48% 48% 0 0 / 32% 32% 0 0;
+ background:radial-gradient(ellipse at 50% 34%,rgba(255,236,174,.075),transparent 58%);
+ box-shadow:0 0 65px rgba(246,210,123,.055),inset 0 0 48px rgba(246,210,123,.035);
+ pointer-events:none;z-index:-1
+}
+.ref-title-sign{z-index:2}
+.ref-tree-glow{pointer-events:none}
+.ref-tree-threads{display:none!important}
+.people-roots{overflow:visible}
+@media(max-width:560px){
+ body:before{position:fixed!important;inset:0!important}
+ .ref-tree-area{height:clamp(350px,100vw,430px);background:radial-gradient(ellipse at 50% 42%,rgba(244,213,133,.15),transparent 45%),radial-gradient(ellipse at 50% 78%,rgba(137,191,148,.12),transparent 58%)}
+ .ref-tree-area:after{top:6%;width:78%;border-radius:48% 48% 0 0 / 27% 27% 0 0}
+ .ref-title-sign{top:34%;width:min(68vw,250px)}
+ .ref-people{position:relative}
+ .people-roots{z-index:0}
+}
+@media(prefers-reduced-motion:reduce){body:before{transform:none!important}}
+
 </style></head>
 <body>
 <main class="reference-page">
