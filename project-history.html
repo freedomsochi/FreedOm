@@ -550,6 +550,20 @@ body:before{
 }
 @media(prefers-reduced-motion:reduce){body:before{transform:none!important}}
 
+
+
+/* Natural golden branches connect the tree's roots to each contributor card. */
+.ref-people{position:relative;isolation:isolate}
+.people-roots{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0;opacity:.92}
+.people-roots path{fill:none;stroke:rgba(255,209,108,.88);stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2px rgba(255,182,46,.6))}
+.ref-person .face{width:clamp(56px,6.2vw,86px);padding:2.5px;box-shadow:0 0 13px rgba(255,207,104,.26),0 0 0 3px rgba(255,255,255,.045)}
+.ref-title-sign .leaf,.ref-brand .mark{font-size:.88em}
+@media(max-width:560px){
+ .people-roots{display:block!important;opacity:.78}
+ .people-roots path{stroke-width:1.05;filter:drop-shadow(0 0 2px rgba(255,182,46,.48))}
+ .ref-person .face{width:clamp(48px,15vw,66px);padding:2px;box-shadow:0 0 10px rgba(255,207,104,.22),0 0 0 2px rgba(255,255,255,.04)}
+}
+
 </style></head>
 <body>
 <main class="reference-page">
@@ -605,4 +619,51 @@ body:before{
  }));
 })();
 </script>
+
+<script>
+(function(){
+ const section=document.querySelector('.ref-people');
+ const svg=section&&section.querySelector('.people-roots');
+ if(!section||!svg)return;
+ function drawBranches(){
+  const sr=section.getBoundingClientRect();
+  const cards=[...section.querySelectorAll('.ref-person')];
+  if(!cards.length||!sr.width||!sr.height)return;
+  svg.setAttribute('viewBox','0 0 '+sr.width+' '+sr.height);
+  svg.setAttribute('preserveAspectRatio','none');
+  const ns='http://www.w3.org/2000/svg';
+  svg.replaceChildren();
+  const pts=cards.map(card=>{
+   const r=card.getBoundingClientRect();
+   return {x:r.left-sr.left+r.width/2,y:Math.max(18,r.top-sr.top+Math.min(12,r.height*.08))};
+  });
+  const cx=sr.width/2;
+  const maxY=Math.min(...pts.map(p=>p.y));
+  // A fine central root stem, with gently curved branches splitting toward each card.
+  const trunk=document.createElementNS(ns,'path');
+  trunk.setAttribute('d',`M ${cx} 0 C ${cx-4} ${maxY*.22}, ${cx+5} ${maxY*.48}, ${cx} ${maxY*.7}`);
+  svg.appendChild(trunk);
+  pts.forEach((p,i)=>{
+   const direction=p.x<cx?-1:1;
+   const startY=Math.max(8,Math.min(p.y-12, maxY*.68 + Math.abs(p.x-cx)*.12));
+   const branch=document.createElementNS(ns,'path');
+   const midX=(cx+p.x)/2;
+   const bend=Math.min(36,Math.abs(p.x-cx)*.12)*direction;
+   branch.setAttribute('d',`M ${cx} ${startY} C ${cx+bend} ${startY+12}, ${midX+bend} ${p.y-20}, ${p.x} ${p.y}`);
+   svg.appendChild(branch);
+   if(Math.abs(p.x-cx)>28){
+    const twig=document.createElementNS(ns,'path');
+    twig.setAttribute('d',`M ${midX+bend*.45} ${startY+13} q ${direction*9} 10 ${direction*15} 10`);
+    twig.setAttribute('opacity','.55');
+    svg.appendChild(twig);
+   }
+  });
+ }
+ drawBranches();
+ window.addEventListener('resize',drawBranches,{passive:true});
+ if('ResizeObserver' in window){new ResizeObserver(drawBranches).observe(section);}
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(drawBranches);
+})();
+</script>
+
 </body></html>
