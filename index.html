@@ -28,7 +28,7 @@
 <div class="history-world" id="historyWorld" aria-hidden="true">
   <div class="history-sheet">
     <header class="history-bar">
-      <div><div class="project-kicker">FreeDom · история</div><div class="project-title">История дома</div></div>
+      <div><div class="project-kicker">FreeDom · история проекта</div><div class="project-title">История проекта</div></div>
       <button class="project-close" id="historyClose" type="button" aria-label="Закрыть">×</button>
     </header>
     <div class="history-scroll">
@@ -36,16 +36,16 @@
         <div class="history-tree-wrap">
           <span class="history-ring"></span>
           <span class="history-tree" aria-hidden="true"></span>
-          <div class="history-sign" aria-hidden="true"><span>FREEDOM</span><small>история дома</small></div>
+          <div class="history-sign" aria-hidden="true"><span>История<br>проекта</span><small>✧ · FreeDom Sochi · ✧</small></div>
           <span class="gold-dust dust-1"></span><span class="gold-dust dust-2"></span><span class="gold-dust dust-3"></span><span class="gold-dust dust-4"></span><span class="gold-dust dust-5"></span>
         </div>
         <div class="history-text">
           <div class="project-eyebrow">Корни · люди · путь</div>
-          <h2>Дом, который продолжает расти</h2>
-          <p>История FreeDom складывается из людей, встреч, случайностей, смелых решений и маленьких ежедневных действий. Здесь каждый оставляет что-то своё — как ветвь, которая становится частью общего дерева.</p>
+          <h2>Как всё<br>начиналось</h2>
+          <p>FreeDom — это не просто дом. Это проект, который родился из мечты о месте, где люди могут быть собой, поддерживать друг друга и жить в гармонии с природой.<br><br>Всё началось с одного дерева — символа жизни, свободы и объединения. Оно стало центром нашего пространства, а его корни — связью между всеми, кто вложил в этот проект своё время, энергию и сердце.</p>
         </div>
       </section>
-      <section class="roots-story">
+      <section class="roots-story"><div class="root-line"><span>Идея и основа</span><p>Всё началось с мечты о месте, где можно быть собой, пробовать новое и чувствовать поддержку.</p></div>
         <div class="root-line"><span>Начало</span><p>Дом появился как пространство, где можно остановиться, выдохнуть и снова услышать себя.</p></div>
         <div class="root-line"><span>Люди</span><p>Со временем здесь собрались путешественники, создатели, предприниматели, художники, мыслители и просто люди в поиске своего направления.</p></div>
         <div class="root-line"><span>Сегодня</span><p>FreeDom живёт не по сценарию: события рождаются из инициативы людей, а дом меняется вместе с теми, кто в нём оказывается.</p></div>
@@ -238,3 +238,36 @@
   hint.textContent = 'Комнаты выбраны · нажми ещё раз, чтобы открыть';
 })();
 </script></body></html>
+<style>
+/* Reference-inspired project story overlay: preserve the existing home experience. */
+.history-world{background:rgba(18,39,31,.2);backdrop-filter:blur(18px)}
+.history-sheet{inset:9.5% 5.7%;border-radius:34px;background:linear-gradient(110deg,rgba(22,63,53,.55),rgba(26,77,67,.39)),url('images/room-bungalow.jpg') center/cover;border:1px solid rgba(255,255,255,.64);box-shadow:0 30px 100px rgba(7,29,23,.28),inset 0 0 70px rgba(220,248,227,.12)}
+.history-sheet:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(25,61,50,.35),transparent 45%,rgba(18,56,49,.72));pointer-events:none}
+.history-bar{background:linear-gradient(rgba(17,53,46,.28),transparent);color:#f9f6e8}
+.history-bar .project-kicker,.history-bar .project-title{color:#f8f3e4}
+.history-scroll{padding:32px 3.5vw 40px}
+.history-hero{height:62%;min-height:410px;max-width:none;grid-template-columns:minmax(250px,1fr) minmax(240px,.44fr);gap:3vw;margin:0 auto 8px;position:relative}
+.history-tree-wrap{width:min(43vw,570px);height:min(43vw,570px);background:radial-gradient(ellipse,rgba(252,215,106,.23),transparent 68%);filter:drop-shadow(0 15px 24px rgba(8,30,18,.35))}
+.history-tree{inset:0;width:100%;height:100%;background-image:url('images/logo.png');background-size:contain;filter:drop-shadow(0 0 16px rgba(255,205,82,.4))}
+.history-ring{border-color:rgba(255,205,87,.9);box-shadow:0 0 30px rgba(255,197,76,.34),inset 0 0 25px rgba(255,255,255,.12)}
+.history-tree-wrap:after{border-color:rgba(255,202,90,.6);box-shadow:0 0 24px rgba(255,197,76,.2)}
+.history-sign{bottom:39%;min-width:245px;padding:16px 26px;border:1px solid #f6ce69;border-radius:50% 50% 42% 42%;background:rgba(48,49,21,.48);box-shadow:0 0 25px rgba(255,190,55,.4),inset 0 0 20px rgba(255,212,94,.12)}
+.history-sign span{font:500 clamp(24px,3vw,40px)/.92 'Cormorant Garamond',Georgia,serif;letter-spacing:0;color:#ffe18b;text-shadow:0 0 10px #ffb52e,0 0 25px rgba(255,177,35,.7)}
+.history-sign small{font-size:7px;letter-spacing:.2em;color:#ffe8ae}
+.history-text{padding:20px 1vw;color:#f8f5e9;align-self:center}
+.history-text .project-eyebrow{color:#d7e4c8}
+.history-text h2{font-size:clamp(35px,3.2vw,48px);line-height:.98;color:#fff9e9;margin-bottom:20px}
+.history-text p{font-size:clamp(12px,1.08vw,15px);line-height:1.65;color:rgba(255,255,244,.9)}
+.roots-story{max-width:1100px;margin:0 auto 36px;padding:20px 0 10px 55px}
+.roots-story:before{background:linear-gradient(transparent,#ffd16c 12%,#e5b84e 88%,transparent);box-shadow:0 0 20px rgba(255,199,79,.6)}
+.root-line:before{background:#ffd16c;box-shadow:0 0 15px #ffbd45}
+.root-line span{color:#ffdc83}.root-line p{color:#fff8e8}
+.people-title span{color:#fff6df}.people-title small{color:#d9e7d2}
+.people-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.person-card{border-radius:50% 50% 18px 18px;background:rgba(236,245,222,.16);border-color:rgba(255,255,255,.45);backdrop-filter:blur(12px)}
+.person-card img{height:clamp(90px,10vw,140px);border-radius:50%;width:clamp(90px,10vw,140px);margin:10px auto 0;object-fit:cover;border:2px solid rgba(255,226,145,.9)}
+.person-card div{text-align:center;padding:10px 7px 14px}
+.person-card b{color:#fff5df;font-size:16px}.person-card span{color:#e0e9d5;font-size:8px;letter-spacing:.03em;text-transform:none}
+.history-bar .project-close{color:white;background:rgba(255,255,255,.13)}
+@media(max-width:760px){.history-sheet{inset:1.5%;background-position:center}.history-scroll{padding:82px 17px 28px}.history-hero{height:auto;min-height:0;display:flex;flex-direction:column;gap:5px;margin-bottom:30px}.history-tree-wrap{width:78vw;height:78vw;max-width:320px;max-height:320px}.history-sign{bottom:35%;min-width:180px;padding:11px 14px}.history-sign span{font-size:27px}.history-text{text-align:left;padding:0 6px}.history-text h2{font-size:38px}.history-text p{font-size:12px}.roots-story{padding-left:37px}.roots-story:before{left:12px}.root-line:before{left:-29px}.people-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.person-card img{width:92px;height:92px}.history-bar{height:70px;padding:12px 16px}}
+</style>
