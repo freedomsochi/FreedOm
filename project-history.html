@@ -490,6 +490,29 @@ body:before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradie
   .ref-people{grid-template-columns:repeat(3,minmax(0,1fr));padding:22px 22px 28px}
 }
 
+
+/* Final refinements: clean text-only navigation, stable mobile backdrop, roots aimed at every person. */
+body:before{position:absolute;inset:0 0 auto;height:100%;min-height:100%;pointer-events:none}
+.ref-nav button .nav-icon{display:none!important}
+.ref-nav button{flex-direction:row;gap:0}
+@media(max-width:560px){
+ .ref-nav button{flex-direction:column;justify-content:center;gap:0;white-space:normal}
+ .ref-nav button>span{display:block}
+ .ref-nav button{font-size:9px;line-height:1.2}
+ .ref-tree-photo{animation:none!important;transition:none!important;will-change:auto;transform:translateX(-50%) translateZ(0);backface-visibility:hidden}
+ .ref-tree-area{isolation:isolate;overflow:hidden;contain:paint}
+ .ref-tree-threads{display:none}
+ .ref-people{isolation:isolate;overflow:visible}
+ .people-roots{position:absolute;z-index:0;top:0;left:0;width:100%;height:100%;overflow:visible;pointer-events:none;opacity:.9}
+ .people-roots path{fill:none;stroke:#ffd16c;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 3px #ffb62e)}
+ .ref-person{position:relative;z-index:1}
+}
+@media(min-width:561px){
+ .people-roots{position:absolute;z-index:0;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;opacity:.8}
+ .people-roots path{fill:none;stroke:#ffd16c;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 3px #ffb62e)}
+ .ref-person{position:relative;z-index:1}
+}
+
 </style></head>
 <body>
 <main class="reference-page">
@@ -499,18 +522,18 @@ body:before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradie
   <aside class="ref-sidebar">
    <a class="ref-brand" href="index.html" aria-label="FreeDom Sochi — главная"><span class="mark">☼</span><strong>FreeDom</strong><small>SOCHI</small></a>
    <nav class="ref-nav" aria-label="Разделы о доме">
-    <button type="button" data-story="home"><span class="nav-icon">♧</span><span>О доме</span></button>
-    <button type="button" data-story="history" class="active"><span class="nav-icon">♧</span><span>История<br>проекта</span></button>
-    <button type="button" data-story="values"><span class="nav-icon">♡</span><span>Ценности</span></button>
-    <button type="button" data-story="team"><span class="nav-icon">♧</span><span>Команда</span></button>
-    <button type="button" data-story="gallery"><span class="nav-icon">▧</span><span>Галерея</span></button>
+    <button type="button" data-story="home"><span>О доме</span></button>
+    <button type="button" data-story="history" class="active"><span>История<br>проекта</span></button>
+    <button type="button" data-story="values"><span>Ценности</span></button>
+    <button type="button" data-story="team"><span>Команда</span></button>
+    <button type="button" data-story="gallery"><span>Галерея</span></button>
    </nav>
   </aside>
   <div class="ref-tree-area" aria-label="Дерево как символ истории FreeDom">
    <img class="ref-tree-photo" src="https://images.unsplash.com/photo-1542544703-60b14024561f?auto=format&fit=crop&w=1400&q=88" alt="Большое дерево в тёплом природном свете" fetchpriority="high" decoding="async">
    <div class="ref-tree-glow" aria-hidden="true"></div>
    <div class="ref-title-sign"><span class="leaf">♧</span><h1>История<br>проекта</h1><span class="ornament"></span></div>
-   <div class="ref-tree-threads" aria-hidden="true"><svg viewBox="0 0 900 180" preserveAspectRatio="none"><path d="M450 0 C440 45 320 45 270 85 S160 100 80 170"/><path d="M450 0 C465 45 580 55 630 90 S760 110 830 170"/><path d="M450 0 C425 50 410 90 360 120 S310 145 290 180"/><path d="M450 0 C475 55 490 90 540 120 S600 150 620 180"/><path d="M450 0 C450 60 450 100 450 180"/><path d="M270 85 l-30 -8 M270 85 l-6 25 M630 90 l30 -8 M630 90 l6 25"/></svg></div>
+   
   </div>
   <article class="ref-story" aria-live="polite">
    <h2>Как всё<br>начиналось</h2>
@@ -518,7 +541,7 @@ body:before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradie
    <p>Всё началось с одного дерева — символа жизни, свободы и объединения. Оно стало центром нашего пространства, а его корни — связью между всеми, кто вложил в этот проект своё время, энергию и сердце.</p>
    <a class="story-cta" href="#people"><span>Узнать больше<br>о проекте</span><span aria-hidden="true">→</span></a>
   </article>
-  <section class="ref-people" id="people" aria-label="Люди FreeDom">
+  <section class="ref-people" id="people" aria-label="Люди FreeDom"><svg class="people-roots" aria-hidden="true" focusable="false"></svg>
    <article class="ref-person"><div class="face"><img src="https://i.pravatar.cc/180?img=12" alt="Портрет Ильи" loading="lazy"></div><h3>Илья</h3><div class="role">Идея и основа</div><div class="quote">Всё началось<br>с мечты</div></article>
    <article class="ref-person"><div class="face"><img src="https://i.pravatar.cc/180?img=47" alt="Портрет Ани" loading="lazy"></div><h3>Аня</h3><div class="role">Природа и гармония</div><div class="quote">Здесь всё<br>дышит</div></article>
    <article class="ref-person"><div class="face"><img src="https://i.pravatar.cc/180?img=11" alt="Портрет Димы" loading="lazy"></div><h3>Дима</h3><div class="role">Строительство</div><div class="quote">Делать —<br>значит жить</div></article>
