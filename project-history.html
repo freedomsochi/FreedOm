@@ -595,6 +595,13 @@ body:before{
 .ref-nav button{display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
 .ref-nav button>span:not(.nav-icon){flex:1;text-align:center!important}
 .tree-branch-overlay{clip-path:none}
+/* Correct the composition relative to the whole panel, not just the middle grid column. */
+@media(min-width:901px){.ref-title-sign{left:calc(50% - 84px)!important}}
+@media(max-width:900px){.ref-title-sign{left:50%!important}}
+/* Never draw decorative roots over the introductory story copy. */
+.tree-branch-overlay{pointer-events:none!important}
+.ref-story{z-index:10!important}
+.ref-story>*{position:relative;z-index:11}
 </style></head>
 <body>
 <main class="reference-page">
@@ -664,8 +671,9 @@ body:before{
   defs.innerHTML='<linearGradient id="rootGold" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0%" stop-color="#fff0b2"/><stop offset="48%" stop-color="#f6c85f"/><stop offset="100%" stop-color="#b98632"/></linearGradient>';
   const clip=document.createElementNS(ns,'clipPath');clip.setAttribute('id','rootsPeopleOnly');
   const clipRect=document.createElementNS(ns,'rect');
-  clipRect.setAttribute('x',peopleRect.left-pr.left);clipRect.setAttribute('y',peopleRect.top-pr.top);
-  clipRect.setAttribute('width',peopleRect.width);clipRect.setAttribute('height',peopleRect.height);
+  const rootsVisibleFrom=Math.max(peopleRect.top,sr?sr.bottom:peopleRect.top)+6;
+  clipRect.setAttribute('x',peopleRect.left-pr.left);clipRect.setAttribute('y',rootsVisibleFrom-pr.top);
+  clipRect.setAttribute('width',peopleRect.width);clipRect.setAttribute('height',Math.max(0,pr.bottom-rootsVisibleFrom));
   clip.appendChild(clipRect);defs.appendChild(clip);svg.appendChild(defs);svg.setAttribute('clip-path','url(#rootsPeopleOnly)');
   const cx=tr.left-pr.left+tr.width*.5,base=tr.top-pr.top+tr.height*.89;
   const storyBottom=sr?sr.bottom-pr.top:base+60;
