@@ -94,15 +94,35 @@
  .person h3{font-size:21px}
  .person p{font-size:10px}
 }
+
+/* Natural tree photography replaces the synthetic vector tree */
+.tree-illustration{display:none!important}
+.tree-photo{position:absolute;z-index:1;left:50%;top:1%;transform:translateX(-50%);width:min(100%,760px);height:98%;object-fit:cover;object-position:center 38%;border-radius:46% 46% 18% 18%;opacity:.94;filter:saturate(.95) brightness(1.02);mask-image:linear-gradient(to bottom,#000 0%,#000 72%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 72%,transparent 100%)}
+.tree-aura{z-index:2;top:2%;width:min(76vw,690px);aspect-ratio:1;border-color:#f6d27bba;box-shadow:0 0 18px #f6d27b65,0 0 50px #f6d27b32,inset 0 0 45px #f6d27b1b}
+.tree-aura:before{border-color:#f6d27b80}.tree-aura:after{border-color:#f6d27b40}
+.sign{top:11%;width:min(620px,78%);aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:clamp(20px,4vw,48px) 24px 0;background:radial-gradient(ellipse at 50% 45%,rgba(13,39,29,.22),rgba(15,44,33,.08) 65%,transparent 72%);border-color:#f6d27b66;box-shadow:0 0 15px #f6d27b55,inset 0 0 26px #f6d27b12;backdrop-filter:none}
+@media(max-width:760px){
+ .tree-photo{width:115%;height:94%;top:4%;object-position:center 35%;border-radius:42% 42% 10% 10%;mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%)}
+ .tree-aura{top:7%;width:min(88vw,420px)}
+ .sign{top:10%;width:min(88vw,400px);padding:27px 20px 0;aspect-ratio:1}
+ .sign h1{font-size:clamp(27px,7.5vw,38px)}
+ .sign small{font-size:7px;letter-spacing:.15em;line-height:1.6}
+ .mobile-tree-root{height:auto}
+ .mobile-tree-root svg{max-height:220px}
+}
+@media(max-width:390px){
+ .tree-photo{width:124%;height:91%;top:6%;object-position:center 34%}
+ .tree-aura{width:90vw;top:8%}
+ .sign{top:11%;width:88vw;padding-top:27px}
+ .sign h1{font-size:29px}
+ .mobile-tree-root svg{max-height:200px}
+}
 </style></head>
 <body>
 <header class="top"><a class="brand" href="index.html" aria-label="FreeDom — на главную"><span class="sun">☼</span><span><b>FreeDom</b><small>SOCHI</small></span></a><a class="home-link" href="index.html"><span aria-hidden="true">←</span> На главную</a></header>
 <main>
 <section class="hero" aria-labelledby="tree-title"><div class="tree-stage">
-<svg class="tree-illustration" viewBox="0 0 800 900" role="img" aria-label="Дерево FreeDom с раскидистыми ветвями и корнями"><defs><linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d5e8a7"/><stop offset=".48" stop-color="#719b63"/><stop offset="1" stop-color="#2d664b"/></linearGradient><linearGradient id="wood" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#805d39"/><stop offset=".48" stop-color="#e3c18a"/><stop offset="1" stop-color="#735333"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-<g class="tree-crown" fill="url(#leaf)" stroke="#d8e8ad" stroke-opacity=".25" stroke-width="2"><ellipse cx="400" cy="180" rx="106" ry="112"/><ellipse cx="305" cy="218" rx="108" ry="100"/><ellipse cx="492" cy="224" rx="112" ry="104"/><ellipse cx="230" cy="278" rx="86" ry="83"/><ellipse cx="570" cy="282" rx="91" ry="86"/><ellipse cx="330" cy="302" rx="110" ry="96"/><ellipse cx="462" cy="310" rx="114" ry="100"/><ellipse cx="397" cy="120" rx="72" ry="76"/></g>
-<g fill="none" stroke="url(#wood)" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="27" d="M400 548 C393 450 409 359 400 280 C394 232 365 205 342 176 M400 370 C365 328 320 292 274 274 M401 344 C438 303 481 273 525 260 M394 430 C354 394 310 373 264 365 M405 420 C452 384 493 365 543 356"/><path stroke-width="15" d="M342 176 L309 150 M274 274 L250 234 M525 260 L552 218 M264 365 L227 341 M543 356 L579 323 M400 280 L420 225 M365 328 L348 278 M452 384 L476 332"/></g>
-<g fill="none" stroke="#c9aa72" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="16" d="M400 520 C390 604 330 633 268 672 C231 695 214 731 188 762 M397 548 C423 623 486 643 541 677 C580 700 596 739 625 768 M400 564 C380 644 383 703 351 752 C333 779 312 797 291 824 M409 571 C432 657 432 710 464 759 C484 788 510 809 533 830"/><path stroke-width="7" d="M268 672 C252 650 233 642 209 636 M268 672 C286 702 289 724 279 751 M188 762 L153 783 M541 677 C561 657 585 649 609 650 M541 677 C528 705 531 728 545 751 M625 768 L662 791 M351 752 L333 789 M464 759 L478 796"/></g></svg>
+<img class="tree-photo" src="https://images.unsplash.com/photo-1542544703-60b14024561f?auto=format&fit=crop&w=1000&q=68" alt="Старое дерево с раскидистой кроной, мощным стволом и открытыми корнями" fetchpriority="high" decoding="async">
 <div class="tree-aura" aria-hidden="true"></div><div class="sign"><h1 id="tree-title">История дома</h1><small>FREEDOM · ЛЮДИ · ПРИРОДА · СВОБОДА</small></div>
 <div class="intro"><div class="eyebrow">Всё начинается с корней</div><p>FreeDom растёт благодаря людям, которые однажды поверили в идею, приложили руки, поделились мечтой или просто остались рядом.</p></div>
 </div><a class="scroll-cue" href="#roots-story"><span>Проследить корни</span><i></i></a></section>
