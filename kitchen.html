@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#e9d9b7">
-<title>Кухня FreeDom — еда, которой делятся</title>
+<title>FreeDom Kitchen — природная кухня</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--forest:#264a3a;--moss:#62785a;--cream:#f8f0df;--gold:#b98d4d;--ink:#25392f;--glass:rgba(255,250,238,.72)}
 *{box-sizing:border-box}
@@ -129,11 +129,11 @@ body.dialog-open{overflow:hidden}
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><span class="brand-mark">✳</span><span>FreeDom · кухня</span></div>
+  <div class="brand"><span class="brand-mark">☼</span><span>FreeDom<br><small style="font-weight:400;letter-spacing:.3em">KITCHEN</small></span></div>
   <a class="home-link" href="index.html">← На главную</a>
 </header>
 <main>
-  <section class="hero">
+  <section class="hero"><div class="hero-label">☼ Сочи · свежие ингредиенты</div>
     <div>
       <div class="eyebrow">Еда · люди · общий стол</div>
       <h1>Кухня,<br>где делятся</h1>
@@ -182,14 +182,6 @@ body.dialog-open{overflow:hidden}
     </div>
   </section>
   <aside class="note"><span class="note-mark">☀</span><span>Открой карточку блюда, чтобы посмотреть состав и подготовить заказ. Рецептуры ниже пока предварительные — перед запуском их нужно подтвердить с Джефом. Цены и наличие добавим после согласования.</span></aside>
-  <section class="menu" aria-label="Меню кухни FreeDom">
-    <article class="dish"><div class="dish-visual"><span class="dish-number">01 / RAW</span><span class="food">🌯</span></div><div class="dish-copy"><h3>Сыроедческая шаурма</h3><p>Живой рецепт от Джефа.</p><div class="signature">От Джефа</div></div></article>
-    <article class="dish"><div class="dish-visual"><span class="dish-number">02 / FRESH</span><span class="food">🥤</span></div><div class="dish-copy"><h3>Фирменное смузи</h3><p>Фирменный микс от Джефа.</p><div class="signature">От Джефа</div></div></article>
-    <article class="dish"><div class="dish-visual"><span class="dish-number">03 / SWEET</span><span class="food">🍰</span></div><div class="dish-copy"><h3>Сыроедческий тортик из фруктов</h3><p>Фруктовый десерт без выпечки.</p><div class="signature">Фруктовый десерт</div></div></article>
-    <article class="dish"><div class="dish-visual"><span class="dish-number">04 / WARM</span><span class="food">🍲</span></div><div class="dish-copy"><h3>Тыквенный крем-суп на кокосовом молоке</h3><p>Тёплый, нежный суп для общего стола.</p><div class="signature">Тёплая кухня</div></div></article>
-    <article class="dish"><div class="dish-visual"><span class="dish-number">05 / SWEET</span><span class="food">🍬</span></div><div class="dish-copy"><h3>Конфеты из фиников</h3><p>Небольшое сладкое угощение к чаю.</p><div class="signature">К чаю</div></div></article>
-  </section>
-
 </main>
 
 <div class="menu-dialog" id="dishDialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
@@ -269,3 +261,60 @@ body.dialog-open{overflow:hidden}
 </script>
 </body>
 </html>
+<style>
+/* Eco-futurist glass panels and natural-light composition based on the supplied kitchen reference */
+:root{--forest:#234c40;--moss:#7c9a78;--cream:#f8f0df;--gold:#f1d17d;--ink:#f8f6e8;--glass:rgba(218,237,219,.34)}
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{color:#f7f5e8;background:#789d8c;font-family:Manrope,Arial,sans-serif}
+body:before{z-index:-3;background:linear-gradient(100deg,rgba(25,62,52,.16),rgba(24,70,58,.02) 44%,rgba(20,57,49,.18)),url('images/room-bungalow.jpg') center/cover fixed,linear-gradient(135deg,#c8dfcf,#77a89d 52%,#e9d9b7)}
+body:after{z-index:-2;opacity:.08;background-image:radial-gradient(#fff 0.7px,transparent .7px);background-size:17px 17px}
+.topbar{position:sticky;background:rgba(202,230,222,.26);border-bottom:1px solid rgba(255,255,255,.38);backdrop-filter:blur(22px);color:#fff;min-height:82px}
+.brand{color:#fff;font:500 22px/1 'Cormorant Garamond',Georgia,serif;letter-spacing:.1em;text-transform:none}
+.brand-mark{width:36px;height:36px;border-color:rgba(255,255,255,.7);color:#fff;font-size:22px}
+.home-link{color:#fff;border-color:rgba(255,255,255,.58);background:rgba(220,240,230,.18);backdrop-filter:blur(12px)}
+.home-link:hover{background:rgba(234,255,244,.48);color:#244c40}
+main{max-width:1480px;padding:clamp(20px,4vw,52px) clamp(14px,4vw,52px) 54px}
+.hero{position:relative;min-height:245px;grid-template-columns:1.1fr .7fr;gap:25px;border-radius:28px;border:1px solid rgba(255,255,255,.58);background:linear-gradient(110deg,rgba(216,239,222,.54),rgba(190,223,215,.24));backdrop-filter:blur(22px);box-shadow:0 24px 80px rgba(15,48,38,.16),inset 0 1px 0 rgba(255,255,255,.55);padding:clamp(25px,4vw,44px)}
+.hero:before{right:-120px;top:-190px;border-color:rgba(255,255,255,.22);box-shadow:0 0 0 24px rgba(255,255,255,.06),0 0 0 52px rgba(255,255,255,.04)}
+.hero:after{background:linear-gradient(90deg,transparent,#e8d17d,#fff4ce,transparent)}
+.eyebrow{color:#e5eacb;font-size:10px;letter-spacing:.22em}
+h1{font:400 clamp(43px,6vw,72px)/.91 'Cormorant Garamond',Georgia,serif;letter-spacing:0;color:#fff9e9;text-shadow:0 3px 28px rgba(24,58,46,.16);margin:13px 0}
+.hero p{color:rgba(255,255,244,.9);font-size:13px;line-height:1.7;max-width:500px}
+.hero-art{height:205px}
+.hero-art:before{border-color:rgba(255,255,255,.6);box-shadow:0 0 0 12px rgba(255,255,255,.08),0 0 50px rgba(214,245,213,.18),inset 0 0 34px rgba(255,255,255,.15)}
+.plate{background:radial-gradient(circle,#e7f0d8 0 42%,#d5c17d 43% 46%,#fff7e4 47% 57%,#8fb69a 58% 61%,rgba(255,255,255,.25) 62%);box-shadow:0 20px 42px rgba(12,50,38,.23),0 0 35px rgba(225,249,215,.2);font-size:76px}
+.leaf{filter:drop-shadow(0 6px 10px rgba(15,55,36,.3))}
+.section-head{margin:35px 2px 17px}
+.section-head h2{font:400 clamp(32px,4vw,42px)/1 'Cormorant Garamond',Georgia,serif;color:#fff8e8}
+.section-head p{color:rgba(255,255,238,.74);font-size:10px}
+.menu-nav{gap:10px;margin:20px 0 34px}
+.menu-nav a{color:#fff9e9;border:1px solid rgba(255,255,255,.48);background:rgba(201,233,220,.26);backdrop-filter:blur(22px);box-shadow:0 12px 35px rgba(18,53,43,.12);border-radius:17px;padding:15px 17px}
+.menu-nav a:hover{background:rgba(227,247,229,.46)}
+.menu-nav a small{color:#f5e7ba}
+.menu-section{scroll-margin-top:105px;margin-top:38px}
+.menu-section .section-head .eyebrow{color:#f2df9f}
+.dish{border-radius:19px;border:1px solid rgba(255,255,255,.6);background:linear-gradient(145deg,rgba(217,241,224,.42),rgba(171,211,199,.28));backdrop-filter:blur(18px);box-shadow:0 15px 35px rgba(13,48,37,.14),inset 0 1px 0 rgba(255,255,255,.3);min-height:290px}
+.dish:hover{box-shadow:0 22px 45px rgba(13,48,37,.22);background:linear-gradient(145deg,rgba(226,245,225,.54),rgba(176,220,204,.35))}
+.dish-visual{height:160px;background:linear-gradient(135deg,rgba(196,222,173,.75),rgba(242,218,159,.72))}
+.dish:nth-child(2) .dish-visual{background:linear-gradient(135deg,rgba(181,217,179,.76),rgba(231,225,172,.72))}
+.dish:nth-child(3) .dish-visual{background:linear-gradient(135deg,rgba(239,211,160,.76),rgba(250,238,204,.72))}
+.dish:nth-child(4) .dish-visual{background:linear-gradient(135deg,rgba(227,191,140,.76),rgba(246,225,174,.72))}
+.dish:nth-child(5) .dish-visual{background:linear-gradient(135deg,rgba(190,216,171,.76),rgba(229,211,167,.72))}
+.dish h3,.dish-title{font:400 25px/1.1 'Cormorant Garamond',Georgia,serif;color:#fff8e7}
+.dish p,.dish-desc{font-size:11px;color:rgba(255,255,241,.83)}
+.dish-copy:before{background:linear-gradient(90deg,transparent,rgba(255,237,180,.45),transparent)}
+.dish-tag{border-color:rgba(255,236,175,.42);color:#fff0b9}
+.dish-number{color:#315847}
+.signature{color:#f5e2a6}
+.signature:before{background:#f0d27b}
+.open-card{color:#315548;background:rgba(244,250,224,.84)}
+.note{background:rgba(211,234,216,.27);border-color:rgba(255,255,255,.42);backdrop-filter:blur(18px);color:#fff9e9}
+footer{color:rgba(255,255,238,.75)}
+.menu-dialog{background:rgba(17,48,39,.48);backdrop-filter:blur(18px)}
+.dialog-panel{background:linear-gradient(145deg,rgba(236,246,226,.97),rgba(203,226,207,.96));color:#294b3d;border:1px solid rgba(255,255,255,.85);box-shadow:0 30px 100px rgba(9,34,25,.3)}
+.dialog-panel h2,.dialog-panel h3{color:#294b3d;font-family:'Cormorant Garamond',Georgia,serif}
+.dialog-description,.dialog-meta{color:#536e5a}
+.primary-action{background:#b7e5d8;color:#244c40;border:1px solid rgba(255,255,255,.8)}
+.secondary-action{color:#315546;border-color:rgba(49,85,70,.3)}
+@media(max-width:760px){.hero{grid-template-columns:1fr;padding:24px 21px 8px}.hero-art{height:160px}.hero-art:before{width:160px;height:160px}.menu-nav{grid-template-columns:1fr}.menu-nav a{padding:12px 15px}.menu-nav a>span{font-size:23px}.dish{min-height:0}.dish-visual{height:145px}.brand{font-size:18px}}
+</style>
