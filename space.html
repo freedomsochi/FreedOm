@@ -383,7 +383,7 @@ html,body{margin:0;width:100%;max-width:100%}
     window.setTimeout(() => { programmaticScroll = false; }, 700);
   }
   function settleToScene() {
-    if (programmaticScroll) return;
+    if (programmaticScroll || isTouching) return;
     const list = scenes();
     if (!list.length) return;
     const index = nearestSceneIndex(list);
@@ -394,27 +394,57 @@ html,body{margin:0;width:100%;max-width:100%}
     window.clearTimeout(settleTimer);
     settleTimer = window.setTimeout(settleToScene, 180);
   }, {passive:true});
+  let startAt = 0, lastY = 0, isTouching = false, draggedContinuously = false;
   document.addEventListener('touchstart', event => {
     if (event.touches.length !== 1) return;
-    startX = event.touches[0].clientX;
-    startY = event.touches[0].clientY;
-    startIndex = nearestSceneIndex(scenes());
     startedInGallery = !!event.target.closest('.h-scroll');
+    if (startedInGallery) return;
+    const touch = event.touches[0];
+    startX = touch.clientX;
+    startY = lastY = touch.clientY;
+    startAt = Date.now();
+    startIndex = nearestSceneIndex(scenes());
+    isTouching = true;
+    draggedContinuously = false;
+    window.clearTimeout(settleTimer);
   }, {passive:true});
+  document.addEventListener('touchmove', event => {
+    if (!isTouching || startedInGallery || event.touches.length !== 1) return;
+    const touch = event.touches[0];
+    const dx = touch.clientX - startX, dy = touch.clientY - startY;
+    if (Math.abs(dx) > Math.abs(dy) * 1.15 || Math.abs(dy) < 8) return;
+    event.preventDefault();
+    window.scrollBy(0, lastY - touch.clientY);
+    lastY = touch.clientY;
+    draggedContinuously = true;
+  }, {passive:false});
   document.addEventListener('touchend', event => {
+    if (!isTouching) return;
+    isTouching = false;
     if (event.changedTouches.length !== 1 || startedInGallery || event.target.closest('.h-scroll')) return;
     const touch = event.changedTouches[0];
     const dx = touch.clientX - startX, dy = touch.clientY - startY;
-    if (Math.abs(dy) < threshold || Math.abs(dy) < Math.abs(dx) * 1.2) return;
-    const now = Date.now();
-    if (now - lastGestureAt < 650) return;
+    if (Math.abs(dy) < threshold || Math.abs(dy) < Math.abs(dx) * 1.2) { settleToScene(); return; }
     const list = scenes();
     if (!list.length) return;
-    const next = Math.max(0, Math.min(list.length - 1, startIndex + (dy < 0 ? 1 : -1)));
-    if (next === startIndex) return;
-    lastGestureAt = now;
     window.clearTimeout(settleTimer);
+    const heldLongEnough = Date.now() - startAt >= 280;
+    const draggedFarEnough = Math.abs(dy) >= window.innerHeight * 0.22;
+    if (draggedContinuously && heldLongEnough && draggedFarEnough) {
+      settleToScene();
+      return;
+    }
+    const now = Date.now();
+    if (now - lastGestureAt < 500) { settleToScene(); return; }
+    const next = Math.max(0, Math.min(list.length - 1, startIndex + (dy < 0 ? 1 : -1)));
+    if (next === startIndex) { settleToScene(); return; }
+    lastGestureAt = now;
     goToScene(list[next]);
+  }, {passive:true});
+  document.addEventListener('touchcancel', () => {
+    if (!isTouching) return;
+    isTouching = false;
+    settleToScene();
   }, {passive:true});
   window.addEventListener('resize', () => {
     window.clearTimeout(settleTimer);
