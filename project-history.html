@@ -226,7 +226,7 @@ body:before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradie
 .ref-nav button .nav-icon{width:22px;flex:0 0 22px;font-size:20px;text-align:center;color:#fff9e8}
 .ref-nav button.active,.ref-nav button:hover{background:linear-gradient(100deg,rgba(224,255,248,.55),rgba(193,244,233,.18));border-color:rgba(255,255,255,.4);box-shadow:0 0 28px rgba(206,255,239,.12);color:#fff}
 .ref-close{position:absolute;right:26px;top:26px;z-index:7;width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(231,249,241,.15);color:#fff;font-size:27px;font-weight:200;cursor:pointer;display:grid;place-items:center}
-.ref-home{position:absolute;left:22px;top:18px;z-index:8;color:#fff;text-decoration:none;font-size:11px;opacity:.9;display:none}
+.ref-home{position:absolute;left:22px;top:18px;z-index:8;color:#fff;text-decoration:none;font-size:11px;opacity:.9;display:block}
 .ref-tree-area{grid-column:2;grid-row:1;position:relative;min-width:0;min-height:510px;display:flex;align-items:center;justify-content:center;isolation:isolate}
 .ref-tree-area:before{content:"";position:absolute;inset:3% 0 -3%;background:radial-gradient(ellipse at 50% 58%,rgba(255,204,84,.35),transparent 47%),radial-gradient(ellipse at 50% 85%,rgba(255,231,160,.25),transparent 48%);z-index:-1;pointer-events:none}
 .ref-tree-photo{position:absolute;z-index:-1;width:min(108%,780px);height:110%;max-height:820px;object-fit:contain;object-position:center center;filter:saturate(1.13) contrast(1.04) drop-shadow(0 16px 28px rgba(8,35,24,.3));opacity:.98;mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 88%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 88%,transparent 100%)}
@@ -627,12 +627,21 @@ body:before{
  .ref-tree-area{background-position:center 38%;background-size:cover;border-radius:0}
 }
 
+
+/* Tree interaction: a quiet golden response, not a new layout layer. */
+.ref-tree-area{cursor:pointer}
+.ref-tree-area.tree-awaken .ref-tree-glow{animation:tree-light-up .95s ease-out}
+.ref-tree-area.tree-awaken .ref-title-sign{animation:tree-sign-turn .85s ease-out}
+.tree-spark{position:absolute;z-index:5;left:var(--sx);top:var(--sy);width:4px;height:4px;border-radius:50%;pointer-events:none;background:#ffe8a1;box-shadow:0 0 8px 2px rgba(255,205,91,.8);animation:tree-spark-flight 1.25s ease-out forwards}
+@keyframes tree-light-up{0%{filter:brightness(1)}35%{filter:brightness(1.65)}100%{filter:brightness(1)}}
+@keyframes tree-sign-turn{0%{transform:translate(-50%,-50%) rotate(0)}35%{transform:translate(-50%,-50%) rotate(-2deg)}70%{transform:translate(-50%,-50%) rotate(1deg)}100%{transform:translate(-50%,-50%) rotate(0)}}
+@keyframes tree-spark-flight{0%{opacity:0;transform:translate(0,8px) scale(.5)}18%{opacity:1}100%{opacity:0;transform:translate(var(--sx-drift),-90px) scale(0)}}
+@media(prefers-reduced-motion:reduce){.ref-tree-area.tree-awaken .ref-tree-glow,.ref-tree-area.tree-awaken .ref-title-sign,.tree-spark{animation:none!important}}
 </style></head>
 <body>
 <main class="reference-page">
  <section class="glass-panel" aria-label="История проекта FreeDom">
   <a class="ref-home" href="index.html">← На главную</a>
-  <button class="ref-close" type="button" aria-label="Закрыть" onclick="location.href='index.html'">×</button>
   <aside class="ref-sidebar">
    <a class="ref-brand" href="index.html" aria-label="FreeDom Sochi — главная"><span class="mark">☼</span><strong>FreeDom</strong><small>SOCHI</small></a>
    <nav class="ref-nav" aria-label="Разделы о доме">
@@ -727,4 +736,28 @@ body:before{
 })();
 </script>
 
+
+<script>
+(function(){
+ const tree=document.querySelector('.ref-tree-area');
+ if(!tree)return;
+ const positions=[[26,68,-18],[35,54,12],[43,72,-8],[56,61,17],[66,48,-15],[73,67,10],[49,43,5],[31,39,-12]];
+ tree.addEventListener('click',()=>{
+  tree.classList.remove('tree-awaken');
+  void tree.offsetWidth;
+  tree.classList.add('tree-awaken');
+  positions.forEach(([x,y,drift],i)=>{
+   const spark=document.createElement('span');
+   spark.className='tree-spark';
+   spark.style.setProperty('--sx',x+'%');
+   spark.style.setProperty('--sy',y+'%');
+   spark.style.setProperty('--sx-drift',drift+'px');
+   spark.style.animationDelay=(i*35)+'ms';
+   tree.appendChild(spark);
+   window.setTimeout(()=>spark.remove(),1450+i*35);
+  });
+  window.setTimeout(()=>tree.classList.remove('tree-awaken'),1000);
+ });
+})();
+</script>
 </body></html>
