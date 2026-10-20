@@ -141,6 +141,37 @@ body{overflow:hidden;background:#b5d7bd}
  .top>div:not(.brandgroup){display:none}
 }
 
+
+/* Mobile territory view: preserve the portrait aerial photo instead of cropping it into a wide panel. */
+@media(max-width:850px){
+ body{overflow-x:hidden;overflow-y:auto;min-height:100dvh;height:auto}
+ .top{position:relative;z-index:10;left:auto;right:auto;top:auto;width:100%;padding:14px 14px 10px;gap:10px}
+ .dates{order:3;display:flex;width:100%;flex:0 0 100%;justify-content:space-between;gap:8px;margin:4px 0 0;padding:9px 10px}
+ .date{flex:1;min-width:0}
+ .date input{display:block;width:100%;min-width:0}
+ .search{flex:0 0 auto}
+ .left{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:100%;display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;padding:8px 14px 12px;gap:10px;scroll-snap-type:x proximity}
+ .roomcard{flex:0 0 170px;width:170px;max-width:170px;scroll-snap-align:start}
+ .model{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:calc(100% - 28px);height:auto;min-height:0;aspect-ratio:3/4;margin:4px 14px 14px;overflow:hidden}
+ .scene{background-position:center center;background-size:cover}
+ .pin{max-width:44%;white-space:normal;line-height:1.2;font-size:clamp(9px,2.7vw,12px);padding:7px 9px}
+ .modelhint{max-width:70%;font-size:10px}
+ .details{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:auto;margin:0 14px 18px;max-height:none;overflow:visible}
+ .heroimg{height:clamp(170px,52vw,240px)}
+ .staytypes{top:10px;left:50%;max-width:calc(100% - 64px);gap:3px}
+ .staytypes button{padding:8px 9px;font-size:10px}
+ .mobiletabs{display:none}
+}
+@media(max-width:380px){
+ .logo{font-size:20px}
+ .dates{padding:8px 7px;gap:5px}
+ .date input{font-size:11px}
+ .roomcard{flex-basis:156px;width:156px;max-width:156px}
+ .model{width:calc(100% - 20px);margin-left:10px;margin-right:10px}
+ .staytypes{max-width:calc(100% - 44px)}
+ .staytypes button{padding:7px 6px;font-size:9px}
+}
+
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates"><label class="date">Заезд<input id="checkin" type="date" value="2026-10-20"></label><label class="date">Выезд<input id="checkout" type="date" value="2026-10-23"></label><button class="search" id="search" aria-label="Найти">⌕</button></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist">
