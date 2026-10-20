@@ -101,6 +101,7 @@ body{overflow:hidden;background:#b5d7bd}
 .model .scene{z-index:0}
 .model .staytypes{z-index:7}
 .model .pin{z-index:4}
+.bungalow-pin{--x:22%;--y:18%;border-color:rgba(255,226,156,.95);background:rgba(86,63,31,.74)}
 .model .modelhint{z-index:4}
 .left,.details{scrollbar-width:thin;scrollbar-color:rgba(232,255,248,.58) rgba(13,69,60,.12)}
 .left::-webkit-scrollbar,.details::-webkit-scrollbar{width:5px;height:5px}
@@ -178,7 +179,7 @@ body{overflow:hidden;background:#b5d7bd}
 <article class="roomcard active" data-category="rooms" data-room="0"><img src="images/room-family.jpg"><div class="roomname">Семейная</div><div class="meta">♙ 4 гостя &nbsp; ◇ 38 м² <span class="available">• Доступно</span></div></article>
 <article class="roomcard" data-category="hostel" data-room="1"><img src="images/room-hostel.jpg"><div class="roomname">Хостел (стандарт)</div><div class="meta">♙ 6 гостей &nbsp; ◇ 24 м² <span class="available">• Доступно</span></div></article>
 <article class="roomcard" data-category="rooms" data-room="2"><img src="images/room-balcony.jpg"><div class="roomname">Комната с видом</div><div class="meta">♙ 2 гостя &nbsp; ◇ 18 м² <span class="available">• Доступно</span></div></article><div class="emptycategory" id="emptycategory">Бунгало в саду<br><span style="opacity:.86">Отдельный вариант размещения в саду.</span><br><span id="bungalowstatus" class="availability-status status-checking">Проверяем доступность…</span></div></section>
-<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button class="active" type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="compass">360°</div><button class="pin" style="--x:44%;--y:40%" data-room="0">Семейная</button><button class="pin" style="--x:53%;--y:57%" data-room="1">Хостел</button><button class="pin" style="--x:64%;--y:68%" data-room="2">Комната с видом</button><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><div class="mobiletabs">Модель пространства · 360°</div></section>
+<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button class="active" type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="compass">360°</div><button class="pin" style="--x:44%;--y:40%" data-room="0">Семейная</button><button class="pin" style="--x:53%;--y:57%" data-room="1">Хостел</button><button class="pin" style="--x:64%;--y:68%" data-room="2">Комната с видом</button><button class="pin bungalow-pin" type="button" data-category="bungalow" aria-label="Выбрать бунгало">Бунгало</button><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><div class="mobiletabs">Модель пространства · 360°</div></section>
 <aside class="details"><button class="heart" id="heart">♡</button><img class="heroimg" id="heroimg" src="images/room-family.jpg"><div class="detailtitle" id="detailtitle">Семейная</div><div class="detailmeta" id="detailmeta">♙ 4 гостя &nbsp; ◇ 38 м² &nbsp; ♧ Вид на сад и море</div><div class="thumbs" id="thumbs"><img src="images/room-family-2.jpg"><img src="images/room-balcony-2.jpg"><img src="images/room-hostel-2.jpg"></div><p class="description" id="description">Просторный номер для всей семьи. Уют, природа и комфорт в каждом детали.</p><button class="book" id="book">Забронировать&nbsp; ›</button></aside>
 <script>
 const rooms=[
@@ -240,7 +241,7 @@ function setCategory(next){
  $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===next));
  $$('.roomcard').forEach(el=>el.style.display=(next!=='bungalow'&&el.dataset.category===next)?'block':'none');
  $('#emptycategory').style.display=next==='bungalow'?'block':'none';
- $$('.pin').forEach(p=>{const card=$('.roomcard[data-room="'+p.dataset.room+'"]');p.style.display=(next==='bungalow'||!card||card.dataset.category!==next)?'none':'block'});
+ $('.pin').forEach(p=>{if(p.dataset.category==='bungalow'){p.style.display=next==='bungalow'?'block':'none';return}const card=$('.roomcard[data-room="'+p.dataset.room+'"]');p.style.display=(next==='bungalow'||!card||card.dataset.category!==next)?'none':'block'});
  if(next==='hostel'){choose(1);return}
  if(next==='rooms'){choose(0);return}
  $('.modelhint span').textContent='Бунгало · место в саду';
@@ -281,7 +282,7 @@ function initDates(){
  checkOut.addEventListener('change',refreshAvailability);
 }
 $$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));
-$$('.roomcard,.pin').forEach(el=>el.addEventListener('click',()=>choose(Number(el.dataset.room))));
+$('.roomcard,.pin').forEach(el=>el.addEventListener('click',()=>{if(el.dataset.category==='bungalow'){setCategory('bungalow');return}choose(Number(el.dataset.room))}));
 $('#heart').addEventListener('click',e=>e.currentTarget.textContent=e.currentTarget.textContent==='♡'?'♥':'♡');
 $('#search').addEventListener('click',()=>{const a=$('#checkin').value,b=$('#checkout').value;if(a&&b&&b>a)refreshAvailability();else alert('Выберите корректные даты: выезд должен быть позже заезда.')});
 $('#book').addEventListener('click',()=>{
