@@ -143,6 +143,17 @@ body{overflow:hidden;background:#b5d7bd}
 }
 
 
+/* Desktop map framing: show the full portrait aerial image, including the garden bungalow and lower entrance. */
+@media(min-width:851px){
+ .scene{background-size:auto 100%;background-position:center center;background-repeat:no-repeat;background-color:#244d43}
+ .scene:before{opacity:.34}
+ .model{background:#244d43}
+}
+/* Keep mobile map proportion aligned with the original portrait photo. */
+@media(max-width:850px){
+ .scene{background-size:100% 100%;background-position:center center;background-repeat:no-repeat}
+}
+
 /* Mobile territory view: preserve the portrait aerial photo instead of cropping it into a wide panel. */
 @media(max-width:850px){
  body{overflow-x:hidden;overflow-y:auto;min-height:100dvh;height:auto}
