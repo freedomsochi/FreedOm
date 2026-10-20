@@ -293,6 +293,36 @@ html,body{margin:0;width:100%;max-width:100%}
   }
 }
 
+
+/* Atmosphere: each Space card gets its own restrained motion signature. */
+#story .feature:nth-child(1) .photo{animation:practice-drift 16s ease-in-out infinite alternate}
+#events .photo{animation:event-glow 10s ease-in-out infinite alternate}
+#story .feature:nth-child(3) .photo{animation:hearth-warmth 8s ease-in-out infinite alternate}
+#kitchen .photo{animation:water-reflection 9s ease-in-out infinite alternate}
+#bath .photo{animation:garden-breeze 18s ease-in-out infinite alternate}
+.dark-break:before{animation:night-sky 24s ease-in-out infinite alternate}
+.values .value:nth-child(1){animation:values-rise 8s ease-in-out infinite alternate}
+.values .value:nth-child(2){animation:values-glow 10s ease-in-out infinite alternate}
+.h-card:nth-child(1) .h-photo{animation:work-light 12s ease-in-out infinite alternate}
+.h-card:nth-child(2) .h-photo{animation:play-pulse 7s ease-in-out infinite alternate}
+.h-card:nth-child(3) .h-photo{animation:library-dust 14s ease-in-out infinite alternate}
+.h-card:nth-child(4) .h-photo{animation:music-wave 9s ease-in-out infinite alternate}
+@keyframes practice-drift{from{transform:scale(1) translate3d(-.5%,0,0)}to{transform:scale(1.045) translate3d(.6%,-.4%,0)}}
+@keyframes event-glow{from{filter:brightness(.98) saturate(.96)}to{filter:brightness(1.08) saturate(1.08)}}
+@keyframes hearth-warmth{from{filter:sepia(.03) brightness(1)}to{filter:sepia(.13) brightness(1.06)}}
+@keyframes water-reflection{from{transform:scale(1);filter:hue-rotate(0deg)}to{transform:scale(1.035);filter:hue-rotate(5deg)}}
+@keyframes garden-breeze{from{transform:scale(1) translateY(0)}to{transform:scale(1.035) translateY(-.6%)}}
+@keyframes night-sky{from{opacity:.52;transform:scale(1)}to{opacity:.8;transform:scale(1.035)}}
+@keyframes values-rise{from{transform:translateY(0)}to{transform:translateY(-5px)}}
+@keyframes values-glow{from{box-shadow:0 0 0 rgba(32,34,31,0)}to{box-shadow:0 10px 34px rgba(32,34,31,.07)}}
+@keyframes work-light{from{filter:brightness(.97)}to{filter:brightness(1.09)}}
+@keyframes play-pulse{from{transform:scale(1)}to{transform:scale(1.045)}}
+@keyframes library-dust{from{filter:contrast(1) brightness(.99)}to{filter:contrast(1.06) brightness(1.04)}}
+@keyframes music-wave{from{transform:scale(1);filter:saturate(.96)}to{transform:scale(1.04);filter:saturate(1.12)}}
+@media(prefers-reduced-motion:reduce){
+ #story .feature .photo,#events .photo,#kitchen .photo,#bath .photo,.dark-break:before,
+ .values .value,.h-card .h-photo{animation:none!important}
+}
 </style>
 </head>
 <body>
