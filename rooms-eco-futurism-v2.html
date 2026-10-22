@@ -236,6 +236,7 @@ rooms.push(
  {id:'attic-room-1',name:'Комната мансарды №1',meta:'♙ Вместимость уточняется &nbsp; ◇ Мансарда',desc:'Отдельная комната мансарды. Реальное название для проверки доступности ещё нужно сопоставить.',img:'images/room-family-2.jpg',dbNames:['Комната мансарды №1']},
  {id:'attic-room-2',name:'Комната мансарды №2',meta:'♙ Вместимость уточняется &nbsp; ◇ Мансарда',desc:'Вторая отдельная комната мансарды.',img:'images/room-hostel-2.jpg',dbNames:['Комната мансарды №2']}
 );
+rooms.slice(3).forEach((room,i)=>{const index=i+3;const card=document.createElement('article');card.className='roomcard';card.dataset.category=room.id.startsWith('hostel-')?'hostel':'rooms';card.dataset.room=String(index);card.innerHTML='<img src="'+room.img+'" alt=""><div class="roomname"></div><div class="meta"><span class="available">• Статус уточняется</span></div>';card.querySelector('.roomname').textContent=room.name;card.addEventListener('click',()=>choose(index));$('#roomlist').insertBefore(card,$('#emptycategory'));});
 const bungalowDbNames=['Бунгало в саду'];
 const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
 let active=0,category='rooms',availabilityRows=[],availabilityState='loading';
