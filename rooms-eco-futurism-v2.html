@@ -184,13 +184,41 @@ body{overflow:hidden;background:#b5d7bd}
  .staytypes button{padding:7px 6px;font-size:9px}
 }
 
+
+/* Interactive floor-plan prototype: schematic zones, geometry awaits exact tracing from the PDF. */
+.floorselector{position:absolute;z-index:8;left:50%;bottom:4%;transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:7px 10px;border:1px solid rgba(255,248,224,.7);border-radius:28px;background:rgba(226,248,238,.23);backdrop-filter:blur(18px);box-shadow:0 12px 30px #153f3933;white-space:nowrap}
+.floorselector .floorlabel{font-size:10px;padding:0 8px;color:#f4fffb}
+.floorselector button{border:1px solid transparent;background:rgba(255,255,255,.08);color:#fff;border-radius:18px;padding:8px 12px;font-size:11px;cursor:pointer}
+.floorselector button.active,.floorselector button:hover{background:#f0fff6;color:#205b50;border-color:#e7fff5}
+.floorplan{position:absolute;z-index:5;inset:64px 6% 62px;display:none;grid-template-rows:auto 1fr auto;gap:10px;padding:14px;border:1px solid rgba(242,255,250,.8);border-radius:22px;background:linear-gradient(145deg,rgba(234,255,246,.94),rgba(187,234,218,.91));box-shadow:0 12px 36px #153f3933;color:#214c43;backdrop-filter:blur(18px)}
+.floorplan.visible{display:grid}
+.floorplan-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;font-weight:800}
+.floorplan-head small{font-size:9px;font-weight:500;opacity:.7}
+.floorplan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:8px;min-height:0}
+.floorzone{border:1px solid #7ebdaf;border-radius:12px;background:rgba(255,255,255,.6);padding:10px;display:flex;flex-direction:column;justify-content:space-between;min-height:58px;font-size:11px;line-height:1.35}
+.floorzone.bookable{cursor:pointer;background:linear-gradient(135deg,rgba(255,255,255,.86),rgba(171,239,221,.65));border-color:#65b8a5}
+.floorzone.bookable:hover,.floorzone.bookable.selected{outline:2px solid #33bba9;background:#fff}
+.floorzone em{font-size:9px;font-style:normal;opacity:.7}
+.floorplan-note{font-size:9px;line-height:1.4;opacity:.75}
+body.floor-mode .model .pin,body.floor-mode .model .compass,body.floor-mode .model .orbit{display:none}
+body.floor-mode .model .scene:after{background:rgba(13,56,49,.22)}
+@media(max-width:850px){.floorselector{position:relative;left:auto;bottom:auto;transform:none;margin:0 12px 14px;width:calc(100% - 24px);justify-content:center;flex-wrap:wrap;white-space:normal}.floorselector .floorlabel{width:100%;text-align:center}.floorselector button{padding:8px 10px}.floorplan{inset:56px 12px 14px;padding:10px}.floorplan-grid{gap:6px}.floorzone{padding:8px;font-size:10px}}
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates"><label class="date">Заезд<input id="checkin" type="date" value="2026-10-20"></label><label class="date">Выезд<input id="checkout" type="date" value="2026-10-23"></label><button class="search" id="search" aria-label="Найти">⌕</button></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist">
 <article class="roomcard active" data-category="rooms" data-room="0"><img src="images/room-family.jpg"><div class="roomname">Семейная</div><div class="meta">♙ 4 гостя &nbsp; ◇ 38 м² <span class="available">• Доступно</span></div></article>
 <article class="roomcard" data-category="hostel" data-room="1"><img src="images/room-hostel.jpg"><div class="roomname">Хостел (стандарт)</div><div class="meta">♙ 6 гостей &nbsp; ◇ 24 м² <span class="available">• Доступно</span></div></article>
 <article class="roomcard" data-category="rooms" data-room="2"><img src="images/room-balcony.jpg"><div class="roomname">Комната с видом</div><div class="meta">♙ 2 гостя &nbsp; ◇ 18 м² <span class="available">• Доступно</span></div></article><div class="emptycategory" id="emptycategory">Бунгало в саду<br><span style="opacity:.86">Отдельный вариант размещения в саду.</span><br><span id="bungalowstatus" class="availability-status status-checking">Проверяем доступность…</span></div></section>
-<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button class="active" type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="compass">360°</div><button class="pin" style="--x:44%;--y:40%" data-room="0">Семейная</button><button class="pin" style="--x:53%;--y:57%" data-room="1">Хостел</button><button class="pin" style="--x:64%;--y:68%" data-room="2">Комната с видом</button><button class="pin bungalow-pin" type="button" data-category="bungalow" aria-label="Выбрать бунгало">Бунгало</button><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><div class="mobiletabs">Модель пространства · 360°</div></section>
+<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button class="active" type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="compass">360°</div><button class="pin" style="--x:44%;--y:40%" data-room="0">Семейная</button><button class="pin" style="--x:53%;--y:57%" data-room="1">Хостел</button><button class="pin" style="--x:64%;--y:68%" data-room="2">Комната с видом</button><button class="pin bungalow-pin" type="button" data-category="bungalow" aria-label="Выбрать бунгало">Бунгало</button><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><div class="mobiletabs">Модель пространства · 360°</div>
+<div class="floorplan" id="floorplan" aria-live="polite">
+ <div class="floorplan-head"><span id="floorplanTitle">План этажа</span><small>СХЕМА · НЕ В МАСШТАБЕ</small></div>
+ <div class="floorplan-grid" id="floorplanGrid"></div>
+ <div class="floorplan-note" id="floorplanNote">Схема зон предварительная. Точные контуры и расположение дверей нужно сверить с исходным PDF.</div>
+</div></section>
+<nav class="floorselector" id="floorselector" aria-label="Выбор этажа">
+ <span class="floorlabel">⌁ Этажи</span>
+ <button type="button" data-floor="lower">−1</button><button type="button" data-floor="floor1">1</button><button type="button" data-floor="floor2">2</button><button type="button" data-floor="floor3">3</button><button type="button" data-floor="floor4">4</button><button type="button" data-floor="mansard">Мансарда</button>
+</nav>
 <aside class="details"><button class="heart" id="heart">♡</button><img class="heroimg" id="heroimg" src="images/room-family.jpg"><div class="detailtitle" id="detailtitle">Семейная</div><div class="detailmeta" id="detailmeta">♙ 4 гостя &nbsp; ◇ 38 м² &nbsp; ♧ Вид на сад и море</div><div class="thumbs" id="thumbs"><img src="images/room-family-2.jpg"><img src="images/room-balcony-2.jpg"><img src="images/room-hostel-2.jpg"></div><p class="description" id="description">Просторный номер для всей семьи. Уют, природа и комфорт в каждом детали.</p><button class="book" id="book">Забронировать&nbsp; ›</button></aside>
 <script>
 const rooms=[
@@ -305,5 +333,32 @@ $('#book').addEventListener('click',()=>{
  location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. Проверил доступность на сайте. Подскажите, пожалуйста, стоимость и подтвердите бронь.');
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
+
+const floorPlans={
+ lower:{title:'−1 этаж',note:'Баня и хозяйственные зоны показаны по сводному описанию; геометрию сверить с чертежом.',zones:[['Баня / сауна','Общая зона'],['Кухня / летняя кухня','Общая зона'],['Терраса','Общая зона'],['Лестница','Проход']]},
+ floor1:{title:'1 этаж',note:'Общие помещения не бронируются. Схема зон предварительная.',zones:[['Гостиная','Общая зона'],['Кухня','Общая зона'],['Закрытая веранда','Общая зона'],['Санузел и лестница','Общая зона']]},
+ floor2:{title:'2 этаж',note:'Состав сверяется с последним ТЗ и архитектурной сводкой. Точные перегородки пока не реконструированы.',zones:[['Хостел эконом','Размещение'],['Гостиная','Не бронируется'],['Коридор / лестница','Общая зона'],['Санузел','Общая зона']]},
+ floor3:{title:'3 этаж',note:'Два стандартных помещения — отдельные комнаты. Планировка условная до точной обводки PDF.',zones:[['Хостел стандарт №1','Отдельная комната','hostel-standard-1'],['Хостел стандарт №2','Отдельная комната','hostel-standard-2'],['Семейная комната','Отдельный номер','family-room-1'],['Администрация','Не бронируется']]},
+ floor4:{title:'4 этаж',note:'Две двухместные комнаты — отдельные объекты. Зал йоги не бронируется как номер.',zones:[['Двухместная №1','Отдельная комната','double-room-1'],['Двухместная №2','Отдельная комната','double-room-2'],['Зал йоги','Общая зона'],['Лестница / проход','Общая зона']]},
+ mansard:{title:'Мансарда',note:'Две отдельные комнаты подтверждены; точные контуры необходимо сверить с листом мансарды в PDF.',zones:[['Комната мансарды №1','Отдельная комната','attic-room-1'],['Комната мансарды №2','Отдельная комната','attic-room-2']]}
+};
+function selectFloor(id){
+ const plan=floorPlans[id];if(!plan)return;
+ document.body.classList.add('floor-mode');
+ $('#floorplan').classList.add('visible');
+ $('#floorplanTitle').textContent=plan.title;
+ $('#floorplanNote').textContent=plan.note;
+ $('#floorplanGrid').innerHTML='';
+ plan.zones.forEach(z=>{
+  const el=document.createElement('button');el.type='button';el.className='floorzone'+(z[2]?' bookable':'');
+  el.innerHTML='<strong></strong><em></em>';el.querySelector('strong').textContent=z[0];el.querySelector('em').textContent=z[1];
+  if(z[2])el.addEventListener('click',()=>{const hint=$('.modelhint span');hint.textContent=z[0]+' · выбрано на плане';$('.floorzone').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');});
+  $('#floorplanGrid').appendChild(el);
+ });
+ $('#floorselector button').forEach(b=>{const active=b.dataset.floor===id;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
+}
+$('#floorselector button').forEach(b=>b.addEventListener('click',()=>selectFloor(b.dataset.floor)));
+
 initDates();renderAvailability();refreshAvailability();
+selectFloor('floor3');
 </script></body></html>
