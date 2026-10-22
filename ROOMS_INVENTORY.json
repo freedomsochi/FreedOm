@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "updated": "2026-10-23",
+  "status": "planning_inventory_not_live_booking_data",
+  "source_of_truth": "ROOMS_ARCHITECTURAL_PLAN.md",
+  "ui_reference": {
+    "fixed_territory_background": true,
+    "central_panel_changes_by_floor": true,
+    "left_room_cards": true,
+    "right_selected_room_details": true,
+    "bottom_floor_selector": ["-1", "1", "2", "3", "4", "mansard"],
+    "preserve_existing_glass_eco_futurism_style": true
+  },
+  "floors": [
+    {
+      "id": "lower",
+      "label": "-1 этаж",
+      "spaces": [
+        {"id": "lower-sauna", "name": "Баня / сауна", "bookable": false, "status": "confirmed_zone"},
+        {"id": "lower-kitchen", "name": "Кухня / летняя кухня", "bookable": false, "status": "confirmed_zone"},
+        {"id": "lower-pool-area", "name": "Зона бассейна по чертежу", "bookable": false, "status": "label_needs_validation"},
+        {"id": "lower-terrace", "name": "Терраса", "bookable": false, "status": "confirmed_zone"},
+        {"id": "lower-stairs", "name": "Лестница", "bookable": false, "status": "confirmed_zone"}
+      ]
+    },
+    {
+      "id": "floor-1",
+      "label": "1 этаж",
+      "spaces": [
+        {"id": "floor1-living", "name": "Гостиная", "bookable": false, "status": "confirmed"},
+        {"id": "floor1-kitchen", "name": "Кухня", "bookable": false, "status": "confirmed"},
+        {"id": "floor1-corridor", "name": "Коридор", "bookable": false, "status": "confirmed"},
+        {"id": "floor1-bathroom", "name": "Санузел", "bookable": false, "status": "confirmed_zone"},
+        {"id": "floor1-veranda", "name": "Закрытая веранда", "bookable": false, "status": "user_confirmed"}
+      ]
+    },
+    {
+      "id": "floor-2",
+      "label": "2 этаж",
+      "spaces": [
+        {"id": "hostel-economy-1", "name": "Хостел эконом", "bookable": true, "status": "room_exists_floor_assignment_confirm_from_sketch"},
+        {"id": "floor2-living", "name": "Гостиная", "bookable": false, "status": "confirmed_product_brief"}
+      ]
+    },
+    {
+      "id": "floor-3",
+      "label": "3 этаж",
+      "spaces": [
+        {"id": "hostel-standard-1", "name": "Хостел стандарт №1", "bookable": true, "status": "separate_room_confirmed_floor_assignment_confirm_from_sketch"},
+        {"id": "hostel-standard-2", "name": "Хостел стандарт №2", "bookable": true, "status": "separate_room_confirmed_floor_assignment_confirm_from_sketch"},
+        {"id": "family-room-1", "name": "Семейная комната", "bookable": true, "status": "room_exists_floor_assignment_confirm_from_sketch"},
+        {"id": "admin-room", "name": "Администрация", "bookable": false, "status": "confirmed"}
+      ]
+    },
+    {
+      "id": "floor-4",
+      "label": "4 этаж",
+      "spaces": [
+        {"id": "double-room-1", "name": "Двухместная комната №1", "bookable": true, "status": "separate_room_confirmed"},
+        {"id": "double-room-2", "name": "Двухместная комната №2", "bookable": true, "status": "separate_room_confirmed"},
+        {"id": "yoga-hall", "name": "Зал йоги", "bookable": false, "status": "user_confirmed_product_brief"}
+      ]
+    },
+    {
+      "id": "mansard",
+      "label": "Мансарда",
+      "spaces": [
+        {"id": "attic-room-1", "name": "Комната мансарды №1", "bookable": true, "status": "two_rooms_confirmed_exact_layout_pending"},
+        {"id": "attic-room-2", "name": "Комната мансарды №2", "bookable": true, "status": "two_rooms_confirmed_exact_layout_pending"}
+      ]
+    }
+  ],
+  "territory": [
+    {"id": "bungalow-1", "name": "Бунгало в саду", "bookable": true, "status": "existing_booking_name_must_be_mapped"},
+    {"id": "pool", "name": "Бассейн", "bookable": false},
+    {"id": "sport-zone", "name": "Спортивная зона", "bookable": false},
+    {"id": "garden-pond", "name": "Пруд", "bookable": false},
+    {"id": "hammock", "name": "Гамак", "bookable": false},
+    {"id": "fountain", "name": "Фонтан", "bookable": false}
+  ],
+  "implementation_rules": [
+    "Each physical room must have its own stable ID, card, plan hotspot, photo mapping and booking availability mapping.",
+    "Do not merge hostel-standard-1 and hostel-standard-2 into one bookable record.",
+    "Do not merge attic-room-1 and attic-room-2 into one bookable record.",
+    "Never fabricate availability. Read it from the existing Supabase public-availability endpoint and map actual database room names before production use.",
+    "Do not fabricate floor-plan geometry. Use the hand-drawn PDF pages as geometry references and mark unclear labels as pending.",
+    "The territory background must stay fixed while only the central floor plan changes.",
+    "Shared spaces remain visible but are not bookable.",
+    "This file is a planning inventory, not a migration and not the live booking database."
+  ]
+}
