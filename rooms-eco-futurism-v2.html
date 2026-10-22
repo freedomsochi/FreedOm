@@ -293,7 +293,7 @@ function initDates(){
  checkOut.addEventListener('change',refreshAvailability);
 }
 $$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));
-$('.roomcard, .pin').forEach(el=>el.addEventListener('click',()=>{if(el.dataset.category==='bungalow'){setCategory('bungalow');return}if(el.dataset.room!==undefined)choose(Number(el.dataset.room))}));
+$$('.roomcard, .pin').forEach(el=>el.addEventListener('click',()=>{if(el.dataset.category==='bungalow'){setCategory('bungalow');return}if(el.dataset.room!==undefined)choose(Number(el.dataset.room))}));
 $('#heart').addEventListener('click',e=>e.currentTarget.textContent=e.currentTarget.textContent==='♡'?'♥':'♡');
 $('#search').addEventListener('click',()=>{const a=$('#checkin').value,b=$('#checkout').value;if(a&&b&&b>a)refreshAvailability();else alert('Выберите корректные даты: выезд должен быть позже заезда.')});
 $('#book').addEventListener('click',()=>{
