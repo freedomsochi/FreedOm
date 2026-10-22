@@ -280,14 +280,14 @@ function choose(i){
  const r=rooms[i];$('#heroimg').src=r.img;$('#detailtitle').textContent=r.name;$('#detailmeta').innerHTML=r.meta;$('#description').textContent=r.desc;
  $$('.pin').forEach(p=>p.style.opacity=Number(p.dataset.room)===i?'1':'.72');
  $('.modelhint span').textContent='Найди своё место';
- $$$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
+ $('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
  $$('.roomcard').forEach(el=>el.style.display=el.dataset.category===category?'block':'none');
  $$('.pin').forEach(p=>{const card=$('.roomcard[data-room="'+p.dataset.room+'"]');p.style.display=card&&card.dataset.category===category?'block':'none'});
  $('#emptycategory').style.display='none';renderAvailability();
 }
 function setCategory(next){
  category=next;
- $$$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===next));
+ $('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===next));
  $$('.roomcard').forEach(el=>el.style.display=(next!=='bungalow'&&el.dataset.category===next)?'block':'none');
  $('#emptycategory').style.display=next==='bungalow'?'block':'none';
  $('.pin').forEach(p=>{if(p.dataset.category==='bungalow'){p.style.display=next==='bungalow'?'block':'none';return}const card=$('.roomcard[data-room="'+p.dataset.room+'"]');p.style.display=(next==='bungalow'||!card||card.dataset.category!==next)?'none':'block'});
@@ -330,7 +330,7 @@ function initDates(){
  checkIn.addEventListener('change',()=>{updateMin();refreshAvailability()});
  checkOut.addEventListener('change',refreshAvailability);
 }
-$$$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));
+$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));
 $$('.roomcard, .pin').forEach(el=>el.addEventListener('click',()=>{if(el.dataset.category==='bungalow'){setCategory('bungalow');return}if(el.dataset.room!==undefined)choose(Number(el.dataset.room))}));
 $('#heart').addEventListener('click',e=>e.currentTarget.textContent=e.currentTarget.textContent==='♡'?'♥':'♡');
 $('#search').addEventListener('click',()=>{const a=$('#checkin').value,b=$('#checkout').value;if(a&&b&&b>a)refreshAvailability();else alert('Выберите корректные даты: выезд должен быть позже заезда.')});
