@@ -226,6 +226,16 @@ const rooms=[
 {name:'Хостел (стандарт)',meta:'♙ 6 гостей &nbsp; ◇ 24 м² &nbsp; ♧ Общая зона',desc:'Светлое пространство для путешественников, новых знакомств и спокойного отдыха.',img:'images/room-hostel.jpg',dbNames:['Хостел стандарт','Хостел стандарт №2']},
 {name:'Комната с видом',meta:'♙ 2 гостя &nbsp; ◇ 18 м² &nbsp; ♧ Панорамное окно',desc:'Тихая комната, где можно замедлиться, смотреть на зелень и отдыхать от суеты.',img:'images/room-balcony.jpg',dbNames:['Двухместный с балконом №1','Двухместный с балконом №2']}
 ];
+// Physical rooms remain separate records; unknown booking mappings are not treated as confirmed availability.
+rooms[0].id='family-room-1';
+rooms[1].id='hostel-standard-1'; rooms[1].name='Хостел стандарт №1'; rooms[1].dbNames=['Хостел стандарт'];
+rooms[2].id='double-room-1'; rooms[2].dbNames=['Двухместный с балконом №1'];
+rooms.push(
+ {id:'hostel-standard-2',name:'Хостел стандарт №2',meta:'♙ Вместимость уточняется &nbsp; ◇ Отдельное помещение',desc:'Второе самостоятельное помещение стандартного хостела. Фото и точную привязку бронирования необходимо подтвердить.',img:'images/room-hostel-2.jpg',dbNames:['Хостел стандарт №2']},
+ {id:'double-room-2',name:'Двухместная комната №2',meta:'♙ 2 гостя &nbsp; ◇ Двухместное размещение',desc:'Вторая самостоятельная двухместная комната.',img:'images/room-balcony-2.jpg',dbNames:['Двухместный с балконом №2']},
+ {id:'attic-room-1',name:'Комната мансарды №1',meta:'♙ Вместимость уточняется &nbsp; ◇ Мансарда',desc:'Отдельная комната мансарды. Реальное название для проверки доступности ещё нужно сопоставить.',img:'images/room-family-2.jpg',dbNames:['Комната мансарды №1']},
+ {id:'attic-room-2',name:'Комната мансарды №2',meta:'♙ Вместимость уточняется &nbsp; ◇ Мансарда',desc:'Вторая отдельная комната мансарды.',img:'images/room-hostel-2.jpg',dbNames:['Комната мансарды №2']}
+);
 const bungalowDbNames=['Бунгало в саду'];
 const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
 let active=0,category='rooms',availabilityRows=[],availabilityState='loading';
@@ -352,7 +362,7 @@ function selectFloor(id){
  plan.zones.forEach(z=>{
   const el=document.createElement('button');el.type='button';el.className='floorzone'+(z[2]?' bookable':'');
   el.innerHTML='<strong></strong><em></em>';el.querySelector('strong').textContent=z[0];el.querySelector('em').textContent=z[1];
-  if(z[2])el.addEventListener('click',()=>{const hint=$('.modelhint span');hint.textContent=z[0]+' · выбрано на плане';$('.floorzone').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');});
+  if(z[2])el.addEventListener('click',()=>{const roomIndex=rooms.findIndex(r=>r.id===z[2]);if(roomIndex>=0){choose(roomIndex);category=roomIndex===1||roomIndex===3?'hostel':'rooms';$('#detailtitle').textContent=rooms[roomIndex].name;$('#detailmeta').innerHTML=rooms[roomIndex].meta;$('#description').textContent=rooms[roomIndex].desc;$('#heroimg').src=rooms[roomIndex].img;$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));$('.floorzone').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');$('.modelhint span').textContent=rooms[roomIndex].name+' · выбрано на плане';}});
   $('#floorplanGrid').appendChild(el);
  });
  $('#floorselector button').forEach(b=>{const active=b.dataset.floor===id;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
