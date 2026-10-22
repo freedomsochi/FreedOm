@@ -276,7 +276,7 @@ function renderAvailability(){
 
 function choose(i){
  if(!rooms[i])return;
- active=i;category=i===1?'hostel':'rooms';
+ active=i;category=rooms[i].id.startsWith('hostel-')?'hostel':'rooms';
  $$('.roomcard').forEach(el=>el.classList.toggle('active',Number(el.dataset.room)===i));
  const r=rooms[i];$('#heroimg').src=r.img;$('#detailtitle').textContent=r.name;$('#detailmeta').innerHTML=r.meta;$('#description').textContent=r.desc;
  $$('.pin').forEach(p=>p.style.opacity=Number(p.dataset.room)===i?'1':'.72');
