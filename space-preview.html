@@ -41,7 +41,7 @@ window.addEventListener('touchmove',e=>{
      next(direction);
      if(current!==before)dragDistance-=direction*step;
      else if(!locked)break;
-     else {dragDistance-=direction*step;pending+=direction;}
+     else {dragDistance-=direction*step;}
    }
  }
  lastY=y;e.preventDefault();
