@@ -241,7 +241,7 @@ rooms.push(
 rooms.slice(3).forEach((room,i)=>{const index=i+3;const card=document.createElement('article');card.className='roomcard';card.dataset.category=room.id.startsWith('hostel-')?'hostel':'rooms';card.dataset.room=String(index);card.innerHTML='<img src="'+room.img+'" alt=""><div class="roomname"></div><div class="meta"><span class="available">• Статус уточняется</span></div>';card.querySelector('.roomname').textContent=room.name;card.addEventListener('click',()=>choose(index));$('#roomlist').insertBefore(card,$('#emptycategory'));});
 const bungalowDbNames=['Бунгало в саду'];
 const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
-let active=0,category='rooms',availabilityRows=[],availabilityState='loading';
+let active=0,category='rooms',availabilityRows=[],availabilityState='loading',availabilityRequestId=0;
 const $=s=>document.querySelector(s);
 const $$=s=>Array.from(document.querySelectorAll(s));
 function selectedDbNames(){return category==='bungalow'?bungalowDbNames:(rooms[active]?.dbNames||[])}
@@ -305,6 +305,7 @@ function setCategory(next){
  renderAvailability();
 }
 async function refreshAvailability(){
+ const requestId=++availabilityRequestId;
  const checkIn=$('#checkin').value,checkOut=$('#checkout').value;
  if(!checkIn||!checkOut||checkOut<=checkIn){availabilityState='error';renderAvailability();return}
  availabilityState='loading';availabilityRows=[];renderAvailability();
@@ -312,10 +313,12 @@ async function refreshAvailability(){
  try{
   const response=await fetch(availabilityEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({check_in:checkIn,check_out:checkOut})});
   const payload=await response.json();
+  if(requestId!==availabilityRequestId)return;
   if(!response.ok||!payload.ok||!Array.isArray(payload.rooms))throw new Error(payload.error||'Availability request failed');
   availabilityRows=payload.rooms;availabilityState='loaded';renderAvailability();
   $('.modelhint span').textContent='Доступность обновлена · '+checkIn+' — '+checkOut;
  }catch(error){
+  if(requestId!==availabilityRequestId)return;
   availabilityRows=[];availabilityState='error';renderAvailability();
   $('.modelhint span').textContent='Не удалось проверить доступность · можно уточнить у команды';
   console.error('FreeDom live availability:',error);
