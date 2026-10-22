@@ -343,7 +343,10 @@ $('#book').addEventListener('click',()=>{
  const title=category==='bungalow'?'Бунгало в саду':rooms[active].name;
  const status=availabilityFor(selectedDbNames());
  if(status.known&&!status.available){alert('На выбранные даты нет свободных мест. Выберите другие даты.');return}
- location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. Проверил доступность на сайте. Подскажите, пожалуйста, стоимость и подтвердите бронь.');
+ const availabilityNote=status.known&&status.available
+  ?'На сайте отображается наличие мест, прошу подтвердить бронь.'
+  :'Не удалось подтвердить наличие мест на сайте, прошу проверить доступность вручную.';
+ location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. '+availabilityNote+' Подскажите, пожалуйста, стоимость и подтвердите бронь.');
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
 
