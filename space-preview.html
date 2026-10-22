@@ -20,40 +20,23 @@ window.addEventListener('wheel',e=>{
  if(Math.abs(e.deltaY)<8)return;
  e.preventDefault();next(e.deltaY>0?1:-1);
 },{passive:false});
-let startY=0,lastY=0,dragging=false,dragDistance=0,holdTimer=null,holdMode=false;
+let startY=0,dragging=false;
 function isGalleryTarget(target){return !!target.closest('.gallery')}
 window.addEventListener('touchstart',e=>{
  if(isGalleryTarget(e.target))return;
- startY=lastY=e.touches[0].clientY;dragDistance=0;dragging=true;holdMode=false;
- holdTimer=setTimeout(()=>{holdMode=true;document.body.classList.add('long-drag-mode')},260);
+ startY=e.touches[0].clientY;dragging=true;
 },{passive:true});
 window.addEventListener('touchmove',e=>{
  if(!dragging||isGalleryTarget(e.target))return;
- const y=e.touches[0].clientY;
- const delta=lastY-y;
- if(Math.abs(y-startY)>10)clearTimeout(holdTimer);
- if(holdMode){
-   dragDistance+=delta;
-   const step=Math.max(72,window.innerHeight*.22);
-   while(Math.abs(dragDistance)>=step){
-     const direction=dragDistance>0?1:-1;
-     const before=current;
-     next(direction);
-     if(current!==before)dragDistance-=direction*step;
-     else if(!locked)break;
-     else {dragDistance-=direction*step;}
-   }
- }
- lastY=y;e.preventDefault();
+ e.preventDefault();
 },{passive:false});
 function endTouch(e){
  if(!dragging)return;
- clearTimeout(holdTimer);
  if(!isGalleryTarget(e.target)){
    const total=startY-e.changedTouches[0].clientY;
-   if(!holdMode&&Math.abs(total)>45)next(total>0?1:-1);
+   if(Math.abs(total)>45)next(total>0?1:-1);
  }
- dragging=false;holdMode=false;dragDistance=0;document.body.classList.remove('long-drag-mode');
+ dragging=false;
 }
 window.addEventListener('touchend',endTouch,{passive:false});
 window.addEventListener('touchcancel',endTouch,{passive:false});
