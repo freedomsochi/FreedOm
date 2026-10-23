@@ -458,15 +458,19 @@ html,body{margin:0;width:100%;max-width:100%}
     const list = scenes();
     if (!list.length) return;
     window.clearTimeout(settleTimer);
-    const heldLongEnough = Date.now() - startAt >= 280;
-    const draggedFarEnough = Math.abs(dy) >= window.innerHeight * 0.22;
-    if (draggedContinuously && heldLongEnough && draggedFarEnough) {
-      settleToScene();
-      return;
-    }
+    const heldLongEnough = Date.now() - startAt >= 320;
+    const distance = Math.abs(dy);
+    const draggedFarEnough = distance >= window.innerHeight * 0.22;
     const now = Date.now();
     if (now - lastGestureAt < 500) { settleToScene(); return; }
-    const next = Math.max(0, Math.min(list.length - 1, startIndex + (dy < 0 ? 1 : -1)));
+
+    // A deliberate hold-and-drag can skip several full-screen scenes.
+    // Short, ordinary flicks keep the original one-swipe = one-scene behavior.
+    let pages = 1;
+    if (draggedContinuously && heldLongEnough && draggedFarEnough) {
+      pages = Math.max(1, Math.min(6, Math.floor(distance / (window.innerHeight * 0.62))));
+    }
+    const next = Math.max(0, Math.min(list.length - 1, startIndex + (dy < 0 ? pages : -pages)));
     if (next === startIndex) { settleToScene(); return; }
     lastGestureAt = now;
     goToScene(list[next]);
