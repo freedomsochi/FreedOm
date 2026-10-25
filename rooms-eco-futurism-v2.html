@@ -194,10 +194,20 @@ body{overflow:hidden;background:#b5d7bd}
 .floorplan.visible{display:grid}
 .floorplan-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;font-weight:800}
 .floorplan-head small{font-size:9px;font-weight:500;opacity:.7}
-.floorplan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:8px;min-height:0}
+.floorplan-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));grid-template-areas:"a a a a" "b b c c" "d d e e";gap:8px;min-height:0}
 .floorzone{border:1px solid #7ebdaf;border-radius:12px;background:rgba(255,255,255,.6);padding:10px;display:flex;flex-direction:column;justify-content:space-between;min-height:58px;font-size:11px;line-height:1.35}
 .floorzone.bookable{cursor:pointer;background:linear-gradient(135deg,rgba(255,255,255,.86),rgba(171,239,221,.65));border-color:#65b8a5}
 .floorzone.bookable:hover,.floorzone.bookable.selected{outline:2px solid #33bba9;background:#fff}
+
+/* Floor layouts follow the relative positions in the hand-drawn PDF, not a generic tile grid. */
+.floorplan-grid.plan-lower{grid-template-areas:"z0 z0 z1 z1" "z0 z0 z2 z3";grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:1fr 1fr}
+.floorplan-grid.plan-floor1{grid-template-areas:"z5 z5 z5 z5" "z0 z0 z2 z3" "z1 z1 z2 z4";grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:.75fr 1fr 1fr}
+.floorplan-grid.plan-floor2{grid-template-areas:"z0 z0 z0 z0" "z1 z1 z2 z2" "z3 z3 z5 z4";grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:.7fr 1fr 1fr}
+.floorplan-grid.plan-floor3{grid-template-areas:"z0 z0 z0 z0" "z4 z1 z1 z5" "z2 z2 z6 z3";grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:.7fr 1fr 1fr}
+.floorplan-grid.plan-mansard{grid-template-areas:"z2 z2 z0 z0" "z2 z2 z1 z1" "z2 z2 z3 z3";grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:1fr 1fr .65fr}
+.floorzone{grid-area:var(--zone-area)}
+.floorzone.zone-0{--zone-area:z0}.floorzone.zone-1{--zone-area:z1}.floorzone.zone-2{--zone-area:z2}.floorzone.zone-3{--zone-area:z3}.floorzone.zone-4{--zone-area:z4}.floorzone.zone-5{--zone-area:z5}.floorzone.zone-6{--zone-area:z6}
+
 .floorzone em{font-size:9px;font-style:normal;opacity:.7}
 .floorplan-note{font-size:9px;line-height:1.4;opacity:.75}
 body.floor-mode .model .pin,body.floor-mode .model .compass,body.floor-mode .model .orbit{display:none}
@@ -367,8 +377,9 @@ function selectFloor(id){
  $('#floorplanTitle').textContent=plan.title;
  $('#floorplanNote').textContent=plan.note;
  $('#floorplanGrid').innerHTML='';
- plan.zones.forEach(z=>{
-  const el=document.createElement('button');el.type='button';el.className='floorzone'+(z[2]?' bookable':'');
+ $('#floorplanGrid').className='floorplan-grid plan-'+id;
+ plan.zones.forEach((z,index)=>{
+  const el=document.createElement('button');el.type='button';el.className='floorzone zone-'+index+(z[2]?' bookable':'');
   el.innerHTML='<strong></strong><em></em>';el.querySelector('strong').textContent=z[0];el.querySelector('em').textContent=z[1];
   if(z[2])el.addEventListener('click',()=>{const roomIndex=rooms.findIndex(r=>r.id===z[2]);if(roomIndex>=0){choose(roomIndex);category=rooms[roomIndex].id.startsWith('hostel-')?'hostel':'rooms';$('#detailtitle').textContent=rooms[roomIndex].name;$('#detailmeta').innerHTML=rooms[roomIndex].meta;$('#description').textContent=rooms[roomIndex].desc;$('#heroimg').src=rooms[roomIndex].img;$$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));$$('.floorzone').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');$('.modelhint span').textContent=rooms[roomIndex].name+' · выбрано на плане';}});
   $('#floorplanGrid').appendChild(el);
