@@ -363,3 +363,12 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Mobile header (including the date/search panel) now uses a sticky top position and a translucent glass backing, so it remains in place rather than leaving a blank header gap while scrolling.
 - Fixed scenery background now uses stable small-viewport height (`100svh`) instead of sizing to the changing dynamic viewport, intended to reduce the background shifting when mobile browser chrome expands/collapses.
 - Not yet visually/touch-tested in a real mobile browser; verify the latest Vercel preview. If sticky header feels too tall/obstructive, adjust spacing while preserving the stable position.
+
+
+## Mobile Rooms viewport edge cleanup — 2026-10-28
+
+- Branch: `rooms-architectural-v1`; production/main remains untouched.
+- Page commit `293411b5548d1ef11fe7724c201c468c69960f01` — `Remove mobile Rooms header seam and background gap`.
+- Removed the thin translucent bottom border and shadow from the sticky mobile search/header panel so it blends into the glass surface.
+- Reworked the fixed mobile scenery layer to fill the viewport with `inset:0` and `background-size:cover`, instead of a hard `100svh` height/size boundary that could expose a blank strip at the viewport edge as browser chrome changes.
+- This is a CSS correction; the live phone rendering has not been independently device-tested yet. Verify the latest branch preview. Main/production was not modified.
