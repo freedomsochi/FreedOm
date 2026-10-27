@@ -380,3 +380,12 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Page commit `93c056bd88bb9d9595fa0c7f66eef20bdeffda86` — `Remove sticky header repaint gap on mobile`.
 - Changed the mobile header from `position: sticky` back to normal document flow so it naturally scrolls away without a sticky placeholder/repaint interaction. Removed backdrop blur from the header, which can trigger compositing glitches on mobile browsers. Kept the scenery fixed to the viewport and retained its full-screen cover framing.
 - Previous attempt did not solve the user's observed issue; this is a different implementation, not a claim of verified device success. Test on mobile preview before further adjustments. Main/production remains unchanged.
+
+
+## Mobile background overscan and header seam — 2026-10-28
+
+- User clarified the remaining issues: a visible translucent line at the top and a white blank area below the background as the search panel scrolls away.
+- Page commit `97762743ea8f5f2e8c9e0e60163e75418dd6564b` — `Overscan mobile scenery and remove header seam`.
+- Removed the mobile header's translucent gradient entirely, plus border/outline/shadow, to avoid the visible line.
+- Enlarged the fixed mobile scenery layer beyond the viewport: top offset `-20svh`, height `140svh`, image size `120svh`; on narrow phones it uses a slightly larger overscan. This deliberately crops/zooms the territory image so scrolling/browser viewport changes are less likely to expose its edge.
+- Must be verified on the user's phone; no direct device rendering available. Branch only; production/main untouched.
