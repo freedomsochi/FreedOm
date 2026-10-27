@@ -1,3 +1,21 @@
+# LATEST APPROVED ROOMS PAGE CHECKPOINT — 2026-10-28
+
+- Correct page is `rooms-eco-futurism-v2.html`, the Rooms destination opened from the Orbit; not `rooms-architectural-v1.html` (the experimental model).
+- Branch: `rooms-architectural-v1`. Production/main unchanged.
+- Latest code commit: `966a6f517b61fd3740e450a69b453eaace349008`.
+- Preview URL for latest code commit: `https://freed-d937e38cc-sergeyogorodnik19-3325s-projects.vercel.app/rooms-eco-futurism-v2.html` (Vercel response HTTP 200; source contains the latest changes).
+- Completed in this pass:
+  1. Replaced unrelated Unsplash room thumbnails/details with local FreeDom photos: `images/room-family.jpg`, `images/room-hostel.jpg`, `images/room-balcony.jpg`, `images/room-bungalow.jpg`.
+  2. Replaced the two unrelated stock scene backgrounds with the user's house image `images/4d284d38-6fda-471a-aacc-050528e57da0.png` served from the existing main-branch asset.
+  3. Removed invented room dimensions, unsupported sea-view/panoramic-window claims, incorrect “6 guests” hostel claim and initial fake “available” statuses.
+  4. Removed hardcoded past dates so the existing date initializer supplies valid dates.
+  5. Corrected visible names to “Семейная комната”, “Хостел стандарт”, “Двухместный с балконом”; availability and booking code were not rewritten.
+- Verification: fetched the latest preview page successfully (HTTP 200); its HTML contains the house image URL and all local room photo paths, has no Unsplash image URLs, and no longer contains the removed invented details.
+- Limitations still open: no rendered browser/touch inspection yet; central house image is currently referenced from the main-branch raw GitHub URL rather than copied as a branch-local binary; room catalog remains partly hardcoded and should be reconciled with actual catalog data; the current page's booking button still opens Telegram, while the repo also has `POST /api/booking` forwarding to `create-public-booking`. Inspect request payload/flow and make a deliberate safe integration change in a later stage.
+- Next step: inspect current page mobile layout and current catalog/booking behavior, then reconcile real room categories/data without changing the approved visual composition.
+
+---
+
 # ACTIVE CORRECTION — 2026-10-28: WORK ON THE APPROVED ROOMS PAGE, NOT THE 3D MODEL
 
 The user explicitly corrected the direction: recent work on `rooms-architectural-v1.html` is the wrong page because it focuses on a 3D/architectural model. Do not continue that model as the Rooms page and do not treat it as the currently approved UI.
