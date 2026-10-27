@@ -309,3 +309,14 @@ Changes on branch `rooms-architectural-v1`:
 
 - Follow-up correction commit `2bd86a358e18272faacc132fb0778b60eda1dcea`: removed unverified room-position pins and the misleading “360°” indicator from the aerial panel. The photograph is not a verified interactive 360° model, and room positions should not be implied without plan-backed geometry. The real controls are now the room-category tabs and floor/zone selector.
 - Preview for the code commit before this last small correction was READY at `https://freed-hx4guxguv-sergeyogorodnik19-3325s-projects.vercel.app/rooms-eco-futurism-v2.html`; the newest commit must finish deployment before its preview is shared as the latest.
+
+# STATIC PHOTO / RESPONSIVE CROP PASS — 2026-10-28
+
+User feedback: the page still felt like a photo with buttons; outer background looked blurry, and the photo moved during vertical scrolling. They asked for a static image and deliberate framing for phone and desktop, especially portrait orientation.
+
+Changes:
+- Commit `fa965a0f8fd28c099729083b4ff9c1e5fe44ce1c`: replaced remote `images.weserv.nl` compressed/proxied image backgrounds with the original repository PNG assets to avoid unnecessary compression softness; added separate responsive crop positions for desktop, mobile, narrow mobile, and portrait desktop.
+- Commit `575360f367f413dcdf9e4d539443ec01245dd021`: corrected the fixed backdrop stacking so it remains visible behind the interface.
+- Mobile CSS sets the central territory photo scene to fixed viewport positioning while the content can scroll, and adjusts image sizing/position for portrait screens.
+- Need real-device visual validation: fixed-position layers and crop choices have not been checked in a rendered mobile browser. If the photo layer overlays content incorrectly on device, adjust stacking based on a screenshot. Do not claim it was visually confirmed.
+- Changes remain on `rooms-architectural-v1`; production/main not touched.
