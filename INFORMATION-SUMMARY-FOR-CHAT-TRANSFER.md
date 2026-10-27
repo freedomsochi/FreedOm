@@ -354,3 +354,12 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Existing early preloads remain for the two scene images and first room thumbnails; connection warm-up for the image host remains enabled. The browser cache explains why repeat visits were much faster after the first successful load.
 - This is a transfer-size optimization, not a measured byte benchmark: the image proxy's exact output sizes and browser performance have not been independently measured here. Because URLs changed, the next first visit downloads the new compressed variants once; repeat visits should benefit from cache again.
 - Next high-impact option if needed: add branch-local, precompressed WebP assets and remove the third-party image-proxy dependency. This requires creating binary assets and verifying image quality before switching. Do not change main/production.
+
+
+## Mobile scroll stability fix — 2026-10-28
+
+- Approved page: `rooms-eco-futurism-v2.html`, branch `rooms-architectural-v1`; production/main untouched.
+- Commit `cbd00e26150f933327ef086e6110b5754b850f33` — `Keep Rooms search panel stable during mobile scroll`.
+- Mobile header (including the date/search panel) now uses a sticky top position and a translucent glass backing, so it remains in place rather than leaving a blank header gap while scrolling.
+- Fixed scenery background now uses stable small-viewport height (`100svh`) instead of sizing to the changing dynamic viewport, intended to reduce the background shifting when mobile browser chrome expands/collapses.
+- Not yet visually/touch-tested in a real mobile browser; verify the latest Vercel preview. If sticky header feels too tall/obstructive, adjust spacing while preserving the stable position.
