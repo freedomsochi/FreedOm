@@ -372,3 +372,11 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Removed the thin translucent bottom border and shadow from the sticky mobile search/header panel so it blends into the glass surface.
 - Reworked the fixed mobile scenery layer to fill the viewport with `inset:0` and `background-size:cover`, instead of a hard `100svh` height/size boundary that could expose a blank strip at the viewport edge as browser chrome changes.
 - This is a CSS correction; the live phone rendering has not been independently device-tested yet. Verify the latest branch preview. Main/production was not modified.
+
+
+## Follow-up: remove sticky-header repaint gap — 2026-10-28
+
+- User reported the previous CSS change had no visible effect: a blank/white area remained when scrolling and the search panel appeared to jump back on finger release.
+- Page commit `93c056bd88bb9d9595fa0c7f66eef20bdeffda86` — `Remove sticky header repaint gap on mobile`.
+- Changed the mobile header from `position: sticky` back to normal document flow so it naturally scrolls away without a sticky placeholder/repaint interaction. Removed backdrop blur from the header, which can trigger compositing glitches on mobile browsers. Kept the scenery fixed to the viewport and retained its full-screen cover framing.
+- Previous attempt did not solve the user's observed issue; this is a different implementation, not a claim of verified device success. Test on mobile preview before further adjustments. Main/production remains unchanged.
