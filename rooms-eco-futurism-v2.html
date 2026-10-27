@@ -176,13 +176,13 @@ body{overflow:hidden;background:#b5d7bd}
  html,body{min-height:100%;background:transparent!important}
  .backdrop{position:fixed!important;inset:0!important;background-position:center 46%!important;background-size:auto 100%!important}
  .model{position:relative;overflow:visible!important;background:transparent!important;isolation:isolate}
- .model .scene{position:absolute!important;inset:0!important;z-index:0!important;border-radius:0!important;background-position:center center!important;background-size:contain!important}
+ .model .scene{position:absolute!important;inset:0!important;z-index:0!important;border-radius:0!important;background-position:center center!important;background-size:100% 100%!important}
  .model:before{position:absolute;z-index:2;pointer-events:none}
  .model .floorinfo,.model .floorlayers,.model .staytypes,.model .modelhint,.model .compass{z-index:3}
 }
 @media(max-width:430px){
  .backdrop{background-position:center 44%!important;background-size:auto 100%!important}
- .model .scene{background-position:center center!important;background-size:contain!important}
+ .model .scene{background-position:center center!important;background-size:100% 100%!important}
 }
 @media(orientation:portrait) and (min-width:851px){
  .backdrop{background-position:52% center!important;background-size:auto 100%!important}
