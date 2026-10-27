@@ -1,3 +1,41 @@
+# ACTIVE CORRECTION — 2026-10-28: WORK ON THE APPROVED ROOMS PAGE, NOT THE 3D MODEL
+
+The user explicitly corrected the direction: recent work on `rooms-architectural-v1.html` is the wrong page because it focuses on a 3D/architectural model. Do not continue that model as the Rooms page and do not treat it as the currently approved UI.
+
+## Correct target
+- The existing Orbit on `index.html` opens `rooms-eco-futurism-v2.html` for the Rooms direction. This is the page to improve.
+- Work only on the non-production branch `rooms-architectural-v1` unless the user explicitly changes this instruction.
+- Keep the approved photo-background + translucent glass/holographic panel interface and its current page composition. Do not replace it with the 3D model or the unrelated `availability_map_v7.html` catalog.
+- Do not change `main` or production.
+- Preserve existing category navigation and availability integration until each has been inspected; don't invent room dimensions, capacity, prices, or availability.
+- Use actual FreeDom photo assets in `images/`, not unrelated Unsplash room photos.
+- The page currently uses the Supabase public-availability endpoint and routes the booking action to the FreeDom Telegram contact. Inspect existing booking paths (including `availability_map_v7.html` and current API handlers) before deciding whether to change this; do not silently replace the flow.
+
+## Work order agreed with user
+1. Identify and inspect the approved page and references; separate it from 3D model experiments.
+2. Audit the approved page's mobile layout, visual glitches, images, categories and interactions.
+3. Replace unrelated stock room photos with real FreeDom assets while preserving the interface.
+4. Verify room categories and data against the actual catalog; ask the user only where house facts cannot be verified.
+5. Inspect and preserve the existing availability/booking integration before changes.
+6. Finish mobile/readability/reduced-motion checks, verify preview deployment, document changes and share the preview.
+7. Continue in small completed stages whenever the user says “Продолжай работу”.
+
+## Current approved-page checkpoint
+- Correct file: `rooms-eco-futurism-v2.html`
+- Branch: `rooms-architectural-v1`
+- Latest approved-page change: commit `1da671701917bc2f47ba8e9aa580b5e1dcbfe60b` — replaced the three unrelated Unsplash room images with local assets:
+  - `images/room-family.jpg`
+  - `images/room-hostel.jpg`
+  - `images/room-balcony.jpg`
+  - Bungalow detail image uses `images/room-bungalow.jpg`
+- This was a photo-only change; availability and booking logic were not changed.
+- Vercel preview for this commit was still BUILDING at checkpoint time. Verify state and page URL before sharing it as READY.
+- The central scene/background still contains external Unsplash images and needs review against the user's actual house/territory image assets before replacing them.
+- No rendered browser/touch visual inspection has yet been performed. Do not claim it has.
+- The 3D model branch/file can be revisited as a separate task only if the user asks.
+
+---
+
 ## Latest implementation checkpoint — 2026-10-28
 
 - Current target branch: `rooms-architectural-v1`.
