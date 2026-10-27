@@ -1,6 +1,15 @@
 ## Latest implementation checkpoint — 2026-10-28
 
 - Current target branch: `rooms-architectural-v1`.
+- Latest Rooms code commit: `c2059b101f23a524367e8718ed00e08cbe9fd18d` — `Add confirmed double rooms and attic room hotspots`.
+- Previous UI commit: `4ea404bf2dde56a64c1f59e3f3a337a295bdd3b8` — floor selector moved to the bottom, horizontally scrollable, with mobile card clearance and reduced-motion support.
+- Latest changes in `rooms-architectural-v1.html`: floor navigation labels are `Территория`, `1 этаж`, `2 этаж`, `3 этаж`, `4 этаж`, `Мансарда`; the fourth-floor model now includes two separate double rooms alongside yoga/practice and balcony; attic now has two separate room zones; added hotspots for both double rooms and both attic rooms.
+- Preview URL from the UI commit (HTTP 200 verified): https://freed-cqssl7fuq-sergeyogorodnik19-3325s-projects.vercel.app/rooms-architectural-v1.html
+- Deployment for the latest code commit should be rechecked before sharing it as the current preview. A source response was fetched successfully, but no rendered visual/browser interaction inspection has been performed.
+- Important next step: visually test mobile layout and floor-to-model mapping. The geometry remains a proportional prototype; reconcile all floor data against `ROOMS_ARCHITECTURAL_PLAN.md`, the plan addendum, and the user's latest agreed room inventory before claiming architectural accuracy. Do not rewrite booking logic; inspect existing integration first.
+
+
+- Current target branch: `rooms-architectural-v1`.
 - Latest code change: commit `4ea404bf2dde56a64c1f59e3f3a337a295bdd3b8` — `Improve Rooms floor navigation and mobile panel layout`.
 - File changed: `rooms-architectural-v1.html`.
 - Changes: floor selector moved from a vertical left rail to a compact bottom horizontal row; selector can scroll horizontally on narrow screens; displayed levels are now `Территория`, `1 этаж`, `2 этаж`, `3 этаж`, `4 этаж`, `Мансарда`; detail card sits above the selector on mobile; button transitions respect `prefers-reduced-motion`.
