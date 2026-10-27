@@ -1,3 +1,13 @@
+## Latest implementation checkpoint — 2026-10-28
+
+- Current target branch: `rooms-architectural-v1`.
+- Latest code change: commit `4ea404bf2dde56a64c1f59e3f3a337a295bdd3b8` — `Improve Rooms floor navigation and mobile panel layout`.
+- File changed: `rooms-architectural-v1.html`.
+- Changes: floor selector moved from a vertical left rail to a compact bottom horizontal row; selector can scroll horizontally on narrow screens; displayed levels are now `Территория`, `1 этаж`, `2 этаж`, `3 этаж`, `4 этаж`, `Мансарда`; detail card sits above the selector on mobile; button transitions respect `prefers-reduced-motion`.
+- Preview URL (HTTP 200 verified): https://freed-cqssl7fuq-sergeyogorodnik19-3325s-projects.vercel.app/rooms-architectural-v1.html
+- Verification limitation: source response was checked and returned HTTP 200, but no rendered visual/browser interaction inspection was performed. User should visually check mobile layout and floor-to-model mapping.
+- Important next step: this change only updates navigation presentation/labels. Verify each displayed floor shows the correct real architectural level. Current model data still contains approximate/inconsistent floor definitions and must be reconciled against `ROOMS_ARCHITECTURAL_PLAN.md` and the user's latest agreed floor inventory before claiming the room geometry is accurate. Do not connect or rewrite booking logic until existing integration is inspected.
+
 # CURRENT WORKING AGREEMENT — 2026-10-28 (READ THIS FIRST)
 
 > This section is the latest user-approved work plan and overrides older/conflicting implementation directions below. The current target build is **`rooms-architectural-v1`**. Continue from the existing build; do not restart or replace successful work with a new prototype.
