@@ -190,36 +190,32 @@ body{overflow:hidden;background:#b5d7bd}
 }
 
 
-/* Stable mobile header and scenery without a hard edge at the viewport bottom. */
+/* Mobile scroll fix: let the header leave normal flow naturally; keep only the scenery viewport-fixed. */
 @media(max-width:850px){
  .top{
-  position:sticky!important;
-  top:0!important;
+  position:relative!important;
+  top:auto!important;left:auto!important;right:auto!important;
   z-index:20!important;
-  left:auto!important;right:auto!important;
-  padding:12px 14px 10px!important;
   margin:0!important;
-  background:linear-gradient(180deg,rgba(16,62,54,.78),rgba(16,62,54,.58))!important;
-  border-bottom:0!important;
+  border:0!important;
   box-shadow:none!important;
-  -webkit-backdrop-filter:blur(16px);
-  backdrop-filter:blur(16px);
-  isolation:isolate;
+  background:linear-gradient(180deg,rgba(16,62,54,.62),rgba(16,62,54,.18))!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  isolation:auto!important;
  }
  .backdrop{
   position:fixed!important;
   inset:0!important;
-  width:100%!important;
-  height:auto!important;
-  min-height:0!important;
+  width:100%!important;height:100%!important;
+  min-height:100%!important;
   background-size:cover!important;
   background-position:center center!important;
-  transform:translateZ(0);
-  will-change:auto;
+  transform:none!important;
+  will-change:auto!important;
  }
- body{background:#9bc8b0}
+ body{background:transparent!important}
 }
-
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates"><label class="date">Заезд<input id="checkin" type="date"></label><label class="date">Выезд<input id="checkout" type="date"></label><button class="search" id="search" aria-label="Найти">⌕</button></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist">
