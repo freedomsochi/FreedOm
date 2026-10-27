@@ -389,3 +389,13 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Removed the mobile header's translucent gradient entirely, plus border/outline/shadow, to avoid the visible line.
 - Enlarged the fixed mobile scenery layer beyond the viewport: top offset `-20svh`, height `140svh`, image size `120svh`; on narrow phones it uses a slightly larger overscan. This deliberately crops/zooms the territory image so scrolling/browser viewport changes are less likely to expose its edge.
 - Must be verified on the user's phone; no direct device rendering available. Branch only; production/main untouched.
+
+
+## Catalog audit — 2026-10-28 (continuation)
+
+- Read the latest Rooms page and queried the existing Supabase `public.rooms` catalog read-only; no database changes were made.
+- Confirmed the live catalog has 9 accommodation records: family room, two separate standard-hostel rooms, economy hostel, two balcony rooms, two attic rooms, bungalow, and “Место под звёздами” (the records include the listed room variants; do not treat these as invented content).
+- The approved Rooms UI currently shows a family room, one combined standard-hostel card, one combined balcony-room card, and bungalow. Some catalog options (economy hostel, attic rooms, second-level individual options, and “Место под звёздами”) are not yet represented as distinct choices. This is a real remaining gap; next pass should reconcile the UI options with catalog IDs without changing the availability endpoint or booking handoff.
+- Verified Supabase catalog details relevant to current cards: standard hostel has two separate 4-place room records, both using `booking_mode=places`; availability code sums their free places. The card previously said only “4 места”, which understated the two-room inventory.
+- Page commit `26e9161a4bb029c1474deb567c183821ddb90d9f` — `Clarify standard hostel inventory count`: visible card and detail metadata now say “2 номера · по 4 места”. Availability and Telegram booking flow unchanged.
+- Latest preview must be rechecked before sharing; no real-device rendering test has been performed. Production/main remain untouched.
