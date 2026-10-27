@@ -1,3 +1,32 @@
+# ROOMS PAGE FEEDBACK — 2026-10-28 (LATEST)
+
+User's latest correction:
+- Approved background image is exactly `images/d858f8c1-6079-463e-bafb-a046f2325f0a.png`; do not use `4d284d38-6fda-471a-aacc-050528e57da0.png` as the page's outer background.
+- The central area is the top-down house/territory view and should be treated as a real control panel, not decoration.
+- Desired behavior: choose a type/category at the top to filter options; selecting a room should take the user down to the full room information.
+- User considered a different accurate top-down projection for each floor, but noted daily image generation limit and accuracy difficulty. Offer vector overlays / floor layers as an alternative before generating multiple floor images.
+
+Latest code update on `rooms-architectural-v1`:
+- Commit `b80cc37237f7eee23c3d32324b7f53bf35eebae1` — “Restore approved Rooms background and speed up image loading”.
+- Outer background now references the approved `d858f8c1-6079-463e-bafb-a046f2325f0a.png`, served through an image resizing/compression proxy (1800px, quality 78, WebP).
+- Central scene retains the top-down house/territory image `4d284d38-6fda-471a-aacc-050528e57da0.png`, also requested through resize/compression (1600px, quality 78, WebP).
+- Room thumbnails/detail thumbnails have `loading=lazy` and `decoding=async`.
+- Branch only; no production/main changes.
+- Vercel deployment for this commit was still BUILDING when last checked; recheck before sharing the newest preview.
+- Image optimizer endpoint has not yet been independently verified by a browser/image fetch. If it fails, use a branch-local optimized asset rather than reverting to the wrong background.
+- No visual browser/touch test has been performed yet.
+
+Recommended panel design (pending user confirmation):
+1. Keep one approved overhead territory image in the center.
+2. Add a clear floor/layer selector: “Территория”, “1 этаж”, “2 этаж”, “3 этаж”, “4 этаж”, “Мансарда”.
+3. Avoid generating a separate bitmap for every floor. Instead draw floor plans as SVG/vector overlays from the authoritative PDF and switch the layer over the same background. Only show room markers where geometry is confirmed by the plan; never invent room positions.
+4. Keep the top categories as filters for room type; category selection shows every relevant option. Clicking a room marker/card smoothly scrolls to its details and booking section.
+5. If the PDF does not provide enough geometry to make a reliable overlay, use a transparent floor-information panel/list over the photo until geometry is confirmed rather than fake precision.
+
+Continue work on the approved page `rooms-eco-futurism-v2.html`, not the experimental 3D page. Inspect deployment, image optimization, then implement the chosen control-panel behavior. Preserve availability/booking integrations.
+
+---
+
 # LATEST APPROVED ROOMS PAGE CHECKPOINT — 2026-10-28
 
 - Correct page is `rooms-eco-futurism-v2.html`, the Rooms destination opened from the Orbit; not `rooms-architectural-v1.html` (the experimental model).
