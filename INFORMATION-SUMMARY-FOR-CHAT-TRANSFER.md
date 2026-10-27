@@ -287,3 +287,22 @@ The interface should not say “Here are our sections.”
 It should visually communicate:
 
 **«Вот FreeDom. Куда хочешь пойти?»**
+
+# VISUAL / INTERACTION PASS — 2026-10-28 (after design feedback)
+
+User emphasized that vector illustrations made so far have looked weak/outdated; design priority is a strong modern graphic language, or simple but tasteful. Keep the real photo and polished glass interface; do not add weak decorative vector floor plans or fake room geometry.
+
+Changes on branch `rooms-architectural-v1`:
+- Commit `3159e0a016d1b954e24c0db3cbd9fd322d89687b` added a refined floor/zone selector over the real aerial scene and an information surface showing only the agreed inventory:
+  - Territory: house/garden/common space
+  - 1st floor: sauna, no accommodation rooms
+  - 2nd floor: economy hostel and living room
+  - 3rd floor: standard hostel, family room, admin room
+  - 4th floor: two double rooms and yoga hall
+  - Attic: two rooms
+- Floor controls update the selected state and the corresponding information text. This is deliberately a clean UI-level floor selector, NOT a claim that the photo contains geometrically accurate floor overlays. Accurate overlays remain a future step only if grounded in the authoritative PDF.
+- The existing category selector remains in place. Clicking a room card or a room marker scrolls to the details panel on mobile; reduced-motion preferences are respected. Desktop details remain visible in the right-side panel.
+- Commit `dbee876facb3ca8342b06e4f60490cff8e51a064` refined the floor label and removed the unsupported “room with a view” wording.
+- Existing availability endpoint, booking CTA and Telegram booking flow were not rewritten.
+- The approved outer background is still the exact `d858f8c1-6079-463e-bafb-a046f2325f0a.png`; the central scene still uses `4d284d38-6fda-471a-aacc-050528e57da0.png`.
+- Not yet verified: rendered browser/touch appearance, actual image proxy performance, and final Vercel status for the newest commit. Do not claim those tests passed until checked.
