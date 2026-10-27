@@ -335,3 +335,10 @@ Follow-up to the edge-fill fix: user reported the central photo looked square/di
 ## ROOMS IMAGE LOAD PERFORMANCE PASS — 2026-10-28
 
 User reported that photos still load slowly. Checked image payloads through GitHub API: the two main territory/background PNGs are large (central territory image ~3.81 MB; another PNG ~2.72 MB), while the four room-card JPGs on this branch are ~0.30–0.51 MB each. The Rooms page already uses images.weserv.nl to deliver WebP versions of the two main backgrounds; therefore it is not accurate to attribute all delay to Vercel alone. Reduced requested background variants from 1800/1600 px at q78 to 1200 px at q72 and added preconnect/dns-prefetch for images.weserv.nl. Room JPGs remain unchanged to avoid altering image assets without verifying their visual quality. Commit: `69193a3269cf12f91d2838045bded6aaee1c0928`. This should reduce transfer size, especially on phones, but real-world speed still needs checking on the preview; the third-party image optimizer's first response/cache behavior can contribute to delay. No production/main changes.
+
+
+## 2026-10-28 — Rooms image loading follow-up
+- User reported that photos still appear with a delay when opening the Rooms page, even after reducing background image sizes and adding connection warm-up.
+- Updated `rooms-eco-futurism-v2.html` to preload the central territory scene at high priority, preload the outer background, and preload the first visible hostel/family room images. This starts image requests during HTML parsing instead of waiting for later CSS/layout discovery.
+- Commit: `4cbe26e45f7ccb15d74382c435c679828a404854` (`Preload Rooms photos before page layout`).
+- This is a loading-order improvement, not a guarantee that the third-party image proxy responds quickly. Next step if delay persists: remove the proxy dependency by hosting optimized image files with the project.
