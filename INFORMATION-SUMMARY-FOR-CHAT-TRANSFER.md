@@ -320,3 +320,8 @@ Changes:
 - Mobile CSS sets the central territory photo scene to fixed viewport positioning while the content can scroll, and adjusts image sizing/position for portrait screens.
 - Need real-device visual validation: fixed-position layers and crop choices have not been checked in a rendered mobile browser. If the photo layer overlays content incorrectly on device, adjust stacking based on a screenshot. Do not claim it was visually confirmed.
 - Changes remain on `rooms-architectural-v1`; production/main not touched.
+
+
+## MOBILE CENTRAL PHOTO EDGE-FILL FIX — 2026-10-28
+
+User reported that the central territory photo was cropped/letterboxed with transparent-looking empty strips on the left and right after the mobile `contain` adjustment. Updated only the mobile central scene sizing in `rooms-eco-futurism-v2.html`: both narrow-screen rules now use `background-size:100% 100%` instead of `contain`, so the full photo fills the central frame edge-to-edge and no side gaps are left. This can slightly stretch the image to fit the frame; it intentionally prioritizes a continuous photo over transparent side bars. Desktop rules and booking/availability logic are unchanged. Commit: `6c83b494296bdd9a649b29727dff86982616597f`. Verify the new Vercel preview is READY before sharing; no rendered-device visual inspection has been performed.
