@@ -342,3 +342,15 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Updated `rooms-eco-futurism-v2.html` to preload the central territory scene at high priority, preload the outer background, and preload the first visible hostel/family room images. This starts image requests during HTML parsing instead of waiting for later CSS/layout discovery.
 - Commit: `4cbe26e45f7ccb15d74382c435c679828a404854` (`Preload Rooms photos before page layout`).
 - This is a loading-order improvement, not a guarantee that the third-party image proxy responds quickly. Next step if delay persists: remove the proxy dependency by hosting optimized image files with the project.
+
+
+---
+
+## Image performance checkpoint — 2026-10-28
+
+- Branch: `rooms-architectural-v1`; production/main unchanged.
+- Rooms page commit: `aa3e8ba5657faea3993359cc33e2bd3c43cb1488` — `Reduce Rooms background image payloads`.
+- Kept the approved two photos and existing image proxy, but reduced transfer size targets: central territory image now requests WebP at 1000px / quality 66 (previously 1200px / quality 72); outer background requests WebP at 1300px / quality 66 (previously 1200px / quality 72). The preload URLs match the CSS URLs, so browsers do not need to fetch a separate variant for the same image.
+- Existing early preloads remain for the two scene images and first room thumbnails; connection warm-up for the image host remains enabled. The browser cache explains why repeat visits were much faster after the first successful load.
+- This is a transfer-size optimization, not a measured byte benchmark: the image proxy's exact output sizes and browser performance have not been independently measured here. Because URLs changed, the next first visit downloads the new compressed variants once; repeat visits should benefit from cache again.
+- Next high-impact option if needed: add branch-local, precompressed WebP assets and remove the third-party image-proxy dependency. This requires creating binary assets and verifying image quality before switching. Do not change main/production.
