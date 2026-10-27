@@ -306,3 +306,6 @@ Changes on branch `rooms-architectural-v1`:
 - Existing availability endpoint, booking CTA and Telegram booking flow were not rewritten.
 - The approved outer background is still the exact `d858f8c1-6079-463e-bafb-a046f2325f0a.png`; the central scene still uses `4d284d38-6fda-471a-aacc-050528e57da0.png`.
 - Not yet verified: rendered browser/touch appearance, actual image proxy performance, and final Vercel status for the newest commit. Do not claim those tests passed until checked.
+
+- Follow-up correction commit `2bd86a358e18272faacc132fb0778b60eda1dcea`: removed unverified room-position pins and the misleading “360°” indicator from the aerial panel. The photograph is not a verified interactive 360° model, and room positions should not be implied without plan-backed geometry. The real controls are now the room-category tabs and floor/zone selector.
+- Preview for the code commit before this last small correction was READY at `https://freed-hx4guxguv-sergeyogorodnik19-3325s-projects.vercel.app/rooms-eco-futurism-v2.html`; the newest commit must finish deployment before its preview is shared as the latest.
