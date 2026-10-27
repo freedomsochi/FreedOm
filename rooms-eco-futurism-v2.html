@@ -156,15 +156,15 @@ body{overflow:hidden;background:#b5d7bd}
 
 /* Responsive photographic framing — use original repository images, not a compressed proxy. */
 .backdrop{
- position:fixed!important;inset:0!important;z-index:-1;
+ position:fixed!important;inset:0!important;z-index:0;
  background-color:#b5d7bd!important;
- background-image:linear-gradient(180deg,rgba(15,51,44,.05),rgba(10,48,42,.13)),url("images/d858f8c1-6079-463e-bafb-a046f2325f0a.png")!important;
+ background-image:linear-gradient(180deg,rgba(15,51,44,.05),rgba(10,48,42,.13)),url("https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/d858f8c1-6079-463e-bafb-a046f2325f0a.png")!important;
  background-repeat:no-repeat!important;background-position:center 48%!important;
  background-size:cover!important;filter:none!important;transform:translateZ(0);
 }
 .backdrop:after{background:linear-gradient(90deg,rgba(9,54,50,.10),transparent 44%,rgba(9,54,50,.08)),linear-gradient(0deg,rgba(12,50,46,.12),transparent 42%)!important}
 .scene{
- background-image:linear-gradient(180deg,rgba(22,85,77,.015),rgba(13,61,54,.06)),url("images/4d284d38-6fda-471a-aacc-050528e57da0.png")!important;
+ background-image:linear-gradient(180deg,rgba(22,85,77,.015),rgba(13,61,54,.06)),url("https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/4d284d38-6fda-471a-aacc-050528e57da0.png")!important;
  background-repeat:no-repeat!important;background-position:center center!important;background-size:cover!important;
  filter:none!important;
 }
@@ -176,7 +176,7 @@ body{overflow:hidden;background:#b5d7bd}
  html,body{min-height:100%;background:transparent!important}
  .backdrop{position:fixed!important;inset:0!important;background-position:center 46%!important;background-size:auto 100%!important}
  .model{position:relative;overflow:visible!important;background:transparent!important;isolation:isolate}
- .model .scene{position:fixed!important;inset:0!important;z-index:-1!important;border-radius:0!important;background-position:center 48%!important;background-size:auto 100%!important}
+ .model .scene{position:absolute!important;inset:0!important;z-index:0!important;border-radius:0!important;background-position:center 48%!important;background-size:auto 100%!important}
  .model:before{position:absolute;z-index:2;pointer-events:none}
  .model .floorinfo,.model .floorlayers,.model .staytypes,.model .modelhint,.model .compass{z-index:3}
 }
