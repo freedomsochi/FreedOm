@@ -156,7 +156,7 @@ body{overflow:hidden;background:#b5d7bd}
 
 /* Responsive photographic framing — use original repository images, not a compressed proxy. */
 .backdrop{
- position:fixed!important;inset:0!important;z-index:-2;
+ position:fixed!important;inset:0!important;z-index:-1;
  background-color:#b5d7bd!important;
  background-image:linear-gradient(180deg,rgba(15,51,44,.05),rgba(10,48,42,.13)),url("images/d858f8c1-6079-463e-bafb-a046f2325f0a.png")!important;
  background-repeat:no-repeat!important;background-position:center 48%!important;
@@ -173,7 +173,7 @@ body{overflow:hidden;background:#b5d7bd}
  .scene{background-position:center 48%!important;background-size:cover!important}
 }
 @media(max-width:850px){
- html,body{min-height:100%;background:#b5d7bd}
+ html,body{min-height:100%;background:transparent!important}
  .backdrop{position:fixed!important;inset:0!important;background-position:center 46%!important;background-size:auto 100%!important}
  .model{position:relative;overflow:visible!important;background:transparent!important;isolation:isolate}
  .model .scene{position:fixed!important;inset:0!important;z-index:-1!important;border-radius:0!important;background-position:center 48%!important;background-size:auto 100%!important}
