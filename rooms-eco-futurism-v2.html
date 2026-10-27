@@ -42,6 +42,18 @@ body{overflow:hidden;background:#b5d7bd}
 .pin:hover{background:white;transform:translateY(-1px)}
 .compass{top:18px;right:18px;width:35px;height:35px;background:rgba(18,76,67,.55);color:#f4fffb}
 .modelhint{left:22px;bottom:20px;text-shadow:0 1px 8px rgba(7,48,44,.5)}
+/* Premium control layer: use the real aerial photo as a canvas, not fake room geometry. */
+.floorlayers{position:absolute;z-index:6;left:18px;right:18px;bottom:62px;display:flex;gap:5px;justify-content:center;flex-wrap:wrap;padding:7px;border:1px solid rgba(239,255,250,.38);border-radius:17px;background:rgba(14,57,50,.62);backdrop-filter:blur(18px);box-shadow:0 10px 30px rgba(6,40,35,.2)}
+.floorlayers button{border:1px solid transparent;background:transparent;color:rgba(246,255,251,.9);border-radius:11px;padding:9px 11px;font:600 10px/1.1 Inter,Arial,sans-serif;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s,border-color .2s}
+.floorlayers button:hover{background:rgba(255,255,255,.13)}
+.floorlayers button.active{background:#f0fff7;color:#20574b;border-color:rgba(255,255,255,.88);box-shadow:0 3px 12px rgba(0,0,0,.12)}
+.floorinfo{position:absolute;z-index:5;left:18px;top:76px;max-width:min(270px,58%);padding:12px 15px;border:1px solid rgba(239,255,250,.55);border-radius:15px;background:rgba(14,57,50,.68);backdrop-filter:blur(16px);box-shadow:0 10px 28px rgba(6,40,35,.18);pointer-events:none}
+.floorinfo .eyebrow{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#c9f7e8;margin-bottom:5px}
+.floorinfo strong{display:block;font-size:14px;line-height:1.2;font-weight:750;color:#fff}
+.floorinfo span{display:block;margin-top:5px;font-size:10px;line-height:1.4;color:rgba(246,255,251,.9)}
+.pin{border-radius:12px;background:rgba(242,255,249,.95);border-color:rgba(255,255,255,.9);box-shadow:0 5px 18px rgba(12,68,57,.2);font-weight:700}
+@media(max-width:850px){.floorlayers{left:10px;right:10px;bottom:48px;gap:3px;padding:5px;border-radius:14px}.floorlayers button{padding:8px 8px;font-size:9px}.floorinfo{left:12px;top:58px;max-width:62%;padding:9px 11px}.floorinfo strong{font-size:12px}.floorinfo span{font-size:9px}.modelhint{bottom:12px;left:12px}.modelhint span{max-width:40vw;font-size:10px}}
+@media(max-width:390px){.floorlayers{left:8px;right:8px;bottom:43px}.floorlayers button{padding:7px 6px;font-size:8px}.floorinfo{max-width:68%}}
 .details{right:3%;top:112px;bottom:24px;width:21%;overflow-y:auto;overflow-x:hidden;border-radius:22px;padding:10px;background:linear-gradient(145deg,rgba(239,255,250,.32),rgba(173,238,224,.17));box-shadow:0 14px 38px rgba(13,54,51,.17),inset 0 0 0 1px rgba(255,255,255,.16)}
 .heroimg{height:clamp(100px,17vh,165px);object-fit:cover}
 .detailtitle{font-size:17px;line-height:1.25}
@@ -147,7 +159,7 @@ body{overflow:hidden;background:#b5d7bd}
 <article class="roomcard active" data-category="rooms" data-room="0"><img src="images/room-family.jpg" loading="lazy" decoding="async"><div class="roomname">Семейная комната</div><div class="meta">Бронируется целиком <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <article class="roomcard" data-category="hostel" data-room="1"><img src="images/room-hostel.jpg" loading="lazy" decoding="async"><div class="roomname">Хостел стандарт</div><div class="meta">4 места · по местам <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <article class="roomcard" data-category="rooms" data-room="2"><img src="images/room-balcony.jpg" loading="lazy" decoding="async"><div class="roomname">Двухместный с балконом</div><div class="meta">Бронируется целиком <span class="availability-status status-unknown">• Проверяем…</span></div></article><div class="emptycategory" id="emptycategory">Бунгало в саду<br><span style="opacity:.86">Отдельный вариант размещения в саду.</span><br><span id="bungalowstatus" class="availability-status status-checking">Проверяем доступность…</span></div></section>
-<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button class="active" type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="compass">360°</div><button class="pin" style="--x:44%;--y:40%" data-room="0">Семейная</button><button class="pin" style="--x:25%;--y:58%" data-room="1">Хостел</button><button class="pin" style="--x:61%;--y:70%" data-room="2">Комната с видом</button><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><div class="mobiletabs">Модель пространства · 360°</div></section>
+<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button class="active" type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="floorinfo" aria-live="polite"><div class="eyebrow">План дома · слой</div><strong id="floorlabel">Территория</strong><span id="floordesc">Дом, сад и общее пространство FreeDom</span></div><nav class="floorlayers" aria-label="Этажи и зоны дома"><button type="button" class="active" data-floor="territory">Территория</button><button type="button" data-floor="1">1 этаж</button><button type="button" data-floor="2">2 этаж</button><button type="button" data-floor="3">3 этаж</button><button type="button" data-floor="4">4 этаж</button><button type="button" data-floor="attic">Мансарда</button></nav><div class="compass" aria-hidden="true">⌖</div><button class="pin" style="--x:44%;--y:40%" data-room="0">Семейная</button><button class="pin" style="--x:25%;--y:58%" data-room="1">Хостел</button><button class="pin" style="--x:61%;--y:70%" data-room="2">Комната с видом</button><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><div class="mobiletabs">Модель пространства · 360°</div></section>
 <aside class="details"><button class="heart" id="heart">♡</button><img class="heroimg" id="heroimg" src="images/room-family.jpg"><div class="detailtitle" id="detailtitle">Семейная комната</div><div class="detailmeta" id="detailmeta">Бронирование целиком</div><div class="thumbs" id="thumbs"><img src="images/room-family.jpg" loading="lazy" decoding="async"><img src="images/room-balcony.jpg" loading="lazy" decoding="async"><img src="images/room-hostel.jpg" loading="lazy" decoding="async"></div><p class="description" id="description">Отдельная комната для семейного размещения. Доступность проверяется по выбранным датам.</p><button class="book" id="book">Забронировать&nbsp; ›</button></aside>
 <script>
 const rooms=[
@@ -157,7 +169,15 @@ const rooms=[
 ];
 const bungalowDbNames=['Бунгало в саду'];
 const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
-let active=0,category='rooms',availabilityRows=[],availabilityState='loading';
+let active=0,category='rooms',availabilityRows=[],availabilityState='loading',activeFloor='territory';
+const floorInfo={
+ territory:{label:'Территория',desc:'Дом, сад и общее пространство FreeDom'},
+ '1':{label:'1 этаж',desc:'Баня · на этом уровне нет комнат для проживания'},
+ '2':{label:'2 этаж',desc:'Хостел эконом · гостиная'},
+ '3':{label:'3 этаж',desc:'Хостел стандарт · семейная комната · комната администратора'},
+ '4':{label:'4 этаж',desc:'Две двухместные комнаты · зал для йоги'},
+ attic:{label:'Мансарда',desc:'Две комнаты'}
+};
 const $=s=>document.querySelector(s);
 const $$=s=>Array.from(document.querySelectorAll(s));
 function selectedDbNames(){return category==='bungalow'?bungalowDbNames:(rooms[active]?.dbNames||[])}
@@ -204,6 +224,20 @@ function choose(i){
  $$('.pin').forEach(p=>{const card=$('.roomcard[data-room="'+p.dataset.room+'"]');p.style.display=card&&card.dataset.category===category?'block':'none'});
  $('#emptycategory').style.display='none';renderAvailability();
 }
+function setFloor(next){
+ const info=floorInfo[next];if(!info)return;
+ activeFloor=next;
+ $('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
+ $('#floorlabel').textContent=info.label;
+ $('#floordesc').textContent=info.desc;
+ $('.modelhint span').textContent=next==='territory'?'Найди своё место':info.desc;
+}
+function scrollToRoomDetails(){
+ const details=$('.details');
+ if(window.matchMedia('(max-width: 850px)').matches){
+  details.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+ }
+}
 function setCategory(next){
  category=next;
  $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===next));
@@ -249,8 +283,8 @@ function initDates(){
  checkIn.addEventListener('change',()=>{updateMin();refreshAvailability()});
  checkOut.addEventListener('change',refreshAvailability);
 }
-$$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));
-$$('.roomcard,.pin').forEach(el=>el.addEventListener('click',()=>choose(Number(el.dataset.room))));
+$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));\n$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
+$('.roomcard,.pin').forEach(el=>el.addEventListener('click',()=>{choose(Number(el.dataset.room));scrollToRoomDetails()}));\n$('#emptycategory').addEventListener('click',()=>{setCategory('bungalow');scrollToRoomDetails()});
 $('#heart').addEventListener('click',e=>e.currentTarget.textContent=e.currentTarget.textContent==='♡'?'♥':'♡');
 $('#search').addEventListener('click',()=>{const a=$('#checkin').value,b=$('#checkout').value;if(a&&b&&b>a)refreshAvailability();else alert('Выберите корректные даты: выезд должен быть позже заезда.')});
 $('#book').addEventListener('click',()=>{
@@ -262,5 +296,5 @@ $('#book').addEventListener('click',()=>{
  location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. Проверил доступность на сайте. Подскажите, пожалуйста, стоимость и подтвердите бронь.');
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
-initDates();renderAvailability();refreshAvailability();
+initDates();renderAvailability();refreshAvailability();setFloor('territory');
 </script></body></html>
