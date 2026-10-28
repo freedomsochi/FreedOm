@@ -277,24 +277,24 @@ const floorInfo={
  attic:{label:'Мансарда',desc:'Две комнаты'}
 };
 const mapPoints=[
-{floor:'territory',label:'Бассейн',x:22,y:35,desc:'Общая зона отдыха на территории FreeDom.'},
-{floor:'territory',label:'Бунгало',x:27,y:69,desc:'Отдельное размещение в саду.',room:6},
-{floor:'territory',label:'Тренажёрная зона',x:68,y:65,desc:'Зона для самостоятельных тренировок.'},
-{floor:'1',label:'Баня',x:37,y:45,desc:'Баня на первом этаже.'},
-{floor:'1',label:'Летняя кухня',x:65,y:45,desc:'Общая летняя кухня.'},
-{floor:'2',label:'Гостиная',x:28,y:43,desc:'Общее пространство для отдыха.'},
-{floor:'2',label:'Кухня',x:48,y:34,desc:'Общая кухня второго этажа.'},
-{floor:'2',label:'Хостел эконом',x:68,y:43,desc:'Общее бюджетное размещение.',room:3},
-{floor:'2',label:'Летняя веранда',x:50,y:69,desc:'Открытая веранда второго этажа.'},
-{floor:'3',label:'Хостел стандарт №1',x:27,y:37,desc:'Четырёхместный номер.',room:1},
-{floor:'3',label:'Хостел стандарт №2',x:47,y:37,desc:'Второй четырёхместный номер.',room:1},
+{floor:'territory',label:'Бассейн',x:24,y:35,desc:'Общая зона отдыха на территории FreeDom.'},
+{floor:'territory',label:'Бунгало',x:17,y:20,desc:'Отдельное размещение в саду.',room:6},
+{floor:'territory',label:'Тренажёрная зона',x:72,y:68,desc:'Зона для самостоятельных тренировок.'},
+{floor:'1',label:'Баня',x:37,y:47,desc:'Баня на первом этаже.'},
+{floor:'1',label:'Летняя кухня',x:63,y:48,desc:'Общая летняя кухня.'},
+{floor:'2',label:'Гостиная',x:31,y:43,desc:'Общее пространство для отдыха.'},
+{floor:'2',label:'Кухня',x:49,y:34,desc:'Общая кухня второго этажа.'},
+{floor:'2',label:'Хостел эконом',x:67,y:43,desc:'Общее бюджетное размещение.',room:3},
+{floor:'2',label:'Летняя веранда',x:78,y:70,desc:'Открытая веранда второго этажа.'},
+{floor:'3',label:'Хостел стандарт №1',x:30,y:37,desc:'Четырёхместный номер.',room:1},
+{floor:'3',label:'Хостел стандарт №2',x:49,y:37,desc:'Второй четырёхместный номер.',room:1},
 {floor:'3',label:'Семейная комната',x:67,y:37,desc:'Отдельная семейная комната.',room:0},
-{floor:'3',label:'Двухместная комната №1',x:37,y:64,desc:'Двухместная комната с санузлом и выходом на балкон.',room:2},
-{floor:'3',label:'Двухместная комната №2',x:63,y:64,desc:'Двухместная комната с выходом на балкон.',room:2},
-{floor:'4',label:'Йога-зал',x:36,y:45,desc:'Общий зал для йоги и практик.'},
-{floor:'4',label:'Общий балкон',x:67,y:57,desc:'Общий балкон четвёртого этажа.'},
-{floor:'attic',label:'Мансардная комната №1',x:37,y:43,desc:'Отдельная комната в мансарде.',room:4},
-{floor:'attic',label:'Мансардная комната №2',x:64,y:43,desc:'Отдельная комната в мансарде.',room:5}
+{floor:'3',label:'Двухместная комната №1',x:38,y:61,desc:'Двухместная комната с санузлом и выходом на балкон.',room:2},
+{floor:'3',label:'Двухместная комната №2',x:62,y:61,desc:'Двухместная комната с выходом на балкон.',room:2},
+{floor:'4',label:'Йога-зал',x:43,y:43,desc:'Общий зал для йоги и практик.'},
+{floor:'4',label:'Общий балкон',x:79,y:74,desc:'Общий балкон четвёртого этажа.'},
+{floor:'attic',label:'Мансардная комната №1',x:38,y:43,desc:'Отдельная комната в мансарде.',room:4},
+{floor:'attic',label:'Мансардная комната №2',x:63,y:43,desc:'Отдельная комната в мансарде.',room:5}
 ];
 const $=s=>document.querySelector(s);
 const $$=s=>Array.from(document.querySelectorAll(s));
@@ -303,7 +303,7 @@ function renderMapPoints(){
  mapPoints.filter(p=>p.floor===activeFloor).forEach(p=>{
   const b=document.createElement('button');
   b.type='button';b.className='pin map-point';b.style.setProperty('--x',p.x+'%');b.style.setProperty('--y',p.y+'%');
-  b.textContent=p.label;b.setAttribute('aria-label',p.label);
+  b.textContent='';b.setAttribute('aria-label',p.label);b.title=p.label;
   b.addEventListener('click',()=>{
    if(Number.isInteger(p.room)){choose(p.room);return}
    $('#floorlabel').textContent=p.label;$('#floordesc').textContent=p.desc;$('.modelhint span').textContent=p.desc;
