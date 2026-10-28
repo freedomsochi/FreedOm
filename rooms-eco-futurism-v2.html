@@ -450,7 +450,7 @@ header.top>div:last-of-type{margin-left:auto!important;align-items:center!import
 }
 
 </style></head><body><div class="backdrop"></div>
-<header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite">Выберите даты — проверим свободные комнаты</div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
+<header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
 <article class="roomcard active" data-category="rooms" data-room="0"><img src="images/room-family.jpg" loading="lazy" decoding="async" alt="Семейная комната"><div class="roomname">Семейная комната</div><div class="meta">Бронируется целиком <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <article class="roomcard" data-category="hostel" data-room="1"><img src="images/room-hostel.jpg" loading="lazy" decoding="async" alt="Хостел стандарт"><div class="roomname">Хостел стандарт</div><div class="meta">2 номера · по 4 места <span class="availability-status status-unknown">• Проверяем…</span></div></article>
@@ -661,12 +661,12 @@ function initDates(){
  const checkIn=$('#checkin'),checkOut=$('#checkout');
  const localIso=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day};
  const today=new Date();today.setHours(0,0,0,0);
+ const tomorrow=new Date(today);tomorrow.setDate(tomorrow.getDate()+1);
  checkIn.min=localIso(today);checkOut.min=localIso(today);
- checkIn.value='';checkOut.value='';
- const updateMin=()=>{checkOut.min=checkIn.value||localIso(today);if(checkOut.value&&checkOut.value<=checkIn.value)checkOut.value=''};
+ checkIn.value=localIso(today);checkOut.value=localIso(tomorrow);
+ const updateMin=()=>{checkOut.min=checkIn.value||localIso(today);if(checkOut.value&&checkOut.value<=checkIn.value){const next=new Date(checkIn.value+'T12:00:00');next.setDate(next.getDate()+1);checkOut.value=localIso(next)}};
  checkIn.addEventListener('change',updateMin);
- checkOut.addEventListener('change',()=>{});
- const summary=$('#availability-summary');if(summary){summary.dataset.state='idle';summary.textContent='Выберите даты заезда и выезда, затем нажмите ⌕ — покажем только свободные варианты.'}
+ const summary=$('#availability-summary');if(summary){summary.dataset.state='idle';summary.textContent='';}
 }
 $$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));
 $$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
