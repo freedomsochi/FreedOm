@@ -477,3 +477,11 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Category selection is intended to show matching accommodation choices across floors; manually choosing a floor filters the list to that floor. Choosing a room opens its details and switches the map to the room's floor. The initial territory view shows the territory while keeping the full catalog visible.
 - JavaScript syntax was checked successfully before commit. GitHub was re-fetched at both branch and commit refs; both return content SHA `655ccbfc7dc3f63dc3169945c241c4f0d32d87fd`, confirming the write.
 - A Vercel preview deployment for this commit was observed in `BUILDING` state at the time of check; re-check status before calling it ready. Preview only; production/main remains untouched.
+
+
+## Rooms map cleanup — 2026-10-28
+- Commit `6de2383f4548339ab9c69034ed5db652ac3ce10b` updates `rooms-eco-futurism-v2.html` on `rooms-architectural-v1`.
+- Replaced visible text labels on map points with small circular markers. The hit area remains comfortably clickable and each point keeps an accessible label/title.
+- Hid the top-left translucent floor information card (`.floorinfo`) and the bottom-left descriptive hint (`.modelhint`) to reduce clutter. Floor selection controls remain available.
+- Repositioned markers: bungalow toward the upper-left territory area; pool near the house-side pool area; training zone toward the outer yard; interior rooms grouped within the building footprint; balcony marker moved to a building corner. Coordinates remain approximate against the current aerial image and should be visually checked against the authoritative PDF/photo when available.
+- JavaScript syntax verified. Production/main untouched.
