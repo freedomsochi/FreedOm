@@ -247,14 +247,14 @@ body{overflow:hidden;background:#b5d7bd}
 <aside class="details"><button class="heart" id="heart">♡</button><img class="heroimg" id="heroimg" src="images/room-family.jpg"><div class="detailtitle" id="detailtitle">Семейная комната</div><div class="detailmeta" id="detailmeta">Бронирование целиком</div><div class="thumbs" id="thumbs"><img src="images/room-family.jpg" loading="lazy" decoding="async"><img src="images/room-balcony.jpg" loading="lazy" decoding="async"><img src="images/room-hostel.jpg" loading="lazy" decoding="async"></div><p class="description" id="description">Отдельная комната для семейного размещения. Доступность проверяется по выбранным датам.</p><button class="book" id="book">Забронировать&nbsp; ›</button></aside>
 <script>
 const rooms=[
-{name:'Семейная комната',category:'rooms',meta:'Бронирование целиком',desc:'Уютная семейная комната на 2 основных места. Возможность дополнительной двухъярусной кровати на 2 места уточняется при бронировании.',img:'images/room-family.jpg',dbNames:['Семейная комната']},
-{name:'Хостел стандарт',category:'hostel',meta:'2 номера · по 4 места · бронирование по местам',desc:'Два отдельных четырёхместных номера. Доступность рассчитывается по свободным местам на выбранные даты.',img:'images/room-hostel.jpg',dbNames:['Хостел стандарт','Хостел стандарт №2']},
-{name:'Двухместный с балконом',category:'rooms',meta:'2 комнаты · бронирование целиком',desc:'Две отдельные двухместные комнаты с балконом. Выберите даты, чтобы уточнить доступность.',img:'images/room-balcony.jpg',dbNames:['Двухместный с балконом №1','Двухместный с балконом №2']},
-{name:'Хостел эконом',category:'hostel',meta:'Общее размещение · до 8 гостей',desc:'Бюджетный вариант общего размещения. Свободные места проверяются по выбранным датам.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/hostel_economy.jpg',dbNames:['Хостел эконом']},
-{name:'Мансардная комната №1',category:'rooms',meta:'Отдельная комната',desc:'Уединённое пространство в мансарде. Условия и доступность проверяются по выбранным датам.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room1.jpg',dbNames:['Мансардная комната №1']},
-{name:'Мансардная комната №2',category:'rooms',meta:'Отдельная комната',desc:'Отдельная мансардная комната. Условия и доступность проверяются по выбранным датам.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room2.jpg',dbNames:['Мансардная комната №2']},
-{name:'Место под звёздами',category:'rooms',meta:'Особое сезонное размещение',desc:'Летнее место для отдыха под крышей с видом на звёздное небо. Доступность и условия необходимо подтвердить при бронировании.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/balcony_bed.jpg',dbNames:['Место под звёздами']},
-{name:'Бунгало в саду',category:'bungalow',meta:'Отдельное размещение · 2 места',desc:'Отдельное бунгало с двухместной кроватью и верандой с видом на сад и бассейн.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg',dbNames:['Бунгало в саду']}
+{name:'Семейная комната',category:'rooms',floors:['3'],meta:'Бронирование целиком',desc:'Уютная семейная комната на 2 основных места. Возможность дополнительной двухъярусной кровати на 2 места уточняется при бронировании.',img:'images/room-family.jpg',dbNames:['Семейная комната']},
+{name:'Хостел стандарт',category:'hostel',floors:['3'],meta:'2 номера · по 4 места · бронирование по местам',desc:'Два отдельных четырёхместных номера. Доступность рассчитывается по свободным местам на выбранные даты.',img:'images/room-hostel.jpg',dbNames:['Хостел стандарт','Хостел стандарт №2']},
+{name:'Двухместный с балконом',category:'rooms',floors:['4'],meta:'2 комнаты · бронирование целиком',desc:'Две отдельные двухместные комнаты с балконом. Выберите даты, чтобы уточнить доступность.',img:'images/room-balcony.jpg',dbNames:['Двухместный с балконом №1','Двухместный с балконом №2']},
+{name:'Хостел эконом',category:'hostel',floors:['2'],meta:'Общее размещение',desc:'Бюджетный вариант общего размещения. Свободные места проверяются по выбранным датам.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/hostel_economy.jpg',dbNames:['Хостел эконом']},
+{name:'Мансардная комната №1',category:'rooms',floors:['attic'],meta:'Отдельная комната',desc:'Уединённое пространство в мансарде. Условия и доступность проверяются по выбранным датам.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room1.jpg',dbNames:['Мансардная комната №1']},
+{name:'Мансардная комната №2',category:'rooms',floors:['attic'],meta:'Отдельная комната',desc:'Отдельная мансардная комната. Условия и доступность проверяются по выбранным датам.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room2.jpg',dbNames:['Мансардная комната №2']},
+{name:'Место под звёздами',category:'rooms',floors:['territory'],meta:'Особое сезонное размещение',desc:'Летнее место для отдыха под крышей с видом на звёздное небо. Доступность и условия необходимо подтвердить при бронировании.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/balcony_bed.jpg',dbNames:['Место под звёздами']},
+{name:'Бунгало в саду',category:'bungalow',floors:['territory'],meta:'Отдельное размещение',desc:'Отдельное бунгало с двухместной кроватью и верандой с видом на сад и бассейн.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg',dbNames:['Бунгало в саду']}
 ];
 const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
 let active=0,category='rooms',availabilityRows=[],availabilityState='loading',activeFloor='territory';
@@ -295,19 +295,45 @@ function renderAvailability(){
   if(label){label.className='availability-status '+status.className;label.textContent='• '+status.text}
   if(card){card.classList.toggle('status-free',status.known&&status.available);card.classList.toggle('status-busy',status.known&&!status.available)}
  });
- $('.roomcard[data-room="7"] .availability-status').forEach(label=>{const status=availabilityFor(rooms[7].dbNames);label.className='availability-status '+status.className;label.textContent='• '+status.text});
  updateBookButton();
 }
 
+function visibleRoomIndexes(){
+ return rooms.map((room,i)=>({room,i})).filter(({room})=>
+  room.category===category && (room.floors||['territory']).includes(activeFloor)
+ ).map(({i})=>i);
+}
+function applyRoomFilters(){
+ const visible=visibleRoomIndexes();
+ $('.roomcard').forEach(el=>{
+  const i=Number(el.dataset.room);
+  el.style.display=visible.includes(i)?'block':'none';
+  el.classList.toggle('active',i===active);
+ });
+ const empty=$('#emptycategory');
+ if(!visible.length){
+  active=-1;
+  $('.roomcard').forEach(el=>el.classList.remove('active'));
+  empty.textContent=activeFloor==='1'
+   ?'На 1 этаже нет вариантов проживания. Здесь отмечена баня; выберите другой этаж, чтобы увидеть комнаты.'
+   :'На этом этаже нет вариантов в категории «'+({rooms:'Комнаты',hostel:'Хостел',bungalow:'Бунгало'}[category]||category)+'». Выберите другой этаж или категорию.';
+  empty.style.display='block';
+  $('.details').style.display='none';
+ }else{
+  empty.style.display='none';
+  $('.details').style.display='';
+  if(!visible.includes(active))choose(visible[0]);
+ }
+}
 function choose(i){
  if(!rooms[i])return;
  active=i;category=rooms[i].category;
- $('.roomcard').forEach(el=>el.classList.toggle('active',Number(el.dataset.room)===i));
- const r=rooms[i];$('#heroimg').src=r.img;$('#detailtitle').textContent=r.name;$('#detailmeta').textContent=r.meta;$('#description').textContent=r.desc;
+ const r=rooms[i];
+ $('#heroimg').src=r.img;$('#detailtitle').textContent=r.name;$('#detailmeta').textContent=r.meta;$('#description').textContent=r.desc;
  $('.modelhint span').textContent='Найди своё место';
  $('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
- $('.roomcard').forEach(el=>el.style.display=el.dataset.category===category?'block':'none');
- $('#emptycategory').style.display='none';renderAvailability();
+ applyRoomFilters();
+ renderAvailability();
 }
 function setFloor(next){
  const info=floorInfo[next];if(!info)return;
@@ -316,6 +342,7 @@ function setFloor(next){
  $('#floorlabel').textContent=info.label;
  $('#floordesc').textContent=info.desc;
  $('.modelhint span').textContent=next==='territory'?'Найди своё место':info.desc;
+ applyRoomFilters();
 }
 function scrollToRoomDetails(){
  const details=$('.details');
@@ -324,8 +351,10 @@ function scrollToRoomDetails(){
  }
 }
 function setCategory(next){
- const first=rooms.findIndex(room=>room.category===next);
- if(first>=0)choose(first);
+ if(!['rooms','hostel','bungalow'].includes(next))return;
+ category=next;
+ $('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
+ applyRoomFilters();
 }
 async function refreshAvailability(){
  const checkIn=$('#checkin').value,checkOut=$('#checkout').value;
