@@ -485,3 +485,11 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Hid the top-left translucent floor information card (`.floorinfo`) and the bottom-left descriptive hint (`.modelhint`) to reduce clutter. Floor selection controls remain available.
 - Repositioned markers: bungalow toward the upper-left territory area; pool near the house-side pool area; training zone toward the outer yard; interior rooms grouped within the building footprint; balcony marker moved to a building corner. Coordinates remain approximate against the current aerial image and should be visually checked against the authoritative PDF/photo when available.
 - JavaScript syntax verified. Production/main untouched.
+
+
+## Rooms map interaction and floor correction — 2026-10-28
+- Updated `rooms-eco-futurism-v2.html` on `rooms-architectural-v1`; commit `406e49ab3fe2007595455bcd7f1651d32e6eb6f9`. Production/main remains untouched.
+- All map points now respond. Accommodation points open the related accommodation detail card and trigger smooth scrolling to the details on mobile. Common-area points (pool, workout zone, sauna, summer kitchen, living room, kitchen, summer veranda, yoga room, balcony) now open a real information card instead of only updating the hidden floor overlay; booking-only controls are hidden for these non-bookable spaces.
+- Corrected floor assignment per the latest user instruction: 3rd floor = standard hostel №1, standard hostel №2, family room; 4th floor = two double rooms (plus yoga room and shared balcony as common areas). Both double-room map points are now on the 4th floor and the double-room listing is filtered to floor 4.
+- Updated map-point descriptions and retained small, unlabeled circular markers.
+- Verified the latest branch file was re-fetched from GitHub and its inline JavaScript parses successfully with `new Function`. This confirms source syntax, not a full real-device/browser interaction test.
