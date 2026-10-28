@@ -243,8 +243,15 @@ body{overflow:hidden;background:#b5d7bd}
 .pin.map-point:hover,.pin.map-point:focus-visible{transform:translate(-50%,-50%) scale(1.12);background:rgba(255,255,255,.25);outline:2px solid rgba(255,255,255,.85);outline-offset:1px}
 @media(max-width:850px){.pin.map-point{width:22px;height:22px;min-width:22px;min-height:22px}.pin.map-point:after{width:7px;height:7px}}
 
+
+.availability-summary{flex:0 0 100%;font-size:10px;line-height:1.4;color:#effff9;opacity:.92;padding-left:4px}
+.availability-summary[data-state="free"]{color:#b5ffe0}
+.availability-summary[data-state="busy"]{color:#ffe0d5}
+.availability-summary[data-state="error"]{color:#ffe4bf}
+.dates{flex-wrap:wrap;min-width:0}
+@media(max-width:850px){.dates{gap:8px}.availability-summary{padding-left:2px;font-size:11px}}
 </style></head><body><div class="backdrop"></div>
-<header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates"><label class="date">Заезд<input id="checkin" type="date"></label><label class="date">Выезд<input id="checkout" type="date"></label><button class="search" id="search" aria-label="Найти">⌕</button></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
+<header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite">Выберите даты — проверим свободные комнаты</div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
 <article class="roomcard active" data-category="rooms" data-room="0"><img src="images/room-family.jpg" loading="lazy" decoding="async" alt="Семейная комната"><div class="roomname">Семейная комната</div><div class="meta">Бронируется целиком <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <article class="roomcard" data-category="hostel" data-room="1"><img src="images/room-hostel.jpg" loading="lazy" decoding="async" alt="Хостел стандарт"><div class="roomname">Хостел стандарт</div><div class="meta">2 номера · по 4 места <span class="availability-status status-unknown">• Проверяем…</span></div></article>
@@ -295,7 +302,8 @@ const mapPoints=[
 {floor:'4',label:'Общий балкон',x:79,y:74,desc:'Общий балкон у угла дома.'},
 {floor:'attic',label:'Мансардная комната №1',x:38,y:43,desc:'Отдельная комната в мансарде.',room:4},
 {floor:'attic',label:'Мансардная комната №2',x:63,y:43,desc:'Отдельная комната в мансарде.',room:5}
-].join('\n');;
+
+];
 const $=s=>document.querySelector(s);
 const $$=s=>Array.from(document.querySelectorAll(s));
 function renderMapPoints(){
@@ -421,18 +429,27 @@ function setCategory(next){
  applyRoomFilters();
 }
 async function refreshAvailability(){
- const checkIn=$('#checkin').value,checkOut=$('#checkout').value;
- if(!checkIn||!checkOut||checkOut<=checkIn){availabilityState='error';renderAvailability();return}
+ const checkIn=$('#checkin').value,checkOut=$('#checkout').value,summary=$('#availability-summary');
+ if(!checkIn||!checkOut||checkOut<=checkIn){
+  availabilityState='error';availabilityRows=[];renderAvailability();
+  if(summary){summary.dataset.state='error';summary.textContent='Выберите корректные даты: выезд должен быть позже заезда.'}
+  return;
+ }
  availabilityState='loading';availabilityRows=[];renderAvailability();
+ if(summary){summary.dataset.state='loading';summary.textContent='Проверяем доступность по базе FreeDom…'}
  $('.modelhint span').textContent='Проверяем свободные места…';
  try{
   const response=await fetch(availabilityEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({check_in:checkIn,check_out:checkOut})});
   const payload=await response.json();
   if(!response.ok||!payload.ok||!Array.isArray(payload.rooms))throw new Error(payload.error||'Availability request failed');
   availabilityRows=payload.rooms;availabilityState='loaded';renderAvailability();
+  const free=rooms.filter(room=>availabilityFor(room.dbNames).available===true).length;
+  const busy=rooms.filter(room=>availabilityFor(room.dbNames).known&&availabilityFor(room.dbNames).available===false).length;
+  if(summary){summary.dataset.state=free?'free':busy?'busy':'unknown';summary.textContent='Доступность проверена · '+checkIn+' — '+checkOut+' · доступно вариантов: '+free+(busy?' · нет мест: '+busy:'')}
   $('.modelhint span').textContent='Доступность обновлена · '+checkIn+' — '+checkOut;
  }catch(error){
   availabilityRows=[];availabilityState='error';renderAvailability();
+  if(summary){summary.dataset.state='error';summary.textContent='Не удалось получить данные. Доступность не подтверждена — попробуйте проверить ещё раз.'}
   $('.modelhint span').textContent='Не удалось проверить доступность · можно уточнить у команды';
   console.error('FreeDom live availability:',error);
  }
