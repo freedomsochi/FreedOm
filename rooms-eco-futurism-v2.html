@@ -469,9 +469,14 @@ header.top>div:last-of-type{margin-left:auto!important;align-items:center!import
 
 /* User-requested final arrangement: important shared facilities only; compact card row near dates. */
 .scene{background:linear-gradient(180deg,rgba(15,70,61,.04),rgba(12,57,49,.15)),url('https://images.weserv.nl/?url=raw.githubusercontent.com%2Ffreedomsochi%2FFreedOm%2Fmain%2Fimages%2F4d284d38-6fda-471a-aacc-050528e57da0.png&w=1300&q=76&output=webp') center/cover!important;filter:saturate(1.1)!important}
-.left{top:88px!important}
+/* Prevent room cards from intruding into the map panel or date controls. */
+@media(min-width:851px){
+ .left{left:3%!important;top:116px!important;width:17%!important;bottom:24px!important}
+ .model{left:22%!important;right:25%!important}
+}
 @media(max-width:850px){
- .left{padding-top:2px!important;margin-top:-5px!important}
+ .left{position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;width:auto!important;margin:0!important;padding:8px 14px 14px!important}
+ .model{margin-top:6px!important}
  .roomcard{margin-top:0!important}
 }
 </style></head><body><div class="backdrop"></div>
