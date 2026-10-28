@@ -469,3 +469,11 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - JavaScript syntax verified successfully with new Function. Live mobile/browser visual interaction testing is not yet confirmed.
 - Commits: 918fe668aeba9be980be9fe711a83368f036cc49 (floor descriptions/assignment), 553d9be8d3ff4f9e2749d14f31f37b7d8f0f23bd (interactive map points).
 - Production/main remains untouched.
+
+
+## Rooms update — 2026-10-28 (cross-floor category browsing and map pin fix)
+- Updated `rooms-eco-futurism-v2.html` on `rooms-architectural-v1` in commit `930420ed1265300fe86f2025681c06ca98d14ccb`.
+- Fixed map pin cleanup: `renderMapPoints()` now removes existing pins with `querySelectorAll` via `$$`, instead of calling `forEach` on a single `querySelector` result. Also corrected other collection selectors used with `forEach` in the page.
+- Category selection is intended to show matching accommodation choices across floors; manually choosing a floor filters the list to that floor. Choosing a room opens its details and switches the map to the room's floor. The initial territory view shows the territory while keeping the full catalog visible.
+- JavaScript syntax was checked successfully before commit. GitHub was re-fetched at both branch and commit refs; both return content SHA `655ccbfc7dc3f63dc3169945c241c4f0d32d87fd`, confirming the write.
+- A Vercel preview deployment for this commit was observed in `BUILDING` state at the time of check; re-check status before calling it ready. Preview only; production/main remains untouched.
