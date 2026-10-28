@@ -12,7 +12,8 @@
 /* More visible version marker: clearly legible eco-digital terrain in the central scene. */
 .scene:before{height:62%;bottom:-8%;background:repeating-linear-gradient(0deg,rgba(220,255,245,.42) 0 1px,transparent 1px 23px),repeating-linear-gradient(90deg,rgba(220,255,245,.32) 0 1px,transparent 1px 30px),linear-gradient(180deg,rgba(130,242,211,0),rgba(87,225,194,.32));opacity:.82}
 .orbit{border-color:rgba(200,255,247,.9);box-shadow:0 0 24px rgba(98,245,230,.34),inset 0 0 24px rgba(98,245,230,.16)}.orbit{position:absolute;z-index:2;inset:8%;border:1px solid #b5fff3aa;border-radius:30px;transform:perspective(800px) rotateX(10deg);box-shadow:0 0 22px #62f5e655,inset 0 0 20px #62f5e622}.pin{position:absolute;z-index:3;left:var(--x);top:var(--y);border:1px solid #d6fffa;background:#b7fff0cc;color:#154944;padding:7px 10px;border-radius:14px;font-size:10px;box-shadow:0 0 22px #7dfff0aa;cursor:pointer;backdrop-filter:blur(8px)}.pin:hover{background:white;transform:scale(1.06)}.compass{position:absolute;z-index:3;right:7%;top:9%;width:40px;height:40px;border-radius:50%;border:1px solid var(--edge);background:var(--glass);display:grid;place-items:center;font-size:11px}.modelhint{position:absolute;z-index:3;left:20px;bottom:18px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#effffb}.modelhint span{display:block;font-size:12px;letter-spacing:0;text-transform:none;margin-top:5px}.details{position:absolute;z-index:4;right:5%;top:23%;width:20%;border-radius:22px;padding:10px}.heroimg{width:100%;height:124px;object-fit:cover;border-radius:14px;display:block}.heart{position:absolute;right:20px;top:18px;border:0;background:#effff2dd;color:#35776c;border-radius:50%;width:28px;height:28px;font-size:16px;cursor:pointer}.detailtitle{font-size:17px;font-weight:800;margin:10px 3px 6px}.detailmeta{font-size:9px;color:#e6fffa;padding-bottom:10px;border-bottom:1px solid #ffffff55}.thumbs{display:flex;gap:5px;margin:9px 0}.thumbs img{width:calc(33.33% - 3px);height:48px;object-fit:cover;border-radius:7px;cursor:pointer;border:1px solid #ffffff88}.description{font-size:11px;line-height:1.5;color:#f0fffc;margin:10px 3px 12px}.book{width:100%;border:0;border-radius:24px;background:linear-gradient(90deg,#65e4d5,#a3f5dd);color:#14514b;font-weight:800;padding:12px;cursor:pointer;box-shadow:0 5px 18px #36c9b255}.levels{position:absolute;z-index:5;left:50%;bottom:4%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;padding:8px 12px;border-radius:28px;white-space:nowrap}.levels span{font-size:10px;color:#edfffb;padding:8px}.levels button{border:0;background:transparent;color:white;border-radius:20px;padding:8px 13px;cursor:pointer;font-size:11px}.levels button.active,.levels button:hover{background:#eafff4;color:#255e55}.levels .leveltitle{border-right:1px solid #ffffff55;padding-right:14px}.homebtn{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:#f3fffc;font-size:11px;font-weight:700;padding:10px 13px;border:1px solid var(--edge);border-radius:18px;background:var(--glass);backdrop-filter:blur(18px);white-space:nowrap;transition:.2s}.homebtn:hover{background:rgba(235,255,252,.32);transform:translateY(-1px)}
-.homebtn{position:absolute;right:0;top:0;z-index:7}.top{padding-right:0}.brandgroup{gap:0}.staytypes{position:absolute;z-index:6;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:5px;padding:5px;border:1px solid var(--edge);border-radius:24px;background:rgba(235,255,252,.24);backdrop-filter:blur(20px);box-shadow:0 8px 28px #163e3b33;white-space:nowrap;max-width:calc(100% - 28px)}.staytypes button{border:1px solid transparent;background:transparent;color:#f4fffc;border-radius:19px;padding:9px 15px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s}.staytypes button.active,.staytypes button:hover{background:#eafff4;color:#255e55;box-shadow:0 3px 12px #163e3b22}.emptycategory{display:none;border:1px solid var(--edge);background:rgba(235,255,252,.2);backdrop-filter:blur(18px);border-radius:18px;padding:18px;font-size:12px;line-height:1.5;color:#f3fffc}.mobiletabs{display:none}
+.homebtn{position:absolute;right:0;top:0;z-index:7}.top{padding-right:0}.brandgroup{gap:0}.staytypes{position:absolute;z-index:6;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:5px;padding:5px;border:1px solid var(--edge);border-radius:24px;background:rgba(235,255,252,.24);backdrop-filter:blur(20px);box-shadow:0 8px 28px #163e3b33;white-space:nowrap;max-width:calc(100% - 28px)}.staytypes button{border:1px solid transparent;background:transparent;color:#f4fffc;border-radius:19px;padding:9px 15px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s}.staytypes button.active,.staytypes button:hover{background:#eafff4;color:#255e55;box-shadow:0 3px 12px #163e3b22}body:not(.rooms-revealed) .left,body:not(.rooms-revealed) .details{display:none!important}
+.emptycategory{display:none;border:1px solid var(--edge);background:rgba(235,255,252,.2);backdrop-filter:blur(18px);border-radius:18px;padding:18px;font-size:12px;line-height:1.5;color:#f3fffc}.mobiletabs{display:none}
 @media(max-width:850px){body{overflow:auto;min-height:100%;height:auto}.backdrop{position:fixed}.top{position:relative;left:auto;right:auto;top:auto;padding:14px;gap:10px;flex-wrap:wrap;padding-top:54px}.homebtn{top:10px;right:14px;font-size:10px;padding:8px 10px}.tagline,.place,.menu{display:none}.dates{order:3;width:100%;justify-content:space-around}.date input{width:105px}.staytypes{top:12px;left:50%;transform:translateX(-50%);margin:0;width:max-content;max-width:calc(100% - 24px);gap:2px;padding:4px}.staytypes button{padding:8px 11px;font-size:10px}.mobiletabs{display:none}.left{position:relative;left:auto;top:auto;width:auto;flex-direction:row;overflow-x:auto;padding:10px 14px 14px;gap:10px}.roomcard{min-width:170px;max-width:190px;transform:none}.roomcard img{height:80px}.model{position:relative;left:auto;right:auto;top:auto;bottom:auto;margin:4px 12px;width:calc(100% - 24px);height:42vh;min-height:280px;border-radius:25px}.details{position:relative;left:auto;right:auto;top:auto;width:auto;margin:12px}.heroimg{height:180px}.emptycategory{min-width:170px;max-width:190px;align-self:stretch;display:none}.modelhint{left:14px;bottom:14px}.pin{font-size:9px;padding:6px}.compass{width:32px;height:32px}.mobiletabs{display:block;position:absolute;z-index:4;top:8px;left:8px;background:#164f48aa;border:1px solid #cafff6;border-radius:14px;padding:7px 10px;font-size:9px}}
 
 /* === Final hybrid layout polish: clear hierarchy, no overlapping controls === */
@@ -240,8 +241,7 @@ body{overflow:hidden;background:#b5d7bd}
 <article class="roomcard" data-category="hostel" data-room="3"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/hostel_economy.jpg" loading="lazy" decoding="async" alt="Хостел эконом"><div class="roomname">Хостел эконом</div><div class="meta">Общее размещение · до 8 гостей <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <article class="roomcard" data-category="rooms" data-room="4"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room1.jpg" loading="lazy" decoding="async" alt="Мансардная комната 1"><div class="roomname">Мансардная №1</div><div class="meta">Отдельная комната <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <article class="roomcard" data-category="rooms" data-room="5"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room2.jpg" loading="lazy" decoding="async" alt="Мансардная комната 2"><div class="roomname">Мансардная №2</div><div class="meta">Отдельная комната <span class="availability-status status-unknown">• Проверяем…</span></div></article>
-<article class="roomcard" data-category="rooms" data-room="6"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/balcony_bed.jpg" loading="lazy" decoding="async" alt="Место под звёздами"><div class="roomname">Место под звёздами</div><div class="meta">Особое сезонное размещение <span class="availability-status status-unknown">• Проверяем…</span></div></article>
-<article class="roomcard" data-category="bungalow" data-room="7"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg" loading="lazy" decoding="async" alt="Бунгало в саду"><div class="roomname">Бунгало в саду</div><div class="meta">Отдельное размещение <span class="availability-status status-unknown">• Проверяем…</span></div></article>
+<article class="roomcard" data-category="bungalow" data-room="6"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg" loading="lazy" decoding="async" alt="Бунгало в саду"><div class="roomname">Бунгало в саду</div><div class="meta">Отдельное размещение <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <div class="emptycategory" id="emptycategory" hidden></div></section>
 <section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button class="active" type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="floorinfo" aria-live="polite"><div class="eyebrow">Этаж / зона</div><strong id="floorlabel">Территория</strong><span id="floordesc">Дом, сад и общее пространство FreeDom</span></div><nav class="floorlayers" aria-label="Этажи и зоны дома"><button type="button" class="active" data-floor="territory">Территория</button><button type="button" data-floor="1">1 этаж</button><button type="button" data-floor="2">2 этаж</button><button type="button" data-floor="3">3 этаж</button><button type="button" data-floor="4">4 этаж</button><button type="button" data-floor="attic">Мансарда</button></nav><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div></section>
 <aside class="details"><button class="heart" id="heart">♡</button><img class="heroimg" id="heroimg" src="images/room-family.jpg"><div class="detailtitle" id="detailtitle">Семейная комната</div><div class="detailmeta" id="detailmeta">Бронирование целиком</div><div class="thumbs" id="thumbs"><img src="images/room-family.jpg" loading="lazy" decoding="async"><img src="images/room-balcony.jpg" loading="lazy" decoding="async"><img src="images/room-hostel.jpg" loading="lazy" decoding="async"></div><p class="description" id="description">Отдельная комната для семейного размещения. Доступность проверяется по выбранным датам.</p><button class="book" id="book">Забронировать&nbsp; ›</button></aside>
@@ -253,13 +253,12 @@ const rooms=[
 {name:'Хостел эконом',category:'hostel',floors:['2'],meta:'Общее размещение',desc:'Бюджетный вариант общего размещения. Свободные места проверяются по выбранным датам.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/hostel_economy.jpg',dbNames:['Хостел эконом']},
 {name:'Мансардная комната №1',category:'rooms',floors:['attic'],meta:'Отдельная комната',desc:'Уединённое пространство в мансарде. Условия и доступность проверяются по выбранным датам.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room1.jpg',dbNames:['Мансардная комната №1']},
 {name:'Мансардная комната №2',category:'rooms',floors:['attic'],meta:'Отдельная комната',desc:'Отдельная мансардная комната. Условия и доступность проверяются по выбранным датам.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room2.jpg',dbNames:['Мансардная комната №2']},
-{name:'Место под звёздами',category:'rooms',floors:['territory'],meta:'Особое сезонное размещение',desc:'Летнее место для отдыха под крышей с видом на звёздное небо. Доступность и условия необходимо подтвердить при бронировании.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/balcony_bed.jpg',dbNames:['Место под звёздами']},
 {name:'Бунгало в саду',category:'bungalow',floors:['territory'],meta:'Отдельное размещение',desc:'Отдельное бунгало с двухместной кроватью и верандой с видом на сад и бассейн.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg',dbNames:['Бунгало в саду']}
 ];
 const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
-let active=0,category='rooms',availabilityRows=[],availabilityState='loading',activeFloor='territory';
+let active=-1,category=null,availabilityRows=[],availabilityState='loading',activeFloor=null,hasInteracted=false;
 const floorInfo={
- territory:{label:'Территория',desc:'Дом, сад и общее пространство FreeDom'},
+ territory:{label:'Территория',desc:'Бунгало в саду'},
  '1':{label:'1 этаж',desc:'Баня · на этом уровне нет комнат для проживания'},
  '2':{label:'2 этаж',desc:'Хостел эконом · гостиная'},
  '3':{label:'3 этаж',desc:'Хостел стандарт · семейная комната · комната администратора'},
@@ -300,10 +299,17 @@ function renderAvailability(){
 
 function visibleRoomIndexes(){
  return rooms.map((room,i)=>({room,i})).filter(({room})=>
-  room.category===category && (room.floors||['territory']).includes(activeFloor)
+  (!category||room.category===category) && (activeFloor===null||(room.floors||['territory']).includes(activeFloor))
  ).map(({i})=>i);
 }
 function applyRoomFilters(){
+ document.body.classList.toggle('rooms-revealed',hasInteracted);
+ if(!hasInteracted){
+  $('.roomcard').forEach(el=>{el.style.display='none';el.classList.remove('active')});
+  $('#emptycategory').style.display='none';
+  $('.details').style.display='none';
+  return;
+ }
  const visible=visibleRoomIndexes();
  $('.roomcard').forEach(el=>{
   const i=Number(el.dataset.room);
@@ -327,7 +333,8 @@ function applyRoomFilters(){
 }
 function choose(i){
  if(!rooms[i])return;
- active=i;category=rooms[i].category;
+ hasInteracted=true;active=i;category=rooms[i].category;
+ if(activeFloor!==null && !(rooms[i].floors||['territory']).includes(activeFloor))activeFloor=null;
  const r=rooms[i];
  $('#heroimg').src=r.img;$('#detailtitle').textContent=r.name;$('#detailmeta').textContent=r.meta;$('#description').textContent=r.desc;
  $('.modelhint span').textContent='Найди своё место';
@@ -337,11 +344,11 @@ function choose(i){
 }
 function setFloor(next){
  const info=floorInfo[next];if(!info)return;
- activeFloor=next;
+ hasInteracted=true;activeFloor=next;
  $('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
  $('#floorlabel').textContent=info.label;
  $('#floordesc').textContent=info.desc;
- $('.modelhint span').textContent=next==='territory'?'Найди своё место':info.desc;
+ $('.modelhint span').textContent=info.desc;
  applyRoomFilters();
 }
 function scrollToRoomDetails(){
@@ -352,7 +359,7 @@ function scrollToRoomDetails(){
 }
 function setCategory(next){
  if(!['rooms','hostel','bungalow'].includes(next))return;
- category=next;
+ hasInteracted=true;category=next;
  $('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
  applyRoomFilters();
 }
@@ -385,7 +392,8 @@ function initDates(){
  checkIn.addEventListener('change',()=>{updateMin();refreshAvailability()});
  checkOut.addEventListener('change',refreshAvailability);
 }
-$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));\n$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
+$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));
+$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
 $('#roomlist').addEventListener('click',e=>{const card=e.target.closest('.roomcard');if(!card)return;choose(Number(card.dataset.room));scrollToRoomDetails()});
 $('#heart').addEventListener('click',e=>e.currentTarget.textContent=e.currentTarget.textContent==='♡'?'♥':'♡');
 $('#search').addEventListener('click',()=>{const a=$('#checkin').value,b=$('#checkout').value;if(a&&b&&b>a)refreshAvailability();else alert('Выберите корректные даты: выезд должен быть позже заезда.')});
@@ -398,5 +406,5 @@ $('#book').addEventListener('click',()=>{
  location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. Проверил доступность на сайте. Подскажите, пожалуйста, стоимость и подтвердите бронь.');
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
-initDates();renderAvailability();refreshAvailability();setFloor('territory');
+initDates();renderAvailability();refreshAvailability();applyRoomFilters();
 </script></body></html>
