@@ -315,7 +315,7 @@ function applyRoomFilters(){
   active=-1;
   $('.roomcard').forEach(el=>el.classList.remove('active'));
   empty.textContent=activeFloor==='1'
-   ?'На 1 этаже нет вариантов проживания. Здесь отмечена баня; выберите другой этаж, чтобы увидеть комнаты.'
+   ?'На 1 этаже нет вариантов проживания; баня относится к этому уровню. Выберите другой этаж, чтобы увидеть комнаты.'
    :'На этом этаже нет вариантов в категории «'+({rooms:'Комнаты',hostel:'Хостел',bungalow:'Бунгало'}[category]||category)+'». Выберите другой этаж или категорию.';
   empty.style.display='block';
   $('.details').style.display='none';
