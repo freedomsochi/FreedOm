@@ -459,3 +459,13 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Confirmed the inline JavaScript parses successfully with `new Function`; no live browser/mobile interaction test has been run yet.
 - Commits on `rooms-architectural-v1`: `b42ba4438e4a4f4e0403e6fa7651a34b3a2dfa5e` (restore initial list behavior) and `2b56c4f5ebc0793d26e417cffbc0cf1a6825d5e4` (repair multi-element selectors).
 - Production/main remains untouched.
+
+
+## 2026-10-28 — Rooms: approximate interactive points by floor
+- User confirmed that hostel standard №1, hostel standard №2, and the family room belong on the 3rd floor. Following the latest room list, both two-person rooms are also currently assigned to the 3rd floor; yoga hall and shared balcony are on the 4th; attic has two rooms.
+- Updated floor descriptions: territory = pool, bungalow, workout area; 1st = sauna and summer kitchen; 2nd = living room, kitchen, economy hostel, summer veranda; 3rd = standard hostel №1/№2, family room, two double rooms; 4th = yoga hall and shared balcony; attic = two rooms.
+- Added 18 approximate interactive map points. Room pins open the associated accommodation card; common-area pins update the floor info text. Coordinates are initial visual estimates on the existing aerial background and should be adjusted against the PDF/real photo.
+- Changed the double-room display title to “Двухместная комната” (no bathroom/balcony detail in the name; those details stay in the description).
+- JavaScript syntax verified successfully with new Function. Live mobile/browser visual interaction testing is not yet confirmed.
+- Commits: 918fe668aeba9be980be9fe711a83368f036cc49 (floor descriptions/assignment), 553d9be8d3ff4f9e2749d14f31f37b7d8f0f23bd (interactive map points).
+- Production/main remains untouched.
