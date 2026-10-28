@@ -493,3 +493,12 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Corrected floor assignment per the latest user instruction: 3rd floor = standard hostel №1, standard hostel №2, family room; 4th floor = two double rooms (plus yoga room and shared balcony as common areas). Both double-room map points are now on the 4th floor and the double-room listing is filtered to floor 4.
 - Updated map-point descriptions and retained small, unlabeled circular markers.
 - Verified the latest branch file was re-fetched from GitHub and its inline JavaScript parses successfully with `new Function`. This confirms source syntax, not a full real-device/browser interaction test.
+
+
+## Top availability calendar and database status — 2026-10-28
+- Updated `rooms-eco-futurism-v2.html` on branch `rooms-architectural-v1`, commit `debc4b25f021e15bdfa086baa492ac306be2c86a`; preview deployment READY at `https://freed-8b6f437ub-sergeyogorodnik19-3325s-projects.vercel.app/rooms-eco-futurism-v2.html`.
+- Date inputs in the top header are now explicitly presented as the availability calendar. Date changes and the check button call the existing Supabase Edge Function `public-availability` (no new credentials or database tables added). The top status line reports when availability is being checked, the selected range, number of available accommodation options, and options with no places; errors explicitly say availability could not be confirmed.
+- Confirmed the connected Supabase project has the existing `public.rooms` and `public.bookings` tables and active `public-availability` Edge Function. Function queries room definitions and overlapping bookings for the selected range; confirmed/active reservations block whole rooms, and hostel booking modes calculate remaining places. Current booking status values observed: `подтверждено`, `новое`, `отменено`, `завершена`; existing endpoint intentionally treats confirmed bookings as blocking.
+- Fixed a critical JavaScript issue in the prior map-point edit: `mapPoints` is now an actual array rather than a newline-joined string, so map rendering can call `.filter()` normally.
+- Re-fetched the committed page and checked its JavaScript syntax; verified the corresponding Vercel deployment is READY. Full browser/device interaction testing was not available from this tool run.
+- Production/main remains untouched.
