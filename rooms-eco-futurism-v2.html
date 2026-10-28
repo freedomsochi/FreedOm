@@ -327,8 +327,8 @@ function applyRoomFilters(){
   $('.details').style.display='none';
  }else{
   empty.style.display='none';
-  $('.details').style.display='';
-  if(!visible.includes(active))choose(visible[0]);
+  $('.details').style.display=(active>=0&&visible.includes(active))?'':'none';
+  if(active>=0&&!visible.includes(active))choose(visible[0]);
  }
 }
 function choose(i){
