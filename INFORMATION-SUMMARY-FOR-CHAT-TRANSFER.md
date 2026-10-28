@@ -432,3 +432,21 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Mapping follows the latest user-confirmed inventory for the Rooms page (2nd floor economy hostel; 3rd floor standard hostel/family; 4th floor two-person rooms; attic two rooms). The living room, yoga room, admin room, and sauna are descriptive spaces, not bookable cards.
 - Caveat: “Место под звёздами” is assigned to the general territory layer because its exact physical level/position has not been verified; its image currently uses `balcony_bed.jpg` and still needs asset/meaning verification.
 - Verification limitation: no real browser/device interaction test has been run. Check the current Vercel deployment and inspect mobile behavior before calling this fully tested.
+
+
+---
+
+# ROOMS PAGE — FILTER INTERACTION FIX (2026-10-28)
+
+- Target: `rooms-eco-futurism-v2.html`, branch `rooms-architectural-v1`. Production/main untouched.
+- Page commits:
+  - `757cf684c192df7cf5d51ba920a49817554a340a` — fix room and floor filtering interactions.
+  - `ddf8c00ba383e8c9721a0e5641b546c0f95376a2` — keep detail panel hidden until a card is selected.
+- Removed “Место под звёздами” from the visible accommodation cards and the JavaScript catalog. It is not to be presented as an official room until confirmed.
+- Initial state: room cards and room detail panel are hidden. The user first chooses a category or floor.
+- Category selection filters to that category across floors when no floor has been explicitly selected. Floor selection filters to the selected floor; if a category is also selected, both filters apply together.
+- On a floor click before choosing a category, all accommodation cards mapped to that floor are shown; the detail panel stays hidden until the user taps a specific card.
+- Selecting a room card opens its details. Changing floor/category hides irrelevant cards and displays a clear empty state when no matching accommodation exists.
+- Fixed a literal escaped newline between category and floor event listeners that would prevent the script from parsing in the browser.
+- Fixed bungalow index after removing the unofficial “stars” listing. Availability endpoint, date validation and Telegram booking handoff remain unchanged. No database changes.
+- User reported earlier that floor/category clicks had no effect. Code inspection found the escaped newline causing a JavaScript syntax error, so the click handlers were not running. The source now has a real newline. Browser/device testing is still required to verify end-to-end behavior.
