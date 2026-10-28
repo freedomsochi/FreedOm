@@ -281,6 +281,93 @@ header.top{padding-top:100px!important}
  header.top .dates .search{flex:0 0 38px!important}
  header.top{padding-top:160px!important}
 }
+
+/* Reference-inspired redesign: luminous resort glass, spacious three-column composition. */
+:root{--mint:#77eee3;--edge:rgba(230,255,250,.72);--glass:rgba(223,250,246,.2)}
+html,body{width:100%;min-height:100%;font-family:Inter,"Segoe UI",Arial,sans-serif}
+body{background:#8abcae}
+.backdrop{filter:saturate(1.12) brightness(1.02)}
+.backdrop:after{background:linear-gradient(180deg,rgba(13,56,54,.04),rgba(8,48,43,.22)),linear-gradient(90deg,rgba(8,44,40,.1),transparent 48%,rgba(8,44,40,.08))}
+header.top{position:absolute!important;top:0!important;left:0!important;right:0!important;padding:26px 2.5% 0!important;min-height:100px!important;display:flex!important;align-items:flex-start!important;gap:22px!important;z-index:30!important}
+.brandgroup{flex:0 0 290px!important;align-items:center!important;gap:24px!important}
+.logo{font-family:Georgia,serif!important;font-weight:400!important;font-size:32px!important;letter-spacing:.02em!important;line-height:1!important;color:#f8fff9!important}
+.logo small{font-family:Inter,Arial,sans-serif!important;font-size:10px!important;letter-spacing:.38em!important;margin-top:7px!important}
+.tagline{font-size:13px!important;line-height:1.55!important;margin:3px 0 0!important;text-shadow:0 1px 8px #174d49}
+header.top .dates[aria-label="Календарь доступности"]{position:absolute!important;top:24px!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:auto!important;max-width:calc(100vw - 620px)!important;min-width:410px!important;flex-wrap:nowrap!important;justify-content:center!important;gap:14px!important;padding:12px 15px!important;border:1px solid rgba(255,255,255,.68)!important;border-radius:30px!important;background:rgba(235,255,251,.26)!important;box-shadow:0 12px 38px rgba(22,75,72,.14),inset 0 1px 0 rgba(255,255,255,.35)!important;backdrop-filter:blur(24px)!important}
+header.top .dates .date{min-width:110px!important;font-size:11px!important;color:#faffff!important}
+header.top .dates .date input{width:128px!important;min-height:24px!important;padding:2px 0!important;margin-top:3px!important;background:transparent!important;border:0!important;border-radius:0!important;color:#fff!important;font-size:14px!important}
+header.top .dates .search{width:42px!important;height:42px!important;flex:0 0 42px!important;background:linear-gradient(135deg,#69e4da,#19a99e)!important;box-shadow:0 4px 15px rgba(16,137,127,.22)!important;font-size:23px!important}
+header.top .dates .availability-summary{position:absolute!important;top:calc(100% + 8px)!important;left:50%!important;transform:translateX(-50%)!important;width:max-content!important;max-width:90vw!important;flex:none!important;padding:6px 12px!important;border-radius:20px!important;background:rgba(17,70,63,.72)!important;border:1px solid rgba(255,255,255,.25)!important;font-size:10px!important}
+header.top>div:last-of-type{margin-left:auto!important;align-items:center!important;padding-top:13px!important;gap:14px!important}
+.place{border:0!important;background:rgba(234,255,249,.18)!important;border-radius:22px!important;padding:10px 14px!important;backdrop-filter:blur(15px)!important}
+.menu{font-size:25px!important;margin-left:0!important}
+.homebtn{display:none!important}
+.left{left:6.4%!important;top:21%!important;bottom:16%!important;width:19%!important;overflow-y:auto!important;gap:15px!important;padding:5px!important}
+.roomcard{border-radius:20px!important;padding:8px!important;background:linear-gradient(145deg,rgba(238,255,250,.36),rgba(165,233,225,.15))!important;border-color:rgba(226,255,250,.6)!important;box-shadow:0 12px 35px rgba(10,59,54,.2),inset 0 1px 0 rgba(255,255,255,.35)!important;backdrop-filter:blur(22px)!important}
+.roomcard img{height:clamp(90px,12vh,130px)!important;border-radius:14px!important}
+.roomname{font-size:13px!important;margin:8px 5px 5px!important}
+.meta{font-size:10px!important;line-height:1.45!important}
+.availability-status{display:inline-block!important;color:#c5ffe6!important;margin-left:4px!important}
+.model{left:27%!important;right:27%!important;top:20%!important;bottom:16%!important;border-radius:34px!important;border:1px solid rgba(235,255,251,.55)!important;background:rgba(204,247,237,.12)!important;box-shadow:0 22px 55px rgba(9,52,47,.2),0 0 0 1px rgba(255,255,255,.22),inset 0 0 40px rgba(216,255,247,.12)!important;backdrop-filter:blur(2px)!important}
+.model:before{inset:10px!important;border-radius:27px!important;border-color:rgba(237,255,250,.38)!important}
+.scene{background:linear-gradient(180deg,rgba(15,70,61,.04),rgba(12,57,49,.15)),url('https://images.weserv.nl/?url=raw.githubusercontent.com%2Ffreedomsochi%2FFreedOm%2Fmain%2Fimages%2Fd858f8c1-6079-463e-bafb-a046f2325f0a.png&w=1500&q=82&output=webp') center/cover!important;filter:saturate(1.12)!important}
+.scene:after{background:linear-gradient(180deg,rgba(18,73,65,.02),rgba(8,50,44,.16))!important}
+.model .staytypes{top:18px!important;left:50%!important;transform:translateX(-50%)!important;background:rgba(226,255,249,.23)!important;border:1px solid rgba(240,255,252,.65)!important;border-radius:24px!important;box-shadow:0 8px 24px rgba(9,60,53,.12)!important;backdrop-filter:blur(20px)!important}
+.staytypes button{font-size:11px!important;padding:10px 15px!important}
+.staytypes button.active,.staytypes button:hover{background:rgba(240,255,249,.92)!important;color:#24665b!important}
+.floorlayers{left:50%!important;right:auto!important;bottom:-7%!important;transform:translateX(-50%)!important;width:max-content!important;max-width:94%!important;gap:5px!important;padding:8px 13px!important;border-radius:28px!important;background:rgba(226,255,249,.3)!important;border:1px solid rgba(240,255,252,.7)!important;box-shadow:0 12px 30px rgba(9,60,53,.16)!important;backdrop-filter:blur(22px)!important}
+.floorlayers button{font-size:11px!important;padding:10px 13px!important;border-radius:18px!important}
+.floorlayers button.active{background:rgba(241,255,250,.95)!important;color:#236458!important}
+.details{right:5%!important;top:23%!important;bottom:16%!important;width:20%!important;overflow-y:auto!important;padding:10px!important;border-radius:24px!important;background:linear-gradient(145deg,rgba(238,255,250,.36),rgba(168,237,226,.18))!important;border-color:rgba(235,255,251,.65)!important;box-shadow:0 18px 48px rgba(10,59,54,.2),inset 0 1px 0 rgba(255,255,255,.38)!important;backdrop-filter:blur(23px)!important}
+.heroimg{height:clamp(130px,19vh,210px)!important;border-radius:17px!important}
+.heart{right:18px!important;top:18px!important;background:rgba(22,80,70,.2)!important;color:#fff!important;border:1px solid rgba(255,255,255,.45)!important}
+.detailtitle{font-size:18px!important;margin:12px 4px 7px!important}
+.detailmeta{font-size:10px!important;line-height:1.6!important}
+.thumbs{gap:6px!important;margin:11px 0!important}
+.thumbs img{height:clamp(42px,7vh,68px)!important;border-radius:9px!important}
+.description{font-size:11px!important;line-height:1.6!important;margin:12px 4px 15px!important}
+.book{border-radius:28px!important;min-height:48px!important;background:linear-gradient(100deg,#5dd9ce,#a0f3e7)!important;color:#145a51!important;box-shadow:0 8px 20px rgba(22,175,158,.18)!important}
+.pin.map-point{background:rgba(233,255,248,.35)!important;box-shadow:0 0 0 1px rgba(255,255,255,.55),0 3px 12px rgba(7,48,43,.25)!important}
+.pin.map-point:after{width:9px!important;height:9px!important;background:#fff!important;border:2px solid #38a99b!important;box-shadow:0 0 0 3px rgba(237,255,250,.55)!important}
+@media(max-width:1100px) and (min-width:851px){
+ .brandgroup{flex-basis:215px!important;gap:14px!important}.tagline{display:none!important}
+ header.top .dates[aria-label="Календарь доступности"]{max-width:calc(100vw - 440px)!important;min-width:360px!important;gap:8px!important}
+ header.top .dates .date input{width:110px!important}
+ .left{left:2%!important;width:22%!important}.model{left:25%!important;right:25%!important}.details{right:2%!important;width:22%!important}
+}
+@media(max-width:850px){
+ header.top{position:relative!important;padding:178px 14px 12px!important;min-height:0!important;display:flex!important;gap:10px!important}
+ .brandgroup{position:absolute!important;top:18px!important;left:15px!important;right:15px!important;flex:initial!important;justify-content:flex-start!important;gap:12px!important}
+ .logo{font-size:26px!important}.tagline{font-size:11px!important;display:block!important;margin-left:7px!important}
+ header.top>div:last-of-type{display:none!important}
+ header.top .dates[aria-label="Календарь доступности"]{position:absolute!important;top:82px!important;left:12px!important;right:12px!important;transform:none!important;width:auto!important;min-width:0!important;max-width:none!important;flex-wrap:wrap!important;justify-content:space-between!important;padding:10px 12px!important;gap:8px!important;border-radius:22px!important}
+ header.top .dates .date{flex:1 1 38%!important;min-width:0!important;font-size:10px!important}
+ header.top .dates .date input{width:100%!important;min-width:0!important;font-size:13px!important}
+ header.top .dates .search{width:38px!important;height:38px!important;flex:0 0 38px!important}
+ header.top .dates .availability-summary{position:static!important;transform:none!important;width:100%!important;max-width:none!important;text-align:center!important}
+ .left{position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;width:auto!important;display:flex!important;flex-direction:row!important;overflow-x:auto!important;overflow-y:hidden!important;padding:8px 13px 15px!important;gap:11px!important}
+ .roomcard{flex:0 0 180px!important;min-width:180px!important}
+ .roomcard img{height:100px!important}
+ .model{position:relative!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;margin:12px 12px 50px!important;width:calc(100% - 24px)!important;height:43vh!important;min-height:320px!important;max-height:480px!important;border-radius:25px!important}
+ .model .staytypes{top:12px!important;max-width:calc(100% - 20px)!important}
+ .staytypes button{padding:8px 10px!important;font-size:10px!important}
+ .floorlayers{bottom:-35px!important;max-width:calc(100% - 18px)!important;padding:5px!important;gap:1px!important}
+ .floorlayers button{padding:8px 7px!important;font-size:9px!important}
+ .details{position:relative!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:auto!important;max-height:none!important;margin:0 12px 16px!important;padding:10px!important;overflow:visible!important}
+ .heroimg{height:190px!important}
+ .thumbs img{height:52px!important}
+ .emptycategory{flex:0 0 180px!important}
+}
+@media(max-width:420px){
+ .tagline{font-size:10px!important;line-height:1.4!important}
+ header.top{padding-top:184px!important}
+ header.top .dates[aria-label="Календарь доступности"]{top:86px!important}
+ .logo{font-size:24px!important}
+ .roomcard{flex-basis:160px!important;min-width:160px!important}
+ .roomcard img{height:88px!important}
+ .floorlayers button{padding:7px 5px!important;font-size:8px!important}
+}
+
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite">Выберите даты — проверим свободные комнаты</div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
