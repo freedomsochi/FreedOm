@@ -466,6 +466,14 @@ header.top>div:last-of-type{margin-left:auto!important;align-items:center!import
 .pin{box-shadow:0 7px 20px rgba(7,50,44,.24),0 0 18px rgba(121,255,237,.2),inset 0 1px 0 rgba(255,255,255,.85)!important}
 .book{box-shadow:0 8px 24px rgba(41,186,173,.28),0 0 22px rgba(117,255,235,.18),inset 0 1px 0 rgba(255,255,255,.6)!important}
 
+
+/* User-requested final arrangement: important shared facilities only; compact card row near dates. */
+.scene{background:linear-gradient(180deg,rgba(15,70,61,.04),rgba(12,57,49,.15)),url('https://images.weserv.nl/?url=raw.githubusercontent.com%2Ffreedomsochi%2FFreedOm%2Fmain%2Fimages%2F4d284d38-6fda-471a-aacc-050528e57da0.png&w=1300&q=76&output=webp') center/cover!important;filter:saturate(1.1)!important}
+.left{top:88px!important}
+@media(max-width:850px){
+ .left{padding-top:2px!important;margin-top:-5px!important}
+ .roomcard{margin-top:0!important}
+}
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
@@ -492,34 +500,18 @@ const rooms=[
 const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
 let active=-1,category=null,availabilityRows=[],availabilityState='idle',activeFloor='territory',filterFloor=null,hasInteracted=false;
 const floorInfo={
- territory:{label:'Территория',desc:'Бассейн · бунгало · тренажёрная зона'},
- '1':{label:'1 этаж',desc:'Баня · летняя кухня'},
- '2':{label:'2 этаж',desc:'Гостиная · кухня · хостел эконом · летняя веранда'},
- '3':{label:'3 этаж',desc:'Хостел стандарт №1 · хостел стандарт №2 · семейная комната'},
- '4':{label:'4 этаж',desc:'Две двухместные комнаты · йога-зал · общий балкон'},
- attic:{label:'Мансарда',desc:'Две комнаты'}
+ territory:{label:'Территория',desc:'Бассейн · спортивная площадка'},
+ '1':{label:'1 этаж',desc:'Баня'},
+ '2':{label:'2 этаж',desc:'Общие пространства'},
+ '3':{label:'3 этаж',desc:'Жилой этаж'},
+ '4':{label:'4 этаж',desc:'Йога-зал'},
+ attic:{label:'Мансарда',desc:'Верхний уровень дома'}
 };
 const mapPoints=[
 {floor:'territory',label:'Бассейн',x:24,y:35,desc:'Бассейн FreeDom — место для отдыха, общения и освежающего плавания.'},
-{floor:'territory',label:'Бунгало',x:17,y:20,desc:'Отдельное бунгало в саду — уединённое размещение рядом с природой.',room:6},
-{floor:'territory',label:'Тренажёрная зона',x:72,y:68,desc:'Открытая тренажёрная зона для самостоятельных тренировок на свежем воздухе.'},
-{floor:'1',label:'Баня',x:37,y:47,desc:'Баня на первом этаже — зона отдыха и восстановления.'},
-{floor:'1',label:'Летняя кухня',x:63,y:48,desc:'Летняя кухня — общее пространство для приготовления еды и общения.'},
-{floor:'2',label:'Гостиная',x:31,y:43,desc:'Общая гостиная для отдыха, разговоров и встреч жителей FreeDom.'},
-{floor:'2',label:'Кухня',x:49,y:34,desc:'Общая кухня второго этажа.'},
-{floor:'2',label:'Хостел эконом',x:67,y:43,desc:'Бюджетное размещение в общем хостеле.',room:3},
-{floor:'2',label:'Летняя веранда',x:78,y:70,desc:'Летняя веранда — открытое пространство для отдыха.'},
-{floor:'3',label:'Хостел стандарт №1',x:30,y:37,desc:'Первый стандартный хостел на третьем этаже.',room:1},
-{floor:'3',label:'Хостел стандарт №2',x:49,y:37,desc:'Второй стандартный хостел на третьем этаже.',room:1},
-{floor:'3',label:'Семейная комната',x:67,y:37,desc:'Семейная комната на третьем этаже.',room:0},
-{floor:'4',label:'Двухместная комната №1',x:38,y:43,desc:'Первая двухместная комната на четвёртом этаже.',room:2},
-{floor:'4',label:'Двухместная комната №2',x:62,y:43,desc:'Вторая двухместная комната на четвёртом этаже.',room:2},
-{floor:'4',label:'Йога-зал',x:43,y:61,desc:'Общий зал для йоги и практик на четвёртом этаже.'},
-{floor:'4',label:'Общий балкон',x:79,y:74,desc:'Общий балкон у угла дома.'},
-{floor:'attic',label:'Мансардная комната №1',x:38,y:43,desc:'Отдельная комната в мансарде.',room:4},
-{floor:'attic',label:'Мансардная комната №2',x:63,y:43,desc:'Отдельная комната в мансарде.',room:5}
-
-];
+{floor:'territory',label:'Спортивная площадка',x:72,y:68,desc:'Спортивная площадка на свежем воздухе для тренировок и движения.'},
+{floor:'1',label:'Баня',x:37,y:47,desc:'Баня FreeDom — пространство для отдыха и восстановления.'},
+{floor:'4',label:'Йога-зал',x:43,y:61,desc:'Йога-зал для практик, растяжки и спокойного восстановления.'};
 const $=s=>document.querySelector(s);
 const $$=s=>Array.from(document.querySelectorAll(s));
 function renderMapPoints(){
