@@ -502,3 +502,10 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Fixed a critical JavaScript issue in the prior map-point edit: `mapPoints` is now an actual array rather than a newline-joined string, so map rendering can call `.filter()` normally.
 - Re-fetched the committed page and checked its JavaScript syntax; verified the corresponding Vercel deployment is READY. Full browser/device interaction testing was not available from this tool run.
 - Production/main remains untouched.
+
+
+## Date-first availability flow — 2026-10-28
+- Updated `rooms-eco-futurism-v2.html` on `rooms-architectural-v1` in commits `a4534059c8ae4394ce21a1d4c4e6e920c2c71f4a` and `fa6db08528240d46f11e435aeccbcce57b55d80a`.
+- On initial open, the top calendar is the first action: date fields start empty, the page does not silently prefill dates or query availability, and room cards/details remain hidden.
+- After the user selects check-in/check-out and presses the check button, the page queries the existing Supabase `public-availability` endpoint. During checking, accommodation options stay hidden; after a successful response, only options confirmed available for that date range are shown. Unavailable and unknown options are not presented as available. If the check fails, the page reports that availability could not be confirmed.
+- Changed only the feature branch; production/main remains untouched. Need verify Vercel preview build and run browser-level test on actual date ranges before public release.
