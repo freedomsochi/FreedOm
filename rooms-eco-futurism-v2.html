@@ -305,13 +305,13 @@ function visibleRoomIndexes(){
 function applyRoomFilters(){
  document.body.classList.toggle('rooms-revealed',hasInteracted);
  if(!hasInteracted){
-  $('.roomcard').forEach(el=>{el.style.display='none';el.classList.remove('active')});
+  $$('.roomcard').forEach(el=>{el.style.display='none';el.classList.remove('active')});
   $('#emptycategory').style.display='none';
   $('.details').style.display='none';
   return;
  }
  const visible=visibleRoomIndexes();
- $('.roomcard').forEach(el=>{
+ $$('.roomcard').forEach(el=>{
   const i=Number(el.dataset.room);
   el.style.display=visible.includes(i)?'block':'none';
   el.classList.toggle('active',i===active);
@@ -319,7 +319,7 @@ function applyRoomFilters(){
  const empty=$('#emptycategory');
  if(!visible.length){
   active=-1;
-  $('.roomcard').forEach(el=>el.classList.remove('active'));
+  $$('.roomcard').forEach(el=>el.classList.remove('active'));
   empty.textContent=activeFloor==='1'
    ?'На 1 этаже нет вариантов проживания; баня относится к этому уровню. Выберите другой этаж, чтобы увидеть комнаты.'
    :(category?'В категории «'+({rooms:'Комнаты',hostel:'Хостел',bungalow:'Бунгало'}[category]||category)+'» на выбранном этаже вариантов нет. Выберите другой этаж или категорию.':'На выбранном этаже нет вариантов проживания. Выберите другой этаж или категорию.');
@@ -338,14 +338,14 @@ function choose(i){
  const r=rooms[i];
  $('#heroimg').src=r.img;$('#detailtitle').textContent=r.name;$('#detailmeta').textContent=r.meta;$('#description').textContent=r.desc;
  $('.modelhint span').textContent='Найди своё место';
- $('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
+ $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
  applyRoomFilters();
  renderAvailability();
 }
 function setFloor(next){
  const info=floorInfo[next];if(!info)return;
  hasInteracted=true;activeFloor=next;
- $('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
+ $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
  $('#floorlabel').textContent=info.label;
  $('#floordesc').textContent=info.desc;
  $('.modelhint span').textContent=info.desc;
@@ -360,7 +360,7 @@ function scrollToRoomDetails(){
 function setCategory(next){
  if(!['rooms','hostel','bungalow'].includes(next))return;
  hasInteracted=true;category=next;
- $('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
+ $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
  applyRoomFilters();
 }
 async function refreshAvailability(){
@@ -392,8 +392,8 @@ function initDates(){
  checkIn.addEventListener('change',()=>{updateMin();refreshAvailability()});
  checkOut.addEventListener('change',refreshAvailability);
 }
-$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));
-$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
+$$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));
+$$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
 $('#roomlist').addEventListener('click',e=>{const card=e.target.closest('.roomcard');if(!card)return;choose(Number(card.dataset.room));scrollToRoomDetails()});
 $('#heart').addEventListener('click',e=>e.currentTarget.textContent=e.currentTarget.textContent==='♡'?'♥':'♡');
 $('#search').addEventListener('click',()=>{const a=$('#checkin').value,b=$('#checkout').value;if(a&&b&&b>a)refreshAvailability();else alert('Выберите корректные даты: выезд должен быть позже заезда.')});
