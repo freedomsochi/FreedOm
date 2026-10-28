@@ -450,3 +450,12 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Fixed a literal escaped newline between category and floor event listeners that would prevent the script from parsing in the browser.
 - Fixed bungalow index after removing the unofficial “stars” listing. Availability endpoint, date validation and Telegram booking handoff remain unchanged. No database changes.
 - User reported earlier that floor/category clicks had no effect. Code inspection found the escaped newline causing a JavaScript syntax error, so the click handlers were not running. The source now has a real newline. Browser/device testing is still required to verify end-to-end behavior.
+
+
+## 2026-10-28 — Rooms: restore initial list and repair filters
+- User requested returning to the previous, better-looking behavior while fixing floor/category controls that did nothing.
+- In `rooms-eco-futurism-v2.html`, restored room-list visibility on first load; detail panel remains closed until a room card is selected. No official “Место под звёздами” listing was reintroduced.
+- Fixed JavaScript collection queries: calls that iterated over multiple room cards, category buttons, and floor buttons now use `querySelectorAll` via `$$`, instead of calling `forEach` on a single `querySelector` result. This initialization exception was preventing all click handlers from registering.
+- Confirmed the inline JavaScript parses successfully with `new Function`; no live browser/mobile interaction test has been run yet.
+- Commits on `rooms-architectural-v1`: `b42ba4438e4a4f4e0403e6fa7651a34b3a2dfa5e` (restore initial list behavior) and `2b56c4f5ebc0793d26e417cffbc0cf1a6825d5e4` (repair multi-element selectors).
+- Production/main remains untouched.
