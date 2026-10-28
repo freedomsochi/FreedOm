@@ -250,6 +250,13 @@ body{overflow:hidden;background:#b5d7bd}
 .availability-summary[data-state="error"]{color:#ffe4bf}
 .dates{flex-wrap:wrap;min-width:0}
 @media(max-width:850px){.dates{gap:8px}.availability-summary{padding-left:2px;font-size:11px}}
+
+/* Initial state: date selection comes first; room cards appear only after a successful availability check. */
+.availability-summary[data-state="idle"]{color:#f3fff9}
+body:not(.rooms-revealed) .left,body:not(.rooms-revealed) .details{display:none!important}
+body:not(.rooms-revealed) .emptycategory{display:none!important}
+.dates{position:relative;z-index:8}
+@media(max-width:850px){.top{z-index:8}.dates{padding:12px;border-radius:18px;background:rgba(235,255,252,.27);box-shadow:0 8px 28px #163e3b33}.date{flex:1}.date input{width:100%;min-width:110px}}
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite">Выберите даты — проверим свободные комнаты</div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
@@ -274,7 +281,7 @@ const rooms=[
 {name:'Бунгало в саду',category:'bungalow',floors:['territory'],meta:'Отдельное размещение',desc:'Отдельное бунгало с двухместной кроватью и верандой с видом на сад и бассейн.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg',dbNames:['Бунгало в саду']}
 ];
 const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
-let active=-1,category=null,availabilityRows=[],availabilityState='loading',activeFloor=null,filterFloor=null,hasInteracted=true;
+let active=-1,category=null,availabilityRows=[],availabilityState='idle',activeFloor='territory',filterFloor=null,hasInteracted=false;
 const floorInfo={
  territory:{label:'Территория',desc:'Бассейн · бунгало · тренажёрная зона'},
  '1':{label:'1 этаж',desc:'Баня · летняя кухня'},
@@ -350,9 +357,13 @@ function renderAvailability(){
 }
 
 function visibleRoomIndexes(){
- return rooms.map((room,i)=>({room,i})).filter(({room})=>
-  (!category||room.category===category) && (filterFloor===null||(room.floors||['territory']).includes(filterFloor))
- ).map(({i})=>i);
+ return rooms.map((room,i)=>({room,i})).filter(({room})=>{
+  const matchesFilters=(!category||room.category===category) && (filterFloor===null||(room.floors||['territory']).includes(filterFloor));
+  if(!matchesFilters)return false;
+  if(availabilityState!=='loaded')return false;
+  const status=availabilityFor(room.dbNames);
+  return status.known&&status.available===true;
+ }).map(({i})=>i);
 }
 function applyRoomFilters(){
  document.body.classList.toggle('rooms-revealed',hasInteracted);
@@ -442,7 +453,7 @@ async function refreshAvailability(){
   const response=await fetch(availabilityEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({check_in:checkIn,check_out:checkOut})});
   const payload=await response.json();
   if(!response.ok||!payload.ok||!Array.isArray(payload.rooms))throw new Error(payload.error||'Availability request failed');
-  availabilityRows=payload.rooms;availabilityState='loaded';renderAvailability();
+  availabilityRows=payload.rooms;availabilityState='loaded';hasInteracted=true;applyRoomFilters();renderAvailability();
   const free=rooms.filter(room=>availabilityFor(room.dbNames).available===true).length;
   const busy=rooms.filter(room=>availabilityFor(room.dbNames).known&&availabilityFor(room.dbNames).available===false).length;
   if(summary){summary.dataset.state=free?'free':busy?'busy':'unknown';summary.textContent='Доступность проверена · '+checkIn+' — '+checkOut+' · доступно вариантов: '+free+(busy?' · нет мест: '+busy:'')}
@@ -459,12 +470,11 @@ function initDates(){
  const localIso=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day};
  const today=new Date();today.setHours(0,0,0,0);
  checkIn.min=localIso(today);checkOut.min=localIso(today);
- if(!checkIn.value||checkIn.value<localIso(today)){const start=new Date(today);start.setDate(start.getDate()+1);checkIn.value=localIso(start)}
- if(!checkOut.value||checkOut.value<=checkIn.value){const end=new Date(checkIn.value+'T12:00:00');end.setDate(end.getDate()+3);checkOut.value=localIso(end)}
- checkOut.min=checkIn.value;
- const updateMin=()=>{checkOut.min=checkIn.value; if(checkOut.value<=checkIn.value){const end=new Date(checkIn.value+'T12:00:00');end.setDate(end.getDate()+1);checkOut.value=localIso(end)}};
- checkIn.addEventListener('change',()=>{updateMin();refreshAvailability()});
- checkOut.addEventListener('change',refreshAvailability);
+ checkIn.value='';checkOut.value='';
+ const updateMin=()=>{checkOut.min=checkIn.value||localIso(today);if(checkOut.value&&checkOut.value<=checkIn.value)checkOut.value=''};
+ checkIn.addEventListener('change',updateMin);
+ checkOut.addEventListener('change',()=>{});
+ const summary=$('#availability-summary');if(summary){summary.dataset.state='idle';summary.textContent='Выберите даты заезда и выезда, затем нажмите ⌕ — покажем только свободные варианты.'}
 }
 $$('.staytypes button').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.category)));
 $$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
@@ -480,5 +490,5 @@ $('#book').addEventListener('click',()=>{
  location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. Проверил доступность на сайте. Подскажите, пожалуйста, стоимость и подтвердите бронь.');
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
-initDates();renderAvailability();refreshAvailability();setFloor('territory');filterFloor=null;applyRoomFilters();
+initDates();renderAvailability();renderMapPoints();$('#floorlabel').textContent=floorInfo.territory.label;$('#floordesc').textContent=floorInfo.territory.desc;$('.modelhint span').textContent='Выберите даты, чтобы увидеть доступные варианты';applyRoomFilters();
 </script></body></html>
