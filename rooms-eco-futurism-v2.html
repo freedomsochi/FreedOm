@@ -291,7 +291,7 @@ const mapPoints=[
 const $=s=>document.querySelector(s);
 const $$=s=>Array.from(document.querySelectorAll(s));
 function renderMapPoints(){
- $('.map-point').forEach(el=>el.remove());
+ $$('.map-point').forEach(el=>el.remove());
  mapPoints.filter(p=>p.floor===activeFloor).forEach(p=>{
   const b=document.createElement('button');
   b.type='button';b.className='pin map-point';b.style.setProperty('--x',p.x+'%');b.style.setProperty('--y',p.y+'%');
@@ -369,14 +369,14 @@ function applyRoomFilters(){
 }
 function choose(i){
  if(!rooms[i])return;
- hasInteracted=true;active=i;category=rooms[i].category;filterFloor=null;
  const r=rooms[i];
+ hasInteracted=true;active=i;category=r.category;filterFloor=null;
  activeFloor=(r.floors||['territory'])[0];
- $('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
+ $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
  const info=floorInfo[activeFloor];if(info){$('#floorlabel').textContent=info.label;$('#floordesc').textContent=info.desc;}
  renderMapPoints();
  $('#heroimg').src=r.img;$('#detailtitle').textContent=r.name;$('#detailmeta').textContent=r.meta;$('#description').textContent=r.desc;
- $('.modelhint span').textContent='Найди своё место';
+ $('.modelhint span').textContent=info?.desc||'Найди своё место';
  $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
  applyRoomFilters();
  renderAvailability();
@@ -384,7 +384,7 @@ function choose(i){
 function setFloor(next){
  const info=floorInfo[next];if(!info)return;
  hasInteracted=true;activeFloor=next;filterFloor=next;
- $('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
+ $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
  $('#floorlabel').textContent=info.label;
  $('#floordesc').textContent=info.desc;
  $('.modelhint span').textContent=info.desc;
@@ -400,7 +400,7 @@ function scrollToRoomDetails(){
 function setCategory(next){
  if(!['rooms','hostel','bungalow'].includes(next))return;
  hasInteracted=true;category=next;filterFloor=null;
- $('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
+ $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
  applyRoomFilters();
 }
 async function refreshAvailability(){
@@ -446,5 +446,5 @@ $('#book').addEventListener('click',()=>{
  location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. Проверил доступность на сайте. Подскажите, пожалуйста, стоимость и подтвердите бронь.');
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
-initDates();renderAvailability();refreshAvailability();applyRoomFilters();setFloor('territory');
+initDates();renderAvailability();refreshAvailability();setFloor('territory');filterFloor=null;applyRoomFilters();
 </script></body></html>
