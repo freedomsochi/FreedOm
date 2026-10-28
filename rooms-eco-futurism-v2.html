@@ -442,11 +442,11 @@ function setCategory(next){
 async function refreshAvailability(){
  const checkIn=$('#checkin').value,checkOut=$('#checkout').value,summary=$('#availability-summary');
  if(!checkIn||!checkOut||checkOut<=checkIn){
-  availabilityState='error';availabilityRows=[];renderAvailability();
+  availabilityState='error';availabilityRows=[];hasInteracted=false;applyRoomFilters();renderAvailability();
   if(summary){summary.dataset.state='error';summary.textContent='Выберите корректные даты: выезд должен быть позже заезда.'}
   return;
  }
- availabilityState='loading';availabilityRows=[];renderAvailability();
+ availabilityState='loading';availabilityRows=[];hasInteracted=false;applyRoomFilters();renderAvailability();
  if(summary){summary.dataset.state='loading';summary.textContent='Проверяем доступность по базе FreeDom…'}
  $('.modelhint span').textContent='Проверяем свободные места…';
  try{
