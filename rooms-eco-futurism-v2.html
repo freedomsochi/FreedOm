@@ -243,7 +243,7 @@ body{overflow:hidden;background:#b5d7bd}
 <article class="roomcard" data-category="rooms" data-room="5"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room2.jpg" loading="lazy" decoding="async" alt="Мансардная комната 2"><div class="roomname">Мансардная №2</div><div class="meta">Отдельная комната <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <article class="roomcard" data-category="bungalow" data-room="6"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg" loading="lazy" decoding="async" alt="Бунгало в саду"><div class="roomname">Бунгало в саду</div><div class="meta">Отдельное размещение <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <div class="emptycategory" id="emptycategory" hidden></div></section>
-<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button class="active" type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="floorinfo" aria-live="polite"><div class="eyebrow">Этаж / зона</div><strong id="floorlabel">Территория</strong><span id="floordesc">Дом, сад и общее пространство FreeDom</span></div><nav class="floorlayers" aria-label="Этажи и зоны дома"><button type="button" class="active" data-floor="territory">Территория</button><button type="button" data-floor="1">1 этаж</button><button type="button" data-floor="2">2 этаж</button><button type="button" data-floor="3">3 этаж</button><button type="button" data-floor="4">4 этаж</button><button type="button" data-floor="attic">Мансарда</button></nav><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div></section>
+<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="floorinfo" aria-live="polite"><div class="eyebrow">Этаж / зона</div><strong id="floorlabel">Территория</strong><span id="floordesc">Дом, сад и общее пространство FreeDom</span></div><nav class="floorlayers" aria-label="Этажи и зоны дома"><button type="button" data-floor="territory">Территория</button><button type="button" data-floor="1">1 этаж</button><button type="button" data-floor="2">2 этаж</button><button type="button" data-floor="3">3 этаж</button><button type="button" data-floor="4">4 этаж</button><button type="button" data-floor="attic">Мансарда</button></nav><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div></section>
 <aside class="details"><button class="heart" id="heart">♡</button><img class="heroimg" id="heroimg" src="images/room-family.jpg"><div class="detailtitle" id="detailtitle">Семейная комната</div><div class="detailmeta" id="detailmeta">Бронирование целиком</div><div class="thumbs" id="thumbs"><img src="images/room-family.jpg" loading="lazy" decoding="async"><img src="images/room-balcony.jpg" loading="lazy" decoding="async"><img src="images/room-hostel.jpg" loading="lazy" decoding="async"></div><p class="description" id="description">Отдельная комната для семейного размещения. Доступность проверяется по выбранным датам.</p><button class="book" id="book">Забронировать&nbsp; ›</button></aside>
 <script>
 const rooms=[
@@ -256,7 +256,7 @@ const rooms=[
 {name:'Бунгало в саду',category:'bungalow',floors:['territory'],meta:'Отдельное размещение',desc:'Отдельное бунгало с двухместной кроватью и верандой с видом на сад и бассейн.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg',dbNames:['Бунгало в саду']}
 ];
 const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
-let active=-1,category=null,availabilityRows=[],availabilityState='loading',activeFloor=null,hasInteracted=false;
+let active=-1,category=null,availabilityRows=[],availabilityState='loading',activeFloor=null,hasInteracted=true;
 const floorInfo={
  territory:{label:'Территория',desc:'Бунгало в саду'},
  '1':{label:'1 этаж',desc:'Баня · на этом уровне нет комнат для проживания'},
@@ -322,7 +322,7 @@ function applyRoomFilters(){
   $('.roomcard').forEach(el=>el.classList.remove('active'));
   empty.textContent=activeFloor==='1'
    ?'На 1 этаже нет вариантов проживания; баня относится к этому уровню. Выберите другой этаж, чтобы увидеть комнаты.'
-   :'На этом этаже нет вариантов в категории «'+({rooms:'Комнаты',hostel:'Хостел',bungalow:'Бунгало'}[category]||category)+'». Выберите другой этаж или категорию.';
+   :(category?'В категории «'+({rooms:'Комнаты',hostel:'Хостел',bungalow:'Бунгало'}[category]||category)+'» на выбранном этаже вариантов нет. Выберите другой этаж или категорию.':'На выбранном этаже нет вариантов проживания. Выберите другой этаж или категорию.');
   empty.style.display='block';
   $('.details').style.display='none';
  }else{
