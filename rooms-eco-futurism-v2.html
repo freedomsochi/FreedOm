@@ -259,7 +259,7 @@ const rooms=[
 {name:'Бунгало в саду',category:'bungalow',floors:['territory'],meta:'Отдельное размещение',desc:'Отдельное бунгало с двухместной кроватью и верандой с видом на сад и бассейн.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg',dbNames:['Бунгало в саду']}
 ];
 const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
-let active=-1,category=null,availabilityRows=[],availabilityState='loading',activeFloor=null,hasInteracted=true;
+let active=-1,category=null,availabilityRows=[],availabilityState='loading',activeFloor=null,filterFloor=null,hasInteracted=true;
 const floorInfo={
  territory:{label:'Территория',desc:'Бассейн · бунгало · тренажёрная зона'},
  '1':{label:'1 этаж',desc:'Баня · летняя кухня'},
@@ -335,7 +335,7 @@ function renderAvailability(){
 
 function visibleRoomIndexes(){
  return rooms.map((room,i)=>({room,i})).filter(({room})=>
-  (!category||room.category===category) && (activeFloor===null||(room.floors||['territory']).includes(activeFloor))
+  (!category||room.category===category) && (filterFloor===null||(room.floors||['territory']).includes(filterFloor))
  ).map(({i})=>i);
 }
 function applyRoomFilters(){
@@ -369,9 +369,12 @@ function applyRoomFilters(){
 }
 function choose(i){
  if(!rooms[i])return;
- hasInteracted=true;active=i;category=rooms[i].category;
- if(activeFloor!==null && !(rooms[i].floors||['territory']).includes(activeFloor))activeFloor=null;
+ hasInteracted=true;active=i;category=rooms[i].category;filterFloor=null;
  const r=rooms[i];
+ activeFloor=(r.floors||['territory'])[0];
+ $('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
+ const info=floorInfo[activeFloor];if(info){$('#floorlabel').textContent=info.label;$('#floordesc').textContent=info.desc;}
+ renderMapPoints();
  $('#heroimg').src=r.img;$('#detailtitle').textContent=r.name;$('#detailmeta').textContent=r.meta;$('#description').textContent=r.desc;
  $('.modelhint span').textContent='Найди своё место';
  $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
@@ -380,8 +383,8 @@ function choose(i){
 }
 function setFloor(next){
  const info=floorInfo[next];if(!info)return;
- hasInteracted=true;activeFloor=next;
- $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
+ hasInteracted=true;activeFloor=next;filterFloor=next;
+ $('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
  $('#floorlabel').textContent=info.label;
  $('#floordesc').textContent=info.desc;
  $('.modelhint span').textContent=info.desc;
@@ -396,8 +399,8 @@ function scrollToRoomDetails(){
 }
 function setCategory(next){
  if(!['rooms','hostel','bungalow'].includes(next))return;
- hasInteracted=true;category=next;
- $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
+ hasInteracted=true;category=next;filterFloor=null;
+ $('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
  applyRoomFilters();
 }
 async function refreshAvailability(){
