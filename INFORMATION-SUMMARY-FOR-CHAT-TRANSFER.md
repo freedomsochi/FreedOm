@@ -409,3 +409,26 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Fixed the card availability label selector so live statuses update the visible `.availability-status` element (previous selector expected a non-existent `.available` class).
 - New page commit: `edef61650fee11c7a8168b043e128903f8c4f940` — `Add missing room and hostel catalog options`.
 - This is code-level implementation only; verify image URLs, responsive card scrolling, date-based availability and booking handoff in the preview before considering the task complete. Production/main remain untouched.
+
+
+---
+
+# ROOMS PAGE — FLOOR FILTERS CONNECTED (2026-10-28)
+
+- Target remains `rooms-eco-futurism-v2.html` on branch `rooms-architectural-v1`; production/main untouched.
+- New page commits:
+  - `d6d98786c079542b91cbfced54f044fe34303e67` — connect floor selector with room/category filters.
+  - `ff0048a70db194555998827030e30c0100a43ccf` — clarify the first-floor no-accommodation message.
+- Floor selector now filters room cards together with the selected category:
+  - Territory: seasonal “Место под звёздами” + bungalow.
+  - 1st floor: no accommodation cards; explains that the sauna belongs to this level.
+  - 2nd floor: economy hostel.
+  - 3rd floor: standard hostel + family room.
+  - 4th floor: two-person balcony rooms.
+  - Attic: two attic rooms.
+- Selecting a floor preserves the current category; if that combination has no rooms, the page displays a clear empty state instead of showing rooms from another floor. Changing category on a selected floor filters within that floor.
+- Removed a redundant availability-label update that called `.forEach` on the result of `querySelector` (a single element), which could throw a runtime error. The normal room-card loop already updates each availability label.
+- Existing availability endpoint, dates, and Telegram booking handoff were not changed. No database changes.
+- Mapping follows the latest user-confirmed inventory for the Rooms page (2nd floor economy hostel; 3rd floor standard hostel/family; 4th floor two-person rooms; attic two rooms). The living room, yoga room, admin room, and sauna are descriptive spaces, not bookable cards.
+- Caveat: “Место под звёздами” is assigned to the general territory layer because its exact physical level/position has not been verified; its image currently uses `balcony_bed.jpg` and still needs asset/meaning verification.
+- Verification limitation: no real browser/device interaction test has been run. Check the current Vercel deployment and inspect mobile behavior before calling this fully tested.
