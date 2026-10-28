@@ -399,3 +399,13 @@ User reported that photos still load slowly. Checked image payloads through GitH
 - Verified Supabase catalog details relevant to current cards: standard hostel has two separate 4-place room records, both using `booking_mode=places`; availability code sums their free places. The card previously said only “4 места”, which understated the two-room inventory.
 - Page commit `26e9161a4bb029c1474deb567c183821ddb90d9f` — `Clarify standard hostel inventory count`: visible card and detail metadata now say “2 номера · по 4 места”. Availability and Telegram booking flow unchanged.
 - Latest preview must be rechecked before sharing; no real-device rendering test has been performed. Production/main remain untouched.
+
+
+## Rooms catalog expansion — 2026-10-28
+
+- Added distinct selectable cards to `rooms-eco-futurism-v2.html` for every catalog item previously missing from the approved UI: economy hostel, attic room №1, attic room №2, “Место под звёздами”, and bungalow. Existing family room, standard hostel, and two balcony rooms remain.
+- The category tabs now select the first matching item and each card carries an explicit category, avoiding the former hard-coded assumption that index 1 is the only hostel. Bungalow is now a real selectable card rather than a placeholder-only category.
+- Connected each new card to its exact existing Supabase room name for live availability: `Хостел эконом`, `Мансардная комната №1`, `Мансардная комната №2`, `Место под звёздами`, `Бунгало в саду`. No database changes; availability endpoint and Telegram booking handoff remain unchanged.
+- Fixed the card availability label selector so live statuses update the visible `.availability-status` element (previous selector expected a non-existent `.available` class).
+- New page commit: `edef61650fee11c7a8168b043e128903f8c4f940` — `Add missing room and hostel catalog options`.
+- This is code-level implementation only; verify image URLs, responsive card scrolling, date-based availability and booking handoff in the preview before considering the task complete. Production/main remain untouched.
