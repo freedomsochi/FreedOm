@@ -235,6 +235,14 @@ body{overflow:hidden;background:#b5d7bd}
   background-position:center center!important;
  }
 }
+
+/* Compact map points and remove the two descriptive overlays. */
+.floorinfo,.modelhint{display:none!important}
+.pin.map-point{width:22px;height:22px;min-width:22px;min-height:22px;padding:0;display:grid;place-items:center;transform:translate(-50%,-50%);border:0;border-radius:50%;background:rgba(13,65,56,.16);box-shadow:0 1px 7px rgba(4,38,32,.24);backdrop-filter:none;color:transparent;font-size:0;line-height:0}
+.pin.map-point:after{content:"";display:block;width:8px;height:8px;border-radius:50%;background:#f5fff8;border:2px solid #167866;box-shadow:0 0 0 2px rgba(239,255,248,.72),0 1px 6px rgba(0,0,0,.3)}
+.pin.map-point:hover,.pin.map-point:focus-visible{transform:translate(-50%,-50%) scale(1.12);background:rgba(255,255,255,.25);outline:2px solid rgba(255,255,255,.85);outline-offset:1px}
+@media(max-width:850px){.pin.map-point{width:22px;height:22px;min-width:22px;min-height:22px}.pin.map-point:after{width:7px;height:7px}}
+
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates"><label class="date">Заезд<input id="checkin" type="date"></label><label class="date">Выезд<input id="checkout" type="date"></label><button class="search" id="search" aria-label="Найти">⌕</button></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
