@@ -759,6 +759,7 @@ function applyRoomFilters(){
      ?'Не удалось проверить доступность. Проверьте соединение и нажмите поиск ещё раз.'
      :'Выберите даты и нажмите на значок поиска, чтобы посмотреть комнаты.';
   prompt.style.display='block';
+  if(availabilityState!=='loading')prompt.textContent='Выберите даты и нажмите на значок поиска, чтобы посмотреть комнаты.';
   $('.details').style.display='none';
   return;
  }
@@ -780,8 +781,19 @@ function applyRoomFilters(){
   $('.details').style.display='none';
  }else{
   empty.style.display='none';
-  $('.details').style.display=(active>=0&&visible.includes(active))?'':'none';
-  if(active>=0&&!visible.includes(active))choose(visible[0],true);
+  if(active<0||!visible.includes(active)){
+   active=visible[0];
+   const selected=rooms[active];
+   if(selected){
+    $('#heroimg').src=selected.img;
+    $('#detailtitle').textContent=selected.name;
+    $('#detailmeta').textContent=selected.meta;
+    $('#description').textContent=selected.desc;
+    ['#heroimg','#detailmeta','#thumbs','#book','#heart'].forEach(sel=>{const el=$(sel);if(el)el.style.display=''});
+   }
+  }
+  $('.roomcard').forEach(el=>el.classList.toggle('active',Number(el.dataset.room)===active));
+  $('.details').style.display=(active>=0&&visible.includes(active))?'block':'none';
  }
 }
 function choose(i,preserveCategory=false){
@@ -825,9 +837,24 @@ function scrollToRoomDetails(){
 }
 function setCategory(next){
  if(!['rooms','hostel','bungalow'].includes(next))return;
- hasInteracted=true;category=next;filterFloor=null;
- $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
- applyRoomFilters();
+ category=next;filterFloor=null;
+ $('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
+ // Until a successful date search, category buttons must not replace the CTA.
+ if(availabilityState!=='loaded'){
+  hasInteracted=false;
+  document.body.classList.remove('rooms-revealed');
+  $('.roomcard').forEach(el=>{el.style.display='none';el.classList.remove('active')});
+  const prompt=$('#emptycategory');
+  prompt.classList.add('search-prompt');
+  prompt.textContent=availabilityState==='loading'?'Проверяем доступность по базе FreeDom…':'Выберите даты и нажмите на значок поиска, чтобы посмотреть комнаты.';
+  prompt.style.display='block';
+  $('.details').style.display='none';
+  return;
+ }
+ hasInteracted=true;
+ const visible=visibleRoomIndexes();
+ if(visible.length) choose(visible[0],true);
+ else { active=-1; applyRoomFilters(); }
 }
 async function refreshAvailability(){
  const checkIn=$('#checkin').value,checkOut=$('#checkout').value,summary=$('#availability-summary');
