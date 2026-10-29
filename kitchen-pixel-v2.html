@@ -113,6 +113,48 @@
  .benefit small{font-size:9px}
 }
 
+
+/* Match the translucent mint glass used on the Rooms page */
+.glass{
+ border:1px solid rgba(218,255,251,.62);
+ background:linear-gradient(135deg,rgba(240,255,252,.27),rgba(180,246,239,.1));
+ backdrop-filter:blur(19px) saturate(115%);
+ -webkit-backdrop-filter:blur(19px) saturate(115%);
+ box-shadow:0 15px 45px rgba(13,54,51,.18),inset 0 0 0 1px rgba(255,255,255,.12);
+}
+.sidebar,.catalog,.detail{
+ border-color:rgba(218,255,251,.62);
+}
+.detail{
+ background:linear-gradient(145deg,rgba(239,255,250,.32),rgba(173,238,224,.17));
+ box-shadow:0 14px 38px rgba(13,54,51,.17),inset 0 0 0 1px rgba(255,255,255,.16);
+}
+.cat{
+ border-color:rgba(218,255,251,.34);
+ background:rgba(235,255,252,.19);
+}
+.cat.active,.cat:hover{
+ background:rgba(235,255,252,.82);
+ border-color:rgba(218,255,251,.8);
+ color:#205b50;
+}
+.searchbox{
+ background:rgba(235,255,252,.19);
+ border-color:rgba(218,255,251,.62);
+}
+.card{
+ background:rgba(235,255,252,.13);
+ border-color:rgba(218,255,251,.48);
+}
+.card:hover,.card.selected{
+ background:rgba(235,255,252,.27);
+ border-color:rgba(218,255,251,.78);
+}
+.benefits{
+ background:rgba(235,255,252,.19);
+ border-color:rgba(218,255,251,.62);
+}
+
 </style></head><body><div class="page">
 <header class="top"><a class="brand" href="index.html">FreeDom<small>КУХНЯ</small></a><nav class="nav"><a href="index.html">Главная</a><a href="rooms-eco-futurism-v1.html">Комнаты</a><a class="active" href="kitchen-pixel-v2.html">Кухня</a><a href="index.html#events">События</a><a href="project-history.html">О нас</a></nav><div class="right"><button class="hamb" id="hamb" aria-label="Меню" aria-expanded="false">☰</button></div></header>
 <main class="layout"><aside class="sidebar glass"><h2 class="side-title">Наше меню</h2><div class="categories"><button class="cat active" data-cat="drinks">Напитки <span class="arrow">›</span></button><button class="cat" data-cat="food">Еда <span class="arrow">›</span></button><button class="cat" data-cat="sweets">Полезные сладости <span class="arrow">›</span></button></div><div class="wave">〰</div><p class="side-copy">Вкусная еда — это не просто про насыщение. Это про энергию, вдохновение и заботу о себе.</p></aside>
