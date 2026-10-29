@@ -748,7 +748,7 @@ function visibleRoomIndexes(){
 function applyRoomFilters(){
  document.body.classList.toggle('rooms-revealed',hasInteracted);
  if(!hasInteracted || availabilityState!=='loaded'){
-  $('.roomcard').forEach(el=>{el.style.display='none';el.classList.remove('active')});
+  $$('.roomcard').forEach(el=>{el.style.display='none';el.classList.remove('active')});
   const prompt=$('#emptycategory');
   prompt.classList.add('search-prompt');
   prompt.textContent=availabilityState==='loading'
