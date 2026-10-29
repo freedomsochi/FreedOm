@@ -514,6 +514,8 @@ header.top>div:last-of-type{margin-left:auto!important;align-items:center!import
 .map-info-dismiss{display:block;font-size:9px;line-height:1.4;color:rgba(226,255,247,.7)}
 @media(max-width:850px){.model .map-point{max-width:31%!important}.map-point-label{font-size:8px;padding:3px 4px}.map-point-dot{width:12px;height:12px}.map-info-popup{width:min(290px,calc(100% - 24px))!important}.map-info-popup img{height:112px}}
 @media(max-width:420px){.map-point-label{font-size:7.5px}.model .map-point{max-width:29%!important}}
+/* Accommodation is filtered only by category, not by floor. */
+.floorlayers,.floorinfo{display:none!important}
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
@@ -614,7 +616,7 @@ function renderAvailability(){
 
 function visibleRoomIndexes(){
  return rooms.map((room,i)=>({room,i})).filter(({room})=>{
-  const matchesFilters=(!category||room.category===category) && (filterFloor===null||(room.floors||['territory']).includes(filterFloor));
+  const matchesFilters=(!category||room.category===category);
   if(!matchesFilters)return false;
   if(availabilityState!=='loaded')return false;
   const status=availabilityFor(room.dbNames);
@@ -639,9 +641,9 @@ function applyRoomFilters(){
  if(!visible.length){
   active=-1;
   $$('.roomcard').forEach(el=>el.classList.remove('active'));
-  empty.textContent=activeFloor==='1'
-   ?'На 1 этаже нет вариантов проживания; баня относится к этому уровню. Выберите другой этаж, чтобы увидеть комнаты.'
-   :(category?'В категории «'+({rooms:'Комнаты',hostel:'Хостел',bungalow:'Бунгало'}[category]||category)+'» на выбранном этаже вариантов нет. Выберите другой этаж или категорию.':'На выбранном этаже нет вариантов проживания. Выберите другой этаж или категорию.');
+  empty.textContent=availabilityState==='loaded'
+   ?(category?'В категории «'+({rooms:'Комнаты',hostel:'Хостел',bungalow:'Бунгало'}[category]||category)+'» нет доступных вариантов на выбранные даты.':'Нет доступных вариантов на выбранные даты.')
+   :'Выберите даты и нажмите поиск, чтобы увидеть доступные варианты размещения.';
   empty.style.display='block';
   $('.details').style.display='none';
  }else{
