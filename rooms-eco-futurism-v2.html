@@ -755,7 +755,9 @@ function applyRoomFilters(){
    ?'Проверяем доступность по базе FreeDom…'
    :availabilityState==='error'&&($('#checkin').value&&$('#checkout').value&&$('#checkout').value<=$('#checkin').value)
     ?'Выберите даты заезда и выезда, затем нажмите на значок поиска — после проверки появятся доступные комнаты.'
-    :'Выберите даты и нажмите поиск для просмотра доступных вариантов размещения.';
+    :availabilityState==='error'
+     ?'Не удалось проверить доступность. Проверьте соединение и нажмите поиск ещё раз.'
+     :'Выберите даты и нажмите поиск для просмотра доступных вариантов размещения.';
   prompt.style.display='block';
   $('.details').style.display='none';
   return;
@@ -848,7 +850,7 @@ async function refreshAvailability(){
   if(summary){summary.dataset.state=free?'free':busy?'busy':'unknown';summary.textContent='Доступность проверена · '+checkIn+' — '+checkOut+' · доступно вариантов: '+free+(busy?' · нет мест: '+busy:'')}
   $('.modelhint span').textContent='Доступность обновлена · '+checkIn+' — '+checkOut;
  }catch(error){
-  availabilityRows=[];availabilityState='error';renderAvailability();
+  availabilityRows=[];availabilityState='error';applyRoomFilters();renderAvailability();
   if(summary){summary.dataset.state='error';summary.textContent='Не удалось получить данные. Доступность не подтверждена — попробуйте проверить ещё раз.'}
   $('.modelhint span').textContent='Не удалось проверить доступность · можно уточнить у команды';
   console.error('FreeDom live availability:',error);
