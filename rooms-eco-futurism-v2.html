@@ -785,7 +785,7 @@ function applyRoomFilters(){
   empty.style.display='none';empty.setAttribute('hidden','');
   if(browsingCategory){
    active=-1;
-   $('.roomcard').forEach(el=>el.classList.remove('active'));
+   $$('.roomcard').forEach(el=>el.classList.remove('active'));
    $('.details').style.display='none';
    return;
   }
