@@ -757,7 +757,7 @@ function applyRoomFilters(){
     ?'Выберите даты заезда и выезда, затем нажмите на значок поиска — после проверки появятся доступные комнаты.'
     :availabilityState==='error'
      ?'Не удалось проверить доступность. Проверьте соединение и нажмите поиск ещё раз.'
-     :'Выберите даты и нажмите поиск для просмотра доступных вариантов размещения.';
+     :'Нажмите на поиск и выберите даты, чтобы посмотреть доступные комнаты.';
   prompt.style.display='block';
   $('.details').style.display='none';
   return;
@@ -781,22 +781,22 @@ function applyRoomFilters(){
  }else{
   empty.style.display='none';
   $('.details').style.display=(active>=0&&visible.includes(active))?'':'none';
-  if(active>=0&&!visible.includes(active))choose(visible[0]);
+  if(active>=0&&!visible.includes(active))choose(visible[0],true);
  }
 }
-function choose(i){
+function choose(i,preserveCategory=false){
  if(!rooms[i])return;
  document.body.classList.remove('map-info-open');
  ['#heroimg','#detailmeta','#thumbs','#book','#heart'].forEach(sel=>{const el=$(sel);if(el)el.style.display=''});
  const r=rooms[i];
- hasInteracted=true;active=i;category=r.category;filterFloor=null;
+ hasInteracted=true;active=i;if(!preserveCategory)category=r.category;filterFloor=null;
  activeFloor=(r.floors||['territory'])[0];
  $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
  const info=floorInfo[activeFloor];if(info){$('#floorlabel').textContent=info.label;$('#floordesc').textContent=info.desc;}
  renderMapPoints();
  $('#heroimg').src=r.img;$('#detailtitle').textContent=r.name;$('#detailmeta').textContent=r.meta;$('#description').textContent=r.desc;
  $('.modelhint span').textContent=info?.desc||'Найди своё место';
- $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
+ if(!preserveCategory)$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
  applyRoomFilters();
  renderAvailability();
 }
