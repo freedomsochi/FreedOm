@@ -489,6 +489,10 @@ header.top>div:last-of-type{margin-left:auto!important;align-items:center!import
 .pin,.heart,.staytypes button,.floorlayers button,.levels button,.book,.roomcard,.compass{-webkit-tap-highlight-color:transparent}
 .pin:focus,.heart:focus,.staytypes button:focus,.floorlayers button:focus,.levels button:focus,.book:focus,.roomcard:focus{outline:none}
 .pin:focus-visible,.staytypes button:focus-visible,.floorlayers button:focus-visible,.levels button:focus-visible,.book:focus-visible{outline:2px solid rgba(255,255,255,.95);outline-offset:2px}
+/* Keep the revealed room options visually closer to the date selector. */
+@media(min-width:851px){.left{top:16%!important}}
+@media(max-width:850px){.left{margin-top:-8px!important}}
+@media(max-width:420px){.left{margin-top:-6px!important}}
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
