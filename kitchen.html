@@ -125,6 +125,13 @@ footer{padding:24px;text-align:center;font-size:10px;letter-spacing:.2em;text-tr
 body.dialog-open{overflow:hidden}
 @media(max-width:760px){.menu-nav{grid-template-columns:1fr;gap:9px;margin:20px 0 36px}.menu-nav a{padding:13px 15px}.menu-nav a small{margin-left:auto}.menu-section{margin-top:34px}.menu-single{grid-template-columns:1fr}.open-card{opacity:1;transform:none;font-size:9px}.dialog-panel{border-radius:22px;padding:23px 19px}.dialog-columns{grid-template-columns:1fr;gap:13px}.dialog-art{min-height:125px;font-size:60px}.dialog-actions>*{flex:1;text-align:center}.dish-title{font-size:23px}}
 
+
+/* FreeDom kitchen hero photo: real project image, framed for the glass/nature visual language. */
+.hero-art.kitchen-photo-wrap{height:250px;width:100%;max-width:390px;justify-self:center;isolation:isolate}
+.hero-art.kitchen-photo-wrap:before{width:92%;height:92%;border-radius:28px;border:1px solid rgba(255,255,255,.82);box-shadow:0 0 0 9px rgba(255,255,255,.13),0 22px 50px rgba(47,64,38,.16);animation:none}
+.hero-art.kitchen-photo-wrap:after{content:"";position:absolute;inset:8px;border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.18),transparent 45%,rgba(42,62,35,.12));pointer-events:none;z-index:2}
+.hero-kitchen-photo{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:22px;border:1px solid rgba(255,255,255,.82);box-shadow:0 18px 42px rgba(61,72,43,.18)}
+@media(max-width:760px){.hero-art.kitchen-photo-wrap{height:190px;max-width:100%;margin:4px auto 12px}.hero-art.kitchen-photo-wrap:before{width:90%;height:90%}}
 </style>
 </head>
 <body>
@@ -139,7 +146,7 @@ body.dialog-open{overflow:hidden}
       <h1>Кухня,<br>где делятся</h1>
       <p>В FreeDom кухня — не ресторан. Это часть общей жизни: что-то приготовить, поставить чайник, угостить друг друга и остаться за столом ещё на один разговор.</p>
     </div>
-    <div class="hero-art" aria-hidden="true"><span class="leaf one">🌿</span><div class="plate">🥗</div><span class="leaf two">🍃</span></div>
+    <div class="hero-art kitchen-photo-wrap"><img class="hero-kitchen-photo" src="images/2e5a3bb2-43ad-457b-b39c-509a64c437e4.png" alt="Светлая общая кухня FreeDom с деревянной столешницей, растениями и свежими фруктами" fetchpriority="high"></div>
   </section>
   <nav class="menu-nav" aria-label="Разделы меню">
     <a href="#food"><span>🥗</span> Еда <small>2 блюда</small></a>
