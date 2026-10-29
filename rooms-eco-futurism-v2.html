@@ -588,6 +588,31 @@ header.top>div:last-of-type{margin-left:auto!important;align-items:center!import
   }
 }
 
+
+/* Availability is a compact badge pinned to the photo corner, not part of card layout. */
+.roomcard{position:relative!important}
+.roomcard .meta{padding-right:3px!important}
+.roomcard .availability-status{
+ position:absolute!important;z-index:4!important;top:13px!important;right:13px!important;
+ display:block!important;float:none!important;width:max-content!important;max-width:calc(100% - 26px)!important;
+ padding:5px 8px!important;border:1px solid rgba(255,255,255,.68)!important;
+ border-radius:999px!important;background:rgba(14,65,57,.78)!important;
+ color:#f3fffb!important;font-size:9px!important;font-weight:750!important;line-height:1.15!important;
+ white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+ box-shadow:0 3px 10px rgba(0,0,0,.18)!important;backdrop-filter:blur(10px)!important;
+}
+.roomcard .availability-status.status-free{background:rgba(20,112,82,.86)!important}
+.roomcard .availability-status.status-busy{background:rgba(105,52,43,.86)!important}
+.roomcard .availability-status.status-unknown{background:rgba(14,65,57,.78)!important}
+.emptycategory.search-prompt{
+ width:100%;min-height:104px;display:flex;flex-direction:column;justify-content:center;gap:7px;
+ padding:18px 20px!important;text-align:left;font-size:12px!important;line-height:1.55!important;
+}
+.emptycategory.search-prompt:before{content:"⌕";font-size:23px;line-height:1;color:#b8fff0}
+@media(max-width:850px){
+ .emptycategory.search-prompt{flex:1 0 calc(100% - 28px)!important;min-width:0!important;max-width:none!important;min-height:110px;margin:0 14px 10px!important}
+}
+
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
@@ -698,11 +723,17 @@ function visibleRoomIndexes(){
 function applyRoomFilters(){
  document.body.classList.toggle('rooms-revealed',hasInteracted);
  if(!hasInteracted){
-  $$('.roomcard').forEach(el=>{el.style.display='none';el.classList.remove('active')});
-  $('#emptycategory').style.display='none';
+  $('.roomcard').forEach(el=>{el.style.display='none';el.classList.remove('active')});
+  const prompt=$('#emptycategory');
+  prompt.classList.add('search-prompt');
+  prompt.textContent=availabilityState==='loading'
+   ?'Проверяем доступность по базе FreeDom…'
+   :'Выберите даты заезда и выезда, затем нажмите на значок поиска — после проверки появятся доступные комнаты.';
+  prompt.style.display='block';
   $('.details').style.display='none';
   return;
  }
+ $('#emptycategory').classList.remove('search-prompt');
  const visible=visibleRoomIndexes();
  $$('.roomcard').forEach(el=>{
   const i=Number(el.dataset.room);
