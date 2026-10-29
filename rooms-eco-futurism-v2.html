@@ -849,6 +849,7 @@ function setCategory(next){
  $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
  // Until a successful date search, category buttons must not replace the CTA.
  if(availabilityState!=='loaded'){
+  browsingCategory=true;
   hasInteracted=false;
   document.body.classList.remove('rooms-revealed');
   document.body.classList.add('rooms-prompt-open');
