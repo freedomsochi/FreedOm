@@ -613,6 +613,31 @@ header.top>div:last-of-type{margin-left:auto!important;align-items:center!import
  .emptycategory.search-prompt{flex:1 0 calc(100% - 28px)!important;min-width:0!important;max-width:none!important;min-height:110px;margin:0 14px 10px!important}
 }
 
+
+/* Availability prompt and compact photo-corner status labels */
+.roomcard{position:relative!important}
+.roomcard .availability-status{
+ position:absolute!important;top:14px;right:14px;z-index:5;
+ float:none!important;display:block;max-width:calc(100% - 28px);
+ margin:0!important;padding:3px 6px;border-radius:9px;
+ font-size:8px!important;font-weight:650;line-height:1.2!important;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;
+ color:#eafff5;background:rgba(16,70,58,.72);
+ border:1px solid rgba(236,255,247,.42);backdrop-filter:blur(8px);
+ box-shadow:0 2px 8px rgba(0,0,0,.12)
+}
+.roomcard .availability-status.status-free{color:#d8ffeb;background:rgba(21,112,76,.82);border-color:rgba(182,255,220,.7)}
+.roomcard .availability-status.status-busy{color:#fff0ed;background:rgba(163,43,39,.88);border-color:rgba(255,193,184,.82)}
+.roomcard .availability-status.status-unknown{color:#fff5d5;background:rgba(54,66,58,.72)}
+.emptycategory.search-prompt{
+ display:block!important;align-self:stretch;min-width:0;max-width:none;
+ border:1px solid rgba(231,255,248,.65);
+ background:linear-gradient(135deg,rgba(239,255,250,.25),rgba(185,245,232,.13));
+ box-shadow:0 12px 34px rgba(13,54,51,.14),inset 0 0 0 1px rgba(255,255,255,.12);
+ border-radius:18px;padding:18px 16px;font-size:12px;line-height:1.55;color:#f5fffb;
+}
+@media(min-width:851px){.left{top:94px!important}}
+@media(max-width:850px){.left{padding-top:2px!important;margin-top:-7px!important}.emptycategory.search-prompt{flex:1 0 calc(100% - 28px)!important;min-width:0!important;max-width:none!important;min-height:110px;margin:0 14px 10px!important}}
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
@@ -722,13 +747,15 @@ function visibleRoomIndexes(){
 }
 function applyRoomFilters(){
  document.body.classList.toggle('rooms-revealed',hasInteracted);
- if(!hasInteracted){
+ if(!hasInteracted || availabilityState!=='loaded'){
   $('.roomcard').forEach(el=>{el.style.display='none';el.classList.remove('active')});
   const prompt=$('#emptycategory');
   prompt.classList.add('search-prompt');
   prompt.textContent=availabilityState==='loading'
    ?'Проверяем доступность по базе FreeDom…'
-   :'Выберите даты заезда и выезда, затем нажмите на значок поиска — после проверки появятся доступные комнаты.';
+   :availabilityState==='error'&&($('#checkin').value&&$('#checkout').value&&$('#checkout').value<=$('#checkin').value)
+    ?'Выберите даты заезда и выезда, затем нажмите на значок поиска — после проверки появятся доступные комнаты.'
+    :'Выберите даты и нажмите поиск для просмотра доступных вариантов размещения.';
   prompt.style.display='block';
   $('.details').style.display='none';
   return;
