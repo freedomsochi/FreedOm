@@ -749,7 +749,7 @@ $('#book').addEventListener('click',()=>{
  location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. Проверил доступность на сайте. Подскажите, пожалуйста, стоимость и подтвердите бронь.');
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
-document.addEventListener('click',e=>{const popup=$('#map-point-popup');if(popup&&!popup.hidden&&!e.target.closest('.map-point')&&!e.target.closest('#map-point-popup'))closeMapPointInfo()});
+document.addEventListener('click',e=>{const popup=$('#map-point-popup');if(popup&&!popup.hidden&&!e.target.closest('.map-point'))closeMapPointInfo()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMapPointInfo()});
 initDates();renderAvailability();renderMapPoints();$('#floorlabel').textContent=floorInfo.territory.label;$('#floordesc').textContent=floorInfo.territory.desc;$('.modelhint span').textContent='Выберите даты, чтобы увидеть доступные варианты';applyRoomFilters();
 </script></body></html>
