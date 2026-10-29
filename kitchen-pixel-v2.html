@@ -56,16 +56,17 @@
 @media(max-width:620px){.catalogtools{margin-top:-4px}.searchbox{padding:9px 11px}.top{height:auto}.nav{display:none;flex-wrap:nowrap}.nav.open{display:flex}.catalog{padding:16px 12px}.sectionhead{margin-bottom:18px}.sectionhead h1{font-size:29px}.card img{height:110px}.cardbody{padding:8px}.detail h2{font-size:29px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
 
-/* Portrait-first photography: use a dedicated tall source on phones, not a zoomed landscape crop */
+/* Mobile: show the full portrait kitchen image instead of cropping it with cover */
 @media(max-width:620px){
  body{
   background-image:url('https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/%D0%A1%D0%BE%D0%BB%D0%BD%D0%B5%D1%87%D0%BD%D0%B0%D1%8F%20%D0%BA%D1%83%D1%85%D0%BD%D1%8F%20%D1%81%20%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B2%D0%BE%D0%BC%20%D0%B8%20%D0%B7%D0%B5%D0%BB%D0%B5%D0%BD%D1%8C%D1%8E.png');
   background-position:center top;
-  background-size:cover;
+  background-size:100% auto;
+  background-repeat:repeat-y;
   background-attachment:scroll;
  }
  body:before{
-  background:linear-gradient(180deg,rgba(22,62,42,.24) 0%,rgba(22,62,42,.08) 30%,rgba(22,62,42,.34) 100%);
+  background:linear-gradient(180deg,rgba(22,62,42,.12) 0%,rgba(22,62,42,.03) 30%,rgba(22,62,42,.18) 100%);
  }
 }
 </style></head><body><div class="page">
