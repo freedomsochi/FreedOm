@@ -661,7 +661,7 @@ const rooms=[
 {name:'Мансардная комната №2',category:'rooms',floors:['attic'],meta:'Отдельная комната',desc:'Отдельная мансардная комната. Условия и доступность проверяются по выбранным датам.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room2.jpg',dbNames:['Мансардная комната №2']},
 {name:'Бунгало в саду',category:'bungalow',floors:['territory'],meta:'Отдельное размещение',desc:'Отдельное бунгало с двухместной кроватью и верандой с видом на сад и бассейн.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg',dbNames:['Бунгало в саду']}
 ];
-const availabilityEndpoint='https://vutmbhsclmcfqqlzxqkc.supabase.co/functions/v1/public-availability';
+const availabilityEndpoint='/api/availability';
 let active=-1,category=null,availabilityRows=[],availabilityState='idle',activeFloor='territory',filterFloor=null,hasInteracted=false,browsingCategory=false;
 const floorInfo={
  territory:{label:'Территория',desc:'Бассейн · спортивная площадка'},
