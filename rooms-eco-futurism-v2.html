@@ -483,8 +483,8 @@ header.top>div:last-of-type{margin-left:auto!important;align-items:center!import
 /* Small, clear search-in-progress indicator; remove Android/Chromium blue tap flash on icon controls. */
 .search{-webkit-tap-highlight-color:transparent;appearance:none;-webkit-appearance:none;outline:none;box-shadow:none;position:relative;flex:0 0 36px}
 .search:focus,.search:active{outline:none;box-shadow:none;-webkit-tap-highlight-color:transparent}
-.search.is-loading{font-size:0;cursor:wait;pointer-events:none;background:rgba(57,200,189,.72)}
-.search.is-loading::after{content:"";position:absolute;left:50%;top:50%;width:15px;height:15px;margin:-8px 0 0 -8px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-right-color:#fff;border-radius:50%;animation:roomsSearchSpin .7s linear infinite}
+.search.is-loading{font-size:20px;cursor:wait;pointer-events:none;background:rgba(57,200,189,.72);color:#fff}
+.search.is-loading::after{content:"";position:absolute;inset:-3px;border:2px solid transparent;border-top-color:#fff;border-right-color:rgba(255,255,255,.9);border-bottom-color:rgba(255,255,255,.58);border-left-color:rgba(255,255,255,.24);border-radius:50%;animation:roomsSearchSpin .8s linear infinite;pointer-events:none}
 @keyframes roomsSearchSpin{to{transform:rotate(360deg)}}
 .pin,.heart,.staytypes button,.floorlayers button,.levels button,.book,.roomcard,.compass{-webkit-tap-highlight-color:transparent}
 .pin:focus,.heart:focus,.staytypes button:focus,.floorlayers button:focus,.levels button:focus,.book:focus,.roomcard:focus{outline:none}
