@@ -925,3 +925,7 @@ document.addEventListener('click',e=>{const popup=$('#map-point-popup');if(popup
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMapPointInfo()});
 initDates();renderAvailability();renderMapPoints();$('#floorlabel').textContent=floorInfo.territory.label;$('#floordesc').textContent=floorInfo.territory.desc;$('.modelhint span').textContent='Выберите даты, чтобы увидеть доступные варианты';applyRoomFilters();
 </script></body></html>
+
+/* Category prompt: visible at the top, near the date/search controls. */
+body.rooms-prompt-open #emptycategory{top:104px!important;left:50%!important;transform:translateX(-50%)!important;width:min(520px,calc(100vw - 32px))!important;padding:16px 20px!important;font-size:13px!important;line-height:1.5!important}
+@media(max-width:850px){body.rooms-prompt-open #emptycategory{top:132px!important;width:calc(100vw - 28px)!important;padding:15px 16px!important;font-size:12px!important}}
