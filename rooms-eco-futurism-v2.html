@@ -755,13 +755,12 @@ function applyRoomFilters(){
   prompt.textContent=availabilityState==='loading'
    ?'Проверяем доступность по базе FreeDom…'
    :availabilityState==='error'&&($('#checkin').value&&$('#checkout').value&&$('#checkout').value<=$('#checkin').value)
-    ?'Выберите даты заезда и выезда, затем нажмите на значок поиска — после проверки появятся доступные комнаты.'
+    ?'Выберите корректные даты заезда и выезда, затем нажмите на значок поиска.'
     :availabilityState==='error'
      ?'Не удалось проверить доступность. Проверьте соединение и нажмите поиск ещё раз.'
-     :'Выберите даты и нажмите на значок поиска, чтобы посмотреть комнаты.';
+     :'Выберите даты и нажмите на значок поиска, чтобы посмотреть доступные варианты размещения.';
   prompt.removeAttribute('hidden');
   prompt.style.display='block';
-  if(availabilityState!=='loading')prompt.textContent='Выберите даты и нажмите на значок поиска, чтобы посмотреть комнаты.';
   $('.details').style.display='none';
   return;
  }
@@ -851,6 +850,7 @@ function setCategory(next){
   const prompt=$('#emptycategory');
   prompt.classList.add('search-prompt');
   prompt.textContent=availabilityState==='loading'?'Проверяем доступность по базе FreeDom…':'Выберите даты и нажмите на значок поиска, чтобы посмотреть доступные варианты размещения.';
+  prompt.removeAttribute('hidden');
   prompt.style.display='block';
   $('.details').style.display='none';
   return;
