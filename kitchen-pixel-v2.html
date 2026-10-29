@@ -69,6 +69,50 @@
   background:linear-gradient(180deg,rgba(22,62,42,.12) 0%,rgba(22,62,42,.03) 30%,rgba(22,62,42,.18) 100%);
  }
 }
+
+/* Compact mobile panels: reduce the overall visual scale without shrinking the background */
+@media(max-width:620px){
+ .top{padding:9px 10px 7px}
+ .brand{font-size:27px}
+ .brand small{font-size:9px;margin-top:5px}
+ .hamb{width:40px;height:40px;font-size:21px}
+ .nav a{font-size:9px;padding:8px 8px}
+ .layout{padding:6px 9px 0;gap:8px}
+ .sidebar{padding:9px;border-radius:17px}
+ .cat{padding:7px 9px;font-size:10px;min-height:34px}
+ .catalog{padding:12px 10px;border-radius:18px}
+ .sectionhead{margin-bottom:13px}
+ .sectionhead h1{font-size:25px}
+ .sectionhead p{font-size:9px}
+ .catalogtools{margin-bottom:11px}
+ .searchbox{padding:7px 9px;font-size:10px}
+ .itemcount{font-size:9px}
+ .cards{gap:7px}
+ .card{border-radius:12px}
+ .card img{height:88px}
+ .cardbody{padding:7px}
+ .cardname{font-size:10px}
+ .carddesc{font-size:8px;min-height:20px}
+ .cardfoot{font-size:11px}
+ .detail{padding:9px;border-radius:18px}
+ .hero{height:170px;border-radius:14px}
+ .detail h2{font-size:25px;margin-top:11px}
+ .tagline{font-size:10px}
+ .description{font-size:11px;line-height:1.5;margin-top:10px}
+ .ingredients{gap:4px;margin:9px 0 12px}
+ .ingicon{width:33px;height:33px;font-size:16px}
+ .ingredient{font-size:8px}
+ .buyrow{padding-top:10px}
+ .pricebig{font-size:26px}
+ .add{padding:10px 13px;font-size:11px}
+ .notice{font-size:8px;margin-top:8px}
+ .bottom{margin:9px 9px 0}
+ .benefits{padding:10px;gap:10px;border-radius:18px}
+ .benefit{font-size:9px;gap:6px}
+ .benefit .bico{font-size:20px}
+ .benefit small{font-size:9px}
+}
+
 </style></head><body><div class="page">
 <header class="top"><a class="brand" href="index.html">FreeDom<small>КУХНЯ</small></a><nav class="nav"><a href="index.html">Главная</a><a href="rooms-eco-futurism-v1.html">Комнаты</a><a class="active" href="kitchen-pixel-v2.html">Кухня</a><a href="index.html#events">События</a><a href="project-history.html">О нас</a></nav><div class="right"><button class="hamb" id="hamb" aria-label="Меню" aria-expanded="false">☰</button></div></header>
 <main class="layout"><aside class="sidebar glass"><h2 class="side-title">Наше меню</h2><div class="categories"><button class="cat active" data-cat="drinks">Напитки <span class="arrow">›</span></button><button class="cat" data-cat="food">Еда <span class="arrow">›</span></button><button class="cat" data-cat="sweets">Полезные сладости <span class="arrow">›</span></button></div><div class="wave">〰</div><p class="side-copy">Вкусная еда — это не просто про насыщение. Это про энергию, вдохновение и заботу о себе.</p></aside>
