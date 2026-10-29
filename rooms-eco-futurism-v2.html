@@ -516,6 +516,78 @@ header.top>div:last-of-type{margin-left:auto!important;align-items:center!import
 @media(max-width:420px){.map-point-label{font-size:7.5px}.model .map-point{max-width:29%!important}}
 /* Accommodation is filtered only by category, not by floor. */
 .floorlayers,.floorinfo{display:none!important}
+
+/* Uniform accommodation cards: availability text never changes card dimensions. */
+.roomcard{
+  display:flex!important;
+  flex-direction:column!important;
+  height:164px!important;
+  min-height:164px!important;
+  max-height:164px!important;
+  flex-shrink:0!important;
+  overflow:hidden!important;
+  padding:8px!important;
+}
+.roomcard img{
+  flex:0 0 76px!important;
+  height:76px!important;
+  min-height:76px!important;
+  max-height:76px!important;
+  width:100%!important;
+  object-fit:cover!important;
+}
+.roomcard .roomname{
+  flex:0 0 30px!important;
+  height:30px!important;
+  min-height:30px!important;
+  overflow:hidden!important;
+  display:-webkit-box!important;
+  -webkit-line-clamp:2!important;
+  -webkit-box-orient:vertical!important;
+  line-height:14px!important;
+  margin:6px 4px 3px!important;
+}
+.roomcard .meta{
+  flex:0 0 25px!important;
+  height:25px!important;
+  min-height:25px!important;
+  max-height:25px!important;
+  overflow:hidden!important;
+  line-height:12px!important;
+  margin:0 4px 2px!important;
+  display:block!important;
+}
+.roomcard .availability-status{
+  display:block!important;
+  float:none!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  max-width:100%!important;
+  line-height:12px!important;
+}
+@media(max-width:850px){
+  .roomcard{
+    height:164px!important;
+    min-height:164px!important;
+    max-height:164px!important;
+    flex:0 0 176px!important;
+    min-width:176px!important;
+    max-width:176px!important;
+  }
+  .roomcard img{height:76px!important;flex-basis:76px!important}
+}
+@media(max-width:420px){
+  .roomcard{
+    height:164px!important;
+    min-height:164px!important;
+    max-height:164px!important;
+    flex:0 0 160px!important;
+    min-width:160px!important;
+    max-width:160px!important;
+  }
+}
+
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
