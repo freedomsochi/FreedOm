@@ -479,6 +479,16 @@ header.top>div:last-of-type{margin-left:auto!important;align-items:center!import
  .model{margin-top:6px!important}
  .roomcard{margin-top:0!important}
 }
+
+/* Small, clear search-in-progress indicator; remove Android/Chromium blue tap flash on icon controls. */
+.search{-webkit-tap-highlight-color:transparent;appearance:none;-webkit-appearance:none;outline:none;box-shadow:none;position:relative;flex:0 0 36px}
+.search:focus,.search:active{outline:none;box-shadow:none;-webkit-tap-highlight-color:transparent}
+.search.is-loading{font-size:0;cursor:wait;pointer-events:none;background:rgba(57,200,189,.72)}
+.search.is-loading::after{content:"";position:absolute;left:50%;top:50%;width:15px;height:15px;margin:-8px 0 0 -8px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-right-color:#fff;border-radius:50%;animation:roomsSearchSpin .7s linear infinite}
+@keyframes roomsSearchSpin{to{transform:rotate(360deg)}}
+.pin,.heart,.staytypes button,.floorlayers button,.levels button,.book,.roomcard,.compass{-webkit-tap-highlight-color:transparent}
+.pin:focus,.heart:focus,.staytypes button:focus,.floorlayers button:focus,.levels button:focus,.book:focus,.roomcard:focus{outline:none}
+.pin:focus-visible,.staytypes button:focus-visible,.floorlayers button:focus-visible,.levels button:focus-visible,.book:focus-visible{outline:2px solid rgba(255,255,255,.95);outline-offset:2px}
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
@@ -654,6 +664,7 @@ async function refreshAvailability(){
   return;
  }
  availabilityState='loading';availabilityRows=[];hasInteracted=false;applyRoomFilters();renderAvailability();
+ const searchButton=$('#search');if(searchButton){searchButton.classList.add('is-loading');searchButton.disabled=true;searchButton.setAttribute('aria-busy','true');}
  if(summary){summary.dataset.state='loading';summary.textContent='Проверяем доступность по базе FreeDom…'}
  $('.modelhint span').textContent='Проверяем свободные места…';
  try{
@@ -670,6 +681,8 @@ async function refreshAvailability(){
   if(summary){summary.dataset.state='error';summary.textContent='Не удалось получить данные. Доступность не подтверждена — попробуйте проверить ещё раз.'}
   $('.modelhint span').textContent='Не удалось проверить доступность · можно уточнить у команды';
   console.error('FreeDom live availability:',error);
+ }finally{
+  const searchButton=$('#search');if(searchButton){searchButton.classList.remove('is-loading');searchButton.disabled=false;searchButton.removeAttribute('aria-busy');}
  }
 }
 function initDates(){
