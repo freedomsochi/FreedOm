@@ -785,13 +785,18 @@ function renderMapPoints(){
 function closeMapPointInfo(){
  const popup=$('#map-point-popup'),model=$('.model');
  if(!popup||popup.hidden||popup.classList.contains('is-closing'))return;
- popup.classList.add('is-closing');
- popup.addEventListener('animationend',function finishClose(e){
-  if(e.target!==popup)return;
+ const finishClose=()=>{
   popup.hidden=true;popup.classList.remove('is-closing');
   if(model)model.classList.remove('map-info-active');
   document.body.classList.remove('map-info-open');
- },{once:true});
+ };
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){finishClose();return}
+ popup.classList.add('is-closing');
+ popup.addEventListener('animationend',function onClose(e){
+  if(e.target!==popup)return;
+  popup.removeEventListener('animationend',onClose);
+  finishClose();
+ });
 }
 function showMapPointInfo(point){
  const popup=$('#map-point-popup');if(!popup)return;
