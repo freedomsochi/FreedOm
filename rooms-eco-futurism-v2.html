@@ -715,6 +715,19 @@ body.dates-selected .left{display:flex!important}
  .model.map-info-active:after{animation:none}
 }
 
+
+/* Territory info card: pronounced point-to-card zoom and explicit close control. */
+.map-info-popup{transform-origin:center;animation:mapPointZoomIn .78s cubic-bezier(.16,1.18,.28,1) both;will-change:transform,opacity,filter}
+.map-info-popup.is-closing{animation:mapPointZoomOut .28s cubic-bezier(.55,0,.8,.35) both!important;pointer-events:none}
+.map-info-popup .map-info-close{position:absolute;z-index:3;top:17px;right:17px;display:flex;align-items:center;gap:5px;padding:8px 11px;border:1px solid rgba(255,255,255,.9);border-radius:22px;background:rgba(13,65,56,.86);color:#fff;font:700 12px/1 Inter,Arial,sans-serif;box-shadow:0 4px 16px rgba(4,35,29,.28);backdrop-filter:blur(12px);cursor:pointer;transition:transform .18s ease,background .18s ease}
+.map-info-popup .map-info-close span{font-size:10px;letter-spacing:.01em}
+.map-info-popup .map-info-close:hover{transform:scale(1.06);background:rgba(8,49,42,.96)}
+.map-info-popup .map-info-close:active{transform:scale(.96)}
+@keyframes mapPointZoomIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.025) rotate(-7deg);filter:blur(9px)}48%{opacity:1;transform:translate(-50%,-50%) scale(1.09) rotate(1.2deg);filter:blur(0)}72%{transform:translate(-50%,-50%) scale(.97) rotate(-.35deg)}100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0);filter:blur(0)}}
+@keyframes mapPointZoomOut{0%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:blur(0)}100%{opacity:0;transform:translate(-50%,-50%) scale(.035) rotate(6deg);filter:blur(7px)}}
+.model.map-info-active:after{background:rgba(5,34,30,.48);backdrop-filter:blur(4px);animation:mapShadeIn .32s ease both}
+@media(max-width:850px){.map-info-popup .map-info-close{top:13px;right:13px;padding:7px 10px}}
+@media(prefers-reduced-motion:reduce){.map-info-popup,.map-info-popup.is-closing{animation:none!important}.model.map-info-active:after{animation:none}}
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
@@ -726,7 +739,7 @@ body.dates-selected .left{display:flex!important}
 <article class="roomcard" data-category="rooms" data-room="5"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room2.jpg" loading="lazy" decoding="async" alt="Мансардная комната 2"><div class="roomname">Мансардная №2</div><div class="meta">Отдельная комната <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <article class="roomcard" data-category="bungalow" data-room="6"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg" loading="lazy" decoding="async" alt="Бунгало в саду"><div class="roomname">Бунгало в саду</div><div class="meta">Отдельное размещение <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <div class="emptycategory" id="emptycategory" hidden></div></section>
-<section class="model"><div class="scene"></div><div class="orbit"></div><div class="floorinfo" aria-live="polite"><div class="eyebrow">Этаж / зона</div><strong id="floorlabel">Территория</strong><span id="floordesc">Дом, сад и общее пространство FreeDom</span></div><nav class="floorlayers" aria-label="Этажи и зоны дома"><button type="button" data-floor="territory">Территория</button><button type="button" data-floor="1">1 этаж</button><button type="button" data-floor="2">2 этаж</button><button type="button" data-floor="3">3 этаж</button><button type="button" data-floor="4">4 этаж</button><button type="button" data-floor="attic">Мансарда</button></nav><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><aside class="map-info-popup" id="map-point-popup" hidden role="dialog" aria-live="polite"><img src="" alt=""><div class="map-info-copy"><strong class="map-info-title"></strong><p class="map-info-description"></p><span class="map-info-dismiss">Нажмите в любом месте, чтобы закрыть</span></div></aside></section>
+<section class="model"><div class="scene"></div><div class="orbit"></div><div class="floorinfo" aria-live="polite"><div class="eyebrow">Этаж / зона</div><strong id="floorlabel">Территория</strong><span id="floordesc">Дом, сад и общее пространство FreeDom</span></div><nav class="floorlayers" aria-label="Этажи и зоны дома"><button type="button" data-floor="territory">Территория</button><button type="button" data-floor="1">1 этаж</button><button type="button" data-floor="2">2 этаж</button><button type="button" data-floor="3">3 этаж</button><button type="button" data-floor="4">4 этаж</button><button type="button" data-floor="attic">Мансарда</button></nav><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><aside class="map-info-popup" id="map-point-popup" hidden role="dialog" aria-live="polite"><button class="map-info-close" id="map-point-close" type="button" aria-label="Закрыть карточку">× <span>Закрыть</span></button><img src="" alt=""><div class="map-info-copy"><strong class="map-info-title"></strong><p class="map-info-description"></p><span class="map-info-dismiss">Нажмите в любом месте, чтобы закрыть</span></div></aside></section>
 <aside class="details"><button class="heart" id="heart">♡</button><img class="heroimg" id="heroimg" src="images/room-family.jpg"><div class="detailtitle" id="detailtitle">Семейная комната</div><div class="detailmeta" id="detailmeta">Бронирование целиком</div><div class="thumbs" id="thumbs"><img src="images/room-family.jpg" loading="lazy" decoding="async"><img src="images/room-balcony.jpg" loading="lazy" decoding="async"><img src="images/room-hostel.jpg" loading="lazy" decoding="async"></div><p class="description" id="description">Отдельная комната для семейного размещения. Доступность проверяется по выбранным датам.</p><button class="book" id="book">Забронировать&nbsp; ›</button></aside>
 <script>
 const rooms=[
@@ -770,9 +783,15 @@ function renderMapPoints(){
  });
 }
 function closeMapPointInfo(){
- const popup=$('#map-point-popup');if(popup)popup.hidden=true;
- const model=$('.model');if(model)model.classList.remove('map-info-active');
- document.body.classList.remove('map-info-open');
+ const popup=$('#map-point-popup'),model=$('.model');
+ if(!popup||popup.hidden||popup.classList.contains('is-closing'))return;
+ popup.classList.add('is-closing');
+ popup.addEventListener('animationend',function finishClose(e){
+  if(e.target!==popup)return;
+  popup.hidden=true;popup.classList.remove('is-closing');
+  if(model)model.classList.remove('map-info-active');
+  document.body.classList.remove('map-info-open');
+ },{once:true});
 }
 function showMapPointInfo(point){
  const popup=$('#map-point-popup');if(!popup)return;
@@ -874,7 +893,8 @@ function showMapPointInfo(point){
  popup.querySelector('.map-info-title').textContent=point.label;
  popup.querySelector('.map-info-description').textContent=point.desc;
  popup.hidden=false;
- // Restart the reveal animation on every marker tap.
+ popup.classList.remove('is-closing');
+ // Restart the stronger zoom-in reveal on every marker tap.
  popup.style.animation='none';
  void popup.offsetWidth;
  const modelRect=model.getBoundingClientRect();
@@ -945,7 +965,7 @@ $('#book').addEventListener('click',()=>{
  location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. Проверил доступность на сайте. Подскажите, пожалуйста, стоимость и подтвердите бронь.');
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
-document.addEventListener('click',e=>{const popup=$('#map-point-popup');if(popup&&!popup.hidden&&!e.target.closest('.map-point')&&!e.target.closest('#map-point-popup'))closeMapPointInfo()});
+$('#map-point-close').addEventListener('click',e=>{e.stopPropagation();closeMapPointInfo()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMapPointInfo()});
 initDates();document.body.classList.remove('dates-selected','rooms-revealed');renderAvailability();renderMapPoints();$('#floorlabel').textContent=floorInfo.territory.label;$('#floordesc').textContent=floorInfo.territory.desc;$('.modelhint span').textContent='Выберите даты и нажмите поиск, чтобы увидеть варианты';
 </script></body></html>
