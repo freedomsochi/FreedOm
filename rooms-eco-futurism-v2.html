@@ -653,7 +653,7 @@ body.rooms-prompt-open #emptycategory{position:fixed!important;z-index:30;top:10
 <article class="roomcard" data-category="rooms" data-room="5"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/attic_room2.jpg" loading="lazy" decoding="async" alt="Мансардная комната 2"><div class="roomname">Мансардная №2</div><div class="meta">Отдельная комната <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <article class="roomcard" data-category="bungalow" data-room="6"><img src="https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg" loading="lazy" decoding="async" alt="Бунгало в саду"><div class="roomname">Бунгало в саду</div><div class="meta">Отдельное размещение <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <div class="emptycategory" id="emptycategory" hidden></div></section>
-<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Варианты размещения"><button type="button" data-category="rooms">Комнаты</button><button type="button" data-category="hostel">Хостел</button><button type="button" data-category="bungalow">Бунгало</button></nav><div class="floorinfo" aria-live="polite"><div class="eyebrow">Этаж / зона</div><strong id="floorlabel">Территория</strong><span id="floordesc">Дом, сад и общее пространство FreeDom</span></div><nav class="floorlayers" aria-label="Этажи и зоны дома"><button type="button" data-floor="territory">Территория</button><button type="button" data-floor="1">1 этаж</button><button type="button" data-floor="2">2 этаж</button><button type="button" data-floor="3">3 этаж</button><button type="button" data-floor="4">4 этаж</button><button type="button" data-floor="attic">Мансарда</button></nav><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><aside class="map-info-popup" id="map-point-popup" hidden role="dialog" aria-live="polite"><img src="" alt=""><div class="map-info-copy"><strong class="map-info-title"></strong><p class="map-info-description"></p><span class="map-info-dismiss">Нажмите в любом месте, чтобы закрыть</span></div></aside></section>
+<section class="model"><div class="scene"></div><div class="orbit"></div><nav class="staytypes" aria-label="Все варианты размещения"><button type="button" data-category="all" class="active">Все варианты</button></nav><div class="floorinfo" aria-live="polite"><div class="eyebrow">Этаж / зона</div><strong id="floorlabel">Территория</strong><span id="floordesc">Дом, сад и общее пространство FreeDom</span></div><nav class="floorlayers" aria-label="Этажи и зоны дома"><button type="button" data-floor="territory">Территория</button><button type="button" data-floor="1">1 этаж</button><button type="button" data-floor="2">2 этаж</button><button type="button" data-floor="3">3 этаж</button><button type="button" data-floor="4">4 этаж</button><button type="button" data-floor="attic">Мансарда</button></nav><div class="modelhint">FREEDOM · SOCHI <span>Найди своё место</span></div><aside class="map-info-popup" id="map-point-popup" hidden role="dialog" aria-live="polite"><img src="" alt=""><div class="map-info-copy"><strong class="map-info-title"></strong><p class="map-info-description"></p><span class="map-info-dismiss">Нажмите в любом месте, чтобы закрыть</span></div></aside></section>
 <aside class="details"><button class="heart" id="heart">♡</button><img class="heroimg" id="heroimg" src="images/room-family.jpg"><div class="detailtitle" id="detailtitle">Семейная комната</div><div class="detailmeta" id="detailmeta">Бронирование целиком</div><div class="thumbs" id="thumbs"><img src="images/room-family.jpg" loading="lazy" decoding="async"><img src="images/room-balcony.jpg" loading="lazy" decoding="async"><img src="images/room-hostel.jpg" loading="lazy" decoding="async"></div><p class="description" id="description">Отдельная комната для семейного размещения. Доступность проверяется по выбранным датам.</p><button class="book" id="book">Забронировать&nbsp; ›</button></aside>
 <script>
 const rooms=[
@@ -848,27 +848,23 @@ function scrollToRoomDetails(){
  if(window.matchMedia('(max-width: 850px)').matches)details.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
 }
 function setCategory(next){
- if(!['rooms','hostel','bungalow'].includes(next))return;
- category=next;filterFloor=null;
- $$('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
- // Until a successful date search, category buttons must not replace the CTA.
+ if(next!=='all')return;
+ category=null;filterFloor=null;
+ browsingCategory=true;active=-1;
+ $('.staytypes button').forEach(b=>b.classList.toggle('active',b.dataset.category==='all'));
  if(availabilityState!=='loaded'){
-  browsingCategory=true;
   hasInteracted=false;
   document.body.classList.remove('rooms-revealed');
   document.body.classList.add('rooms-prompt-open');
-  $$('.roomcard').forEach(el=>{el.style.display='none';el.classList.remove('active')});
+  $('.roomcard').forEach(el=>{el.style.display='none';el.classList.remove('active')});
   const prompt=$('#emptycategory');
   prompt.classList.add('search-prompt');
-  prompt.textContent=availabilityState==='loading'?'Проверяем доступность по базе FreeDom…':'Выберите даты и нажмите на значок поиска, чтобы посмотреть доступные варианты размещения.';
-  prompt.removeAttribute('hidden');
-  prompt.style.display='block';
+  prompt.textContent='Выберите даты и нажмите на значок поиска, чтобы посмотреть доступные варианты размещения.';
+  prompt.removeAttribute('hidden');prompt.style.display='block';
   $('.details').style.display='none';
   return;
  }
  hasInteracted=true;
- browsingCategory=true;
- active=-1;
  applyRoomFilters();
 }
 async function refreshAvailability(){
