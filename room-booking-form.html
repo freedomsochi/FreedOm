@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#eaf6ef">
+<title>Заявка на бронирование — FreeDom</title>
+<style>
+:root{--ink:#183d35;--muted:#638078;--mint:#bde9d7;--line:rgba(36,94,77,.16);--glass:rgba(255,255,255,.82);--shadow:0 24px 70px rgba(29,75,60,.13)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:28px 16px 48px;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(ellipse at 15% 5%,rgba(175,231,204,.65),transparent 42%),radial-gradient(ellipse at 90% 85%,rgba(187,222,211,.7),transparent 38%),linear-gradient(145deg,#f4faf5,#e7f2ec);display:flex;justify-content:center;align-items:flex-start}
+.wrap{width:min(100%,650px)}
+.top{display:flex;align-items:center;justify-content:space-between;margin:0 2px 20px}
+.brand{font-size:12px;font-weight:800;letter-spacing:.22em;color:#527b6c}
+.back{color:#477263;text-decoration:none;font-size:13px;font-weight:650}
+.panel{position:relative;padding:clamp(22px,5vw,38px);border:1px solid rgba(255,255,255,.95);border-radius:28px;background:var(--glass);box-shadow:var(--shadow);backdrop-filter:blur(20px)}
+.kicker{font-size:10px;letter-spacing:.2em;font-weight:800;color:#79a18e;text-transform:uppercase}
+h1{font-size:clamp(27px,6vw,38px);line-height:1.08;letter-spacing:-.04em;margin:10px 0 10px}
+.intro{font-size:14px;line-height:1.6;color:var(--muted);margin:0 0 24px}
+.selected{padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:rgba(231,246,237,.78);margin-bottom:22px}
+.selected small{display:block;color:#78978a;font-size:10px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px}
+.selected strong{font-size:15px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:15px}
+.field.full{grid-column:1/-1}
+label{font-size:12px;font-weight:700;color:#42685a}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.8);padding:13px 14px;font:inherit;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:#83bea0;box-shadow:0 0 0 3px rgba(131,190,160,.16)}
+textarea{min-height:95px;resize:vertical}
+.submit{width:100%;border:0;border-radius:30px;padding:16px 20px;margin-top:6px;background:linear-gradient(120deg,#c7ecd9,#a8ddc5);color:#214e3e;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 10px 24px rgba(88,155,119,.18)}
+.submit:disabled{opacity:.65;cursor:wait}
+.note{font-size:11px;line-height:1.55;color:#7b9589;text-align:center;margin:13px 0 0}
+.message{display:none;margin-top:18px;padding:15px;border-radius:14px;font-size:13px;line-height:1.5}
+.message.success{background:#e5f5eb;color:#276348}
+.message.error{background:#fff0ec;color:#9b4939}
+.hp{position:absolute;left:-5000px;width:1px;height:1px;overflow:hidden}
+@media(max-width:520px){body{padding:16px 12px 30px}.panel{border-radius:22px}.grid{grid-template-columns:1fr;gap:0}.field.full{grid-column:auto}.top{margin-bottom:14px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+ <div class="top"><span class="brand">FREEDOM · SOCHI</span><a class="back" href="rooms-eco-futurism-v2.html">← Вернуться к размещению</a></div>
+ <section class="panel">
+  <div class="kicker">Твой отдых начинается здесь</div>
+  <h1>Заявка на бронирование</h1>
+  <p class="intro">Оставь контакты и детали поездки. Команда FreeDom свяжется с тобой, уточнит стоимость и подтвердит возможность размещения.</p>
+  <div class="selected"><small>Выбранный вариант</small><strong id="selectedRoom">Вариант размещения не выбран</strong></div>
+  <form id="bookingForm" action="https://formspree.io/f/xpqgkzgo" method="POST">
+   <input type="hidden" name="_subject" value="Новая заявка на бронирование FreeDom">
+   <input type="hidden" name="request_type" value="Бронирование размещения FreeDom">
+   <input type="hidden" name="availability_at_request" id="availabilityField" value="Не проверена">
+   <label class="hp">Не заполняйте это поле<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
+   <div class="grid">
+    <div class="field"><label for="checkin">Дата заезда *</label><input id="checkin" name="checkin" type="date" required></div>
+    <div class="field"><label for="checkout">Дата выезда *</label><input id="checkout" name="checkout" type="date" required></div>
+    <div class="field"><label for="adults">Взрослые *</label><select id="adults" name="adults" required><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div>
+    <div class="field"><label for="children">Дети</label><select id="children" name="children"><option value="0">Нет</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
+    <div class="field full"><label for="name">Как к тебе обращаться? *</label><input id="name" name="name" type="text" autocomplete="name" placeholder="Имя" required></div>
+    <div class="field"><label for="phone">Телефон или Telegram *</label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+7..." required></div>
+    <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com"></div>
+    <div class="field full"><label for="notes">Пожелания</label><textarea id="notes" name="notes" placeholder="Дополнительные гости, поздний заезд и другие пожелания"></textarea></div>
+   </div>
+   <button class="submit" id="submitButton" type="submit">Отправить заявку</button>
+   <p class="note">Отправка заявки не является подтверждением бронирования. Мы свяжемся с тобой для согласования деталей.</p>
+   <div class="message success" id="successMessage" role="status">Спасибо! Заявка отправлена. Команда FreeDom свяжется с тобой.</div>
+   <div class="message error" id="errorMessage" role="alert">Не удалось отправить заявку. Проверь соединение и попробуй ещё раз.</div>
+  </form>
+ </section>
+</main>
+<script>
+const params=new URLSearchParams(location.search);
+const room=params.get('room')||'Вариант размещения не выбран';
+document.getElementById('selectedRoom').textContent=room;
+const form=document.getElementById('bookingForm');
+form.insertAdjacentHTML('beforeend','<input type="hidden" name="room_type" id="roomField">');
+document.getElementById('roomField').value=room;
+const availability=params.get('availability')||'Не проверена';
+document.getElementById('availabilityField').value=availability;
+const checkin=document.getElementById('checkin'),checkout=document.getElementById('checkout');
+const today=new Date();const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+checkin.min=localToday;checkout.min=localToday;
+if(params.get('checkin'))checkin.value=params.get('checkin');
+if(params.get('checkout'))checkout.value=params.get('checkout');
+checkin.addEventListener('change',()=>{checkout.min=checkin.value||localToday;if(checkout.value&&checkout.value<=checkin.value)checkout.value=''});
+form.addEventListener('submit',async e=>{
+ e.preventDefault();
+ document.getElementById('successMessage').style.display='none';
+ document.getElementById('errorMessage').style.display='none';
+ if(!checkin.value||!checkout.value||checkout.value<=checkin.value){document.getElementById('errorMessage').textContent='Дата выезда должна быть позже даты заезда.';document.getElementById('errorMessage').style.display='block';return}
+ const button=document.getElementById('submitButton');button.disabled=true;button.textContent='Отправляем…';
+ try{
+  const response=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+  if(!response.ok)throw new Error('Formspree response '+response.status);
+  form.querySelectorAll('.field, .submit, .note').forEach(el=>el.style.display='none');
+  document.getElementById('successMessage').style.display='block';
+ }catch(err){
+  document.getElementById('errorMessage').style.display='block';
+  button.disabled=false;button.textContent='Повторить отправку';
+ }
+});
+</script>
+</body>
+</html>
