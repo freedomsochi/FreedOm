@@ -673,6 +673,12 @@ body.dates-selected .left{display:flex!important}
  .homebtn{position:fixed!important;top:10px!important;right:12px!important;z-index:1000!important;display:inline-flex!important;visibility:visible!important;opacity:1!important}
 }
 
+
+/* All accommodation cards stay visible; availability is shown on every card from first load. */
+body:not(.rooms-revealed) .left{display:flex!important}
+body:not(.rooms-revealed) .left .roomcard{display:block!important}
+body:not(.rooms-revealed) .left #emptycategory{display:none!important}
+
 /* Final interaction/layout corrections: reveal only after Search; home link belongs to page header. */
 body:not(.dates-selected) .left{display:none!important}
 body.dates-selected .left{display:flex!important}
@@ -755,7 +761,7 @@ function showMapPointInfo(point){
 function selectedDbNames(){return rooms[active]?.dbNames||[]}
 function availabilityFor(names){
  const matches=availabilityRows.filter(r=>names.includes(r.name));
- if(!matches.length)return {known:false,available:null,text:availabilityState==='loading'?'Проверяем…':availabilityState==='error'?'Статус не получен':'Нет данных',className:'status-unknown',freePlaces:0};
+ if(!matches.length)return {known:false,available:null,text:availabilityState==='loading'?'Проверяем…':availabilityState==='error'?'Не удалось проверить':availabilityState==='idle'?'Выберите даты':'Нет данных',className:'status-unknown',freePlaces:0};
  const placesMode=matches.some(r=>r.booking_mode==='places');
  if(placesMode){
   const freePlaces=matches.reduce((sum,r)=>sum+Math.max(0,Number(r.free_places)||0),0);
