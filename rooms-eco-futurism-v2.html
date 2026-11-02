@@ -851,11 +851,9 @@ function applyRoomFilters(){
   el.style.display='block';
   el.classList.toggle('active',i===active);
  });
- if(active>=0&&rooms[active]){
-  $('.details').style.display='block';
- }else if(!document.body.classList.contains('map-info-open')){
-  $('.details').style.display='none';
- }
+ // The room detail panel belongs only to an explicitly selected room.
+ // Territory pins and floor controls must never reveal the default family room.
+ $('.details').style.display=(active>=0&&rooms[active])?'block':'none';
 }
 function choose(i,preserveCategory=false){
  if(!rooms[i])return;
@@ -886,7 +884,8 @@ function showMapPointInfo(point){
  const model=$('.model'),popup=$('#map-point-popup');
  if(!model||!popup)return;
  active=-1;
- $$('.roomcard').forEach(el=>el.classList.remove('active'));
+ $('.details').style.display='none';
+ $('.roomcard').forEach(el=>el.classList.remove('active'));
  const empty=$('#emptycategory');if(empty)empty.style.display='none';
  activeFloor=point.floor;
  $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
@@ -958,16 +957,18 @@ function initDates(){
  const summary=$('#availability-summary');if(summary){summary.dataset.state='idle';summary.textContent='';}
 }
 $$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
-$('#roomlist').addEventListener('click',e=>{const card=e.target.closest('.roomcard');if(!card)return;choose(Number(card.dataset.room));scrollToRoomDetails()});
+$('#roomlist').addEventListener('click',e=>{if(e.target.closest('button,a,input,select,textarea'))return;const card=e.target.closest('.roomcard');if(!card)return;choose(Number(card.dataset.room));scrollToRoomDetails()});
 $('#heart').addEventListener('click',e=>e.currentTarget.textContent=e.currentTarget.textContent==='♡'?'♥':'♡');
 $('#search').addEventListener('click',()=>{const a=$('#checkin').value,b=$('#checkout').value;if(a&&b&&b>a)refreshAvailability();else alert('Выберите корректные даты: выезд должен быть позже заезда.')});
-$('#book').addEventListener('click',()=>{
+$('#book').addEventListener('click',e=>{
+ e.preventDefault();e.stopPropagation();
  const a=$('#checkin').value,b=$('#checkout').value;
  if(!a||!b||b<=a){alert('Сначала выберите корректные даты заезда и выезда.');return}
- const title=rooms[active]?.name||'Вариант размещения';
+ if(active<0||!rooms[active]){alert('Сначала выберите вариант размещения.');return}
  const status=availabilityFor(selectedDbNames());
  if(status.known&&!status.available){alert('На выбранные даты нет свободных мест. Выберите другие даты.');return}
- location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. Проверил доступность на сайте. Подскажите, пожалуйста, стоимость и подтвердите бронь.');
+ const params=new URLSearchParams({room:rooms[active].name,checkin:a,checkout:b,availability:status.text||'Не проверена'});
+ location.href='room-booking-form.html?'+params.toString();
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
 $('#map-point-close').addEventListener('click',e=>{e.stopPropagation();closeMapPointInfo()});
