@@ -401,16 +401,18 @@ body.scene-fading::after{opacity:1}
 
     const move = () => {
       window.scrollTo(0, target.getBoundingClientRect().top + window.scrollY);
+      // Keep the screen fully faded while the scene changes, then reveal the new scene.
       transitionTimer = window.setTimeout(() => {
         document.body.classList.remove('scene-fading');
-        transitionTimer = window.setTimeout(() => { isTransitioning = false; }, 480);
-      }, 35);
+        transitionTimer = window.setTimeout(() => { isTransitioning = false; }, 300);
+      }, 60);
     };
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       move();
     } else {
-      transitionTimer = window.setTimeout(move, 190);
+      // Finish fading out the current scene before moving to the next one.
+      transitionTimer = window.setTimeout(move, 270);
     }
   }
 
@@ -454,8 +456,8 @@ body.scene-fading::after{opacity:1}
     if (now - lastGestureAt < 500) return;
     const list = scenes();
     if (!list.length) return;
-    const pages = Math.max(1, Math.min(6, Math.floor(Math.abs(dy) / (window.innerHeight * 0.62))));
-    const next = Math.max(0, Math.min(list.length - 1, startIndex + (dy < 0 ? pages : -pages)));
+    // Every completed vertical swipe advances exactly one full-screen scene.
+    const next = Math.max(0, Math.min(list.length - 1, startIndex + (dy < 0 ? 1 : -1)));
     if (next === startIndex) return;
     lastGestureAt = now;
     goToScene(next);
@@ -469,8 +471,7 @@ body.scene-fading::after{opacity:1}
     const now = Date.now();
     if (now - lastGestureAt < 520) return;
     lastGestureAt = now;
-    const pages = Math.max(1, Math.min(3, Math.floor(Math.abs(event.deltaY) / 420)));
-    goToScene(nearestSceneIndex() + (event.deltaY > 0 ? pages : -pages));
+    goToScene(nearestSceneIndex() + (event.deltaY > 0 ? 1 : -1));
   }, {passive:false});
 
   window.addEventListener('scroll', () => {
