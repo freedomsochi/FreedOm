@@ -659,6 +659,19 @@ body:not(.rooms-revealed) .details{display:none!important}
  .roomcard img{height:72px!important}
  .model{left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;margin:4px 12px 12px!important;width:calc(100% - 24px)!important;height:48vh!important;min-height:300px!important}
 }
+
+/* Requested finishing: carousel follows the date controls and stays hidden until dates are selected. */
+.left{top:88px!important;bottom:auto!important;left:3%!important;right:3%!important;width:auto!important;margin:0!important;padding:6px 4px 10px!important;gap:10px!important;display:none!important;flex-direction:row!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory}
+body.dates-selected .left{display:flex!important}
+.roomcard{flex:0 0 176px!important;min-width:176px!important;max-width:176px!important;scroll-snap-align:start}
+.homebtn{position:absolute!important;top:16px!important;right:3%!important;z-index:12!important}
+.top{padding-right:0!important}
+@media(max-width:850px){
+ .left{position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;margin:0 12px 5px!important;padding:5px 2px 10px!important;gap:9px!important}
+ body.dates-selected .left{display:flex!important}
+ .roomcard{flex:0 0 165px!important;min-width:165px!important;max-width:190px!important}
+ .homebtn{top:10px!important;right:14px!important}
+}
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
@@ -844,6 +857,7 @@ async function refreshAvailability(){
   const searchButton=$('#search');if(searchButton){searchButton.classList.remove('is-loading');searchButton.disabled=false;searchButton.removeAttribute('aria-busy');}
  }
 }
+function syncDatesSelected(){const a=$('#checkin').value,b=$('#checkout').value;document.body.classList.toggle('dates-selected',!!(a&&b&&b>a));}
 function initDates(){
  const checkIn=$('#checkin'),checkOut=$('#checkout');
  const localIso=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day};
@@ -852,7 +866,7 @@ function initDates(){
  checkIn.min=localIso(today);checkOut.min=localIso(today);
  checkIn.value=localIso(today);checkOut.value=localIso(tomorrow);
  const updateMin=()=>{checkOut.min=checkIn.value||localIso(today);if(checkOut.value&&checkOut.value<=checkIn.value){const next=new Date(checkIn.value+'T12:00:00');next.setDate(next.getDate()+1);checkOut.value=localIso(next)}};
- checkIn.addEventListener('change',updateMin);
+ checkIn.addEventListener('change',()=>{updateMin();syncDatesSelected()});checkOut.addEventListener('change',syncDatesSelected);
  const summary=$('#availability-summary');if(summary){summary.dataset.state='idle';summary.textContent='';}
 }
 $$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
