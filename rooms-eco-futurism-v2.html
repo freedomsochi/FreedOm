@@ -859,28 +859,34 @@ function setFloor(next){
  applyRoomFilters();
 }
 function showMapPointInfo(point){
- hasInteracted=true;active=-1;
  const model=$('.model'),popup=$('#map-point-popup');
  if(!model||!popup)return;
- $('.roomcard').forEach(el=>el.classList.remove('active'));
- $('#emptycategory').style.display='none';
+ active=-1;
+ $$('.roomcard').forEach(el=>el.classList.remove('active'));
+ const empty=$('#emptycategory');if(empty)empty.style.display='none';
  activeFloor=point.floor;
- $('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
- $('#floorlabel').textContent=point.label;$('#floordesc').textContent=point.desc;
+ $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
+ const label=$('#floorlabel'),desc=$('#floordesc');
+ if(label)label.textContent=point.label;
+ if(desc)desc.textContent=point.desc;
  const photo=popup.querySelector('img');
  photo.src=point.img;photo.alt=point.label;
  popup.querySelector('.map-info-title').textContent=point.label;
  popup.querySelector('.map-info-description').textContent=point.desc;
  popup.hidden=false;
- const modelRect=model.getBoundingClientRect(),popupRect=popup.getBoundingClientRect();
+ // Restart the reveal animation on every marker tap.
+ popup.style.animation='none';
+ void popup.offsetWidth;
+ const modelRect=model.getBoundingClientRect();
+ const popupRect=popup.getBoundingClientRect();
  const originX=Math.max(0,Math.min(popupRect.width,point.x/100*modelRect.width-(popupRect.left-modelRect.left)));
  const originY=Math.max(0,Math.min(popupRect.height,point.y/100*modelRect.height-(popupRect.top-modelRect.top)));
  popup.style.transformOrigin=originX+'px '+originY+'px';
+ popup.style.animation='';
  model.classList.add('map-info-active');
  document.body.classList.add('map-info-open','rooms-revealed');
  popup.setAttribute('aria-label','Информация: '+point.label);
-}
-function scrollToRoomDetails(){
+}function scrollToRoomDetails(){
  const details=$('.details');if(!details||details.style.display==='none')return;
  if(window.matchMedia('(max-width: 850px)').matches)details.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
 }
