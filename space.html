@@ -301,7 +301,7 @@ html{scroll-snap-type:none!important;scroll-behavior:auto!important;overscroll-b
 }
 body::after{
  content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
- background:#14271d;opacity:0;transition:opacity .24s ease;
+ background:#14271d;opacity:0;transition:opacity .58s cubic-bezier(.4,0,.2,1);
 }
 body.scene-fading::after{opacity:1}
 @media(prefers-reduced-motion:reduce){body::after{transition:none}}
@@ -403,16 +403,17 @@ body.scene-fading::after{opacity:1}
       window.scrollTo(0, target.getBoundingClientRect().top + window.scrollY);
       // Keep the screen fully faded while the scene changes, then reveal the new scene.
       transitionTimer = window.setTimeout(() => {
+        // Reveal the new scene with the same gentle fade used to hide the previous one.
         document.body.classList.remove('scene-fading');
-        transitionTimer = window.setTimeout(() => { isTransitioning = false; }, 300);
-      }, 60);
+        transitionTimer = window.setTimeout(() => { isTransitioning = false; }, 620);
+      }, 110);
     };
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       move();
     } else {
-      // Finish fading out the current scene before moving to the next one.
-      transitionTimer = window.setTimeout(move, 270);
+      // Let the outgoing scene fade away completely before changing the viewport.
+      transitionTimer = window.setTimeout(move, 610);
     }
   }
 
