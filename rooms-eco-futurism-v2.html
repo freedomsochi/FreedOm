@@ -690,6 +690,31 @@ body.dates-selected .left{display:flex!important}
  .left{margin-top:-40px!important;padding-top:1px!important;padding-bottom:8px!important}
  .homebtn{position:absolute!important;top:10px!important;right:14px!important}
 }
+
+/* Animated territory point card */
+.map-info-popup[hidden]{display:none!important}
+.model.map-info-active:after{content:"";position:absolute;z-index:10;inset:0;background:rgba(8,43,37,.28);backdrop-filter:blur(2px);pointer-events:none;animation:mapShadeIn .28s ease both}
+.map-info-popup{position:absolute;z-index:20;left:50%;top:50%;width:min(440px,calc(100% - 42px));max-height:calc(100% - 38px);overflow:auto;transform:translate(-50%,-50%) scale(1);transform-origin:center;border:1px solid rgba(235,255,247,.82);border-radius:24px;padding:10px;background:linear-gradient(145deg,rgba(237,255,249,.94),rgba(185,238,222,.9));box-shadow:0 24px 70px rgba(4,35,29,.42),inset 0 0 0 1px rgba(255,255,255,.45);color:#174b40;backdrop-filter:blur(22px);animation:mapCardOpen .48s cubic-bezier(.2,.82,.2,1) both;scrollbar-width:thin}
+.map-info-popup img{display:block;width:100%;height:clamp(150px,26vh,230px);object-fit:cover;border-radius:16px;background:#b6d9c9}
+.map-info-copy{padding:13px 8px 8px}
+.map-info-title{display:block;font-size:20px;line-height:1.2;font-weight:800;color:#174b40}
+.map-info-description{margin:9px 0 12px;font-size:13px;line-height:1.6;color:#285e52}
+.map-info-dismiss{display:block;padding-top:9px;border-top:1px solid rgba(28,91,75,.18);font-size:10px;color:#52796d}
+@keyframes mapCardOpen{0%{opacity:.12;transform:translate(-50%,-50%) scale(.055)}65%{opacity:1;transform:translate(-50%,-50%) scale(1.035)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes mapShadeIn{from{opacity:0}to{opacity:1}}
+.model.map-info-active .map-point{pointer-events:none}
+@media(max-width:850px){
+ .map-info-popup{width:calc(100% - 30px);max-height:calc(100% - 28px);border-radius:20px;padding:8px}
+ .map-info-popup img{height:clamp(125px,22vh,180px)}
+ .map-info-copy{padding:11px 7px 7px}
+ .map-info-title{font-size:18px}
+ .map-info-description{font-size:12px;line-height:1.5;margin:7px 0 10px}
+}
+@media(prefers-reduced-motion:reduce){
+ .map-info-popup{animation:none;transform:translate(-50%,-50%)}
+ .model.map-info-active:after{animation:none}
+}
+
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
@@ -746,6 +771,7 @@ function renderMapPoints(){
 }
 function closeMapPointInfo(){
  const popup=$('#map-point-popup');if(popup)popup.hidden=true;
+ const model=$('.model');if(model)model.classList.remove('map-info-active');
  document.body.classList.remove('map-info-open');
 }
 function showMapPointInfo(point){
@@ -833,13 +859,26 @@ function setFloor(next){
  applyRoomFilters();
 }
 function showMapPointInfo(point){
- hasInteracted=true;document.body.classList.add('map-info-open','rooms-revealed');active=-1;
- $$('.roomcard').forEach(el=>el.classList.remove('active'));$('#emptycategory').style.display='none';
- activeFloor=point.floor;$$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
+ hasInteracted=true;active=-1;
+ const model=$('.model'),popup=$('#map-point-popup');
+ if(!model||!popup)return;
+ $('.roomcard').forEach(el=>el.classList.remove('active'));
+ $('#emptycategory').style.display='none';
+ activeFloor=point.floor;
+ $('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
  $('#floorlabel').textContent=point.label;$('#floordesc').textContent=point.desc;
- $('#detailtitle').textContent=point.label;$('#detailmeta').textContent=floorInfo[point.floor]?.label||'Общая зона FreeDom';$('#description').textContent=point.desc;
- $('#heroimg').style.display='none';$('#detailmeta').style.display='block';$('#thumbs').style.display='none';$('#book').style.display='none';$('#heart').style.display='none';
- $('.details').style.display='';$('.details').setAttribute('aria-label','Информация: '+point.label);renderMapPoints();
+ const photo=popup.querySelector('img');
+ photo.src=point.img;photo.alt=point.label;
+ popup.querySelector('.map-info-title').textContent=point.label;
+ popup.querySelector('.map-info-description').textContent=point.desc;
+ popup.hidden=false;
+ const modelRect=model.getBoundingClientRect(),popupRect=popup.getBoundingClientRect();
+ const originX=Math.max(0,Math.min(popupRect.width,point.x/100*modelRect.width-(popupRect.left-modelRect.left)));
+ const originY=Math.max(0,Math.min(popupRect.height,point.y/100*modelRect.height-(popupRect.top-modelRect.top)));
+ popup.style.transformOrigin=originX+'px '+originY+'px';
+ model.classList.add('map-info-active');
+ document.body.classList.add('map-info-open','rooms-revealed');
+ popup.setAttribute('aria-label','Информация: '+point.label);
 }
 function scrollToRoomDetails(){
  const details=$('.details');if(!details||details.style.display==='none')return;
@@ -900,7 +939,7 @@ $('#book').addEventListener('click',()=>{
  location.href='https://t.me/freedomsochi?text='+encodeURIComponent('Здравствуйте! Хочу забронировать «'+title+'» с '+a+' по '+b+'. Проверил доступность на сайте. Подскажите, пожалуйста, стоимость и подтвердите бронь.');
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
-document.addEventListener('click',e=>{const popup=$('#map-point-popup');if(popup&&!popup.hidden&&!e.target.closest('.map-point'))closeMapPointInfo()});
+document.addEventListener('click',e=>{const popup=$('#map-point-popup');if(popup&&!popup.hidden&&!e.target.closest('.map-point')&&!e.target.closest('#map-point-popup'))closeMapPointInfo()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMapPointInfo()});
 initDates();document.body.classList.remove('dates-selected','rooms-revealed');renderAvailability();renderMapPoints();$('#floorlabel').textContent=floorInfo.territory.label;$('#floordesc').textContent=floorInfo.territory.desc;$('.modelhint span').textContent='Выберите даты и нажмите поиск, чтобы увидеть варианты';
 </script></body></html>
