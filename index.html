@@ -799,3 +799,94 @@
   }
 }
 </style>
+
+<style id="homepage-atmosphere-refinement-v5">
+/* A more unified, luminous orbit: the circles feel like windows into one world. */
+.home.menu-open .orbit:after{
+  content:"";
+  position:absolute;
+  inset:1.5%;
+  z-index:2;
+  border-radius:50%;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 5%,rgba(255,245,213,.58) 0 2px,transparent 3px),
+    radial-gradient(circle at 91% 34%,rgba(255,245,213,.42) 0 1.5px,transparent 3px),
+    radial-gradient(circle at 79% 88%,rgba(255,245,213,.38) 0 1.5px,transparent 3px),
+    radial-gradient(circle at 20% 88%,rgba(255,245,213,.4) 0 1.5px,transparent 3px),
+    radial-gradient(circle at 9% 34%,rgba(255,245,213,.46) 0 1.5px,transparent 3px);
+  opacity:.48;
+  animation:orbitStarlight 8s ease-in-out infinite alternate;
+}
+@keyframes orbitStarlight{
+  from{opacity:.24;filter:blur(.15px)}
+  to{opacity:.62;filter:blur(.55px)}
+}
+/* Keep each tint close to its own world, while letting the photograph breathe through. */
+.home.menu-open .portal[data-i="0"]{
+  --portal-glow:rgba(174,205,145,.38);
+  background:linear-gradient(145deg,rgba(235,244,219,.76),rgba(194,216,176,.64)),url('images/16455-compressed.png') center/cover no-repeat!important;
+}
+.home.menu-open .portal[data-i="1"]{
+  --portal-glow:rgba(237,190,126,.4);
+  background:linear-gradient(145deg,rgba(255,241,216,.78),rgba(230,194,145,.65)),url('images/16355-compressed.png') center/cover no-repeat!important;
+}
+.home.menu-open .portal[data-i="2"]{
+  --portal-glow:rgba(145,206,193,.4);
+  background:linear-gradient(145deg,rgba(227,246,240,.78),rgba(169,211,201,.65)),url('images/sauna.jpg') center/cover no-repeat!important;
+}
+.home.menu-open .portal[data-i="3"]{
+  --portal-glow:rgba(190,170,222,.4);
+  background:linear-gradient(145deg,rgba(242,237,251,.78),rgba(202,190,227,.65)),url('images/16461-compressed.png') center/cover no-repeat!important;
+}
+.home.menu-open .portal[data-i="4"]{
+  --portal-glow:rgba(218,190,145,.4);
+  background:linear-gradient(145deg,rgba(250,242,226,.78),rgba(218,195,158,.65)),url('images/16361-compressed.png') center/cover no-repeat!important;
+}
+.home.menu-open .portal:before{
+  background:linear-gradient(145deg,rgba(255,255,255,.17),transparent 56%,rgba(68,51,34,.035))!important;
+  border-color:rgba(255,255,255,.62)!important;
+}
+.home.menu-open .portal{
+  box-shadow:0 9px 26px rgba(25,29,23,.13),0 0 22px var(--portal-glow,rgba(255,255,255,.12)),inset 0 1px 0 rgba(255,255,255,.82)!important;
+  transition:background .7s ease,border-color .65s ease,box-shadow .8s ease,filter .8s ease,transform 1s cubic-bezier(.2,.75,.2,1)!important;
+}
+.home.menu-open .portal.selected{
+  box-shadow:0 0 0 2px rgba(255,255,255,.36),0 12px 32px rgba(24,25,21,.2),0 0 34px var(--portal-glow,rgba(255,255,255,.2)),inset 0 1px 0 rgba(255,255,255,.94)!important;
+  filter:saturate(1.08) brightness(1.035)!important;
+}
+.home.menu-open .portal.selected[data-i="0"]{background:linear-gradient(145deg,rgba(246,250,233,.88),rgba(215,232,196,.78)),url('images/16455-compressed.png') center/cover no-repeat!important}
+.home.menu-open .portal.selected[data-i="1"]{background:linear-gradient(145deg,rgba(255,248,230,.9),rgba(242,216,179,.8)),url('images/16355-compressed.png') center/cover no-repeat!important}
+.home.menu-open .portal.selected[data-i="2"]{background:linear-gradient(145deg,rgba(241,251,247,.9),rgba(194,229,218,.8)),url('images/sauna.jpg') center/cover no-repeat!important}
+.home.menu-open .portal.selected[data-i="3"]{background:linear-gradient(145deg,rgba(249,246,255,.9),rgba(221,213,241,.8)),url('images/16461-compressed.png') center/cover no-repeat!important}
+.home.menu-open .portal.selected[data-i="4"]{background:linear-gradient(145deg,rgba(255,250,239,.9),rgba(235,218,190,.8)),url('images/16361-compressed.png') center/cover no-repeat!important}
+.home.menu-open .portal b,
+.home.menu-open .portal.selected b{
+  letter-spacing:.035em!important;
+  text-shadow:0 1px 7px rgba(255,255,255,.94),0 0 1px rgba(255,255,255,.8)!important;
+}
+.home.menu-open .line{
+  border-color:rgba(255,248,231,.72)!important;
+  box-shadow:0 0 0 1px rgba(35,35,27,.12),0 0 32px rgba(255,242,207,.2),inset 0 0 46px rgba(255,248,229,.08)!important;
+}
+.home.menu-open .line2{border-color:rgba(255,248,231,.34)!important}
+.home.menu-open .core{
+  box-shadow:0 12px 40px rgba(0,0,0,.14),0 0 34px rgba(255,244,214,.16),inset 0 0 34px rgba(255,255,255,.24)!important;
+}
+.home.menu-open .core h1{
+  letter-spacing:.025em!important;
+  text-shadow:0 2px 8px rgba(0,0,0,.66),0 0 22px rgba(0,0,0,.34)!important;
+}
+.home.menu-open .portal:focus-visible{
+  outline:2px solid rgba(255,255,255,.98)!important;
+  outline-offset:5px!important;
+}
+@media(max-width:760px){
+  .home.menu-open .orbit:after{inset:4%;opacity:.36}
+  .home.menu-open .portal{box-shadow:0 7px 22px rgba(25,29,23,.14),0 0 18px var(--portal-glow,rgba(255,255,255,.12)),inset 0 1px 0 rgba(255,255,255,.82)!important}
+  .home.menu-open .portal.selected{box-shadow:0 0 0 2px rgba(255,255,255,.38),0 9px 25px rgba(24,25,21,.2),0 0 25px var(--portal-glow,rgba(255,255,255,.2)),inset 0 1px 0 rgba(255,255,255,.94)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .home.menu-open .orbit:after{animation:none!important;opacity:.3}
+}
+</style>
