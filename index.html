@@ -1020,3 +1020,77 @@
   });
 })();
 </script>
+
+
+<style id="homepage-clean-orbit-and-solid-portals-v8">
+/* Simplify the composition: one quiet outer orbit, no glowing rings around the center. */
+.core{
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.core:before,.core:after{
+  content:none!important;
+  display:none!important;
+  animation:none!important;
+  box-shadow:none!important;
+}
+.home.menu-open .core{
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.home.menu-open .orbit:before,
+.home.menu-open .orbit:after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  border:0!important;
+  box-shadow:none!important;
+  animation:none!important;
+}
+.home.menu-open .line2{display:none!important}
+.home.menu-open .line{
+  border:1px solid rgba(255,248,231,.42)!important;
+  box-shadow:none!important;
+}
+/* Portals use their own solid colors; no photographs or nested decorative rings. */
+.home.menu-open .portal:before{
+  content:none!important;
+  display:none!important;
+}
+.home.menu-open .portal[data-i="0"],
+.home.menu-open .portal.selected[data-i="0"]{
+  background:linear-gradient(145deg,#e8f0d9,#c4d8b2)!important;
+}
+.home.menu-open .portal[data-i="1"],
+.home.menu-open .portal.selected[data-i="1"]{
+  background:linear-gradient(145deg,#fff0d1,#e8c895)!important;
+}
+.home.menu-open .portal[data-i="2"],
+.home.menu-open .portal.selected[data-i="2"]{
+  background:linear-gradient(145deg,#dff1eb,#acd5ca)!important;
+}
+.home.menu-open .portal[data-i="3"],
+.home.menu-open .portal.selected[data-i="3"]{
+  background:linear-gradient(145deg,#eee7f8,#c8b9e3)!important;
+}
+.home.menu-open .portal[data-i="4"],
+.home.menu-open .portal.selected[data-i="4"]{
+  background:linear-gradient(145deg,#f8edda,#d9c19a)!important;
+}
+/* The long Space label now fits comfortably inside its circle. */
+.home.menu-open .portal[data-i="0"] b,
+.home.menu-open .portal.selected[data-i="0"] b{
+  width:92%!important;
+  font-size:9px!important;
+  line-height:1.2!important;
+  letter-spacing:0!important;
+  white-space:normal!important;
+}
+@media(max-width:760px){
+  .home.menu-open .portal[data-i="0"] b,
+  .home.menu-open .portal.selected[data-i="0"] b{
+    font-size:8px!important;
+    line-height:1.2!important;
+  }
+}
+</style>
