@@ -375,3 +375,8 @@
  .event-world-copy p{font-size:12px;line-height:1.65}
 }
 </style>
+
+<style id="events-selection-state">
+.home[data-theme="events"] .event-world{opacity:1!important;visibility:visible!important;pointer-events:none!important;transition:opacity .65s ease,visibility 0s}
+.home:not([data-theme="events"]) .event-world{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transition:opacity .45s ease,visibility 0s .45s}
+</style>
