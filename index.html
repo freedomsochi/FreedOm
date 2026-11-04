@@ -944,3 +944,76 @@
   .home.menu-open .orbit:after{animation:none!important;opacity:.3}
 }
 </style>
+
+
+<style id="homepage-orbit-expand-on-interaction-v7">
+/* The orbit opens generously, then returns to its compact resting composition. */
+.home.menu-open.orbit-expanded .orbit{
+  transform:translate(calc(-50% + 27vw),-50%) scale(1)!important;
+  transition:transform 1.05s cubic-bezier(.18,.78,.2,1)!important;
+}
+.home.menu-open:not(.orbit-expanded) .orbit{
+  transform:translate(calc(-50% + 27vw),-50%) scale(.78)!important;
+  transition:transform 1s cubic-bezier(.2,.75,.2,1)!important;
+}
+@media(max-width:760px){
+  .home.menu-open.orbit-expanded .orbit{
+    top:34%!important;
+    transform:translate(-50%,-50%) scale(.66)!important;
+    transition:transform 1s cubic-bezier(.18,.78,.2,1),top 1s ease!important;
+  }
+  .home.menu-open:not(.orbit-expanded) .orbit{
+    top:34%!important;
+    transform:translate(-50%,-50%) scale(.48)!important;
+    transition:transform 1s cubic-bezier(.2,.75,.2,1),top 1s ease!important;
+  }
+}
+@media(max-width:380px){
+  .home.menu-open.orbit-expanded .orbit{top:31%!important;transform:translate(-50%,-50%) scale(.60)!important}
+  .home.menu-open:not(.orbit-expanded) .orbit{top:31%!important;transform:translate(-50%,-50%) scale(.42)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .home.menu-open.orbit-expanded .orbit,.home.menu-open:not(.orbit-expanded) .orbit{transition:none!important}
+}
+</style>
+
+<script id="homepage-orbit-expansion-behavior-v7">
+(()=> {
+  const home=document.querySelector('.home');
+  const ring=document.getElementById('ring');
+  const core=document.getElementById('core');
+  if(!home||!ring||!core||home.dataset.orbitExpansionBound==='1')return;
+  home.dataset.orbitExpansionBound='1';
+  let settleTimer=null;
+  const expand=()=>{
+    clearTimeout(settleTimer);
+    home.classList.add('orbit-expanded');
+  };
+  const settle=(delay=1700)=>{
+    clearTimeout(settleTimer);
+    settleTimer=setTimeout(()=>home.classList.remove('orbit-expanded'),delay);
+  };
+  const observer=new MutationObserver(()=>{
+    if(home.classList.contains('menu-open')){
+      expand();
+      settle(2600);
+    }else{
+      clearTimeout(settleTimer);
+      home.classList.remove('orbit-expanded');
+    }
+  });
+  observer.observe(home,{attributes:true,attributeFilter:['class']});
+  ring.addEventListener('pointerdown',()=>{
+    if(home.classList.contains('menu-open'))expand();
+  },true);
+  ring.addEventListener('pointerup',()=>settle(1900),true);
+  ring.addEventListener('pointercancel',()=>settle(1900),true);
+  document.addEventListener('keydown',e=>{
+    if(!home.classList.contains('menu-open'))return;
+    if(['ArrowLeft','ArrowRight'].includes(e.key)){
+      expand();
+      settle(1900);
+    }
+  });
+})();
+</script>
