@@ -561,6 +561,60 @@
   .home *, .home *:before, .home *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
 </style>
+
+
+<style id="homepage-solid-portals-and-tree-orbit-v6">
+/* Direction portals: clean color fields, no photographs inside the circles. */
+.home.menu-open .portal[data-i="0"],
+.home.menu-open .portal.selected[data-i="0"]{
+  background:linear-gradient(145deg,rgba(232,242,216,.96),rgba(185,210,164,.9))!important;
+  --portal-glow:rgba(166,199,137,.42);
+}
+.home.menu-open .portal[data-i="1"],
+.home.menu-open .portal.selected[data-i="1"]{
+  background:linear-gradient(145deg,rgba(255,241,211,.97),rgba(224,188,139,.92))!important;
+  --portal-glow:rgba(226,184,124,.42);
+}
+.home.menu-open .portal[data-i="2"],
+.home.menu-open .portal.selected[data-i="2"]{
+  background:linear-gradient(145deg,rgba(222,242,235,.97),rgba(157,204,192,.92))!important;
+  --portal-glow:rgba(139,199,184,.42);
+}
+.home.menu-open .portal[data-i="3"],
+.home.menu-open .portal.selected[data-i="3"]{
+  background:linear-gradient(145deg,rgba(239,232,250,.97),rgba(194,181,224,.92))!important;
+  --portal-glow:rgba(185,165,220,.42);
+}
+.home.menu-open .portal[data-i="4"],
+.home.menu-open .portal.selected[data-i="4"]{
+  background:linear-gradient(145deg,rgba(250,239,220,.97),rgba(214,190,153,.92))!important;
+  --portal-glow:rgba(210,184,143,.42);
+}
+/* A fine, slowly revolving golden orbit around the central tree. */
+.core:before{
+  inset:-3%!important;
+  border:1px solid rgba(207,169,83,.34)!important;
+  box-shadow:0 0 16px rgba(218,181,91,.13),inset 0 0 12px rgba(255,225,145,.05)!important;
+  animation:goldShimmer 18s linear infinite!important;
+}
+.core:after{
+  inset:-3%!important;
+  border:1px solid transparent!important;
+  border-top-color:rgba(242,211,139,.96)!important;
+  border-right-color:rgba(210,169,73,.48)!important;
+  border-bottom-color:rgba(210,169,73,.12)!important;
+  box-shadow:0 0 15px rgba(218,181,91,.28)!important;
+  opacity:1!important;
+  animation:goldShimmer 11s linear infinite reverse!important;
+}
+@media(max-width:760px){
+  .core:before,.core:after{inset:-4%!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .core:before,.core:after{animation:none!important}
+}
+</style>
+
 </html>
 
 <style id="homepage-orbit-clarity-v2">
