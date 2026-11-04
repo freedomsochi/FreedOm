@@ -733,3 +733,69 @@
   .home.menu-open .core{opacity:.88!important}
 }
 </style>
+
+<style id="homepage-orbit-color-harmony-v4">
+/* Restore the original soft glass circles; tint each portal to its own direction. */
+.home.menu-open .portal,
+.home.menu-open .portal.active{
+  border:1px solid rgba(255,255,255,.86)!important;
+  border-radius:50%!important;
+  box-shadow:0 10px 30px rgba(38,31,24,.14),inset 0 1px 0 rgba(255,255,255,.78)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(1.08)!important;
+  backdrop-filter:blur(16px) saturate(1.08)!important;
+  filter:none!important;
+}
+.home.menu-open .portal[data-i="0"]{
+  background:linear-gradient(145deg,rgba(237,244,220,.86),rgba(207,224,190,.76)),url('images/16455-compressed.png') center/cover no-repeat!important;
+}
+.home.menu-open .portal[data-i="1"]{
+  background:linear-gradient(145deg,rgba(255,241,211,.88),rgba(232,204,158,.78)),url('images/16355-compressed.png') center/cover no-repeat!important;
+}
+.home.menu-open .portal[data-i="2"]{
+  background:linear-gradient(145deg,rgba(224,244,238,.88),rgba(172,216,205,.78)),url('images/sauna.jpg') center/cover no-repeat!important;
+}
+.home.menu-open .portal[data-i="3"]{
+  background:linear-gradient(145deg,rgba(239,232,250,.88),rgba(205,194,232,.78)),url('images/16461-compressed.png') center/cover no-repeat!important;
+}
+.home.menu-open .portal[data-i="4"]{
+  background:linear-gradient(145deg,rgba(250,239,220,.88),rgba(220,199,166,.78)),url('images/16361-compressed.png') center/cover no-repeat!important;
+}
+.home.menu-open .portal:before{
+  inset:9px!important;
+  border:1px solid rgba(255,255,255,.58)!important;
+  box-shadow:inset 0 0 14px rgba(255,255,255,.12)!important;
+}
+.home.menu-open .portal:after{content:none!important}
+.home.menu-open .portal b,
+.home.menu-open .portal.selected b{
+  position:relative!important;
+  z-index:5!important;
+  width:84%!important;
+  color:#302a24!important;
+  font-family:Manrope,Arial,sans-serif!important;
+  font-size:12px!important;
+  font-weight:700!important;
+  line-height:1.3!important;
+  letter-spacing:.045em!important;
+  text-align:center!important;
+  text-shadow:0 1px 5px rgba(255,255,255,.88)!important;
+  -webkit-text-stroke:0!important;
+}
+.home.menu-open .portal.selected[data-i="0"]{background:linear-gradient(145deg,rgba(247,250,231,.96),rgba(220,235,204,.9)),url('images/16455-compressed.png') center/cover no-repeat!important}
+.home.menu-open .portal.selected[data-i="1"]{background:linear-gradient(145deg,rgba(255,247,225,.97),rgba(242,218,179,.9)),url('images/16355-compressed.png') center/cover no-repeat!important}
+.home.menu-open .portal.selected[data-i="2"]{background:linear-gradient(145deg,rgba(239,250,245,.97),rgba(195,229,218,.9)),url('images/sauna.jpg') center/cover no-repeat!important}
+.home.menu-open .portal.selected[data-i="3"]{background:linear-gradient(145deg,rgba(248,244,255,.97),rgba(222,214,241,.9)),url('images/16461-compressed.png') center/cover no-repeat!important}
+.home.menu-open .portal.selected[data-i="4"]{background:linear-gradient(145deg,rgba(255,248,235,.97),rgba(233,216,188,.9)),url('images/16361-compressed.png') center/cover no-repeat!important}
+.home.menu-open .portal.selected{
+  border:1.5px solid rgba(255,255,255,.98)!important;
+  box-shadow:0 0 0 3px rgba(255,255,255,.32),0 13px 32px rgba(34,27,20,.2),inset 0 1px 0 rgba(255,255,255,.9)!important;
+}
+.home.menu-open .portal.selected:before{border-color:rgba(255,255,255,.76)!important}
+@media(max-width:760px){
+  .home.menu-open .portal b,.home.menu-open .portal.selected b{font-size:12px!important;font-weight:700!important}
+  .home.menu-open .portal,.home.menu-open .portal.active{
+    -webkit-backdrop-filter:blur(12px) saturate(1.05)!important;
+    backdrop-filter:blur(12px) saturate(1.05)!important;
+  }
+}
+</style>
