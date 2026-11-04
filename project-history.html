@@ -627,6 +627,37 @@ body:before{
  .ref-tree-area{background-position:center 38%;background-size:cover;border-radius:0}
 }
 
+
+/* History page interaction and responsive stabilization layer */
+:root{--history-forest:#173d31;--history-leaf:#315a43;--history-gold:#d8b56a;--history-cream:#f3eddd}
+.ref-close{display:none!important}
+.ref-home{z-index:20}
+.ref-nav button{transition:background-color .28s ease,border-color .28s ease,color .28s ease,transform .28s ease}
+.ref-nav button:focus-visible,.ref-home:focus-visible,.story-cta:focus-visible{outline:2px solid var(--history-gold);outline-offset:4px}
+.ref-nav button[aria-current="page"]{border-color:rgba(231,195,119,.55);background:rgba(231,195,119,.12)}
+.ref-story{min-width:0}
+.ref-story h2{overflow-wrap:anywhere}
+.ref-story p{max-width:62ch}
+.ref-people{min-width:0}
+.ref-person{min-width:0;overflow-wrap:anywhere}
+.ref-person .quote{line-height:1.55}
+.story-cta[hidden]{display:none!important}
+@media(max-width:900px){
+ .glass-panel{min-height:100svh}
+ .ref-story{padding-bottom:clamp(18px,4vw,36px)}
+ .ref-people{padding-bottom:max(24px,env(safe-area-inset-bottom))}
+}
+@media(max-width:560px){
+ .ref-home{top:max(12px,env(safe-area-inset-top));left:12px}
+ .ref-nav{gap:5px}
+ .ref-nav button{min-width:0;overflow-wrap:anywhere}
+ .ref-story p{max-width: none}
+ .ref-person{max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ .ref-nav button{transition:none!important}
+}
+
 </style></head>
 <body>
 <main class="reference-page">
@@ -636,11 +667,11 @@ body:before{
   <aside class="ref-sidebar">
    <a class="ref-brand" href="index.html" aria-label="FreeDom Sochi — главная"><span class="mark">☼</span><strong>FreeDom</strong><small>SOCHI</small></a>
    <nav class="ref-nav" aria-label="Разделы о доме">
-    <button type="button" data-story="home"><span>О доме</span></button>
-    <button type="button" data-story="history" class="active"><span>История<br>проекта</span></button>
-    <button type="button" data-story="values"><span>Ценности</span></button>
-    <button type="button" data-story="team"><span>Команда</span></button>
-    <button type="button" data-story="gallery"><span>Галерея</span></button>
+    <button type="button" data-story="home" aria-pressed="false"><span>О доме</span></button>
+    <button type="button" data-story="history" class="active" aria-pressed="true" aria-current="page"><span>История<br>проекта</span></button>
+    <button type="button" data-story="values" aria-pressed="false"><span>Ценности</span></button>
+    <button type="button" data-story="team" aria-pressed="false"><span>Команда</span></button>
+    <button type="button" data-story="gallery" aria-pressed="false"><span>Галерея</span></button>
    </nav>
   </aside>
   <div class="ref-tree-area" aria-label="Дерево как символ истории FreeDom">
@@ -675,10 +706,25 @@ body:before{
  };
  const title=document.querySelector(".ref-story h2"), ps=document.querySelectorAll(".ref-story p"), cta=document.querySelector(".story-cta span:first-child");
  document.querySelectorAll(".ref-nav button").forEach(btn=>btn.addEventListener("click",()=>{
-  document.querySelectorAll(".ref-nav button").forEach(b=>{const selected=b===btn;b.classList.toggle("active",selected);b.setAttribute("aria-pressed",String(selected));});
+  document.querySelectorAll(".ref-nav button").forEach(b=>{
+   const selected=b===btn;
+   b.classList.toggle("active",selected);
+   b.setAttribute("aria-pressed",String(selected));
+   if(selected)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
+  });
   const s=stories[btn.dataset.story]||stories.history;
   title.textContent=s.title;
   ps[0].textContent=s.p1;ps[1].textContent=s.p2;cta.textContent=s.cta;
+  const heading=document.querySelector(".ref-title-sign h1");
+  if(heading)heading.textContent=btn.innerText.replace(/\s+/g," ").trim();
+  const action=document.querySelector(".story-cta");
+  if(action){
+   const showPeople=btn.dataset.story==="team";
+   action.hidden=!showPeople;
+   action.setAttribute("aria-hidden",String(!showPeople));
+   if(showPeople)action.setAttribute("href","#people");
+   else action.removeAttribute("href");
+  }
  }));
 })();
 </script>
