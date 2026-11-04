@@ -693,12 +693,7 @@ body:before{
    <a class="story-cta" href="#people"><span>Истории людей<br>FreeDom</span><span aria-hidden="true">→</span></a>
   </article>
   <section class="ref-people" id="people" aria-label="Люди FreeDom"><svg class="people-roots" aria-hidden="true" focusable="false"></svg>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>01</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>02</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>03</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>04</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>05</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>06</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
+   <div class="people-note"><span class="people-note-mark" aria-hidden="true">✦</span><h3>Истории людей FreeDom</h3><p>Здесь появятся реальные фотографии, имена и личные рассказы участников — после согласования материалов.</p></div>
   </section>
  </section>
 </main>
@@ -781,3 +776,24 @@ body:before{
 </script>
 
 </body></html>
+<style>
+/* Refined history composition: use a continuous scenic canvas, not a flat green backdrop. */
+body{background:#173d31}
+body:before{position:fixed;inset:0;background:linear-gradient(180deg,rgba(9,32,24,.12),rgba(9,32,24,.28) 44%,rgba(7,27,21,.72)),url("https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/858e8441-84f9-4a71-b37c-dd51ebd9a935.png") center top/cover no-repeat;opacity:.95}
+.glass-panel{background:linear-gradient(180deg,rgba(18,55,41,.18),rgba(12,40,31,.38));}
+.ref-tree-area{background-color:transparent!important;background-image:none!important;border-radius:0!important;min-height:clamp(480px,70vh,820px)}
+.ref-tree-glow{pointer-events:none}
+.ref-people{min-height:280px;display:flex;align-items:center;justify-content:center;padding:48px 20px 72px}
+.people-note{position:relative;z-index:8;max-width:560px;text-align:center;padding:28px clamp(20px,4vw,44px);border:1px solid rgba(246,210,123,.42);border-radius:26px;background:rgba(17,48,36,.42);backdrop-filter:blur(12px);box-shadow:0 16px 48px rgba(4,22,16,.22)}
+.people-note-mark{display:block;color:#f6d27b;font-size:24px;margin-bottom:8px}
+.people-note h3{margin:0 0 10px;font:500 clamp(25px,3vw,36px)/1.1 'Cormorant Garamond',serif;color:#fff3d3}
+.people-note p{margin:0;color:#f7f2e5;font-size:clamp(12px,1vw,14px);line-height:1.75}
+.story-cta{transition:opacity .25s,transform .25s}
+.story-cta[hidden]{display:none!important}
+@media(max-width:560px){
+ body:before{background-position:center top;background-size:auto 100%;opacity:.78}
+ .ref-tree-area{min-height:58svh}
+ .ref-people{min-height:220px;padding:30px 14px 46px}
+ .people-note{border-radius:20px;padding:22px 18px}
+}
+</style>
