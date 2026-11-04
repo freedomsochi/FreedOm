@@ -993,21 +993,24 @@
     clearTimeout(settleTimer);
     settleTimer=setTimeout(()=>home.classList.remove('orbit-expanded'),delay);
   };
+  let wasOpen=home.classList.contains('menu-open');
   const observer=new MutationObserver(()=>{
-    if(home.classList.contains('menu-open')){
+    const isOpen=home.classList.contains('menu-open');
+    if(isOpen&&!wasOpen){
       expand();
       settle(2600);
-    }else{
+    }else if(!isOpen&&wasOpen){
       clearTimeout(settleTimer);
       home.classList.remove('orbit-expanded');
     }
+    wasOpen=isOpen;
   });
   observer.observe(home,{attributes:true,attributeFilter:['class']});
   ring.addEventListener('pointerdown',()=>{
     if(home.classList.contains('menu-open'))expand();
   },true);
-  ring.addEventListener('pointerup',()=>settle(1900),true);
-  ring.addEventListener('pointercancel',()=>settle(1900),true);
+  ring.addEventListener('pointerup',()=>settle(3600),true);
+  ring.addEventListener('pointercancel',()=>settle(3600),true);
   document.addEventListener('keydown',e=>{
     if(!home.classList.contains('menu-open'))return;
     if(['ArrowLeft','ArrowRight'].includes(e.key)){
