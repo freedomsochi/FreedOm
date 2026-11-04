@@ -658,6 +658,13 @@ body:before{
  .ref-nav button{transition:none!important}
 }
 
+
+/* Final placement: keep the home link in the upper-right corner on every viewport. */
+.ref-home{
+  top:max(14px,env(safe-area-inset-top))!important;
+  right:clamp(14px,2.8vw,36px)!important;
+  left:auto!important;
+}
 </style></head>
 <body>
 <main class="reference-page">
