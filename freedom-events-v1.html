@@ -124,7 +124,11 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 }
 @media(max-height:650px) and (orientation:landscape){.heading{top:7%}.deck{inset:18% 5% 6%}}
 </style>
-</head>
+<style>
+/* Uploaded violet aurora artwork behind the existing rotating event cards */
+.events{background:#11101d url('images/16461-compressed.png') center center/cover no-repeat!important}
+.events:before{background:linear-gradient(180deg,rgba(13,9,31,.12),rgba(12,8,28,.58))!important}
+</style></head>
 <body>
 <main class="events">
 <div class="grain"></div><div class="stars"><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i></div>
