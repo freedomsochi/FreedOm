@@ -359,7 +359,76 @@
  .home.menu-open .direction-showcase{transform:translateY(0)}
 }
 @media(prefers-reduced-motion:reduce){.home.menu-open .ambient,.home.menu-open .orbit,.direction-showcase{transition:none!important}}
-</style></html>
+</style>
+<style id="homepage-orbit-photo-integration-v1">
+/* Unite the navigation orbit with the photograph instead of leaving it as a separate graphic. */
+.home.menu-open .orbit{
+  isolation:isolate;
+}
+.home.menu-open .orbit:before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:5.5%;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 48% 42%,rgba(24,34,27,.05) 0 34%,rgba(20,29,23,.13) 64%,rgba(15,23,18,.24) 100%),
+    radial-gradient(circle,rgba(255,248,229,.10),rgba(255,248,229,0) 68%);
+  border:1px solid rgba(255,248,231,.16);
+  box-shadow:inset 0 0 70px rgba(8,16,11,.12),0 18px 65px rgba(5,12,8,.08);
+  -webkit-backdrop-filter:blur(2px);
+  backdrop-filter:blur(2px);
+  pointer-events:none;
+}
+.home.menu-open .line{
+  inset:5%;
+  border-color:rgba(255,247,226,.24);
+  box-shadow:inset 0 0 44px rgba(255,247,226,.035),0 0 35px rgba(5,12,8,.08);
+}
+.home.menu-open .line2{
+  inset:10%;
+  border-color:rgba(255,247,226,.10);
+}
+.home.menu-open .portal,
+.home.menu-open .portal.active{
+  border:1px solid rgba(255,248,231,.34);
+  background-color:rgba(32,43,34,.26);
+  -webkit-backdrop-filter:blur(15px) saturate(.82);
+  backdrop-filter:blur(15px) saturate(.82);
+  box-shadow:0 9px 28px rgba(4,12,8,.16),inset 0 1px 0 rgba(255,255,255,.24);
+}
+.home.menu-open .portal:before{
+  inset:8px;
+  border-color:rgba(255,248,231,.18);
+}
+.home.menu-open .portal b{
+  color:#fffaf0;
+  text-shadow:0 2px 12px rgba(0,0,0,.72),0 1px 3px rgba(0,0,0,.65);
+  letter-spacing:.065em;
+}
+.home.menu-open .portal.selected{
+  border-color:rgba(255,244,213,.78);
+  background-color:rgba(71,83,59,.38);
+  box-shadow:0 0 0 1px rgba(255,248,231,.16),0 12px 34px rgba(3,10,6,.2),inset 0 0 30px rgba(255,249,226,.12);
+}
+.home.menu-open .portal.selected b{color:#fffdf6}
+.home.menu-open .core{
+  background:radial-gradient(circle,rgba(255,250,236,.18),rgba(255,250,236,.035) 64%,transparent 74%);
+  box-shadow:0 8px 28px rgba(5,12,8,.08),inset 0 0 35px rgba(255,255,255,.10);
+}
+.home.menu-open .core h1{
+  color:#fffaf0;
+  text-shadow:0 2px 18px rgba(0,0,0,.58);
+}
+@media(max-width:760px){
+  .home.menu-open .orbit:before{inset:8%;background:radial-gradient(circle,rgba(20,30,23,.05),rgba(20,30,23,.14) 78%,rgba(20,30,23,.2));}
+  .home.menu-open .portal,.home.menu-open .portal.active{
+    -webkit-backdrop-filter:blur(11px) saturate(.82);
+    backdrop-filter:blur(11px) saturate(.82);
+  }
+}
+</style>
+</html>
 <style id="events-preview-refinement">
 /* Keep the Events portal in the orbit; make the copy readable without a card. */
 .home[data-theme="events"] .ring{visibility:visible;opacity:1;pointer-events:auto}
