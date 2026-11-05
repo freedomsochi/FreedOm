@@ -1506,3 +1506,34 @@
   .home.menu-open #ring .portal[data-i="4"]{--x:calc(-.9510565163 * min(31vw,112px));--y:calc(-.3090169944 * min(31vw,112px))}
 }
 </style>
+
+
+<style id="homepage-portals-on-orbit-line-v15">
+/* The portal centers sit directly on the visible circular orbit line. */
+.home.menu-open #orbit .line{inset:3%!important}
+.home.menu-open #orbit .ring .portal{
+  width:108px!important;height:108px!important;
+  margin:0!important;
+  left:calc(50% + var(--x))!important;
+  top:calc(50% + var(--y))!important;
+  transform:translate(-50%,-50%) rotate(calc(-1 * var(--r,0deg)))!important;
+}
+.home.menu-open #orbit .ring .portal.selected{
+  transform:translate(-50%,-50%) scale(1.04) rotate(calc(-1 * var(--r,0deg)))!important;
+}
+.home.menu-open #orbit .ring .portal[data-i="0"]{--x:0px;--y:calc(-1 * min(43.5vw,345px))}
+.home.menu-open #orbit .ring .portal[data-i="1"]{--x:calc(.9510565163 * min(43.5vw,345px));--y:calc(-.3090169944 * min(43.5vw,345px))}
+.home.menu-open #orbit .ring .portal[data-i="2"]{--x:calc(.5877852523 * min(43.5vw,345px));--y:calc(.8090169944 * min(43.5vw,345px))}
+.home.menu-open #orbit .ring .portal[data-i="3"]{--x:calc(-.5877852523 * min(43.5vw,345px));--y:calc(.8090169944 * min(43.5vw,345px))}
+.home.menu-open #orbit .ring .portal[data-i="4"]{--x:calc(-.9510565163 * min(43.5vw,345px));--y:calc(-.3090169944 * min(43.5vw,345px))}
+@media(max-width:760px){
+  .home.menu-open #orbit .line{inset:10%!important}
+  .home.menu-open #orbit .ring .portal{width:76px!important;height:76px!important}
+  .home.menu-open #orbit .ring .portal b{font-size:7px!important;letter-spacing:.07em!important}
+  .home.menu-open #orbit .ring .portal[data-i="0"]{--x:0px;--y:calc(-1 * 36.8vw)}
+  .home.menu-open #orbit .ring .portal[data-i="1"]{--x:calc(.9510565163 * 36.8vw);--y:calc(-.3090169944 * 36.8vw)}
+  .home.menu-open #orbit .ring .portal[data-i="2"]{--x:calc(.5877852523 * 36.8vw);--y:calc(.8090169944 * 36.8vw)}
+  .home.menu-open #orbit .ring .portal[data-i="3"]{--x:calc(-.5877852523 * 36.8vw);--y:calc(.8090169944 * 36.8vw)}
+  .home.menu-open #orbit .ring .portal[data-i="4"]{--x:calc(-.9510565163 * 36.8vw);--y:calc(-.3090169944 * 36.8vw)}
+}
+</style>
