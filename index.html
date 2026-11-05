@@ -1398,3 +1398,33 @@
   .home.menu-open .portal:after{animation:none!important;opacity:.34!important}
 }
 </style>
+
+
+<style id="homepage-orbit-fixed-pentagon-layout-v12">
+/* Anchor every glass portal to five exact points on one shared circular path.
+   Percentage coordinates are relative to the ring itself, avoiding viewport
+   width calculations that drift when the orbit scales on mobile. */
+.home.menu-open #ring .portal[data-i="0"]{left:50%!important;top:11%!important}
+.home.menu-open #ring .portal[data-i="1"]{left:87.1%!important;top:38%!important}
+.home.menu-open #ring .portal[data-i="2"]{left:72.9%!important;top:81.6%!important}
+.home.menu-open #ring .portal[data-i="3"]{left:27.1%!important;top:81.6%!important}
+.home.menu-open #ring .portal[data-i="4"]{left:12.9%!important;top:38%!important}
+.home.menu-open #ring .portal{
+  margin:0!important;
+  transform:translate(-50%,-50%) rotate(calc(-1 * var(--r,0deg)))!important;
+}
+.home.menu-open #ring .portal.selected{
+  transform:translate(-50%,-50%) scale(1.06) rotate(calc(-1 * var(--r,0deg)))!important;
+}
+@media(max-width:760px){
+  /* The orbit is 124vw square on phones; 31.5% gives the same ~39vw radius. */
+  .home.menu-open #ring .portal[data-i="0"]{top:18.5%!important}
+  .home.menu-open #ring .portal[data-i="1"]{left:79.9%!important;top:40.2%!important}
+  .home.menu-open #ring .portal[data-i="2"]{left:68.6%!important;top:75.5%!important}
+  .home.menu-open #ring .portal[data-i="3"]{left:31.4%!important;top:75.5%!important}
+  .home.menu-open #ring .portal[data-i="4"]{left:20.1%!important;top:40.2%!important}
+}
+@media(max-width:380px){
+  .home.menu-open #ring .portal[data-i="0"]{top:18.5%!important}
+}
+</style>
