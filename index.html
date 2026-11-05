@@ -1293,3 +1293,108 @@
   .home.menu-open .portal,.home.menu-open .portal.active{transition:none!important}
 }
 </style>
+
+
+<style id="homepage-frosted-reflection-starlines-v11">
+/* Clear, reflective glass: the landscape remains visible through each portal. */
+.home.menu-open .portal,
+.home.menu-open .portal.active{
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  border:1px solid rgba(255,255,255,.76)!important;
+  background-color:rgba(255,255,255,.12)!important;
+  background-image:
+    linear-gradient(145deg,rgba(255,255,255,.30),rgba(255,255,255,.08) 46%,rgba(38,34,28,.13))!important;
+  -webkit-backdrop-filter:blur(11px) saturate(1.24) contrast(1.04)!important;
+  backdrop-filter:blur(11px) saturate(1.24) contrast(1.04)!important;
+  box-shadow:
+    0 10px 26px rgba(18,25,22,.27),
+    0 2px 7px rgba(255,255,255,.20),
+    inset 0 1px 1px rgba(255,255,255,.78),
+    inset 0 -12px 22px rgba(24,29,26,.19),
+    inset 0 0 26px rgba(255,255,255,.10)!important;
+  filter:none!important;
+  transition:box-shadow .6s ease,border-color .6s ease,background .6s ease!important;
+}
+/* Keep each direction identifiable through a delicate colored glass tint. */
+.home.menu-open .portal[data-i="0"]{background-image:linear-gradient(145deg,rgba(219,239,193,.25),rgba(125,163,103,.19) 100%)!important}
+.home.menu-open .portal[data-i="1"]{background-image:linear-gradient(145deg,rgba(255,228,174,.29),rgba(183,135,72,.20) 100%)!important}
+.home.menu-open .portal[data-i="2"]{background-image:linear-gradient(145deg,rgba(190,235,222,.27),rgba(91,157,145,.20) 100%)!important}
+.home.menu-open .portal[data-i="3"]{background-image:linear-gradient(145deg,rgba(229,211,250,.28),rgba(143,117,180,.20) 100%)!important}
+.home.menu-open .portal[data-i="4"]{background-image:linear-gradient(145deg,rgba(246,225,190,.28),rgba(169,132,88,.20) 100%)!important}
+/* Curved specular reflection, as if the glass catches a softbox light. */
+.home.menu-open .portal:before{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  z-index:1!important;
+  inset:0!important;
+  border:1px solid rgba(255,255,255,.36)!important;
+  border-radius:inherit!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(ellipse at 27% 9%,rgba(255,255,255,.48),rgba(255,255,255,.10) 31%,transparent 58%),
+    linear-gradient(155deg,rgba(255,255,255,.20),transparent 48%,rgba(18,24,22,.12))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.56),inset 0 -1px 0 rgba(255,255,255,.12)!important;
+}
+/* Two fine golden shooting-star trails glide diagonally across the glass. */
+.home.menu-open .portal:after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  z-index:2!important;
+  inset:7%!important;
+  border-radius:inherit!important;
+  pointer-events:none!important;
+  opacity:.68!important;
+  background:
+    radial-gradient(circle at 18% 18%,rgba(255,239,190,.98) 0 1px,transparent 2.1px),
+    linear-gradient(132deg,transparent 0 47.7%,rgba(255,222,151,0) 48.2%,rgba(255,225,165,.86) 49%,rgba(255,245,211,.95) 49.25%,rgba(255,215,137,.48) 49.55%,transparent 50.2%),
+    radial-gradient(circle at 79% 73%,rgba(255,236,184,.95) 0 1px,transparent 2px),
+    linear-gradient(132deg,transparent 0 73.7%,rgba(255,224,159,0) 74.1%,rgba(255,224,159,.82) 74.7%,rgba(255,246,216,.96) 74.95%,rgba(255,214,130,.4) 75.25%,transparent 75.8%)!important;
+  background-size:220% 220%,220% 220%,220% 220%,220% 220%!important;
+  background-position:-75% -75%, -75% -75%, 75% 75%, 75% 75%!important;
+  animation:portalGoldenFlight 7.5s ease-in-out infinite!important;
+}
+@keyframes portalGoldenFlight{
+  0%,12%{background-position:-75% -75%,-75% -75%,75% 75%,75% 75%;opacity:.12}
+  36%{opacity:.72}
+  58%{background-position:0% 0%,0% 0%,100% 100%,100% 100%;opacity:.58}
+  76%,100%{background-position:75% 75%,75% 75%,-75% -75%,-75% -75%;opacity:.12}
+}
+.home.menu-open .portal b,
+.home.menu-open .portal.selected b{
+  position:relative!important;
+  z-index:3!important;
+  color:#282b27!important;
+  text-shadow:0 1px 2px rgba(255,255,255,.78),0 1px 8px rgba(255,255,255,.38)!important;
+  font-weight:750!important;
+}
+.home.menu-open .portal.selected,
+.home.menu-open .portal.active.selected{
+  border-color:rgba(255,250,224,.96)!important;
+  box-shadow:
+    0 13px 31px rgba(16,23,20,.32),
+    0 0 0 1px rgba(255,226,166,.45),
+    inset 0 1px 1px rgba(255,255,255,.9),
+    inset 0 -13px 24px rgba(24,29,26,.20),
+    inset 0 0 30px rgba(255,255,255,.14)!important;
+}
+.home.menu-open .line{
+  border:1px solid rgba(255,231,180,.48)!important;
+  box-shadow:0 0 10px rgba(255,224,163,.13)!important;
+}
+@media(max-width:760px){
+  .home.menu-open .portal,
+  .home.menu-open .portal.active{
+    -webkit-backdrop-filter:blur(9px) saturate(1.2) contrast(1.04)!important;
+    backdrop-filter:blur(9px) saturate(1.2) contrast(1.04)!important;
+    box-shadow:0 8px 21px rgba(18,25,22,.27),inset 0 1px 1px rgba(255,255,255,.72),inset 0 -10px 18px rgba(24,29,26,.17)!important;
+  }
+  .home.menu-open .portal:after{inset:8%!important;opacity:.56!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .home.menu-open .portal:after{animation:none!important;opacity:.34!important}
+}
+</style>
