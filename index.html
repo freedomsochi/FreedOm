@@ -1878,16 +1878,16 @@
 }
 </style>
 
-<style id="homepage-tree-glass-entire-disc-v23">
-/* Apply the glass/blur to the whole central disc in BOTH opening and menu states.
-   The previous treatment was limited to the tree's inner glow. */
-.home .core{
+<style id="homepage-tree-glass-entire-disc-v24">
+/* Blur the complete central circle only after the orbit menu opens.
+   The blur spans from the circle's outer edge all the way to its center. */
+.home.menu-open .core{
   isolation:isolate!important;
   overflow:hidden!important;
   border-radius:50%!important;
   background:transparent!important;
 }
-.home .core:before{
+.home.menu-open .core:before{
   content:""!important;
   display:block!important;
   position:absolute!important;
@@ -1908,17 +1908,19 @@
   animation:none!important;
   pointer-events:none!important;
 }
-.home .core .tree-home{
+.home.menu-open .core .tree-home{
   position:relative!important;
   z-index:1!important;
 }
-.home.menu-open .core:before{
-  background:rgba(22,33,27,.24)!important;
-  -webkit-backdrop-filter:blur(26px) saturate(.82)!important;
-  backdrop-filter:blur(26px) saturate(.82)!important;
+/* On the opening screen there is no blurred layer or blurred tree halo. */
+.home:not(.menu-open) .core:before{
+  content:none!important;
+  display:none!important;
+  filter:none!important;
+  animation:none!important;
 }
 @media(max-width:760px){
-  .home .core:before{
+  .home.menu-open .core:before{
     -webkit-backdrop-filter:blur(20px) saturate(.84)!important;
     backdrop-filter:blur(20px) saturate(.84)!important;
   }
