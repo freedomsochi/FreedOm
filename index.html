@@ -1189,3 +1189,107 @@
   .home.menu-open .portal,.home.menu-open .portal.active{transition:none!important}
 }
 </style>
+
+
+<style id="homepage-glossy-glam-portals-v10">
+/* Rich glossy finish: make the five portals read clearly against the landscape. */
+.home.menu-open .portal,
+.home.menu-open .portal.active{
+  position:relative!important;
+  overflow:hidden!important;
+  border:1.5px solid rgba(255,255,255,.9)!important;
+  -webkit-backdrop-filter:blur(8px) saturate(1.16)!important;
+  backdrop-filter:blur(8px) saturate(1.16)!important;
+  box-shadow:
+    0 11px 27px rgba(30,35,28,.22),
+    0 2px 6px rgba(255,255,255,.42),
+    inset 0 2px 2px rgba(255,255,255,.82),
+    inset 0 -9px 18px rgba(67,55,39,.13)!important;
+  filter:saturate(1.08)!important;
+}
+/* Distinct jewel-like colors, still coordinated with the natural background. */
+.home.menu-open .portal[data-i="0"],
+.home.menu-open .portal.selected[data-i="0"]{
+  background:linear-gradient(150deg,rgba(239,249,218,.97) 0%,rgba(192,218,158,.94) 48%,rgba(135,171,112,.91) 100%)!important;
+}
+.home.menu-open .portal[data-i="1"],
+.home.menu-open .portal.selected[data-i="1"]{
+  background:linear-gradient(150deg,rgba(255,246,214,.98) 0%,rgba(245,211,151,.95) 48%,rgba(203,158,94,.93) 100%)!important;
+}
+.home.menu-open .portal[data-i="2"],
+.home.menu-open .portal.selected[data-i="2"]{
+  background:linear-gradient(150deg,rgba(226,250,241,.98) 0%,rgba(166,218,202,.95) 48%,rgba(105,169,154,.93) 100%)!important;
+}
+.home.menu-open .portal[data-i="3"],
+.home.menu-open .portal.selected[data-i="3"]{
+  background:linear-gradient(150deg,rgba(249,240,255,.98) 0%,rgba(213,194,239,.95) 48%,rgba(160,137,197,.93) 100%)!important;
+}
+.home.menu-open .portal[data-i="4"],
+.home.menu-open .portal.selected[data-i="4"]{
+  background:linear-gradient(150deg,rgba(255,246,224,.98) 0%,rgba(229,204,163,.95) 48%,rgba(184,147,102,.93) 100%)!important;
+}
+/* Broad curved specular highlight gives each surface a polished, glassy sheen. */
+.home.menu-open .portal:before{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  inset:0!important;
+  border:1px solid rgba(255,255,255,.48)!important;
+  border-radius:inherit!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(165deg,rgba(255,255,255,.76) 0%,rgba(255,255,255,.34) 16%,rgba(255,255,255,.06) 39%,transparent 56%),
+    linear-gradient(25deg,rgba(255,255,255,0) 48%,rgba(255,255,255,.16) 75%,rgba(255,255,255,.30) 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.82),inset 0 -1px 0 rgba(255,255,255,.18)!important;
+}
+/* Keep the orbit visibly circular: a fine warm-metal line, not a neon halo. */
+.home.menu-open .line{
+  border:2px solid rgba(255,239,202,.78)!important;
+  box-shadow:
+    0 0 0 1px rgba(77,64,42,.22),
+    0 0 12px rgba(255,236,190,.28),
+    inset 0 0 8px rgba(255,247,224,.12)!important;
+  opacity:1!important;
+}
+.home.menu-open .portal.selected,
+.home.menu-open .portal.active.selected{
+  border-color:rgba(255,255,255,.98)!important;
+  box-shadow:
+    0 13px 30px rgba(29,34,27,.25),
+    0 0 0 2px rgba(255,231,184,.46),
+    inset 0 2px 2px rgba(255,255,255,.9),
+    inset 0 -9px 18px rgba(67,55,39,.12)!important;
+  filter:saturate(1.16) brightness(1.035)!important;
+}
+.home.menu-open .portal b,
+.home.menu-open .portal.selected b{
+  position:relative!important;
+  z-index:1!important;
+  color:#353126!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.78),0 1px 5px rgba(255,255,255,.34)!important;
+  font-weight:700!important;
+  letter-spacing:.025em!important;
+}
+.home.menu-open .portal[data-i="0"] b,
+.home.menu-open .portal.selected[data-i="0"] b{
+  font-size:9px!important;
+  line-height:1.2!important;
+  letter-spacing:0!important;
+}
+@media(max-width:760px){
+  .home.menu-open .portal,
+  .home.menu-open .portal.active{
+    border-width:1.25px!important;
+    box-shadow:0 8px 20px rgba(30,35,28,.2),inset 0 2px 2px rgba(255,255,255,.8),inset 0 -7px 14px rgba(67,55,39,.12)!important;
+  }
+  .home.menu-open .line{
+    border-width:1.5px!important;
+    box-shadow:0 0 0 1px rgba(77,64,42,.2),0 0 9px rgba(255,236,190,.24)!important;
+  }
+  .home.menu-open .portal[data-i="0"] b,
+  .home.menu-open .portal.selected[data-i="0"] b{font-size:8px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .home.menu-open .portal,.home.menu-open .portal.active{transition:none!important}
+}
+</style>
