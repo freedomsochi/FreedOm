@@ -354,6 +354,33 @@
   }
 }
 </style>
+
+
+<style id="homepage-central-medallion-backdrop-blur-v21">
+/* Blur the actual scene behind the central logo medallion, not the PNG itself. */
+.home.menu-open .core{
+  background:rgba(25,36,30,.13)!important;
+  -webkit-backdrop-filter:blur(10px) saturate(.86)!important;
+  backdrop-filter:blur(10px) saturate(.86)!important;
+}
+.home.menu-open .core:before{
+  inset:3%!important;
+  background:rgba(24,35,29,.10)!important;
+  -webkit-backdrop-filter:blur(3px) saturate(.9)!important;
+  backdrop-filter:blur(3px) saturate(.9)!important;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.16),inset 0 -10px 22px rgba(9,19,14,.10)!important;
+}
+.home.menu-open .core .tree-home{
+  filter:drop-shadow(0 3px 5px rgba(9,20,14,.22))
+         drop-shadow(0 12px 20px rgba(9,20,14,.18))!important;
+}
+@media(max-width:760px){
+  .home.menu-open .core{
+    -webkit-backdrop-filter:blur(8px) saturate(.88)!important;
+    backdrop-filter:blur(8px) saturate(.88)!important;
+  }
+}
+</style>
 </body>
 <style id="homepage-direction-showcase">
 /* Selected direction: keep its existing photo, bring it forward and shift the orbit aside. */
