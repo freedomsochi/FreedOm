@@ -1464,3 +1464,45 @@
   .home.menu-open #ring .portal[data-i="4"]{--x:calc(-.9510565163 * (31vw + 38.5px));--y:calc(-.3090169944 * (31vw + 38.5px))}
 }
 </style>
+
+
+<style id="homepage-orbit-center-lock-v14">
+/* Keep the whole five-button orbit centered on the tree and viewport.
+   An older showcase rule shifted .orbit sideways by 25vw, separating the
+   portals from the central tree; this explicitly cancels that displacement. */
+.home.menu-open .orbit{
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%) scale(1)!important;
+  transform-origin:50% 50%!important;
+}
+.home.menu-open #ring{
+  position:absolute!important;
+  left:0!important;top:0!important;right:0!important;bottom:0!important;
+  width:100%!important;height:100%!important;
+  transform:rotate(var(--r,0deg))!important;
+  transform-origin:50% 50%!important;
+}
+.home.menu-open #ring .portal{
+  position:absolute!important;
+  left:calc(50% + var(--x))!important;
+  top:calc(50% + var(--y))!important;
+  margin:0!important;
+  transform:translate(-50%,-50%) rotate(calc(-1 * var(--r,0deg)))!important;
+}
+.home.menu-open #ring .portal.selected{
+  transform:translate(-50%,-50%) scale(1.06) rotate(calc(-1 * var(--r,0deg)))!important;
+}
+.home.menu-open #ring .portal[data-i="0"]{--x:0px;--y:calc(-1 * min(31vw,270px))}
+.home.menu-open #ring .portal[data-i="1"]{--x:calc(.9510565163 * min(31vw,270px));--y:calc(-.3090169944 * min(31vw,270px))}
+.home.menu-open #ring .portal[data-i="2"]{--x:calc(.5877852523 * min(31vw,270px));--y:calc(.8090169944 * min(31vw,270px))}
+.home.menu-open #ring .portal[data-i="3"]{--x:calc(-.5877852523 * min(31vw,270px));--y:calc(.8090169944 * min(31vw,270px))}
+.home.menu-open #ring .portal[data-i="4"]{--x:calc(-.9510565163 * min(31vw,270px));--y:calc(-.3090169944 * min(31vw,270px))}
+@media(max-width:760px){
+  .home.menu-open #ring .portal[data-i="0"]{--x:0px;--y:calc(-1 * min(31vw,112px))}
+  .home.menu-open #ring .portal[data-i="1"]{--x:calc(.9510565163 * min(31vw,112px));--y:calc(-.3090169944 * min(31vw,112px))}
+  .home.menu-open #ring .portal[data-i="2"]{--x:calc(.5877852523 * min(31vw,112px));--y:calc(.8090169944 * min(31vw,112px))}
+  .home.menu-open #ring .portal[data-i="3"]{--x:calc(-.5877852523 * min(31vw,112px));--y:calc(.8090169944 * min(31vw,112px))}
+  .home.menu-open #ring .portal[data-i="4"]{--x:calc(-.9510565163 * min(31vw,112px));--y:calc(-.3090169944 * min(31vw,112px))}
+}
+</style>
