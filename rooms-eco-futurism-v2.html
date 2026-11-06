@@ -788,7 +788,7 @@ const mapPoints=[
 const $=s=>document.querySelector(s);
 const $$=s=>Array.from(document.querySelectorAll(s));
 function renderMapPoints(){
- $$('.map-point').forEach(el=>el.remove());
+ $$$('.map-point').forEach(el=>el.remove());
  mapPoints.forEach(p=>{
   const b=document.createElement('button');
   b.type='button';b.className='pin map-point';b.style.setProperty('--x',p.x+'%');b.style.setProperty('--y',p.y+'%');
@@ -863,8 +863,8 @@ function applyRoomFilters(){
  document.body.classList.remove('rooms-prompt-open');
  const empty=$('#emptycategory');
  if(empty){empty.style.display='none';empty.setAttribute('hidden','');}
- $('.category-tabs button').forEach(button=>{const selected=button.dataset.category===category;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
- $('.roomcard').forEach(el=>{
+ $$('.category-tabs button').forEach(button=>{const selected=button.dataset.category===category;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
+ $$('.roomcard').forEach(el=>{
   const i=Number(el.dataset.room);
   const visible=el.dataset.category===category;
   el.style.display=visible?'block':'none';
@@ -881,7 +881,7 @@ function choose(i,preserveCategory=false){
  const r=rooms[i];
  hasInteracted=true;browsingCategory=false;active=i;category=r.category;filterFloor=null;
  activeFloor=(r.floors||['territory'])[0];
- $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
+ $$$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
  const info=floorInfo[activeFloor];if(info){$('#floorlabel').textContent=info.label;$('#floordesc').textContent=info.desc;}
  renderMapPoints();
  $('#heroimg').src=r.img;$('#detailtitle').textContent=r.name;$('#detailmeta').textContent=r.meta;$('#description').textContent=r.desc;const amenities=$('#roomAmenities');if(amenities){amenities.innerHTML=(r.amenities||[]).map(item=>'<span class="room-amenity">'+item+'</span>').join('');amenities.style.display=(r.amenities&&r.amenities.length)?'flex':'none';}
@@ -892,7 +892,7 @@ function choose(i,preserveCategory=false){
 function setFloor(next){
  const info=floorInfo[next];if(!info)return;
  hasInteracted=true;activeFloor=next;filterFloor=next;
- $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
+ $$$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
  $('#floorlabel').textContent=info.label;
  $('#floordesc').textContent=info.desc;
  $('.modelhint span').textContent=info.desc;
@@ -904,10 +904,10 @@ function showMapPointInfo(point){
  if(!model||!popup)return;
  active=-1;
  $('.details').style.display='none';
- $('.roomcard').forEach(el=>el.classList.remove('active'));
+ $$('.roomcard').forEach(el=>el.classList.remove('active'));
  const empty=$('#emptycategory');if(empty)empty.style.display='none';
  activeFloor=point.floor;
- $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
+ $$$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
  const label=$('#floorlabel'),desc=$('#floordesc');
  if(label)label.textContent=point.label;
  if(desc)desc.textContent=point.desc;
@@ -975,8 +975,8 @@ function initDates(){
  checkIn.addEventListener('change',updateMin);
  const summary=$('#availability-summary');if(summary){summary.dataset.state='idle';summary.textContent='';}
 }
-$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
-$('.category-tabs button').forEach(button=>button.addEventListener('click',()=>{
+$$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
+$$('.category-tabs button').forEach(button=>button.addEventListener('click',()=>{
  const next=button.dataset.category;if(!['rooms','hostel','bungalow'].includes(next))return;
  category=next;browsingCategory=true;hasInteracted=true;
  if(active>=0&&rooms[active]?.category!==next){active=-1;$('.details').style.display='none';}
@@ -996,7 +996,7 @@ $('#book').addEventListener('click',e=>{
  const params=new URLSearchParams({room:rooms[active].name,checkin:a,checkout:b,availability:status.text||'Не проверена'});
  location.href='room-booking-form.html?'+params.toString();
 });
-$$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
+$$$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
 $('#map-point-close').addEventListener('click',e=>{e.stopPropagation();closeMapPointInfo()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMapPointInfo()});
 initDates();document.body.classList.remove('dates-selected','rooms-revealed');renderAvailability();renderMapPoints();$('#floorlabel').textContent=floorInfo.territory.label;$('#floordesc').textContent=floorInfo.territory.desc;$('.modelhint span').textContent='Выберите даты и нажмите поиск, чтобы увидеть варианты';
