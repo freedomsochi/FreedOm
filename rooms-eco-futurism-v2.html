@@ -733,9 +733,17 @@ body.dates-selected .left{display:flex!important}
 .room-amenities{display:none;flex-wrap:wrap;gap:6px;margin:10px 2px 13px}
 .room-amenity{display:inline-flex;align-items:center;padding:6px 9px;border:1px solid rgba(229,255,247,.48);border-radius:999px;background:rgba(222,255,242,.16);color:#f5fffa;font-size:9px;line-height:1.2;font-weight:650;backdrop-filter:blur(10px)}
 @media(max-width:850px){.room-amenities{gap:5px;margin:9px 2px 12px}.room-amenity{font-size:10px;padding:7px 10px}}
+</style><style id="stay-category-tabs">
+/* Stay categories: rooms include both attic rooms; hostel and bungalow stay separate. */
+.category-tabs{display:flex;flex:0 0 auto;gap:5px;padding:5px;border:1px solid rgba(229,255,247,.52);border-radius:16px;background:rgba(14,67,58,.48);backdrop-filter:blur(16px);box-shadow:0 8px 22px rgba(8,48,41,.14)}
+.category-tabs button{flex:1;min-width:0;border:1px solid transparent;border-radius:12px;padding:10px 8px;background:transparent;color:#f4fffb;font:700 10px/1.2 Inter,Arial,sans-serif;white-space:nowrap;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.category-tabs button.active{background:rgba(240,255,247,.96);color:#205b50;border-color:rgba(255,255,255,.9);box-shadow:0 3px 12px rgba(0,0,0,.12)}
+.category-tabs button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media(max-width:850px){.left{flex-wrap:wrap;overflow:visible;gap:9px}.category-tabs{flex:0 0 100%;width:100%;position:sticky;top:0;z-index:8;justify-content:center}.category-tabs button{padding:10px 7px;font-size:10px}.roomcard{flex:0 0 165px}}
 </style></head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
+<nav class="category-tabs" aria-label="Категории размещения"><button type="button" data-category="rooms" class="active" aria-pressed="true">Комнаты</button><button type="button" data-category="hostel" aria-pressed="false">Хостел</button><button type="button" data-category="bungalow" aria-pressed="false">Бунгало</button></nav>
 <article class="roomcard active" data-category="rooms" data-room="0"><img src="images/room-family.jpg" loading="lazy" decoding="async" alt="Семейная комната"><div class="roomname">Семейная комната</div><div class="meta">Бронируется целиком <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <article class="roomcard" data-category="hostel" data-room="1"><img src="images/room-hostel.jpg" loading="lazy" decoding="async" alt="Хостел стандарт №1"><div class="roomname">Хостел стандарт №1</div><div class="meta">4 места · бронирование по местам <span class="availability-status status-unknown">• Проверяем…</span></div></article>
 <article class="roomcard" data-category="hostel" data-room="2"><img src="images/room-hostel.jpg" loading="lazy" decoding="async" alt="Хостел стандарт №2"><div class="roomname">Хостел стандарт №2</div><div class="meta">4 места · бронирование по местам <span class="availability-status status-unknown">• Проверяем…</span></div></article>
@@ -761,7 +769,7 @@ const rooms=[
 {name:'Бунгало',category:'bungalow',floors:['territory'],meta:'Отдельное размещение',desc:'Отдельное пространство на территории FreeDom для тех, кому хочется больше уединения и близости к природе.',img:'https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/bungalow.jpg',dbNames:['Бунгало в саду']}
 ];
 const availabilityEndpoint='/api/availability';
-let active=-1,category=null,availabilityRows=[],availabilityState='idle',activeFloor='territory',filterFloor=null,hasInteracted=false,browsingCategory=false;
+let active=-1,category='rooms',availabilityRows=[],availabilityState='idle',activeFloor='territory',filterFloor=null,hasInteracted=false,browsingCategory=false;
 const floorInfo={
  territory:{label:'Территория',desc:'Бассейн · спортивная площадка'},
  '1':{label:'1 этаж',desc:'Баня'},
@@ -855,10 +863,12 @@ function applyRoomFilters(){
  document.body.classList.remove('rooms-prompt-open');
  const empty=$('#emptycategory');
  if(empty){empty.style.display='none';empty.setAttribute('hidden','');}
- $$('.roomcard').forEach(el=>{
+ $('.category-tabs button').forEach(button=>{const selected=button.dataset.category===category;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
+ $('.roomcard').forEach(el=>{
   const i=Number(el.dataset.room);
-  el.style.display='block';
-  el.classList.toggle('active',i===active);
+  const visible=el.dataset.category===category;
+  el.style.display=visible?'block':'none';
+  el.classList.toggle('active',visible&&i===active);
  });
  // The room detail panel belongs only to an explicitly selected room.
  // Territory pins and floor controls must never reveal the default family room.
@@ -869,7 +879,7 @@ function choose(i,preserveCategory=false){
  document.body.classList.remove('map-info-open');
  ['#heroimg','#detailmeta','#thumbs','#book','#heart'].forEach(sel=>{const el=$(sel);if(el)el.style.display=''});
  const r=rooms[i];
- hasInteracted=true;browsingCategory=false;active=i;category=null;filterFloor=null;
+ hasInteracted=true;browsingCategory=false;active=i;category=r.category;filterFloor=null;
  activeFloor=(r.floors||['territory'])[0];
  $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
  const info=floorInfo[activeFloor];if(info){$('#floorlabel').textContent=info.label;$('#floordesc').textContent=info.desc;}
@@ -965,7 +975,14 @@ function initDates(){
  checkIn.addEventListener('change',updateMin);
  const summary=$('#availability-summary');if(summary){summary.dataset.state='idle';summary.textContent='';}
 }
-$$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
+$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
+$('.category-tabs button').forEach(button=>button.addEventListener('click',()=>{
+ const next=button.dataset.category;if(!['rooms','hostel','bungalow'].includes(next))return;
+ category=next;browsingCategory=true;hasInteracted=true;
+ if(active>=0&&rooms[active]?.category!==next){active=-1;$('.details').style.display='none';}
+ document.body.classList.remove('map-info-open');
+ applyRoomFilters();
+}));
 $('#roomlist').addEventListener('click',e=>{if(e.target.closest('button,a,input,select,textarea'))return;const card=e.target.closest('.roomcard');if(!card)return;choose(Number(card.dataset.room));scrollToRoomDetails()});
 $('#heart').addEventListener('click',e=>e.currentTarget.textContent=e.currentTarget.textContent==='♡'?'♥':'♡');
 $('#search').addEventListener('click',()=>{const a=$('#checkin').value,b=$('#checkout').value;if(a&&b&&b>a)refreshAvailability();else alert('Выберите корректные даты: выезд должен быть позже заезда.')});
