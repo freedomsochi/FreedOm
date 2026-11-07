@@ -232,6 +232,23 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 .backface p{font-size:clamp(11px,1.1vw,13px)!important;line-height:1.65!important;opacity:.94!important}
 .backface .signup{z-index:5!important;transform:none!important;pointer-events:auto!important}
 @media(max-width:760px){.backface>img{filter:blur(7px) brightness(.5)!important}.backface .event-body{padding-top:22px!important}.backface p{font-size:10px!important;line-height:1.5!important}}
+</style><style id="events-final-interaction-fix">
+/* Единая геометрия двух сторон карточки: оборот карточки не зеркалит текст */
+.card-inner{transform-style:preserve-3d!important;will-change:transform}
+.front{transform:rotateY(0deg) translateZ(1px)!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
+.backface{transform:rotateY(180deg) translateZ(2px)!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important;direction:ltr!important;text-align:left!important}
+.backface .event-body{direction:ltr!important;text-align:left!important;unicode-bidi:normal!important;transform:none!important}
+.backface .event-body *{direction:ltr!important;text-align:left!important;unicode-bidi:normal!important;transform:none!important}
+.backface h3,.backface p,.backface .event-time,.backface .event-host,.backface .event-price{writing-mode:horizontal-tb!important;text-orientation:mixed!important}
+.backface>img{inset:-4%!important;width:108%!important;height:108%!important;max-width:none!important;object-fit:cover!important;opacity:.48!important;filter:blur(7px) brightness(.52) saturate(.9)!important;transform:scale(1.04)!important;mask-image:none!important;-webkit-mask-image:none!important}
+.backface:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(10,12,25,.22),rgba(10,12,25,.58) 43%,rgba(10,12,25,.91));backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);pointer-events:none}
+.backface .event-body{position:relative!important;z-index:3!important;width:100%;max-height:100%;overflow-y:auto;margin:auto 0 0!important;padding:26px 0 2px!important}
+.card-inner{box-shadow:0 26px 65px rgba(0,0,0,.38),0 9px 24px rgba(0,0,0,.24),inset 0 0 28px rgba(255,255,255,.08)!important}
+.front>img{filter:saturate(1.02) contrast(1.05) drop-shadow(0 8px 14px rgba(0,0,0,.2))!important}
+.card{transition:filter .7s ease,opacity .7s ease}
+.deck.animating .card,.deck.dragging .card{transition:none!important}
+.deck:not(.animating):not(.dragging) .card{transition:filter .7s ease,opacity .7s ease}
+@media(max-width:760px){.backface>img{filter:blur(6px) brightness(.5)!important}.backface .event-body{padding-top:20px!important}}
 </style></head>
 <body>
 <main class="events">
@@ -282,7 +299,7 @@ function animateRotation(target,duration=1250){
  }
  raf=requestAnimationFrame(tick);
 }
-function snap(){animateRotation(Math.round(rot/72)*72,1350)}
+function snap(){animateRotation(Math.round(rot/72)*72,980)}
 function focus(i){
  let d=i-idx;if(d>2)d-=5;if(d<-2)d+=5;
  animateRotation(rot-d*72,1050);
@@ -302,15 +319,16 @@ function closeCard(){
 
 // При открытой карточке касание в любом месте закрывает её; нажатие «Записаться» сохраняет действие.
 document.addEventListener('pointerdown',e=>{
- if(!opened||e.target.closest('.signup'))return;
- closeCard();ignoreUntil=Date.now()+520;
+ if(!opened||e.target.closest('.signup')||e.target.closest('.close'))return;
+ // Закрываем карточку только при касании свободного пространства вне неё.
+ if(!e.target.closest('.card')){closeCard();ignoreUntil=Date.now()+520}
 },true);
 
 cards.forEach((card,i)=>{
  card.addEventListener('click',e=>{
   if(e.target.closest('.signup')){e.stopPropagation();alert('Для записи свяжитесь с администрацией FreeDom.');return}
   if(e.target.closest('.close')){e.stopPropagation();closeCard();return}
-  if(opened)return;if(Date.now()<ignoreUntil)return;if(i===idx)openCard(card);else focus(i)
+  if(opened){closeCard();return}if(Date.now()<ignoreUntil)return;if(i===idx)openCard(card);else focus(i)
  });
  
 });
@@ -325,7 +343,7 @@ deck.addEventListener('pointerdown',e=>{
 deck.addEventListener('pointermove',e=>{
  if(!drag||opened)return;
  const now=pointerAngle(e.clientX,e.clientY),delta=norm(now-lastAngle);
- if(Math.abs(delta)>.0005){moved=true;const sensitivity=3.6;const targetRot=rot-delta*180/Math.PI*sensitivity;rot+=(targetRot-rot)*.72;lastAngle=now;apply()}
+ if(Math.abs(delta)>.0005){moved=true;const sensitivity=2.25;const targetRot=rot-delta*180/Math.PI*sensitivity;rot+=(targetRot-rot)*.58;lastAngle=now;apply()}
 });
 function release(e){
  if(!drag)return;drag=false;deck.classList.remove('dragging');
