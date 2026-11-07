@@ -167,7 +167,7 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 .card .front-description{display:block;margin:9px 0 8px;color:rgba(255,255,255,.9);font-size:10px;line-height:1.45;letter-spacing:0;text-transform:none;max-width:100%;text-shadow:0 1px 9px rgba(0,0,0,.65)}
 .card .front-meta{font-size:8px;color:rgba(255,255,255,.82)}
 .card .date{font-size:8px;line-height:1.4}
-.backface{position:absolute!important;inset:0!important;z-index:4!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;gap:0!important;padding:19px!important;overflow:hidden!important;border-radius:inherit!important;background:linear-gradient(155deg,rgba(24,25,44,.96),rgba(9,11,24,.985))!important;transform:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;backface-visibility:visible!important;-webkit-backface-visibility:visible!important;direction:ltr!important;text-align:left!important}
+.backface{position:absolute!important;inset:0!important;z-index:4!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;gap:0!important;padding:19px!important;overflow:hidden!important;border-radius:inherit!important;background:linear-gradient(155deg,rgba(24,25,44,.96),rgba(9,11,24,.985))!important;transform:none!important;visibility:hidden;opacity:0;pointer-events:none!important;backface-visibility:visible!important;-webkit-backface-visibility:visible!important;direction:ltr!important;text-align:left!important}
 .backface>img{position:absolute!important;inset:0 0 auto 0!important;z-index:0!important;display:block!important;width:100%!important;height:43%!important;object-fit:cover!important;object-position:center 42%!important;opacity:.22!important;filter:blur(1.5px) brightness(.48) saturate(.9)!important;transform:scale(1.015)!important;mask-image:linear-gradient(to bottom,#000 12%,rgba(0,0,0,.7) 58%,transparent 100%)!important;-webkit-mask-image:linear-gradient(to bottom,#000 12%,rgba(0,0,0,.7) 58%,transparent 100%)!important}
 .backface:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(10,12,25,.08),rgba(10,12,25,.46) 34%,rgba(10,12,25,.96) 67%);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);pointer-events:none}
 .card.selected{z-index:50!important;width:min(310px,76vw)!important;height:min(460px,64vh)!important;max-width:calc(100vw - 36px)!important;max-height:calc(100vh - 112px)!important;transform:translate(-50%,-50%) scale(1)!important;filter:none!important;animation:none!important}
@@ -176,7 +176,7 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 @keyframes eventsFrontHide{0%,42%{opacity:1;visibility:visible}56%,100%{opacity:0;visibility:hidden}}
 @keyframes eventsBackShow{0%,44%{opacity:0;visibility:hidden}58%,100%{opacity:1;visibility:visible}}
 .card.selected .front{animation:eventsFrontHide .72s ease both!important}
-.card.selected .backface{visibility:visible!important;opacity:1!important;pointer-events:auto!important;animation:eventsBackShow .72s ease both!important}
+.card.selected .backface{visibility:visible;opacity:1;pointer-events:auto!important;animation:eventsBackShow .72s ease both!important}
 .card.selected .backface .event-body{position:relative!important;z-index:3!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;width:100%!important;min-height:0!important;max-height:100%!important;margin:auto 0 0!important;padding:22px 0 2px!important;overflow-y:auto!important;overscroll-behavior:contain!important;scrollbar-width:thin!important;scrollbar-color:rgba(255,255,255,.28) transparent!important;transform:none!important;direction:ltr!important;unicode-bidi:normal!important;text-align:left!important;writing-mode:horizontal-tb!important}
 .card.selected .backface .event-body *{transform:none!important;direction:ltr!important;unicode-bidi:normal!important;text-align:left!important;writing-mode:horizontal-tb!important;text-orientation:mixed!important}
 .card.selected .backface h3{margin:0 0 11px!important;font-size:clamp(23px,3vw,29px)!important;line-height:1.08!important}
@@ -244,7 +244,7 @@ function apply(){
   card.style.transform=(opened&&i===idx)
    ?'translate(-50%,-50%) translate3d(0,0,0) scale(1)'
    :`translate(-50%,-50%) translate3d(${x}px,${y}px,0) rotate(${Math.sin(rad)*7}deg) scale(${scale})`;
-  card.style.opacity=opened&&i!==idx?.12:(.34+depth*.66);
+  card.style.opacity=opened&&i!==idx ? 0.12 : (.34+depth*.66);
   card.style.zIndex=String(Math.round(10+depth*30));
   card.classList.toggle('focused',!opened&&i===idx);
   card.setAttribute('aria-expanded',String(opened&&i===idx));
@@ -338,7 +338,7 @@ document.addEventListener('pointermove',e=>{
 function release(e){
  if(!drag||e.pointerId!==pointerId)return;
  drag=false;pointerId=null;deck.classList.remove('dragging');
- if(moved)ignoreUntil=Date.now()+260;snap();
+ if(moved)ignoreUntil=Date.now()+260;moved=false;snap();
 }
 document.addEventListener('pointerup',release);
 document.addEventListener('pointercancel',release);
