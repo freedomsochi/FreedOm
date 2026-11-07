@@ -280,7 +280,79 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
  .backface .event-time,.backface .event-host,.backface .event-price{font-size:7px!important}
  .backface .signup{min-height:36px!important;padding:9px 10px!important;font-size:7px!important}
 }
-</style></head>
+</style>
+<style id="events-card-layout-final">
+/* Размытие фонового фото — только 15% от прежней интенсивности */
+.backface>img{
+  inset:0!important;width:100%!important;height:100%!important;
+  opacity:.22!important;filter:blur(1.5px) brightness(.48) saturate(.9)!important;
+  transform:scale(1.015)!important;mask-image:none!important;-webkit-mask-image:none!important
+}
+.backface:before{
+  background:linear-gradient(180deg,rgba(12,13,29,.28),rgba(12,13,29,.72) 58%,rgba(12,13,29,.94))!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important
+}
+/* Открытая карточка становится достаточно большой для полноценного описания */
+.card.selected{
+  width:min(360px,82vw)!important;height:min(540px,72vh)!important;
+  left:50%!important;top:50%!important;
+  transform:translate(-50%,-50%) scale(1)!important;
+  animation:none!important;filter:none!important;opacity:1!important
+}
+.card.selected .card-inner{
+  overflow:visible!important;animation:eventsReadableFlip .82s cubic-bezier(.2,.72,.18,1) both!important;
+  transform-style:preserve-3d!important
+}
+@keyframes eventsReadableFlip{
+  from{transform:rotateY(0deg) scale(.94)}
+  to{transform:rotateY(180deg) scale(1)}
+}
+.card.selected .front{backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
+.card.selected .backface{
+  display:flex!important;flex-direction:column!important;justify-content:flex-end!important;
+  padding:26px!important;overflow:hidden!important;text-align:left!important;direction:ltr!important;
+  backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important
+}
+.card.selected .backface .event-body{
+  position:relative!important;z-index:3!important;width:100%!important;
+  display:flex!important;flex-direction:column!important;align-items:stretch!important;
+  gap:0!important;margin:auto 0 0!important;padding:24px 0 0!important;
+  max-height:100%!important;overflow-y:auto!important;overscroll-behavior:contain!important;
+  direction:ltr!important;text-align:left!important
+}
+.card.selected .backface h3{
+  margin:0 0 13px!important;font-size:clamp(25px,3vw,34px)!important;
+  line-height:1.08!important;text-align:left!important
+}
+.card.selected .backface .line{flex:none!important;margin:0 0 14px!important}
+.card.selected .backface p{
+  margin:0 0 18px!important;font-size:13px!important;line-height:1.62!important;
+  color:rgba(255,255,255,.94)!important;text-align:left!important;white-space:normal!important
+}
+.card.selected .backface .event-time,
+.card.selected .backface .event-host,
+.card.selected .backface .event-price{
+  margin:5px 0!important;font-size:9px!important;line-height:1.5!important;
+  letter-spacing:.09em!important;text-align:left!important
+}
+.card.selected .backface .signup{
+  flex:none!important;width:100%!important;min-height:46px!important;margin:18px 0 0!important;
+  padding:13px 16px!important;font-size:9px!important;letter-spacing:.14em!important;
+  white-space:normal!important;position:relative!important;z-index:8!important;pointer-events:auto!important
+}
+.card.selected .backface .close{z-index:9!important}
+@media(max-width:760px){
+ .card.selected{width:min(88vw,380px)!important;height:min(76vh,650px)!important;transform:translate(-50%,-50%)!important}
+ .card.selected .backface{padding:19px!important}
+ .card.selected .backface .event-body{padding-top:28px!important}
+ .card.selected .backface h3{font-size:27px!important}
+ .card.selected .backface p{font-size:12px!important;line-height:1.58!important;margin-bottom:14px!important}
+ .card.selected .backface .event-time,.card.selected .backface .event-host,.card.selected .backface .event-price{font-size:8px!important}
+ .card.selected .backface .signup{min-height:44px!important;margin-top:14px!important}
+}
+</style>
+
+</head>
 <body>
 <main class="events">
 <div class="grain"></div><div class="stars"><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i></div>
