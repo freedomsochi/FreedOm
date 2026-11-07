@@ -216,6 +216,22 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
  .backface .signup{margin-top:9px!important;min-height:36px;padding:9px 10px}
 }
 @media(prefers-reduced-motion:reduce){.deck.animating .card{transition:none!important}}
+</style><style id="events-backface-readable">
+/* Back side: reverse the face itself so its contents read normally after the parent flips */
+.card-inner{transform-style:preserve-3d!important}
+.front{transform:rotateY(0deg) translateZ(1px)!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
+.backface{transform:rotateY(180deg) translateZ(2px)!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important;isolation:isolate!important}
+.card.selected .card-inner{animation:cardFlip .92s cubic-bezier(.2,.75,.2,1) .03s both!important}
+.card.selected .front{opacity:1!important}
+.card.selected .backface{opacity:1!important}
+.backface>img{inset:-3%!important;width:106%!important;height:106%!important;max-width:none!important;object-fit:cover!important;opacity:.42!important;filter:blur(8px) brightness(.55) saturate(.9)!important;transform:scale(1.04)!important;mask-image:none!important;-webkit-mask-image:none!important}
+.backface:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(10,12,25,.28),rgba(10,12,25,.58) 44%,rgba(10,12,25,.88));backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);pointer-events:none}
+.backface .event-body{position:relative!important;z-index:3!important;width:100%;max-height:100%;overflow-y:auto;margin:auto 0 0!important;padding:28px 0 2px!important;transform:none!important;direction:ltr!important;text-align:left!important}
+.backface .event-body *{direction:ltr!important;unicode-bidi:plaintext!important;transform:none!important}
+.backface h3,.backface p,.backface .event-time,.backface .event-host,.backface .event-price{color:#fff!important;text-align:left!important;transform:none!important}
+.backface p{font-size:clamp(11px,1.1vw,13px)!important;line-height:1.65!important;opacity:.94!important}
+.backface .signup{z-index:5!important;transform:none!important;pointer-events:auto!important}
+@media(max-width:760px){.backface>img{filter:blur(7px) brightness(.5)!important}.backface .event-body{padding-top:22px!important}.backface p{font-size:10px!important;line-height:1.5!important}}
 </style></head>
 <body>
 <main class="events">
