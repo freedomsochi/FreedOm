@@ -309,7 +309,15 @@ html{scroll-snap-type:y mandatory!important;scroll-behavior:smooth!important;ove
 .dark-inner p{max-width:620px;margin:22px auto 0;font-size:clamp(.98rem,1.5vw,1.12rem);line-height:1.75}
 @media(max-width:800px){.dark-break{padding-bottom:7vh!important}.dark-inner{width:calc(100% - 30px)}.dark-inner h2{font-size:clamp(2.7rem,12vw,4.4rem)}.dark-inner p{font-size:.94rem;line-height:1.65;margin-top:18px}}
 article#kitchen .photo{background-image:linear-gradient(90deg,rgba(12,34,33,.42),rgba(12,34,33,.06) 86%),url('images/16455-compressed.png')!important;background-size:cover!important;background-position:center!important}
-</style></head>
+</style>
+<style id="space-soft-scene-fade">
+/* Переходы между сценами — мягкое растворение, без долгого пролёта страницы */
+html{scroll-behavior:auto!important}
+.scene-fade{opacity:.22;filter:blur(2px);transform:scale(1.018);transition:opacity 1.15s ease,filter 1.15s ease,transform 1.45s cubic-bezier(.2,.7,.2,1)}
+.scene-fade.is-current{opacity:1;filter:blur(0);transform:scale(1)}
+@media(prefers-reduced-motion:reduce){.scene-fade{transition:none;opacity:1;filter:none;transform:none}}
+</style>
+</head>
 <body>
 <header class="top"><a class="home" href="index.html">← Главная</a><div class="brand">FreeDom</div><a class="rooms-link" href="rooms-eco-futurism-v2.html">Комнаты →</a></header>
 
@@ -384,6 +392,7 @@ article#kitchen .photo{background-image:linear-gradient(90deg,rgba(12,34,33,.42)
   let startX = 0, startY = 0, startIndex = 0, lastGestureAt = 0;
   let startedInGallery = false, isTouching = false, isTransitioning = false;
   let transitionTimer = 0, settleTimer = 0;
+  scenes().forEach((scene,i)=>{scene.classList.add('scene-fade');scene.classList.toggle('is-current',i===0)});
 
   function nearestSceneIndex(list = scenes()) {
     let best = 0, distance = Infinity;
@@ -401,7 +410,9 @@ article#kitchen .photo{background-image:linear-gradient(90deg,rgba(12,34,33,.42)
     isTransitioning = true;
     window.clearTimeout(transitionTimer);
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({top: target.getBoundingClientRect().top + window.scrollY, behavior: reduceMotion ? 'auto' : 'smooth'});
+    list.forEach(scene => scene.classList.remove('is-current'));
+    target.classList.add('is-current');
+    window.scrollTo({top: target.getBoundingClientRect().top + window.scrollY, behavior:'auto'});
     transitionTimer = window.setTimeout(() => { isTransitioning = false; }, reduceMotion ? 80 : 1050);
   }
 
@@ -410,6 +421,7 @@ article#kitchen .photo{background-image:linear-gradient(90deg,rgba(12,34,33,.42)
     const list = scenes();
     if (!list.length) return;
     const index = nearestSceneIndex(list);
+    list.forEach((scene,i)=>scene.classList.toggle('is-current',i===index));
     if (Math.abs(list[index].getBoundingClientRect().top) > 10) goToScene(index);
   }
 
