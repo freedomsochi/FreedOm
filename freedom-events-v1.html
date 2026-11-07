@@ -168,6 +168,54 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
  .backface .event-time,.backface .event-host,.backface .event-price{font-size:7px}
  .backface .signup{margin-top:11px;padding:10px 12px;font-size:7px}
 }
+</style>
+<style id="events-card-visual-fix">
+/* Карточка: фото, свет и текст находятся на отдельных слоях */
+.card{isolation:isolate;perspective:1200px;transition:filter .65s ease,opacity .65s ease}
+.card-inner{z-index:1;isolation:isolate;transform-style:preserve-3d;backface-visibility:visible;-webkit-backface-visibility:visible;background:#171629}
+.front{position:absolute;inset:0;z-index:1;border-radius:inherit;overflow:hidden;transform:rotateY(0);backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#171629}
+.front>img{position:absolute!important;inset:0!important;z-index:0!important;display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;opacity:1!important;filter:saturate(1.02) contrast(1.04)!important}
+.front:after{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(8,9,19,.04) 0%,rgba(8,9,19,.12) 34%,rgba(8,9,19,.84) 100%);pointer-events:none}
+.card:after{display:none!important}
+.card:before{z-index:0!important;pointer-events:none}
+.card-content{z-index:2!important;inset:auto 15px 16px!important;transform:translateZ(2px)!important;text-shadow:0 2px 12px rgba(0,0,0,.55)}
+.card-content h2{font-size:clamp(22px,2vw,28px);line-height:.98;margin-bottom:9px}
+.card .front-description{display:block;margin:9px 0 8px;color:rgba(255,255,255,.86);font-size:10px;line-height:1.48;letter-spacing:0;text-transform:none;max-width:100%;text-shadow:0 1px 9px rgba(0,0,0,.65)}
+.card .front-meta{font-size:8px;color:rgba(255,255,255,.78)}
+.card .date{font-size:8px;line-height:1.4}
+.backface{position:absolute!important;inset:0!important;z-index:4!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;gap:0!important;padding:19px!important;overflow:hidden!important;border-radius:inherit!important;background:linear-gradient(155deg,rgba(24,25,44,.93),rgba(9,11,24,.97))!important;transform:rotateY(180deg) translateZ(1px)!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
+.backface>img{position:absolute!important;inset:0 0 auto 0!important;z-index:0!important;display:block!important;width:100%!important;height:48%!important;object-fit:cover!important;object-position:center 42%!important;opacity:.34!important;filter:saturate(.9) brightness(.75)!important;mask-image:linear-gradient(to bottom,#000 15%,rgba(0,0,0,.7) 58%,transparent 100%)!important;-webkit-mask-image:linear-gradient(to bottom,#000 15%,rgba(0,0,0,.7) 58%,transparent 100%)!important}
+.backface:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(10,12,25,.10),rgba(10,12,25,.52) 37%,rgba(10,12,25,.94) 67%);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);pointer-events:none}
+.backface .event-body{position:relative!important;z-index:2!important;width:100%;margin:auto 0 0!important;max-height:100%;overflow-y:auto;overscroll-behavior:contain;padding-top:35px;text-shadow:0 2px 10px rgba(0,0,0,.35)}
+.backface h3{font:400 clamp(25px,3vw,34px)/.98 Baskerville,Georgia,serif;margin:0 0 10px;color:#fff}
+.backface .line{height:1px;background:rgba(255,255,255,.28);margin:0 0 12px}
+.backface p{display:block!important;font-size:clamp(10px,1vw,12px)!important;line-height:1.58!important;color:rgba(255,255,255,.9)!important;margin:0 0 14px!important;white-space:normal!important}
+.backface .event-time,.backface .event-host,.backface .event-price{display:block!important;font-size:8px!important;line-height:1.5!important;margin:6px 0!important;color:rgba(255,255,255,.78)!important}
+.backface .event-time span,.backface .event-host span,.backface .event-price span{color:#fff!important}
+.backface .signup{position:relative;z-index:3;display:block!important;width:100%;margin-top:13px!important;min-height:40px;flex:none}
+.backface .close{z-index:5}
+.card.selected{z-index:100!important;filter:none!important;animation:cardArrival .65s cubic-bezier(.2,.75,.2,1) both}
+.card.selected .card-inner{animation:cardFlip .9s cubic-bezier(.2,.75,.2,1) .03s both;box-shadow:0 42px 110px rgba(0,0,0,.62),0 0 70px rgba(145,220,210,.18)!important}
+.card.selected .front{opacity:1!important}
+.card.selected .backface{opacity:1!important}
+.deck.open .card:not(.selected){filter:blur(8px) brightness(.58)!important;opacity:.23!important;transition:filter .7s ease,opacity .7s ease}
+.deck.animating .card{transition:none!important}
+.deck.dragging .card{transition:none!important}
+.deck:not(.dragging):not(.animating) .card{transition:filter .65s ease,opacity .65s ease}
+@media(max-width:760px){
+ .card{width:156px;height:232px}
+ .card.selected{transform:translate(-50%,-50%) translate(0,0) scale(1.34)!important}
+ .card-content{inset:auto 12px 13px!important}
+ .card-content h2{font-size:22px}
+ .card .front-description{font-size:9px;line-height:1.42;margin:7px 0}
+ .backface{padding:15px!important}
+ .backface .event-body{padding-top:30px}
+ .backface h3{font-size:25px}
+ .backface p{font-size:9px!important;line-height:1.48!important;margin-bottom:10px!important}
+ .backface .event-time,.backface .event-host,.backface .event-price{font-size:7px!important;margin:4px 0!important}
+ .backface .signup{margin-top:9px!important;min-height:36px;padding:9px 10px}
+}
+@media(prefers-reduced-motion:reduce){.deck.animating .card{transition:none!important}}
 </style></head>
 <body>
 <main class="events">
@@ -200,28 +248,28 @@ function apply(){
   card.style.transform=`translate(-50%,-50%) translate3d(${x}px,${y}px,0) rotate(${Math.sin(rad)*7}deg) scale(${scale})`;
   card.style.opacity=opened&&i!==idx?.16:opacity;
   card.style.zIndex=Math.round(10+depth*30);
-  card.style.filter=opened&&i!==idx?'blur(4px)':`blur(${Math.max(0,(1-depth)*1.6)}px)`;
+  card.style.filter=opened&&i!==idx?'blur(8px)':`blur(${Math.max(0,(1-depth)*1.6)}px)`;
   card.classList.toggle('focused',!opened&&i===idx);
  });
 }
-function snap(){
- const target=Math.round(rot/72)*72;
+function animateRotation(target,duration=1250){
  cancelAnimationFrame(raf);
- const start=rot,delta=target-start;
- const duration=1080,startTime=performance.now();
+ deck.classList.add('animating');
+ const start=rot,delta=target-start,startTime=performance.now();
  function tick(now){
   const p=Math.min(1,(now-startTime)/duration);
-  const eased=1-Math.pow(1-p,5);
+  const eased=1-Math.pow(1-p,4);
   rot=start+delta*eased;
   apply();
   if(p<1)raf=requestAnimationFrame(tick);
-  else{rot=target;apply()}
+  else{rot=target;apply();deck.classList.remove('animating')}
  }
  raf=requestAnimationFrame(tick);
 }
+function snap(){animateRotation(Math.round(rot/72)*72,1350)}
 function focus(i){
  let d=i-idx;if(d>2)d-=5;if(d<-2)d+=5;
- rot-=d*72;apply();
+ animateRotation(rot-d*72,1050);
 }
 function openCard(card){
  idx=cards.indexOf(card);rot=-idx*72;opened=true;
@@ -269,11 +317,11 @@ function release(e){
  ignoreUntil=moved?Date.now()+220:0;snap();
 }
 deck.addEventListener('pointerup',release);deck.addEventListener('pointercancel',release);
-deck.addEventListener('wheel',e=>{if(opened)return;e.preventDefault();rot-=Math.sign(e.deltaY||e.deltaX)*10;apply();clearTimeout(deck._wheel);deck._wheel=setTimeout(snap,90)},{passive:false});
+deck.addEventListener('wheel',e=>{if(opened)return;e.preventDefault();animateRotation(rot-Math.sign(e.deltaY||e.deltaX)*14,520);clearTimeout(deck._wheel);deck._wheel=setTimeout(snap,620)},{passive:false});
 document.addEventListener('keydown',e=>{
  if(e.key==='Escape'){closeCard();return} if(opened)return;
- if(e.key==='ArrowRight'||e.key==='ArrowDown'){rot-=18;apply();clearTimeout(deck._key);deck._key=setTimeout(snap,80)}
- if(e.key==='ArrowLeft'||e.key==='ArrowUp'){rot+=18;apply();clearTimeout(deck._key);deck._key=setTimeout(snap,80)}
+ if(e.key==='ArrowRight'||e.key==='ArrowDown'){animateRotation(rot-18,650);clearTimeout(deck._key);deck._key=setTimeout(snap,700)}
+ if(e.key==='ArrowLeft'||e.key==='ArrowUp'){animateRotation(rot+18,650);clearTimeout(deck._key);deck._key=setTimeout(snap,700)}
  if((e.key==='Enter'||e.key===' ')&&!opened){e.preventDefault();openCard(cards[idx])}
 });
 apply();
