@@ -152,16 +152,16 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 .card:after{pointer-events:none;background:linear-gradient(180deg,rgba(10,9,22,.04) 5%,rgba(10,9,22,.14) 38%,rgba(10,9,22,.86) 100%)}
 .card-content{z-index:4}
 .card.selected{z-index:50!important;animation:cardArrival .72s cubic-bezier(.18,.8,.2,1) both}
-.card.selected .card-inner{transform:rotateY(180deg) scale(1.02);animation:cardFlip .9s cubic-bezier(.18,.78,.18,1) .06s both}
-.card.selected .front{opacity:1!important}
-.card.selected .backface{opacity:1}
-.backface{background:linear-gradient(160deg,rgba(34,31,58,.94),rgba(12,11,25,.97))}
+.card.selected .card-inner{transform-style:preserve-3d;animation:cardFlip .92s cubic-bezier(.18,.78,.18,1) .06s both}
+.card.selected .front{opacity:0!important;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.card.selected .backface{opacity:1;transform:rotateY(180deg) translateZ(1px);backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.backface{background:linear-gradient(160deg,rgba(34,31,58,.96),rgba(12,11,25,.98));transform:rotateY(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .backface>img{position:absolute;inset:0 0 auto!important;width:100%!important;height:43%!important;object-fit:cover!important;opacity:.9!important;mask-image:linear-gradient(#000 55%,transparent 100%);-webkit-mask-image:linear-gradient(#000 55%,transparent 100%)}
 .backface .event-body{position:relative;z-index:2;margin-top:auto}
 .backface .signup{position:relative;z-index:6;display:block;pointer-events:auto;min-height:42px}
 @media(max-width:760px){
  .card.selected{transform:translate(-50%,-50%) translate(0,10px) scale(1.2)!important}
- .card.selected .card-inner{transform:rotateY(180deg) scale(1)!important}
+ .card.selected .card-inner{animation:cardFlip .92s cubic-bezier(.18,.78,.18,1) .06s both}
  .backface{padding:16px}
  .backface h3{font-size:25px}
  .backface p{font-size:9px;line-height:1.45;margin-bottom:12px}
@@ -235,6 +235,12 @@ function closeCard(){
  card.classList.add('closing');
  setTimeout(()=>{card.classList.remove('selected','closing');deck.classList.remove('open');apply()},480);
 }
+
+// При открытой карточке касание в любом месте закрывает её; нажатие «Записаться» сохраняет действие.
+document.addEventListener('pointerdown',e=>{
+ if(!opened||e.target.closest('.signup'))return;
+ closeCard();ignoreUntil=Date.now()+520;
+},true);
 
 cards.forEach((card,i)=>{
  card.addEventListener('click',e=>{
