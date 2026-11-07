@@ -354,50 +354,82 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 
 
 <style id="events-card-orientation-and-size-fix">
-/* Компактная открытая карточка — сохраняем место вокруг неё */
+/* Открытая карточка: надёжная 2D-перекладка сторон без зеркального текста */
 .card.selected{
  width:min(310px,76vw)!important;height:min(460px,64vh)!important;
  max-width:calc(100vw - 36px)!important;max-height:calc(100vh - 120px)!important;
 }
 .card.selected .card-inner{
- animation:eventsCompactFlip .78s cubic-bezier(.2,.72,.18,1) both!important;
+ transform-style:flat!important;
+ animation:eventsFlatFlip .72s cubic-bezier(.2,.72,.18,1) both!important;
 }
-@keyframes eventsCompactFlip{
- from{transform:rotateY(0deg) scale(.96)}
- to{transform:rotateY(180deg) scale(1)}
+@keyframes eventsFlatFlip{
+ 0%{transform:scaleX(1)}
+ 42%{transform:scaleX(.035)}
+ 58%{transform:scaleX(.035)}
+ 100%{transform:scaleX(1)}
 }
-/* Текст на обратной стороне не вращаем отдельно: он остаётся обычным,
-   горизонтальным и читается слева направо после поворота всей карточки. */
-.card.selected .backface,
-.card.selected .backface .event-body,
-.card.selected .backface .event-body *{
- direction:ltr!important;
- unicode-bidi:isolate!important;
- writing-mode:horizontal-tb!important;
- text-orientation:mixed!important;
- text-align:left!important;
+/* Не используем rotateY на задней стороне: это и создавало зеркальный текст */
+.card.selected .front{
+ opacity:0!important;
+ visibility:hidden!important;
+ backface-visibility:visible!important;
 }
-.card.selected .backface .event-body{
+.card.selected .backface{
  transform:none!important;
  transform-style:flat!important;
+ backface-visibility:visible!important;
+ -webkit-backface-visibility:visible!important;
+ visibility:visible!important;
+ opacity:1!important;
+ display:flex!important;
+ flex-direction:column!important;
+ justify-content:flex-end!important;
+ direction:ltr!important;
+ text-align:left!important;
+ pointer-events:auto!important;
 }
-.card.selected .backface .event-body *{transform:none!important}
+.card.selected .backface .event-body{
+ position:relative!important;z-index:10!important;
+ display:flex!important;flex-direction:column!important;
+ width:100%!important;max-height:100%!important;
+ margin:auto 0 0!important;padding:24px 0 2px!important;
+ overflow-y:auto!important;overscroll-behavior:contain!important;
+ transform:none!important;transform-style:flat!important;
+ direction:ltr!important;unicode-bidi:normal!important;
+ text-align:left!important;writing-mode:horizontal-tb!important;
+}
+.card.selected .backface .event-body *{
+ transform:none!important;direction:ltr!important;
+ unicode-bidi:normal!important;text-align:left!important;
+ writing-mode:horizontal-tb!important;text-orientation:mixed!important;
+}
+.card.selected .backface h3{font-size:24px!important;line-height:1.08!important;margin:0 0 12px!important}
+.card.selected .backface p{font-size:11px!important;line-height:1.5!important;margin:0 0 12px!important}
+.card.selected .backface .event-time,
+.card.selected .backface .event-host,
+.card.selected .backface .event-price{font-size:8px!important;line-height:1.45!important}
 .card.selected .backface .signup{
- display:flex!important;align-items:center!important;justify-content:center!important;
- visibility:visible!important;opacity:1!important;pointer-events:auto!important;
+ display:flex!important;visibility:visible!important;opacity:1!important;
+ align-items:center!important;justify-content:center!important;
+ width:100%!important;min-height:44px!important;flex:none!important;
+ margin:12px 0 0!important;padding:12px!important;
+ position:relative!important;z-index:20!important;
+ pointer-events:auto!important;transform:none!important;
+ color:#fff!important;border:1px solid rgba(255,255,255,.55)!important;
+ background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.12))!important;
+ font-size:10px!important;letter-spacing:.12em!important;
 }
-.card.selected .backface{padding:22px!important}
-.card.selected .backface h3{font-size:clamp(22px,2.2vw,29px)!important;line-height:1.08!important}
-.card.selected .backface p{font-size:12px!important;line-height:1.55!important}
-.card.selected .backface .signup{min-height:42px!important;margin-top:12px!important}
+.card.selected .backface .close{z-index:25!important;pointer-events:auto!important}
+.card.selected .front .hint{display:none!important}
+.deck.open .selection-guide{display:none!important}
 @media(max-width:760px){
  .card.selected{width:min(310px,78vw)!important;height:min(460px,64vh)!important}
  .card.selected .backface{padding:18px!important}
  .card.selected .backface .event-body{padding-top:20px!important}
- .card.selected .backface h3{font-size:24px!important}
- .card.selected .backface p{font-size:11px!important;line-height:1.48!important}
- .card.selected .backface .event-time,.card.selected .backface .event-host,.card.selected .backface .event-price{font-size:8px!important}
- .card.selected .backface .signup{min-height:40px!important;font-size:8px!important}
+ .card.selected .backface h3{font-size:23px!important}
+ .card.selected .backface p{font-size:10px!important;line-height:1.46!important}
+ .card.selected .backface .signup{min-height:42px!important;font-size:9px!important}
 }
 </style>
 
