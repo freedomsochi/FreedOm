@@ -145,294 +145,70 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 @media(prefers-reduced-motion:reduce){.card{transition:none!important}}
 </style>
 
-<style id="event-card-flip-refresh">
-.card-inner{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;transform-style:preserve-3d;border-radius:25px}
-.front{position:absolute;inset:0;overflow:hidden;border-radius:inherit;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.front>img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;opacity:.94!important;filter:saturate(.92) contrast(1.02)!important}
-.card:after{pointer-events:none;background:linear-gradient(180deg,rgba(10,9,22,.04) 5%,rgba(10,9,22,.14) 38%,rgba(10,9,22,.86) 100%)}
-.card-content{z-index:4}
-.card.selected{z-index:50!important;animation:cardArrival .72s cubic-bezier(.18,.8,.2,1) both}
-.card.selected .card-inner{transform-style:preserve-3d;animation:cardFlip .92s cubic-bezier(.18,.78,.18,1) .06s both}
-.card.selected .front{opacity:0!important;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.card.selected .backface{opacity:1;transform:rotateY(180deg) translateZ(1px);backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.backface{background:linear-gradient(160deg,rgba(34,31,58,.96),rgba(12,11,25,.98));transform:rotateY(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.backface>img{position:absolute;inset:0 0 auto!important;width:100%!important;height:43%!important;object-fit:cover!important;opacity:.9!important;mask-image:linear-gradient(#000 55%,transparent 100%);-webkit-mask-image:linear-gradient(#000 55%,transparent 100%)}
-.backface .event-body{position:relative;z-index:2;margin-top:auto}
-.backface .signup{position:relative;z-index:6;display:block;pointer-events:auto;min-height:42px}
-@media(max-width:760px){
- .card.selected{transform:translate(-50%,-50%) translate(0,10px) scale(1.2)!important}
- .card.selected .card-inner{animation:cardFlip .92s cubic-bezier(.18,.78,.18,1) .06s both}
- .backface{padding:16px}
- .backface h3{font-size:25px}
- .backface p{font-size:9px;line-height:1.45;margin-bottom:12px}
- .backface .event-time,.backface .event-host,.backface .event-price{font-size:7px}
- .backface .signup{margin-top:11px;padding:10px 12px;font-size:7px}
-}
-</style>
-<style id="events-card-visual-fix">
-/* Карточка: фото, свет и текст находятся на отдельных слоях */
-.card{isolation:isolate;perspective:1200px;transition:filter .65s ease,opacity .65s ease}
-.card-inner{z-index:1;isolation:isolate;transform-style:preserve-3d;backface-visibility:visible;-webkit-backface-visibility:visible;background:#171629}
-.front{position:absolute;inset:0;z-index:1;border-radius:inherit;overflow:hidden;transform:rotateY(0);backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#171629}
-.front>img{position:absolute!important;inset:0!important;z-index:0!important;display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;opacity:1!important;filter:saturate(1.02) contrast(1.04)!important}
-.front:after{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(8,9,19,.04) 0%,rgba(8,9,19,.12) 34%,rgba(8,9,19,.84) 100%);pointer-events:none}
-.card:after{display:none!important}
-.card:before{z-index:0!important;pointer-events:none}
-.card-content{z-index:2!important;inset:auto 15px 16px!important;transform:translateZ(2px)!important;text-shadow:0 2px 12px rgba(0,0,0,.55)}
-.card-content h2{font-size:clamp(22px,2vw,28px);line-height:.98;margin-bottom:9px}
-.card .front-description{display:block;margin:9px 0 8px;color:rgba(255,255,255,.86);font-size:10px;line-height:1.48;letter-spacing:0;text-transform:none;max-width:100%;text-shadow:0 1px 9px rgba(0,0,0,.65)}
-.card .front-meta{font-size:8px;color:rgba(255,255,255,.78)}
-.card .date{font-size:8px;line-height:1.4}
-.backface{position:absolute!important;inset:0!important;z-index:4!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;gap:0!important;padding:19px!important;overflow:hidden!important;border-radius:inherit!important;background:linear-gradient(155deg,rgba(24,25,44,.93),rgba(9,11,24,.97))!important;transform:rotateY(180deg) translateZ(1px)!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
-.backface>img{position:absolute!important;inset:0 0 auto 0!important;z-index:0!important;display:block!important;width:100%!important;height:48%!important;object-fit:cover!important;object-position:center 42%!important;opacity:.34!important;filter:saturate(.9) brightness(.75)!important;mask-image:linear-gradient(to bottom,#000 15%,rgba(0,0,0,.7) 58%,transparent 100%)!important;-webkit-mask-image:linear-gradient(to bottom,#000 15%,rgba(0,0,0,.7) 58%,transparent 100%)!important}
-.backface:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(10,12,25,.10),rgba(10,12,25,.52) 37%,rgba(10,12,25,.94) 67%);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);pointer-events:none}
-.backface .event-body{position:relative!important;z-index:2!important;width:100%;margin:auto 0 0!important;max-height:100%;overflow-y:auto;overscroll-behavior:contain;padding-top:35px;text-shadow:0 2px 10px rgba(0,0,0,.35)}
-.backface h3{font:400 clamp(25px,3vw,34px)/.98 Baskerville,Georgia,serif;margin:0 0 10px;color:#fff}
-.backface .line{height:1px;background:rgba(255,255,255,.28);margin:0 0 12px}
-.backface p{display:block!important;font-size:clamp(10px,1vw,12px)!important;line-height:1.58!important;color:rgba(255,255,255,.9)!important;margin:0 0 14px!important;white-space:normal!important}
-.backface .event-time,.backface .event-host,.backface .event-price{display:block!important;font-size:8px!important;line-height:1.5!important;margin:6px 0!important;color:rgba(255,255,255,.78)!important}
-.backface .event-time span,.backface .event-host span,.backface .event-price span{color:#fff!important}
-.backface .signup{position:relative;z-index:3;display:block!important;width:100%;margin-top:13px!important;min-height:40px;flex:none}
-.backface .close{z-index:5}
-.card.selected{z-index:100!important;filter:none!important;animation:cardArrival .65s cubic-bezier(.2,.75,.2,1) both}
-.card.selected .card-inner{animation:cardFlip .9s cubic-bezier(.2,.75,.2,1) .03s both;box-shadow:0 42px 110px rgba(0,0,0,.62),0 0 70px rgba(145,220,210,.18)!important}
-.card.selected .front{opacity:1!important}
-.card.selected .backface{opacity:1!important}
-.deck.open .card:not(.selected){filter:blur(8px) brightness(.58)!important;opacity:.23!important;transition:filter .7s ease,opacity .7s ease}
-.deck.animating .card{transition:none!important}
-.deck.dragging .card{transition:none!important}
-.deck:not(.dragging):not(.animating) .card{transition:filter .65s ease,opacity .65s ease}
-@media(max-width:760px){
- .card{width:156px;height:232px}
- .card.selected{transform:translate(-50%,-50%) translate(0,0) scale(1.34)!important}
- .card-content{inset:auto 12px 13px!important}
- .card-content h2{font-size:22px}
- .card .front-description{font-size:9px;line-height:1.42;margin:7px 0}
- .backface{padding:15px!important}
- .backface .event-body{padding-top:30px}
- .backface h3{font-size:25px}
- .backface p{font-size:9px!important;line-height:1.48!important;margin-bottom:10px!important}
- .backface .event-time,.backface .event-host,.backface .event-price{font-size:7px!important;margin:4px 0!important}
- .backface .signup{margin-top:9px!important;min-height:36px;padding:9px 10px}
-}
-@media(prefers-reduced-motion:reduce){.deck.animating .card{transition:none!important}}
-</style><style id="events-backface-readable">
-/* Back side: reverse the face itself so its contents read normally after the parent flips */
-.card-inner{transform-style:preserve-3d!important}
-.front{transform:rotateY(0deg) translateZ(1px)!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
-.backface{transform:rotateY(180deg) translateZ(2px)!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important;isolation:isolate!important}
-.card.selected .card-inner{animation:cardFlip .92s cubic-bezier(.2,.75,.2,1) .03s both!important}
-.card.selected .front{opacity:1!important}
-.card.selected .backface{opacity:1!important}
-.backface>img{inset:-3%!important;width:106%!important;height:106%!important;max-width:none!important;object-fit:cover!important;opacity:.42!important;filter:blur(8px) brightness(.55) saturate(.9)!important;transform:scale(1.04)!important;mask-image:none!important;-webkit-mask-image:none!important}
-.backface:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(10,12,25,.28),rgba(10,12,25,.58) 44%,rgba(10,12,25,.88));backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);pointer-events:none}
-.backface .event-body{position:relative!important;z-index:3!important;width:100%;max-height:100%;overflow-y:auto;margin:auto 0 0!important;padding:28px 0 2px!important;transform:none!important;direction:ltr!important;text-align:left!important}
-.backface .event-body *{direction:ltr!important;unicode-bidi:plaintext!important;transform:none!important}
-.backface h3,.backface p,.backface .event-time,.backface .event-host,.backface .event-price{color:#fff!important;text-align:left!important;transform:none!important}
-.backface p{font-size:clamp(11px,1.1vw,13px)!important;line-height:1.65!important;opacity:.94!important}
-.backface .signup{z-index:5!important;transform:none!important;pointer-events:auto!important}
-@media(max-width:760px){.backface>img{filter:blur(7px) brightness(.5)!important}.backface .event-body{padding-top:22px!important}.backface p{font-size:10px!important;line-height:1.5!important}}
-</style><style id="events-final-interaction-fix">
-/* Единая геометрия двух сторон карточки: оборот карточки не зеркалит текст */
-.card-inner{transform-style:preserve-3d!important;will-change:transform}
-.front{transform:rotateY(0deg) translateZ(1px)!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
-.backface{transform:rotateY(180deg) translateZ(2px)!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important;direction:ltr!important;text-align:left!important}
-.backface .event-body{direction:ltr!important;text-align:left!important;unicode-bidi:normal!important;transform:none!important}
-.backface .event-body *{direction:ltr!important;text-align:left!important;unicode-bidi:normal!important;transform:none!important}
-.backface h3,.backface p,.backface .event-time,.backface .event-host,.backface .event-price{writing-mode:horizontal-tb!important;text-orientation:mixed!important}
-.backface>img{inset:-4%!important;width:108%!important;height:108%!important;max-width:none!important;object-fit:cover!important;opacity:.48!important;filter:blur(7px) brightness(.52) saturate(.9)!important;transform:scale(1.04)!important;mask-image:none!important;-webkit-mask-image:none!important}
-.backface:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(10,12,25,.22),rgba(10,12,25,.58) 43%,rgba(10,12,25,.91));backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);pointer-events:none}
-.backface .event-body{position:relative!important;z-index:3!important;width:100%;max-height:100%;overflow-y:auto;margin:auto 0 0!important;padding:26px 0 2px!important}
-.card-inner{box-shadow:0 26px 65px rgba(0,0,0,.38),0 9px 24px rgba(0,0,0,.24),inset 0 0 28px rgba(255,255,255,.08)!important}
-.front>img{filter:saturate(1.02) contrast(1.05) drop-shadow(0 8px 14px rgba(0,0,0,.2))!important}
-.card{transition:filter .7s ease,opacity .7s ease}
+
+
+
+
+
+
+
+<style id="events-card-system">
+/* Единая система карточек: без конфликтующих 3D-поворотов и повторных переопределений */
+.deck{touch-action:none}
+.card{touch-action:none;will-change:transform,opacity;transition:transform .82s cubic-bezier(.2,.72,.18,1),opacity .45s ease;backface-visibility:hidden}
 .deck.animating .card,.deck.dragging .card{transition:none!important}
-.deck:not(.animating):not(.dragging) .card{transition:filter .7s ease,opacity .7s ease}
-@media(max-width:760px){.backface>img{filter:blur(6px) brightness(.5)!important}.backface .event-body{padding-top:20px!important}}
-</style><style id="events-true-3d-card-fix">
-/* Ключевой фикс: overflow:hidden на вращающемся контейнере ломал 3D-стороны */
-.card{perspective:1400px!important;transform-style:preserve-3d!important}
-.card-inner{overflow:visible!important;transform-style:preserve-3d!important;position:absolute!important;inset:0!important;border-radius:25px!important}
-.front,.backface{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border-radius:25px!important;overflow:hidden!important;backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
-.front{transform:rotateY(0deg) translateZ(1px)!important;z-index:2!important}
-.backface{transform:rotateY(180deg) translateZ(1px)!important;z-index:3!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;direction:ltr!important;text-align:left!important;padding:clamp(16px,2vw,25px)!important}
-.card.selected .card-inner{animation:eventsRealFlip .95s cubic-bezier(.2,.72,.18,1) both!important}
-@keyframes eventsRealFlip{from{transform:rotateY(0deg) scale(.94)}to{transform:rotateY(180deg) scale(1.03)}}
-.card.selected .front{opacity:1!important}
-.card.selected .backface{opacity:1!important}
-.backface>img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;opacity:.32!important;filter:blur(5px) brightness(.48) saturate(.9)!important;transform:scale(1.06)!important;mask-image:none!important;-webkit-mask-image:none!important}
-.backface:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(12,13,29,.25),rgba(12,13,29,.72) 58%,rgba(12,13,29,.94));pointer-events:none}
-.backface .event-body{position:relative!important;z-index:3!important;width:100%!important;max-height:100%!important;overflow-y:auto!important;overscroll-behavior:contain!important;margin:auto 0 0!important;padding:38px 0 2px!important;direction:ltr!important;text-align:left!important;transform:none!important}
-.backface .event-body *{direction:ltr!important;text-align:left!important;unicode-bidi:normal!important;transform:none!important}
-.backface h3{font-size:clamp(23px,2.4vw,34px)!important;line-height:1.04!important}
-.backface p{font-size:clamp(11px,1.05vw,14px)!important;line-height:1.65!important;color:rgba(255,255,255,.94)!important;white-space:normal!important}
-.backface .event-time,.backface .event-host,.backface .event-price{font-size:clamp(8px,.75vw,10px)!important;line-height:1.55!important}
-.backface .signup{position:relative!important;z-index:5!important;display:block!important;width:100%!important;min-height:42px!important;flex:none!important;pointer-events:auto!important}
-.backface .close{z-index:6!important}
-.card.selected{z-index:100!important}
+.card-inner{transform-style:flat!important;backface-visibility:visible!important;transition:none!important}
+.front{position:absolute!important;inset:0!important;z-index:1!important;display:block!important;overflow:hidden!important;border-radius:inherit!important;backface-visibility:visible!important;-webkit-backface-visibility:visible!important;background:#171629}
+.front>img{position:absolute!important;inset:0!important;z-index:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;opacity:1!important;filter:saturate(1.02) contrast(1.04)!important}
+.front:after{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(8,9,19,.02),rgba(8,9,19,.12) 34%,rgba(8,9,19,.86) 100%);pointer-events:none}
+.card:after{display:none!important}
+.card-content{z-index:2!important;inset:auto 15px 16px!important;transform:none!important;text-shadow:0 2px 12px rgba(0,0,0,.55)}
+.card-content h2{font-size:clamp(22px,2vw,28px);line-height:.98;margin-bottom:9px}
+.card .front-description{display:block;margin:9px 0 8px;color:rgba(255,255,255,.9);font-size:10px;line-height:1.45;letter-spacing:0;text-transform:none;max-width:100%;text-shadow:0 1px 9px rgba(0,0,0,.65)}
+.card .front-meta{font-size:8px;color:rgba(255,255,255,.82)}
+.card .date{font-size:8px;line-height:1.4}
+.backface{position:absolute!important;inset:0!important;z-index:4!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;gap:0!important;padding:19px!important;overflow:hidden!important;border-radius:inherit!important;background:linear-gradient(155deg,rgba(24,25,44,.96),rgba(9,11,24,.985))!important;transform:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;backface-visibility:visible!important;-webkit-backface-visibility:visible!important;direction:ltr!important;text-align:left!important}
+.backface>img{position:absolute!important;inset:0 0 auto 0!important;z-index:0!important;display:block!important;width:100%!important;height:43%!important;object-fit:cover!important;object-position:center 42%!important;opacity:.22!important;filter:blur(1.5px) brightness(.48) saturate(.9)!important;transform:scale(1.015)!important;mask-image:linear-gradient(to bottom,#000 12%,rgba(0,0,0,.7) 58%,transparent 100%)!important;-webkit-mask-image:linear-gradient(to bottom,#000 12%,rgba(0,0,0,.7) 58%,transparent 100%)!important}
+.backface:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(10,12,25,.08),rgba(10,12,25,.46) 34%,rgba(10,12,25,.96) 67%);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);pointer-events:none}
+.card.selected{z-index:50!important;width:min(310px,76vw)!important;height:min(460px,64vh)!important;max-width:calc(100vw - 36px)!important;max-height:calc(100vh - 112px)!important;transform:translate(-50%,-50%) scale(1)!important;filter:none!important;animation:none!important}
+.card.selected .card-inner{transform-style:flat!important;animation:eventsCardSquash .72s cubic-bezier(.2,.72,.18,1) both!important;box-shadow:0 32px 90px rgba(0,0,0,.52),0 0 38px rgba(130,220,210,.17),inset 0 0 28px rgba(255,255,255,.1)!important}
+@keyframes eventsCardSquash{0%{transform:scaleX(1)}43%{transform:scaleX(.035)}57%{transform:scaleX(.035)}100%{transform:scaleX(1)}}
+@keyframes eventsFrontHide{0%,42%{opacity:1;visibility:visible}56%,100%{opacity:0;visibility:hidden}}
+@keyframes eventsBackShow{0%,44%{opacity:0;visibility:hidden}58%,100%{opacity:1;visibility:visible}}
+.card.selected .front{animation:eventsFrontHide .72s ease both!important}
+.card.selected .backface{visibility:visible!important;opacity:1!important;pointer-events:auto!important;animation:eventsBackShow .72s ease both!important}
+.card.selected .backface .event-body{position:relative!important;z-index:3!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;width:100%!important;min-height:0!important;max-height:100%!important;margin:auto 0 0!important;padding:22px 0 2px!important;overflow-y:auto!important;overscroll-behavior:contain!important;scrollbar-width:thin!important;scrollbar-color:rgba(255,255,255,.28) transparent!important;transform:none!important;direction:ltr!important;unicode-bidi:normal!important;text-align:left!important;writing-mode:horizontal-tb!important}
+.card.selected .backface .event-body *{transform:none!important;direction:ltr!important;unicode-bidi:normal!important;text-align:left!important;writing-mode:horizontal-tb!important;text-orientation:mixed!important}
+.card.selected .backface h3{margin:0 0 11px!important;font-size:clamp(23px,3vw,29px)!important;line-height:1.08!important}
+.card.selected .backface .line{flex:none!important;margin:0 0 12px!important}
+.card.selected .backface p{margin:0 0 13px!important;font-size:11px!important;line-height:1.5!important;color:rgba(255,255,255,.92)!important;white-space:normal!important}
+.card.selected .backface .event-time,.card.selected .backface .event-host,.card.selected .backface .event-price{margin:4px 0!important;font-size:8px!important;line-height:1.45!important;letter-spacing:.08em!important;color:rgba(255,255,255,.78)!important}
+.card.selected .backface .signup{position:sticky!important;bottom:0!important;z-index:5!important;display:flex!important;align-items:center!important;justify-content:center!important;flex:none!important;width:100%!important;min-height:44px!important;margin:12px 0 0!important;padding:11px 14px!important;border:1px solid rgba(255,255,255,.55)!important;border-radius:999px!important;background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(255,255,255,.12))!important;color:#fff!important;font:inherit!important;font-size:9px!important;letter-spacing:.13em!important;text-transform:uppercase!important;white-space:normal!important;cursor:pointer!important;pointer-events:auto!important;transform:none!important;box-shadow:0 8px 22px rgba(0,0,0,.22)!important;backdrop-filter:blur(12px)!important}
+.card.selected .backface .signup:hover{background:rgba(255,255,255,.32)!important}
+.card.selected .backface .close{z-index:6!important;pointer-events:auto!important}
+.card.selected .front .hint,.deck.open .selection-guide{display:none!important}
+.card.closing .card-inner{animation:eventsCardSquash .48s cubic-bezier(.2,.72,.18,1) reverse both!important}
+.card.closing .front{animation:eventsFrontHide .48s ease reverse both!important}
+.card.closing .backface{animation:eventsBackShow .48s ease reverse both!important}
+.card:focus-visible .card-inner{outline:2px solid rgba(255,226,174,.9);outline-offset:4px}
+.event-toast{position:absolute;z-index:80;left:50%;bottom:70px;transform:translate(-50%,12px);max-width:min(90vw,420px);padding:12px 16px;border:1px solid rgba(255,255,255,.22);border-radius:16px;background:rgba(15,14,29,.88);backdrop-filter:blur(14px);color:#fff;font-size:11px;line-height:1.45;text-align:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,transform .2s,visibility .2s}
+.event-toast.visible{opacity:1;visibility:visible;transform:translate(-50%,0)}
 @media(max-width:760px){
- .card.selected{transform:translate(-50%,-50%) scale(1.24)!important}
- .card.selected .card-inner{animation:eventsRealFlip .95s cubic-bezier(.2,.72,.18,1) both!important}
- .backface{padding:15px!important}
- .backface .event-body{padding-top:28px!important}
- .backface h3{font-size:23px!important}
- .backface p{font-size:9px!important;line-height:1.5!important}
- .backface .event-time,.backface .event-host,.backface .event-price{font-size:7px!important}
- .backface .signup{min-height:36px!important;padding:9px 10px!important;font-size:7px!important}
-}
-</style>
-<style id="events-card-layout-final">
-/* Размытие фонового фото — только 15% от прежней интенсивности */
-.backface>img{
-  inset:0!important;width:100%!important;height:100%!important;
-  opacity:.22!important;filter:blur(1.5px) brightness(.48) saturate(.9)!important;
-  transform:scale(1.015)!important;mask-image:none!important;-webkit-mask-image:none!important
-}
-.backface:before{
-  background:linear-gradient(180deg,rgba(12,13,29,.28),rgba(12,13,29,.72) 58%,rgba(12,13,29,.94))!important;
-  backdrop-filter:none!important;-webkit-backdrop-filter:none!important
-}
-/* Открытая карточка становится достаточно большой для полноценного описания */
-.card.selected{
-  width:min(360px,82vw)!important;height:min(540px,72vh)!important;
-  left:50%!important;top:50%!important;
-  transform:translate(-50%,-50%) scale(1)!important;
-  animation:none!important;filter:none!important;opacity:1!important
-}
-.card.selected .card-inner{
-  overflow:visible!important;animation:eventsReadableFlip .82s cubic-bezier(.2,.72,.18,1) both!important;
-  transform-style:preserve-3d!important
-}
-@keyframes eventsReadableFlip{
-  from{transform:rotateY(0deg) scale(.94)}
-  to{transform:rotateY(180deg) scale(1)}
-}
-.card.selected .front{backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
-.card.selected .backface{
-  display:flex!important;flex-direction:column!important;justify-content:flex-end!important;
-  padding:26px!important;overflow:hidden!important;text-align:left!important;direction:ltr!important;
-  backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important
-}
-.card.selected .backface .event-body{
-  position:relative!important;z-index:3!important;width:100%!important;
-  display:flex!important;flex-direction:column!important;align-items:stretch!important;
-  gap:0!important;margin:auto 0 0!important;padding:24px 0 0!important;
-  max-height:100%!important;overflow-y:auto!important;overscroll-behavior:contain!important;
-  direction:ltr!important;text-align:left!important
-}
-.card.selected .backface h3{
-  margin:0 0 13px!important;font-size:clamp(25px,3vw,34px)!important;
-  line-height:1.08!important;text-align:left!important
-}
-.card.selected .backface .line{flex:none!important;margin:0 0 14px!important}
-.card.selected .backface p{
-  margin:0 0 18px!important;font-size:13px!important;line-height:1.62!important;
-  color:rgba(255,255,255,.94)!important;text-align:left!important;white-space:normal!important
-}
-.card.selected .backface .event-time,
-.card.selected .backface .event-host,
-.card.selected .backface .event-price{
-  margin:5px 0!important;font-size:9px!important;line-height:1.5!important;
-  letter-spacing:.09em!important;text-align:left!important
-}
-.card.selected .backface .signup{
-  flex:none!important;width:100%!important;min-height:46px!important;margin:18px 0 0!important;
-  padding:13px 16px!important;font-size:9px!important;letter-spacing:.14em!important;
-  white-space:normal!important;position:relative!important;z-index:8!important;pointer-events:auto!important
-}
-.card.selected .backface .close{z-index:9!important}
-@media(max-width:760px){
- .card.selected{width:min(88vw,380px)!important;height:min(76vh,650px)!important;transform:translate(-50%,-50%)!important}
- .card.selected .backface{padding:19px!important}
- .card.selected .backface .event-body{padding-top:28px!important}
- .card.selected .backface h3{font-size:27px!important}
- .card.selected .backface p{font-size:12px!important;line-height:1.58!important;margin-bottom:14px!important}
- .card.selected .backface .event-time,.card.selected .backface .event-host,.card.selected .backface .event-price{font-size:8px!important}
- .card.selected .backface .signup{min-height:44px!important;margin-top:14px!important}
-}
-</style>
-
-
-<style id="events-card-orientation-and-size-fix">
-/* Открытая карточка: надёжная 2D-перекладка сторон без зеркального текста */
-.card.selected{
- width:min(310px,76vw)!important;height:min(460px,64vh)!important;
- max-width:calc(100vw - 36px)!important;max-height:calc(100vh - 120px)!important;
-}
-.card.selected .card-inner{
- transform-style:flat!important;
- animation:eventsFlatFlip .72s cubic-bezier(.2,.72,.18,1) both!important;
-}
-@keyframes eventsFlatFlip{
- 0%{transform:scaleX(1)}
- 42%{transform:scaleX(.035)}
- 58%{transform:scaleX(.035)}
- 100%{transform:scaleX(1)}
-}
-/* Не используем rotateY на задней стороне: это и создавало зеркальный текст */
-.card.selected .front{
- opacity:0!important;
- visibility:hidden!important;
- backface-visibility:visible!important;
-}
-.card.selected .backface{
- transform:none!important;
- transform-style:flat!important;
- backface-visibility:visible!important;
- -webkit-backface-visibility:visible!important;
- visibility:visible!important;
- opacity:1!important;
- display:flex!important;
- flex-direction:column!important;
- justify-content:flex-end!important;
- direction:ltr!important;
- text-align:left!important;
- pointer-events:auto!important;
-}
-.card.selected .backface .event-body{
- position:relative!important;z-index:10!important;
- display:flex!important;flex-direction:column!important;
- width:100%!important;max-height:100%!important;
- margin:auto 0 0!important;padding:24px 0 2px!important;
- overflow-y:auto!important;overscroll-behavior:contain!important;
- transform:none!important;transform-style:flat!important;
- direction:ltr!important;unicode-bidi:normal!important;
- text-align:left!important;writing-mode:horizontal-tb!important;
-}
-.card.selected .backface .event-body *{
- transform:none!important;direction:ltr!important;
- unicode-bidi:normal!important;text-align:left!important;
- writing-mode:horizontal-tb!important;text-orientation:mixed!important;
-}
-.card.selected .backface h3{font-size:24px!important;line-height:1.08!important;margin:0 0 12px!important}
-.card.selected .backface p{font-size:11px!important;line-height:1.5!important;margin:0 0 12px!important}
-.card.selected .backface .event-time,
-.card.selected .backface .event-host,
-.card.selected .backface .event-price{font-size:8px!important;line-height:1.45!important}
-.card.selected .backface .signup{
- display:flex!important;visibility:visible!important;opacity:1!important;
- align-items:center!important;justify-content:center!important;
- width:100%!important;min-height:44px!important;flex:none!important;
- margin:12px 0 0!important;padding:12px!important;
- position:relative!important;z-index:20!important;
- pointer-events:auto!important;transform:none!important;
- color:#fff!important;border:1px solid rgba(255,255,255,.55)!important;
- background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.12))!important;
- font-size:10px!important;letter-spacing:.12em!important;
-}
-.card.selected .backface .close{z-index:25!important;pointer-events:auto!important}
-.card.selected .front .hint{display:none!important}
-.deck.open .selection-guide{display:none!important}
-@media(max-width:760px){
- .card.selected{width:min(310px,78vw)!important;height:min(460px,64vh)!important}
- .card.selected .backface{padding:18px!important}
- .card.selected .backface .event-body{padding-top:20px!important}
+ .card.selected{width:min(310px,78vw)!important;height:min(460px,64vh)!important;max-height:calc(100dvh - 112px)!important}
+ .card.selected .backface{padding:17px!important}
+ .card.selected .backface .event-body{padding-top:19px!important}
  .card.selected .backface h3{font-size:23px!important}
- .card.selected .backface p{font-size:10px!important;line-height:1.46!important}
+ .card.selected .backface p{font-size:10px!important;line-height:1.46!important;margin-bottom:11px!important}
+ .card.selected .backface .event-time,.card.selected .backface .event-host,.card.selected .backface .event-price{font-size:7.5px!important}
  .card.selected .backface .signup{min-height:42px!important;font-size:9px!important}
+ .event-toast{bottom:58px;font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ .card,.card-inner,.card.selected .front,.card.selected .backface,.card.closing .front,.card.closing .backface{animation:none!important;transition:none!important}
+ .card.selected .front{visibility:hidden!important;opacity:0!important}
+ .card.selected .backface{visibility:visible!important;opacity:1!important}
 }
 </style>
-
 </head>
 <body>
 <main class="events">
@@ -440,108 +216,149 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 <header class="top"><div class="brand"><strong>FreedOm</strong><span>дом, в котором живет любовь</span></div><a class="back" href="index.html">Вернуться</a></header><section class="heading"><h1>События</h1><p>Несколько историй, которые сейчас происходят между людьми.</p></section>
 <section class="deck" id="deck">
 <div class="particles"><i class="particle"></i><i class="particle"></i><i class="particle"></i><i class="particle"></i><i class="particle"></i></div>
-<article class="card" data-i="0"><div class="card-inner"><div class="front"><img src="images/gong-meditation.jpg" alt=""><div class="card-content"><div class="card-num">01</div><h2>Молитвенная встреча</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Встреча для тишины, молитвы и совместного присутствия.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/gong-meditation.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Молитвенная встреча</h3><div class="line"></div><p>Встреча для тишины, молитвы и совместного присутствия. Это спокойное пространство, где можно остановиться, побыть в единстве с другими, обратиться к важным мыслям и провести время без спешки и внешнего шума.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="1"><div class="card-inner"><div class="front"><img src="images/tea-ceremony.jpg" alt=""><div class="card-content"><div class="card-num">02</div><h2>Поющие чаши</h2><div class="date">Дата и время · по расписанию</div><p class="front-description">Звуковая практика, пространство тишины и мягкого возвращения к себе.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/tea-ceremony.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Поющие чаши</h3><div class="line"></div><p>Звуковая практика с поющими чашами — время замедлиться, расслабиться и переключить внимание с повседневных забот. Мягкие звуковые вибрации помогают создать атмосферу тишины, присутствия и внутреннего равновесия.</p><div class="event-time">Дата и время · <span>по расписанию · уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="2"><div class="card-inner"><div class="front"><img src="images/sauna.jpg" alt=""><div class="card-content"><div class="card-num">03</div><h2>Баня</h2><div class="date">Каждый четверг · время уточняется</div><p class="front-description">Тёплый вечер: пар, холодная вода, разговоры и восстановление.</p><div class="front-meta"><span>Ведущий · Евгений</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/sauna.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Баня</h3><div class="line"></div><p>Традиционный вечер FreeDom: сначала жар и парная, затем прохладная вода и отдых. Мы собираемся, чтобы восстановить силы, пообщаться, посмеяться и переключиться после рабочих будней. Можно провести вечер в своём ритме, чередуя тепло, холод и расслабление.</p><div class="event-time">Дата и время · <span>каждый четверг · время уточняется</span></div><div class="event-host">Проводит · <span>Евгений</span></div><div class="event-price">Стоимость · <span>200 ₽ для жителей</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="3"><div class="card-inner"><div class="front"><img src="images/gong-meditation.jpg" alt=""><div class="card-content"><div class="card-num">04</div><h2>Караоке</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Музыка, смех и вечер, когда можно перестать стесняться.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/gong-meditation.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Караоке</h3><div class="line"></div><p>Неформальный музыкальный вечер, где не нужно быть профессиональным певцом. Выбираем любимые песни, поддерживаем друг друга, смеёмся и просто наслаждаемся моментом. Можно петь самому или устроиться рядом и слушать остальных.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="4"><div class="card-inner"><div class="front"><img src="images/room-bungalow.jpg" alt=""><div class="card-content"><div class="card-num">05</div><h2>Клуб позитивной психологии</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Разговор о том, что помогает жить осознаннее, свободнее и добрее.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/room-bungalow.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Клуб позитивной психологии</h3><div class="line"></div><p>Встреча для открытого разговора о мышлении, привычках и отношении к жизни. Вместе исследуем идеи, делимся личным опытом и ищем практические способы жить осознаннее, свободнее и добрее — с уважением к разным взглядам и историям.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article>
+<article class="card" data-i="0" tabindex="0" role="button" aria-expanded="false" aria-label="Открыть событие: Молитвенная встреча"><div class="card-inner"><div class="front"><img src="images/gong-meditation.jpg" alt=""><div class="card-content"><div class="card-num">01</div><h2>Молитвенная встреча</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Встреча для тишины, молитвы и совместного присутствия.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/gong-meditation.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Молитвенная встреча</h3><div class="line"></div><p>Встреча для тишины, молитвы и совместного присутствия. Это спокойное пространство, где можно остановиться, побыть в единстве с другими, обратиться к важным мыслям и провести время без спешки и внешнего шума.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="1" tabindex="0" role="button" aria-expanded="false" aria-label="Открыть событие: Поющие чаши"><div class="card-inner"><div class="front"><img src="images/tea-ceremony.jpg" alt=""><div class="card-content"><div class="card-num">02</div><h2>Поющие чаши</h2><div class="date">Дата и время · по расписанию</div><p class="front-description">Звуковая практика, пространство тишины и мягкого возвращения к себе.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/tea-ceremony.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Поющие чаши</h3><div class="line"></div><p>Звуковая практика с поющими чашами — время замедлиться, расслабиться и переключить внимание с повседневных забот. Мягкие звуковые вибрации помогают создать атмосферу тишины, присутствия и внутреннего равновесия.</p><div class="event-time">Дата и время · <span>по расписанию · уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="2" tabindex="0" role="button" aria-expanded="false" aria-label="Открыть событие: Баня"><div class="card-inner"><div class="front"><img src="images/sauna.jpg" alt=""><div class="card-content"><div class="card-num">03</div><h2>Баня</h2><div class="date">Каждый четверг · время уточняется</div><p class="front-description">Тёплый вечер: пар, холодная вода, разговоры и восстановление.</p><div class="front-meta"><span>Ведущий · Евгений</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/sauna.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Баня</h3><div class="line"></div><p>Традиционный вечер FreeDom: сначала жар и парная, затем прохладная вода и отдых. Мы собираемся, чтобы восстановить силы, пообщаться, посмеяться и переключиться после рабочих будней. Можно провести вечер в своём ритме, чередуя тепло, холод и расслабление.</p><div class="event-time">Дата и время · <span>каждый четверг · время уточняется</span></div><div class="event-host">Проводит · <span>Евгений</span></div><div class="event-price">Стоимость · <span>200 ₽ для жителей</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="3" tabindex="0" role="button" aria-expanded="false" aria-label="Открыть событие: Караоке"><div class="card-inner"><div class="front"><img src="images/16594-compressed.png" alt=""><div class="card-content"><div class="card-num">04</div><h2>Караоке</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Музыка, смех и вечер, когда можно перестать стесняться.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/16594-compressed.png" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Караоке</h3><div class="line"></div><p>Неформальный музыкальный вечер, где не нужно быть профессиональным певцом. Выбираем любимые песни, поддерживаем друг друга, смеёмся и просто наслаждаемся моментом. Можно петь самому или устроиться рядом и слушать остальных.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="4" tabindex="0" role="button" aria-expanded="false" aria-label="Открыть событие: Клуб позитивной психологии"><div class="card-inner"><div class="front"><img src="images/room-bungalow.jpg" alt=""><div class="card-content"><div class="card-num">05</div><h2>Клуб позитивной психологии</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Разговор о том, что помогает жить осознаннее, свободнее и добрее.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/room-bungalow.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Клуб позитивной психологии</h3><div class="line"></div><p>Встреча для открытого разговора о мышлении, привычках и отношении к жизни. Вместе исследуем идеи, делимся личным опытом и ищем практические способы жить осознаннее, свободнее и добрее — с уважением к разным взглядам и историям.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article>
 </section>
+<div class="event-toast" id="eventToast" role="status" aria-live="polite"></div>
 <div class="selection-guide">нажми на карточку · затем ещё раз, чтобы открыть</div>
 <div class="foot">выбери событие · оно приблизится</div></div>
 </main>
 <script>
-
-const deck=document.getElementById('deck'),cards=[...document.querySelectorAll('.card')];
-let rot=0,idx=0,drag=false,moved=false,lastAngle=0,ignoreUntil=0,opened=false,raf=0;
-
+const deck=document.getElementById('deck');
+const cards=[...document.querySelectorAll('.card')];
+const toast=document.getElementById('eventToast');
+const STEP=360/cards.length;
+let rot=0,idx=0,drag=false,moved=false,lastAngle=0,pointerId=null,ignoreUntil=0,opened=false,raf=0,toastTimer=0;
 function norm(a){return Math.atan2(Math.sin(a),Math.cos(a))}
 function pointerAngle(x,y){
  const r=deck.getBoundingClientRect();
  return Math.atan2(y-(r.top+r.height/2),x-(r.left+r.width/2));
 }
 function apply(){
- idx=((Math.round(-rot/72)%5)+5)%5;
+ idx=((Math.round(-rot/STEP)%cards.length)+cards.length)%cards.length;
  cards.forEach((card,i)=>{
-  const rad=(i*72+rot)*Math.PI/180, depth=(Math.cos(rad)+1)/2;
+  const rad=(i*STEP+rot)*Math.PI/180;
+  const depth=(Math.cos(rad)+1)/2;
   const x=Math.sin(rad)*(innerWidth<760?150:330);
   const y=(1-Math.cos(rad))*(innerWidth<760?34:62);
-  const scale=.72+depth*.30, opacity=.34+depth*.66;
-  card.style.transform=(opened&&i===idx)?`translate(-50%,-50%) translate3d(0,0,0) rotate(0deg) scale(.92)`:`translate(-50%,-50%) translate3d(${x}px,${y}px,0) rotate(${Math.sin(rad)*7}deg) scale(${scale})`;
-  card.style.opacity=opened&&i!==idx?.16:opacity;
-  card.style.zIndex=Math.round(10+depth*30);
-  card.style.filter=opened&&i!==idx?'blur(8px)':`blur(${Math.max(0,(1-depth)*1.6)}px)`;
+  const scale=.72+depth*.30;
+  card.style.transform=(opened&&i===idx)
+   ?'translate(-50%,-50%) translate3d(0,0,0) scale(1)'
+   :`translate(-50%,-50%) translate3d(${x}px,${y}px,0) rotate(${Math.sin(rad)*7}deg) scale(${scale})`;
+  card.style.opacity=opened&&i!==idx?.12:(.34+depth*.66);
+  card.style.zIndex=String(Math.round(10+depth*30));
   card.classList.toggle('focused',!opened&&i===idx);
+  card.setAttribute('aria-expanded',String(opened&&i===idx));
  });
 }
-function animateRotation(target,duration=1250){
- cancelAnimationFrame(raf);
- deck.classList.add('animating');
+function animateRotation(target,duration=950){
+ cancelAnimationFrame(raf);deck.classList.add('animating');
  const start=rot,delta=target-start,startTime=performance.now();
+ const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
  function tick(now){
-  const p=Math.min(1,(now-startTime)/duration);
-  const eased=1-Math.pow(1-p,4);
-  rot=start+delta*eased;
-  apply();
+  const p=reduced?1:Math.min(1,(now-startTime)/duration);
+  const eased=1-Math.pow(1-p,4);rot=start+delta*eased;apply();
   if(p<1)raf=requestAnimationFrame(tick);
-  else{rot=target;apply();deck.classList.remove('animating')}
+  else{rot=target;apply();deck.classList.remove('animating');raf=0}
  }
  raf=requestAnimationFrame(tick);
 }
-function snap(){animateRotation(Math.round(rot/72)*72,980)}
-function focus(i){
- let d=i-idx;if(d>2)d-=5;if(d<-2)d+=5;
- animateRotation(rot-d*72,1050);
+function snap(){animateRotation(Math.round(rot/STEP)*STEP,760)}
+function focusCard(i){
+ let d=i-idx;if(d>cards.length/2)d-=cards.length;if(d<-cards.length/2)d+=cards.length;
+ animateRotation(rot-d*STEP,850);
 }
 function openCard(card){
- idx=cards.indexOf(card);rot=-idx*72;opened=true;
- cards.forEach(c=>c.classList.remove('selected'));card.classList.add('selected');
- deck.classList.add('open');apply();
+ cancelAnimationFrame(raf);raf=0;deck.classList.remove('animating');
+ idx=cards.indexOf(card);rot=-idx*STEP;opened=true;
+ cards.forEach(c=>c.classList.remove('selected','closing'));
+ card.classList.add('selected');deck.classList.add('open');apply();
 }
 function closeCard(){
  if(!opened)return;
- opened=false;
- const card=cards[idx];
- card.classList.add('closing');
- setTimeout(()=>{card.classList.remove('selected','closing');deck.classList.remove('open');apply()},480);
+ opened=false;const card=cards[idx];card.classList.add('closing');
+ deck.classList.remove('open');apply();
+ window.setTimeout(()=>{card.classList.remove('selected','closing');apply()},480);
 }
-
-// При открытой карточке касание в любом месте закрывает её; нажатие «Записаться» сохраняет действие.
+function showToast(message){
+ if(!toast)return;
+ toast.textContent=message;toast.classList.add('visible');
+ window.clearTimeout(toastTimer);
+ toastTimer=window.setTimeout(()=>toast.classList.remove('visible'),3400);
+}
+async function copyRequest(message){
+ try{
+  if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(message);
+  else{
+   const field=document.createElement('textarea');field.value=message;field.setAttribute('readonly','');
+   field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();
+   const ok=document.execCommand('copy');field.remove();if(!ok)throw new Error('copy unavailable');
+  }
+  showToast('Текст заявки скопирован. Отправьте его администрации FreeDom.');
+ }catch(_){showToast('Не удалось скопировать автоматически. Попробуйте ещё раз.');}
+}
+async function requestSignup(card){
+ const title=card.querySelector('.backface h3')?.textContent?.trim()||'событие FreeDom';
+ const time=card.querySelector('.event-time')?.innerText?.replace(/\s+/g,' ')||'Дата и время уточняются';
+ const message=`Здравствуйте! Хочу записаться на событие «${title}». ${time}. Подскажите, пожалуйста, ближайшую дату и условия участия.`;
+ if(navigator.share){
+  try{await navigator.share({title:'Запись на событие FreeDom',text:message,url:location.href});showToast('Выберите мессенджер и отправьте заявку администрации.');}
+  catch(error){if(error?.name!=='AbortError')await copyRequest(message);}
+ }else await copyRequest(message);
+}
 document.addEventListener('pointerdown',e=>{
  if(!opened||e.target.closest('.signup')||e.target.closest('.close'))return;
- // Закрываем карточку только при касании свободного пространства вне неё.
- if(!e.target.closest('.card')){closeCard();ignoreUntil=Date.now()+520}
+ if(!e.target.closest('.card.selected')){closeCard();ignoreUntil=Date.now()+520;}
 },true);
-
 cards.forEach((card,i)=>{
  card.addEventListener('click',e=>{
-  if(e.target.closest('.signup')){e.stopPropagation();alert('Для записи свяжитесь с администрацией FreeDom.');return}
-  if(e.target.closest('.close')){e.stopPropagation();closeCard();return}
-  if(opened){closeCard();return}if(Date.now()<ignoreUntil)return;if(i===idx)openCard(card);else focus(i)
+  if(e.target.closest('.signup')){e.preventDefault();e.stopPropagation();requestSignup(card);return;}
+  if(e.target.closest('.close')){e.preventDefault();e.stopPropagation();closeCard();return;}
+  if(opened)return;
+  if(Date.now()<ignoreUntil||moved)return;
+  if(i===idx)openCard(card);else focusCard(i);
  });
- 
+ card.addEventListener('keydown',e=>{
+  if(e.key==='Enter'||e.key===' '){e.preventDefault();if(opened)return;if(i===idx)openCard(card);else focusCard(i);}
+ });
 });
-
-
-
 deck.addEventListener('pointerdown',e=>{
- if(opened)return;
- drag=true;moved=false;lastAngle=pointerAngle(e.clientX,e.clientY);
- deck.classList.add('dragging');deck.setPointerCapture?.(e.pointerId);
+ if(opened||e.target.closest('button,a'))return;
+ cancelAnimationFrame(raf);raf=0;deck.classList.remove('animating');
+ drag=true;moved=false;pointerId=e.pointerId;lastAngle=pointerAngle(e.clientX,e.clientY);
+ deck.classList.add('dragging');
 });
-deck.addEventListener('pointermove',e=>{
- if(!drag||opened)return;
+document.addEventListener('pointermove',e=>{
+ if(!drag||e.pointerId!==pointerId)return;
  const now=pointerAngle(e.clientX,e.clientY),delta=norm(now-lastAngle);
- if(Math.abs(delta)>.0005){moved=true;const sensitivity=2.25;const targetRot=rot-delta*180/Math.PI*sensitivity;rot+=(targetRot-rot)*.58;lastAngle=now;apply()}
-});
+ if(Math.abs(delta)>.0005){
+  if(Math.abs(delta)>.012)moved=true;
+  rot-=delta*180/Math.PI*1.65;lastAngle=now;apply();
+ }
+},{passive:true});
 function release(e){
- if(!drag)return;drag=false;deck.classList.remove('dragging');
- try{deck.releasePointerCapture?.(e.pointerId)}catch(_){}
- ignoreUntil=moved?Date.now()+220:0;snap();
+ if(!drag||e.pointerId!==pointerId)return;
+ drag=false;pointerId=null;deck.classList.remove('dragging');
+ if(moved)ignoreUntil=Date.now()+260;snap();
 }
-deck.addEventListener('pointerup',release);deck.addEventListener('pointercancel',release);
-deck.addEventListener('wheel',e=>{if(opened)return;e.preventDefault();animateRotation(rot-Math.sign(e.deltaY||e.deltaX)*14,520);clearTimeout(deck._wheel);deck._wheel=setTimeout(snap,620)},{passive:false});
+document.addEventListener('pointerup',release);
+document.addEventListener('pointercancel',release);
+deck.addEventListener('wheel',e=>{
+ if(opened)return;e.preventDefault();
+ animateRotation(rot-Math.sign(e.deltaY||e.deltaX)*STEP*.24,430);
+ window.clearTimeout(deck._wheel);deck._wheel=window.setTimeout(snap,520);
+},{passive:false});
 document.addEventListener('keydown',e=>{
- if(e.key==='Escape'){closeCard();return} if(opened)return;
- if(e.key==='ArrowRight'||e.key==='ArrowDown'){animateRotation(rot-18,650);clearTimeout(deck._key);deck._key=setTimeout(snap,700)}
- if(e.key==='ArrowLeft'||e.key==='ArrowUp'){animateRotation(rot+18,650);clearTimeout(deck._key);deck._key=setTimeout(snap,700)}
- if((e.key==='Enter'||e.key===' ')&&!opened){e.preventDefault();openCard(cards[idx])}
+ if(e.key==='Escape'){closeCard();return;}if(opened)return;
+ if(e.key==='ArrowRight'||e.key==='ArrowDown'){
+  e.preventDefault();animateRotation(rot-STEP*.25,430);
+  window.clearTimeout(deck._key);deck._key=window.setTimeout(snap,470);
+ }
+ if(e.key==='ArrowLeft'||e.key==='ArrowUp'){
+  e.preventDefault();animateRotation(rot+STEP*.25,430);
+  window.clearTimeout(deck._key);deck._key=window.setTimeout(snap,470);
+ }
 });
+window.addEventListener('resize',()=>{if(!opened)apply()});
 apply();
 </script>
 </body>
