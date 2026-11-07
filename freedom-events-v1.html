@@ -144,7 +144,22 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 @media(max-width:760px){.card .front-description{font-size:8px;line-height:1.3}.card .front-meta{font-size:6.5px}.card-content{inset:auto 11px 12px}}
 @media(prefers-reduced-motion:reduce){.card{transition:none!important}}
 </style>
-</head>
+<style id="event-modal-polish">.card{transition:transform 1.05s cubic-bezier(.22,.75,.18,1),opacity 1s ease,filter 1s ease}
+.card.selected{animation:none!important;transform:translate(-50%,-50%) scale(1)!important;z-index:50!important}
+.card.selected .card-inner{animation:none!important;transform:none!important}
+.card.selected .front{opacity:1!important}.card .backface{display:none!important}
+.event-modal{position:fixed;z-index:100;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:clamp(26px,7vh,72px) clamp(20px,7vw,100px);overflow:auto;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .65s ease,visibility .65s}
+.event-modal.active{opacity:1;visibility:visible;pointer-events:auto}
+.event-modal-bg,.event-modal-shade{position:absolute;inset:0}.event-modal-bg{background-position:center;background-size:cover;transform:scale(1.035);transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}.event-modal.active .event-modal-bg{transform:scale(1)}
+.event-modal-shade{background:linear-gradient(90deg,rgba(10,9,23,.84),rgba(10,9,23,.57) 58%,rgba(10,9,23,.25)),linear-gradient(0deg,rgba(8,7,18,.78),transparent 75%)}
+.event-modal-content{position:relative;z-index:2;width:min(680px,100%);margin:0 auto 2vh;transform:translateY(24px);opacity:0;transition:transform .7s cubic-bezier(.2,.75,.2,1) .08s,opacity .65s ease .08s}.event-modal.active .event-modal-content{transform:translateY(0);opacity:1}
+.event-modal-kicker{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,231,190,.78);margin-bottom:18px}.event-modal-content h2{font:400 clamp(42px,7vw,76px)/.95 Baskerville,Georgia,serif;margin:0 0 20px;color:#fff;text-shadow:0 4px 35px rgba(0,0,0,.25)}
+.event-modal-rule{width:72px;height:1px;background:rgba(255,222,174,.72);margin:0 0 20px}.event-modal-content>p{max-width:590px;font-size:clamp(14px,1.5vw,17px);line-height:1.75;color:rgba(255,255,255,.9);margin:0 0 27px}
+.event-modal-details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:650px}.event-modal-details div{display:grid;gap:8px}.event-modal-details span{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55)}.event-modal-details strong{font-size:13px;line-height:1.5;font-weight:500;color:#fff}
+.event-modal-signup{margin-top:30px;border:1px solid rgba(255,255,255,.55);border-radius:99px;padding:13px 22px;background:rgba(255,255,255,.12);backdrop-filter:blur(14px);color:white;font:inherit;font-size:9px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.event-modal-close{position:absolute;z-index:4;right:clamp(18px,4vw,52px);top:clamp(18px,4vh,42px);width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.42);background:rgba(255,255,255,.1);backdrop-filter:blur(12px);color:#fff;font-size:25px;cursor:pointer}
+@media(max-width:760px){.event-modal{align-items:flex-end;padding:90px 23px 45px}.event-modal-shade{background:linear-gradient(0deg,rgba(8,7,18,.94),rgba(8,7,18,.68) 60%,rgba(8,7,18,.24))}.event-modal-content{margin-bottom:0}.event-modal-kicker{font-size:8px;margin-bottom:13px}.event-modal-content h2{font-size:clamp(39px,11vw,58px);margin-bottom:16px}.event-modal-content>p{font-size:13px;line-height:1.65;margin-bottom:21px}.event-modal-details{grid-template-columns:1fr;gap:12px}.event-modal-details div{grid-template-columns:100px 1fr;align-items:start;gap:10px}.event-modal-details span{font-size:7px}.event-modal-details strong{font-size:11px}.event-modal-signup{margin-top:22px;width:100%}}
+@media(prefers-reduced-motion:reduce){.event-modal,.event-modal-content,.event-modal-bg{transition:none!important}}</style></head>
 <body>
 <main class="events">
 <div class="grain"></div><div class="stars"><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i></div>
@@ -154,11 +169,15 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 <article class="card" data-i="0"><div class="card-inner"><div class="front"><img src="images/gong-meditation.jpg" alt=""><div class="card-content"><div class="card-num">01</div><h2>Молитвенная встреча</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Встреча для тишины, молитвы и совместного присутствия.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/gong-meditation.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Молитвенная встреча</h3><div class="line"></div><p>Встреча для тишины, молитвы и совместного присутствия.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться на событие</button></div></div></div></article><article class="card" data-i="1"><div class="card-inner"><div class="front"><img src="images/tea-ceremony.jpg" alt=""><div class="card-content"><div class="card-num">02</div><h2>Поющие чаши</h2><div class="date">Дата и время · по расписанию</div><p class="front-description">Звуковая практика, пространство тишины и мягкого возвращения к себе.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/tea-ceremony.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Поющие чаши</h3><div class="line"></div><p>Звуковая практика, пространство тишины и мягкого возвращения к себе.</p><div class="event-time">Дата и время · <span>по расписанию · уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться на событие</button></div></div></div></article><article class="card" data-i="2"><div class="card-inner"><div class="front"><img src="images/sauna.jpg" alt=""><div class="card-content"><div class="card-num">03</div><h2>Баня</h2><div class="date">Каждый четверг · время уточняется</div><p class="front-description">Тёплый вечер: пар, холодная вода, разговоры и восстановление.</p><div class="front-meta"><span>Ведущий · Евгений</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/sauna.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Баня</h3><div class="line"></div><p>Тёплый вечер FreeDom: пар, вода, разговор и восстановление.</p><div class="event-time">Дата и время · <span>каждый четверг · время уточняется</span></div><div class="event-host">Проводит · <span>Евгений</span></div><div class="event-price">Стоимость · <span>200 ₽ для жителей</span></div><button class="signup" type="button">Записаться на событие</button></div></div></div></article><article class="card" data-i="3"><div class="card-inner"><div class="front"><img src="images/gong-meditation.jpg" alt=""><div class="card-content"><div class="card-num">04</div><h2>Караоке</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Музыка, смех и вечер, когда можно перестать стесняться.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/gong-meditation.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Караоке</h3><div class="line"></div><p>Музыка, смех и тот самый вечер, когда можно перестать стесняться.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться на событие</button></div></div></div></article><article class="card" data-i="4"><div class="card-inner"><div class="front"><img src="images/room-bungalow.jpg" alt=""><div class="card-content"><div class="card-num">05</div><h2>Клуб позитивной психологии</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Разговор о том, что помогает жить осознаннее, свободнее и добрее.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/room-bungalow.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Клуб позитивной психологии</h3><div class="line"></div><p>Разговор о том, что помогает жить осознаннее, свободнее и добрее.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться на событие</button></div></div></div></article>
 </section>
 <div class="selection-guide">нажми на карточку · затем ещё раз, чтобы открыть</div>
-<div class="foot">выбери событие · оно приблизится</div>
+<div class="foot">выбери событие · оно приблизится</div><div class="event-modal" id="eventModal" aria-hidden="true"><div class="event-modal-bg" id="eventModalBg"></div><div class="event-modal-shade"></div><button class="event-modal-close" id="eventModalClose" type="button" aria-label="Закрыть">×</button><div class="event-modal-content"><div class="event-modal-kicker">Пространство FreeDom · событие</div><h2 id="eventModalTitle"></h2><div class="event-modal-rule"></div><p id="eventModalDescription"></p><div class="event-modal-details"><div><span>Дата и время</span><strong id="eventModalTime"></strong></div><div><span>Ведущий</span><strong id="eventModalHost"></strong></div><div><span>Стоимость</span><strong id="eventModalPrice"></strong></div></div><button class="event-modal-signup" id="eventModalSignup" type="button">Записаться на событие</button></div></div>
 </main>
 <script>
 
 const deck=document.getElementById('deck'),cards=[...document.querySelectorAll('.card')];
+const eventModal=document.getElementById('eventModal'),eventModalBg=document.getElementById('eventModalBg');
+const modalTitle=document.getElementById('eventModalTitle'),modalDescription=document.getElementById('eventModalDescription');
+const modalTime=document.getElementById('eventModalTime'),modalHost=document.getElementById('eventModalHost'),modalPrice=document.getElementById('eventModalPrice');
+let activeEventCard=null;
 /* Данные события: эти три поля должны приходить из админ-панели. */
 const EVENT_FIELDS=['description','time','price'];
 let rot=0,idx=0,drag=false,moved=false,lastAngle=0,ignoreUntil=0,opened=false,raf=0;
@@ -186,7 +205,7 @@ function snap(){
  const target=Math.round(rot/72)*72;
  cancelAnimationFrame(raf);
  const start=rot,delta=target-start;
- const duration=720,startTime=performance.now();
+ const duration=1080,startTime=performance.now();
  function tick(now){
   const p=Math.min(1,(now-startTime)/duration);
   const eased=1-Math.pow(1-p,5);
@@ -201,16 +220,36 @@ function focus(i){
  let d=i-idx;if(d>2)d-=5;if(d<-2)d+=5;
  rot-=d*72;apply();
 }
-function openCard(card){idx=cards.indexOf(card);rot=-idx*72;opened=true;cards.forEach(c=>c.classList.remove('selected'));card.classList.add('selected');deck.classList.add('open');apply()}
-function closeCard(){if(!opened)return;const card=cards[idx];opened=false;deck.classList.add('closing');card.classList.remove('selected');card.classList.add('closing');setTimeout(()=>{card.classList.remove('closing');deck.classList.remove('closing');apply()},500)}
+function openCard(card){
+ idx=cards.indexOf(card);rot=-idx*72;opened=true;activeEventCard=card;
+ cards.forEach(c=>c.classList.remove('selected'));card.classList.add('selected');deck.classList.add('open');apply();
+ const front=card.querySelector('.front'),back=card.querySelector('.backface');
+ const title=front?.querySelector('h2')?.textContent||'Событие';
+ const description=front?.querySelector('.front-description')?.textContent||back?.querySelector('.event-body p')?.textContent||'';
+ const image=front?.querySelector('img')?.getAttribute('src')||'';
+ const details=back?.querySelector('.event-body');
+ const read=(selector,fallback)=>details?.querySelector(selector)?.textContent?.replace(/^.*?·/,'').trim()||fallback;
+ modalTitle.textContent=title;modalDescription.textContent=description;
+ modalTime.textContent=read('.event-time','Уточняется');
+ modalHost.textContent=read('.event-host','FreeDom');
+ modalPrice.textContent=read('.event-price','По записи');
+ eventModalBg.style.backgroundImage=image?'url("'+image+'")':'none';
+ eventModal.classList.add('active');eventModal.setAttribute('aria-hidden','false');
+}
+function closeCard(){
+ if(!opened)return;opened=false;eventModal.classList.remove('active');eventModal.setAttribute('aria-hidden','true');
+ if(activeEventCard)activeEventCard.classList.remove('selected');
+ deck.classList.remove('open');activeEventCard=null;apply();
+}
 
 cards.forEach((card,i)=>{
  card.addEventListener('click',e=>{if(e.target.closest('.close'))return;if(opened)return;if(Date.now()<ignoreUntil)return;if(i===idx)openCard(card);else focus(i)});
- card.querySelector('.close')?.addEventListener('click',e=>{e.stopPropagation();closeCard()});
- card.querySelector('.signup')?.addEventListener('click',e=>{e.stopPropagation();alert('Здесь будет форма записи на событие.');});
+ 
 });
 
-deck.addEventListener('click',e=>{if(opened&&!e.target.closest('.card.selected')){closeCard();return}});
+document.getElementById('eventModalClose')?.addEventListener('click',closeCard);
+eventModal?.addEventListener('click',e=>{if(e.target===eventModal||e.target.classList.contains('event-modal-shade'))closeCard()});
+document.getElementById('eventModalSignup')?.addEventListener('click',()=>{alert('Форма записи будет подключена отдельно.')});
 deck.addEventListener('pointerdown',e=>{
  if(opened)return;
  drag=true;moved=false;lastAngle=pointerAngle(e.clientX,e.clientY);
