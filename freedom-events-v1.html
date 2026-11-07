@@ -352,6 +352,46 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 }
 </style>
 
+
+<style id="events-card-orientation-and-size-fix">
+/* Компактная открытая карточка — сохраняем место вокруг неё */
+.card.selected{
+ width:min(310px,76vw)!important;height:min(460px,64vh)!important;
+ max-width:calc(100vw - 36px)!important;max-height:calc(100vh - 120px)!important;
+}
+.card.selected .card-inner{
+ animation:eventsCompactFlip .78s cubic-bezier(.2,.72,.18,1) both!important;
+}
+@keyframes eventsCompactFlip{
+ from{transform:rotateY(0deg) scale(.96)}
+ to{transform:rotateY(180deg) scale(1)}
+}
+/* Компенсируем зеркальное отображение текста отдельно от поверхности карточки */
+.card.selected .backface .event-body{
+ transform:rotateY(180deg)!important;
+ transform-style:flat!important;
+ direction:ltr!important;text-align:left!important;
+}
+.card.selected .backface .event-body *{
+ transform:none!important;direction:ltr!important;
+ unicode-bidi:plaintext!important;text-align:left!important;
+ writing-mode:horizontal-tb!important;text-orientation:mixed!important;
+}
+.card.selected .backface{padding:22px!important}
+.card.selected .backface h3{font-size:clamp(22px,2.2vw,29px)!important;line-height:1.08!important}
+.card.selected .backface p{font-size:12px!important;line-height:1.55!important}
+.card.selected .backface .signup{min-height:42px!important;margin-top:12px!important}
+@media(max-width:760px){
+ .card.selected{width:min(310px,78vw)!important;height:min(460px,64vh)!important}
+ .card.selected .backface{padding:18px!important}
+ .card.selected .backface .event-body{padding-top:20px!important}
+ .card.selected .backface h3{font-size:24px!important}
+ .card.selected .backface p{font-size:11px!important;line-height:1.48!important}
+ .card.selected .backface .event-time,.card.selected .backface .event-host,.card.selected .backface .event-price{font-size:8px!important}
+ .card.selected .backface .signup{min-height:40px!important;font-size:8px!important}
+}
+</style>
+
 </head>
 <body>
 <main class="events">
@@ -381,7 +421,7 @@ function apply(){
   const x=Math.sin(rad)*(innerWidth<760?150:330);
   const y=(1-Math.cos(rad))*(innerWidth<760?34:62);
   const scale=.72+depth*.30, opacity=.34+depth*.66;
-  card.style.transform=`translate(-50%,-50%) translate3d(${x}px,${y}px,0) rotate(${Math.sin(rad)*7}deg) scale(${scale})`;
+  card.style.transform=(opened&&i===idx)?`translate(-50%,-50%) translate3d(0,0,0) rotate(0deg) scale(.92)`:`translate(-50%,-50%) translate3d(${x}px,${y}px,0) rotate(${Math.sin(rad)*7}deg) scale(${scale})`;
   card.style.opacity=opened&&i!==idx?.16:opacity;
   card.style.zIndex=Math.round(10+depth*30);
   card.style.filter=opened&&i!==idx?'blur(8px)':`blur(${Math.max(0,(1-depth)*1.6)}px)`;
