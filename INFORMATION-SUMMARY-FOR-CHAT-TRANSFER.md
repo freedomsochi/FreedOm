@@ -1,3 +1,24 @@
+# LATEST PROJECT CHECKPOINT — 2026-11-09: AUTONOMOUS TEAM / SITE-WIDE FINISH
+
+- User supplied a project-wide brief: preserve the current FreeDom design direction; fix technical bugs; smooth Orbit rotation/motion and page transitions; prepare photography briefs for every public page with intentional image reuse; finish pages except owner-written project history text and final photo insertion; connect the existing personal account and CRM; create one administrator entry using the requested username `freedomadmin`; have an autonomous agent team plan and execute multi-page tasks from one request.
+- Work is branch-only on `rooms-architectural-v1`; do not change `main` or Production.
+- Read the persistent project summary, Rooms plan addendum, Rooms 3D design brief, architectural plan, Rooms UX spec, CRM UX audit and availability test note before planning the work.
+- Added `AUTONOMOUS_TEAM_EXECUTION.md` (team roles, orchestration, boundaries, page inventory, security and done criteria) and `PHOTO_SHOT_LIST.md` (page-by-page photo list, aspect ratios, reuse rules and media folder naming).
+- Latest docs commits: `223c0e15c05dd979651b3eb4fd00c0ccf37fca89` (team brief), `65da292eaa49d43bb6a289c7c8190ce829b54ea4` (photo shot list). Latest branch HEAD at this checkpoint: `65da292eaa49d43bb6a289c7c8190ce829b54ea4`.
+- Correct active public pages from the project history: `index.html`, `space.html`, `kitchen-pixel-v2.html`, `freedom-banya-v2.html`, `freedom-events-v1.html`, `rooms-eco-futurism-v2.html`, `project-history.html`; login/profile/register; existing CRM pages `admin_v10_dashboard.html`, `admin_v10.html`, `admin_v10_events.html`, `admin_v11_bookings.html`, `admin_v11_kitchen.html`, `admin_v11_services.html`, `admin_v10_finance.html`, `admin_v11_finance_detail.html`, `admin_v11_guest_profile.html`.
+- Rooms is the approved photo/glass UI page `rooms-eco-futurism-v2.html`; do not replace it with the experimental architectural/3D pages.
+- Existing CRM is not a blank slate: dashboard, guests, events, bookings, kitchen, services, finance, guest profiles and Supabase business functions already exist. Reuse and reconcile these.
+- Current `login.html` authenticates by email; it does not support a username. `profile.html` currently includes an admin-panel link in the markup without a client-side role gate. Supabase admin RPCs and some policies check the existing admin Auth email directly. The requested `freedomadmin` username must be implemented as a secure mapping to one existing/created Supabase Auth user and enforced in RPC/RLS/API—not as a hidden button or client-only check. Do not store any password in code or repo.
+- Supabase read-only review: public schema contains the existing business tables and server functions. Security Advisor reports 7 SECURITY DEFINER functions executable by `anon` and 32 executable by `authenticated`; several admin functions explicitly validate the current admin email. Audit each function and its call sites individually; do not mass-revoke EXECUTE because some anonymous public booking/registration functions are intentional.
+- Vercel team/project context is readable; Vercel project is `freed-om` linked to `freedomsochi/FreedOm`. Listing Connect connectors and deployments returned 403 Forbidden. Agent runtime deployment and latest preview verification are blocked until the Vercel team/project permissions expose those operations. Do not claim a deployment is live/READY.
+- Recommended agent runtime: separate Eve project/workspace, not a new package at the website root. One coordinator with four specialist subagents (designer, technical programmer, motion designer, tester), scoped GitHub and Vercel connections, durable sessions, task log and review gates. Eve supports declared subagents and durable sessions; deployment/connector authorization still needs to be completed and tested.
+- Project history text remains owner-authored. Agents may prepare layout and image slots but must not invent the story.
+- The admin password was supplied in chat; do not copy it into any file or environment visible to the model. Advise rotating it before activating the admin account.
+- No public-page code or Supabase schema/auth changes were made in this checkpoint. The two new Markdown documents are planning artifacts only; the five agents are not yet deployed/running.
+- Next execution sequence: (1) establish Eve agent app in a separate project and connect GitHub/Vercel; (2) perform per-page code/interaction audit and media-slot mapping; (3) implement technical and motion fixes in isolated commits; (4) reconcile CRM and secure single-admin Auth mapping; (5) regression-test all flows and publish branch Preview; (6) leave photo insertion and project-history copy as final owner inputs.
+
+---
+
 # ROOMS PAGE FEEDBACK — 2026-10-28 (LATEST)
 
 User's latest correction:
