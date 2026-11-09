@@ -1,3 +1,19 @@
+# LATEST CHECKPOINT — 2026-11-09: FIVE-AGENT EVE SCAFFOLD + VERCEL PROJECT
+
+- Created isolated Git branch `freedom-agents-foundation` from `rooms-architectural-v1`; all work in this checkpoint is on that branch.
+- Created separate Vercel project `freedom-agents`, ID `prj_m4M7FQM0kWhVZPcSMXWdOB11ZN55`, linked to `freedomsochi/FreedOm` with root directory `agent-runtime`. This is separate from the public website Vercel project `freed-om`.
+- Added Eve project scaffold under `agent-runtime/`: package.json, README, root coordinator `agent/agent.ts` + `instructions.md`, and four declared subagents (designer, programmer, motion, tester), each with role-specific `agent.ts` and instructions.
+- Added `agent-runtime/SETUP_STATUS.md` documenting current status and blockers.
+- Vercel build/deployment ID `dpl_EdWvVpi3uNC2VVs4C1iNhT9rmtvy` reached state `READY`; confirmed alias `https://freedom-agents.vercel.app`. Deployment target is production for the separate agent project only; no public website deployment was changed. Agent project has SSO protection; public/browser runtime and live agent session were not verified.
+- Root agent uses model identifier `openai/gpt-5.4`. Eve build succeeded and initialized sandbox templates. Runtime model call and specialist delegation have NOT yet been verified.
+- GitHub/Vercel Connect connector listing still returns 403. No connector UID is known, no GitHub repo-write integration is attached, and the agent must not be represented as fully autonomous yet. Next required action is create/authorize a least-privilege GitHub connector in Vercel and attach it to `freedom-agents`; then add Eve MCP connection using the actual confirmed connector UID.
+- Agent runtime needs an authenticated web channel/session authorization before it can accept owner instructions. Do not expose an anonymous write-capable endpoint.
+- The new planning docs `AUTONOMOUS_TEAM_EXECUTION.md` and `PHOTO_SHOT_LIST.md` are included in this branch from the previous planning checkpoint.
+- No public FreeDom page code or Supabase schema/auth was modified in this checkpoint. Public site Production remains untouched.
+- Next: resolve GitHub connector access; add scoped repository tools; verify one read-only test session and four subagent delegations; then allow branch-only writes with QA. Keep main/Production, Supabase schema/data changes, payments, destructive operations and Production promotion approval-gated.
+
+---
+
 # LATEST PROJECT CHECKPOINT — 2026-11-09: AUTONOMOUS TEAM / SITE-WIDE FINISH
 
 - User supplied a project-wide brief: preserve the current FreeDom design direction; fix technical bugs; smooth Orbit rotation/motion and page transitions; prepare photography briefs for every public page with intentional image reuse; finish pages except owner-written project history text and final photo insertion; connect the existing personal account and CRM; create one administrator entry using the requested username `freedomadmin`; have an autonomous agent team plan and execute multi-page tasks from one request.
