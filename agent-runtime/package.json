@@ -1,0 +1,20 @@
+{
+  "name": "freedom-agents",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "eve dev",
+    "build": "eve build",
+    "start": "eve start",
+    "info": "eve info"
+  },
+  "dependencies": {
+    "eve": "latest"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
