@@ -18,7 +18,7 @@ The four specialists are declared Eve subagents under `agent/subagents/`. The ro
 - Root Directory: `agent-runtime`.
 - Runtime: Node.js 24.x.
 - Working branch: `freedom-github-tools-integration`.
-- Latest confirmed READY deployment: commit `4cf3fef618729657bfdd9f55b5dd778a3bcf1006`.
+- Latest confirmed READY deployment at the last verification: commit `37db077ea199d81fd8e92fe61e98e896c5eda020` (setup-status documentation update).
 - Preview URL: https://freedom-agents-d1ajrvd4t-sergeyogorodnik19-3325s-projects.vercel.app
 - Vercel SSO protection is enabled for deployment URLs.
 - Public FreeDom project `freed-om` and its Production deployment have not been changed.
