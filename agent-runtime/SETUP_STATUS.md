@@ -37,6 +37,14 @@ The latest deployment is READY. This confirms build/deployment only, not live ru
 - Extension write tools retain the package's default approval behavior.
 - Connector-to-project lookup for this project currently returns 404; listing connectors returns 403. The owner previously reported completing the UI setup, but the available API does not confirm the attachment. Do not treat GitHub access as verified. Do not request or store a personal access token.
 
+## Latest local validation (2026-11-10)
+
+- In an isolated Vercel Sandbox, `npx eve info` reports 4 subagents, 6 tools, `Compile ready`, and 0 diagnostics errors/warnings.
+- `npm run build` completed successfully in that sandbox. The default sandbox provider emitted environment warnings because this ad-hoc build was not running on a Vercel deployment; the build itself exited 0.
+- The Web Chat registry scaffold was installed only inside the temporary sandbox. The first Next.js build exposed the expected missing auth-generated `apps/web/app/eve-agent.ts` file. No Web Chat scaffold files have been committed to this branch.
+- The Web Chat setup wizard selected the recommended Vercel-services hosting path and Sign in with Vercel, but stopped because the sandbox CLI has no authenticated Vercel session and `eve link` could not complete. No OAuth app or environment credentials were provisioned.
+- The temporary sandbox did not push any changes to GitHub. No production project or database was touched.
+
 ## What is not yet verified
 
 1. Dedicated authenticated Web Chat. The default Eve HTTP channel exists, but a user-facing Web Chat has not been installed and tested. The documented interactive setup is `npx eve link` followed by `npx eve add channel/web`, then hosting-layout selection and Sign in with Vercel.
