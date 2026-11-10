@@ -4,16 +4,26 @@
   "type": "module",
   "scripts": {
     "dev": "eve dev",
+    "dev:all": "vercel dev --local",
+    "dev:eve": "eve dev",
+    "dev:web": "next dev apps/web",
     "build": "eve build",
+    "build:web": "next build apps/web",
     "start": "eve start",
     "info": "eve info"
   },
   "dependencies": {
-    "eve": "1.0.0-rc.6",
     "@github-tools/eve-extension": "0.10.0",
-    "@vercel/connect": "latest"
+    "@vercel/connect": "latest",
+    "eve": "1.0.0-rc.6",
+    "next": "^16.4.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   },
   "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
     "typescript": "^5.8.3"
   },
   "engines": {
