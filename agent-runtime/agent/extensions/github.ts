@@ -1,24 +1,19 @@
 import githubExtension from "@github-tools/eve-extension";
 
 /**
- * GitHub access for the FreeDom coordinator and its specialists.
- *
- * The connector is restricted at the Vercel/GitHub installation level to
- * freedomsochi/FreedOm. All write operations require human approval by
- * default; the critical repository mutations below are explicitly gated.
+ * FreeDom repository tools.
+ * The GitHub App installation is restricted to freedomsochi/FreedOm.
+ * Every write tool requires explicit human approval (default Eve extension
+ * behavior); repository-changing operations are explicitly gated here too.
  */
 export default githubExtension({
   connector: "github/freedom-agents-github",
-  preset: "maintainer",
+  preset: "pr-author",
   requireApproval: {
     createBranch: true,
+    deleteBranch: true,
     createOrUpdateFile: true,
     createPullRequest: true,
     updatePullRequest: true,
-    mergePullRequest: true,
-    deleteBranch: true,
-    deleteFile: true,
-    createRelease: true,
-    publishRelease: true,
   },
 });
