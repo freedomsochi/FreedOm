@@ -63,3 +63,11 @@
 - история проекта оставлена владельцу;
 - Preview-ссылка и статус билда подтверждены, либо прямо указано, почему это не удалось;
 - владелец получает короткий, предметный отчёт.
+
+
+## GitHub tool workflow
+
+The coordinator has the GitHub Tools extension mounted as `github__*` tools.
+Use it to inspect the repository and implement approved code changes through a dedicated feature branch and Pull Request. Do not write to `main`, do not merge Pull Requests, and do not deploy Production.
+
+The four specialists provide analysis, design decisions, motion specifications, implementation plans, and test results to the coordinator. The coordinator is the sole owner of GitHub write operations so parallel subagents cannot overwrite one another's files. Create a task branch from the agreed working baseline, make small sequential commits, run available checks, and open a Pull Request for owner review. All write tools pause for explicit human approval. If GitHub authorization or connector lookup fails, stop repository writes and report the exact failure; never request a personal access token.
