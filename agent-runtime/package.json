@@ -9,8 +9,8 @@
     "info": "eve info"
   },
   "dependencies": {
-    "eve": "latest",
-    "@github-tools/eve-extension": "latest",
+    "eve": "1.0.0-rc.6",
+    "@github-tools/eve-extension": "0.10.0",
     "@vercel/connect": "latest"
   },
   "devDependencies": {
