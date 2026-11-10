@@ -33,3 +33,14 @@ Updated: 2026-11-09
 5. Add a web channel protected by authenticated user access. Do not expose an anonymous write-capable session endpoint.
 6. Verify that the coordinator invokes each specialist and returns structured task receipts.
 7. Only then enable routine branch writes. Keep main/Production, Supabase schema/data changes, financial actions, and destructive operations behind owner approval.
+
+
+## GitHub tools integration — in progress
+
+- Connector created by owner: `github/freedom-agents-github` (connector ID `scl_vUPTXpsk35EE0gjjFe3THw`).
+- Integration branch: `freedom-github-tools-integration`.
+- Added `@github-tools/eve-extension` and `@vercel/connect` dependencies (currently tagged `latest`; lockfile/pinning still required).
+- Added `agent/extensions/github.ts` using the `pr-author` preset and explicit approval gates for branch, file, and Pull Request writes.
+- Coordinator is designated as sole GitHub writer; specialists return plans/results to coordinator.
+- Not yet verified: Vercel project-to-connector link via API (Vercel API returned 403), dependency installation/build, live GitHub token issuance, tool invocation, durable approval, subagent delegation, authenticated user-facing channel.
+- Do not claim autonomy until the above runtime checks pass. Do not merge this branch or deploy public Production.
