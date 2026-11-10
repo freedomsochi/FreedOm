@@ -36,13 +36,16 @@ Updated: 2026-11-10
 
 ## What is not yet verified
 
+- Build-time discovery of the four subagents follows Eve's documented filesystem convention, and each has its own instructions. Live delegation is still unverified.
+- The coordinator prompt explicitly names the four subagent tools and requires all four reviews for multi-page/process tasks.
+
 1. Live authenticated chat session with the root coordinator.
 2. Actual tool invocation against the connected GitHub repository.
 3. Actual delegation to all four specialist subagents in a live session.
 4. Agent Runs observability. The Vercel Agent Runs API currently returns 403 to this integration.
 5. Browser/device testing of any site changes.
 6. Connector attachment in the Vercel project. The owner previously reported completing the UI setup, but the available API lookup does not confirm it.
-7. A dedicated Web Chat channel/UI. The default Eve HTTP channel exists, but a user-facing web chat setup has not been completed and tested.
+7. A dedicated Web Chat channel/UI. The default Eve HTTP channel exists, but a user-facing web chat setup has not been completed and tested. The documented setup requires the interactive `npx eve add channel/web` installer and Sign in with Vercel; this has not been run.
 
 ## Safety boundary
 
