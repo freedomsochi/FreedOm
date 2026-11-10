@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "eve": "latest",
-    "@github-tools/eve-extension": "latest"
+    "@github-tools/eve-extension": "latest",
+    "@vercel/connect": "latest"
   },
   "devDependencies": {
     "typescript": "^5.8.3"
