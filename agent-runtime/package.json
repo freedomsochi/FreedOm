@@ -9,7 +9,8 @@
     "info": "eve info"
   },
   "dependencies": {
-    "eve": "latest"
+    "eve": "latest",
+    "@github-tools/eve-extension": "latest"
   },
   "devDependencies": {
     "typescript": "^5.8.3"
