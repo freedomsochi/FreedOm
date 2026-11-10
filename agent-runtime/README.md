@@ -14,7 +14,7 @@ The four specialists are declared Eve subagents. The root agent coordinates them
 
 ## Local setup
 
-Requires Node.js 24+.
+Requires Node.js 24.x.
 
 ```bash
 npm install
