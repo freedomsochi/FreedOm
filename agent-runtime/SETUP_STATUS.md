@@ -10,18 +10,21 @@ Updated: 2026-11-10
 - Root directory: `agent-runtime`.
 - Node.js project setting: `24.x`.
 - Active implementation branch: `freedom-github-tools-integration`.
-- Latest confirmed READY deployment before the Node pin change: `dpl_4mTtTCRDqjTQ2vfiEoLegDnHqUYU`, commit `410c95389ba089922b094cda824c5123c251ddd9`.
-- That build completed with Eve and the GitHub extension included.
-- Build log warned that `engines.node >=24` selected Node 26 despite the Vercel project setting. The package engine has now been pinned to `24.x`; a new deployment is expected and must be checked before treating this change as verified.
-- Vercel project has SSO protection enabled for all deployment URLs except custom domains.
+- Latest confirmed READY deployment: `dpl_6yG6YD4AV7P59tWCdUuWU5gHVhCm`.
+- Deployment commit: `4cf3fef618729657bfdd9f55b5dd778a3bcf1006` (`Disable recursive root-agent delegation`).
+- Preview URL: https://freedom-agents-d1ajrvd4t-sergeyogorodnik19-3325s-projects.vercel.app
+- Vercel SSO protection is enabled for deployment URLs.
 - Public FreeDom project `freed-om` and its Production deployment have not been changed.
+
+The latest deployment is READY. This confirms build/deployment only, not live runtime or chat functionality.
 
 ## Team structure
 
-- Root coordinator: `agent/instructions.md` and `agent/agent.ts`.
+- Root coordinator: `agent/agent.ts` and `agent/instructions.md`.
 - Four declared specialists: `designer`, `programmer`, `motion`, `tester` under `agent/subagents/`.
 - Each specialist has its own instructions. Eve subagents do not inherit root instructions or tools; the specialist prompts explicitly constrain their scope and return findings to the coordinator.
-- Coordinator is the sole GitHub writer. Specialists must not make repository writes or commits.
+- Coordinator is the sole GitHub writer. Specialists provide analysis and recommendations; they do not commit repository changes.
+- Root agent sets `tool: false` to avoid recursive delegation to a copy of itself. It is instructed to invoke all four named specialists separately for multi-page/process tasks.
 
 ## GitHub integration
 
@@ -30,22 +33,27 @@ Updated: 2026-11-10
 - GitHub extension file: `agent/extensions/github.ts`.
 - Extension package: `@github-tools/eve-extension@0.10.0`.
 - Current preset: `maintainer`; unsupported Gist tools are excluded because Connect installation tokens do not support Gist operations.
-- Extension's write tools retain the package's default approval behavior.
-- The extension compiled in the READY build.
-- The Vercel connector-to-project lookup currently returns 404 for the recorded connector/project pair. Do not treat the project connection as verified until Vercel confirms it. Do not request or store a personal access token.
+- Extension compiles in the READY build.
+- Extension write tools retain the package's default approval behavior.
+- Connector-to-project lookup for this project currently returns 404; listing connectors returns 403. The owner previously reported completing the UI setup, but the available API does not confirm the attachment. Do not treat GitHub access as verified. Do not request or store a personal access token.
 
 ## What is not yet verified
 
-- Build-time discovery of the four subagents follows Eve's documented filesystem convention, and each has its own instructions. Live delegation is still unverified.
-- The coordinator prompt explicitly names the four subagent tools and requires all four reviews for multi-page/process tasks.
+1. Dedicated authenticated Web Chat. The default Eve HTTP channel exists, but a user-facing Web Chat has not been installed and tested. The documented interactive setup is `npx eve link` followed by `npx eve add channel/web`, then hosting-layout selection and Sign in with Vercel.
+2. Live authenticated chat session with the root coordinator.
+3. Actual GitHub repository read/write access through the attached connector.
+4. Actual invocation and successful completion of all four specialist subagents in a live session.
+5. Agent Runs observability. The Vercel Agent Runs API currently returns 403 to this integration.
+6. Browser/device testing of any site changes.
+7. Runtime configuration and model access under an authenticated user session.
 
-1. Live authenticated chat session with the root coordinator.
-2. Actual tool invocation against the connected GitHub repository.
-3. Actual delegation to all four specialist subagents in a live session.
-4. Agent Runs observability. The Vercel Agent Runs API currently returns 403 to this integration.
-5. Browser/device testing of any site changes.
-6. Connector attachment in the Vercel project. The owner previously reported completing the UI setup, but the available API lookup does not confirm it.
-7. A dedicated Web Chat channel/UI. The default Eve HTTP channel exists, but a user-facing web chat setup has not been completed and tested. The documented setup requires the interactive `npx eve add channel/web` installer and Sign in with Vercel; this has not been run.
+## Next steps
+
+1. Complete the interactive Web Chat installer and Sign in with Vercel for this project.
+2. Confirm the GitHub connector is attached to this exact project in Vercel.
+3. Start an authenticated session and perform a harmless read-only repository test.
+4. Give the coordinator a harmless multi-area brief; verify calls to designer, programmer, motion, and tester, and confirm the tester independently reviews the resulting plan.
+5. Only then test a small reversible branch change with the GitHub approval gate.
 
 ## Safety boundary
 
