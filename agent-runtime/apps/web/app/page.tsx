@@ -2,10 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 import { useEveAgent } from "eve/react";
-import { WEB_CHAT_AGENT } from "./eve-agent";
 
 export default function Home() {
-  const agent = useEveAgent({ agent: WEB_CHAT_AGENT });
+  const agent = useEveAgent();
   const [draft, setDraft] = useState("");
   const isResuming = agent.status === "resuming";
 
