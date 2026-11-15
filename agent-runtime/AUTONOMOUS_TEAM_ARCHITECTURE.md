@@ -1,6 +1,6 @@
 # FreeDom — архитектура автономной команды Eve
 
-Статус: целевая архитектура режима High Autonomy. Реализуется поэтапно в feature-ветках. Production и `main` защищены.
+Статус: целевая архитектура режима High Autonomy. Реализуется поэтапно в feature-ветках. Production и `main` должны быть защищены отдельными настройками GitHub/Vercel; при аудите 2026-11-15 GitHub API вернул `protected: false` для `main`, поэтому branch protection пока не подтверждена и требует ручной настройки владельцем.
 
 ## Цель
 Владелец отправляет одно большое ТЗ. Orchestrator планирует работу, вызывает специалистов, организует реализацию, независимое тестирование, цикл исправлений и отчёт. Владелец подключается только к фактическим неизвестным, необратимым действиям, финансовым решениям, изменениям безопасности и Production.
@@ -17,7 +17,7 @@
 Eve declared subagents не наследуют authored tools/extensions/skills/connections/sandbox root-агента. Поэтому каждый специалист получает только собственные capabilities.
 - Root монтирует GitHub preset `repo-explorer` (read-only).
 - Designer, Motion и Tester монтируют `repo-explorer` для чтения текущего кода и независимого аудита.
-- Programmer монтирует GitHub preset `maintainer` через существующий Vercel Connect connector. Записи остаются за встроенными approval gates.
+- Programmer монтирует GitHub presets `repo-explorer` + `pr-author` через существующий Vercel Connect connector. Из его набора исключены merge PR, удаление веток и изменение PR/review threads; операции записи остаются за встроенными approval gates.
 - Mentor не получает GitHub write-инструменты.
 - Не добавлять инструменты, способные затронуть Production, секреты, платежи или Supabase grants/RLS без отдельного проектирования и согласования.
 
