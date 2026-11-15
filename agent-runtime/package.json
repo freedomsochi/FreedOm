@@ -18,7 +18,8 @@
     "eve": "1.0.0-rc.6",
     "next": "^16.4.6",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.6",
+    "@ai-sdk/openai": "^4.0.91"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
