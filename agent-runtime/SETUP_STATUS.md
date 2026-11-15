@@ -10,10 +10,11 @@ Updated: 2026-11-15
 - Root directory: `agent-runtime`.
 - Node.js project setting: `24.x`.
 - Active audit/integration branch: `freedom-autonomy-v2-2026-11-15`.
-- Latest recorded branch commit during this audit: `f0f7d2425ce104f9709a96011b55f451f48bc595`.
+- Provider code commit during this audit: `f0f7d2425ce104f9709a96011b55f451f48bc595`; subsequent commits update audit documentation and GitHub tool permissions.
 - Preview deployment for the latest branch commit is not confirmed. A previous deployment creation attempt was rejected with Vercel `402 payment_required` because the daily deployment limit had been reached.
 - Older READY deployment records refer to earlier commits and do not validate the current Yandex provider or six-agent configuration.
 - Vercel SSO / Deployment Protection must remain enabled for deployment URLs.
+- GitHub API reported `protected: false` for `main` during this audit. Branch protection is not confirmed; the owner should enable PR-required protection and prevent force-push/deletion before relying on GitHub to enforce the no-main-write rule.
 - Public FreeDom project `freed-om` and its Production deployment have not been changed.
 
 ## Team structure and capability isolation
@@ -24,7 +25,7 @@ Updated: 2026-11-15
 - Eve declared subagents do not inherit the root agent's authored extensions/tools; each required specialist therefore has its own capability configuration.
 - Root coordinator mounts GitHub `repo-explorer` (read-only).
 - Designer, Motion and Tester each mount their own GitHub `repo-explorer` extension (read-only).
-- Programmer mounts GitHub `maintainer` through the configured connector; Gist operations are excluded. GitHub write operations remain subject to the extension's approval behavior.
+- Programmer mounts GitHub `repo-explorer` + `pr-author` through the configured connector. Merge PR, branch deletion and PR/review-thread mutation tools are excluded. Remaining write operations retain the extension's default approval gates.
 - Mentor has no GitHub extension and is instructed to propose, not directly apply, changes to code or team knowledge.
 - The filesystem configuration is present. Actual connector authentication, tool visibility and write approval behavior have not yet been verified in a live Eve session.
 
