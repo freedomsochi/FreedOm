@@ -9,8 +9,9 @@
 - Programmer: техническая архитектура, HTML/CSS/JS, интеграции и технические исправления.
 - Motion: анимации, переходы, Orbit, drag/inertia/snap и reduced motion.
 - Tester: функциональные, адаптивные, accessibility, security и regression-проверки.
+- Mentor: анализ итогов, повторяющихся ошибок и предложения по улучшению базы знаний и инструкций.
 
-Четыре специалиста объявлены как Eve subagents в `agent/subagents/`. Координатор — единственный GitHub writer. Специалисты анализируют задачу и возвращают результаты; изменения репозитория выполняет координатор через GitHub tools с approval gate.
+Пять специалистов объявлены как Eve subagents в `agent/subagents/`. Координатор — единственный GitHub writer. Специалисты анализируют задачу и возвращают результаты; изменения репозитория выполняет координатор через GitHub tools с approval gate.
 
 ## Vercel project
 
@@ -47,11 +48,14 @@ npm run build:web
 
 ## Доступ к модели
 
-Модель координатора — `openai/gpt-5.4`, через Vercel AI Gateway.
+Все шесть агентов используют общий адаптер `agent/provider.ts` на базе `@ai-sdk/openai` и OpenAI-совместимого Chat Completions API Yandex AI Studio.
 
-- В локальной среде нужен `AI_GATEWAY_API_KEY` либо свежий `VERCEL_OIDC_TOKEN`.
-- В production Vercel может автоматически предоставлять OIDC token, если для проекта включён Secure Backend Access / OIDC Federation.
-- Не помещать API keys и OIDC tokens в GitHub или исходники. Если OIDC Federation не включён, включить его в Vercel project settings либо настроить AI Gateway API key через Vercel Environment Variables.
+В Vercel Environment Variables для Preview нужны:
+- `YANDEX_API_KEY` — секретная часть API-ключа сервисного аккаунта с правом `ai.languageModels.user`.
+- `YANDEX_FOLDER_ID` — ID каталога Yandex Cloud.
+- `YANDEX_MODEL_URI` — URI модели, например `gpt://<folder-id>/yandexgpt-5.1`.
+
+Провайдер использует `https://ai.api.cloud.yandex.net/v1`, передаёт `Authorization: Api-Key` и `OpenAI-Project`, а модель вызывается через `.chat()` для поддержки Chat Completions и function calling. Не помещать API keys в GitHub, исходники или клиентские переменные. До установки секретов и успешного тестового запроса модельный доступ не считается проверенным.
 
 ## Что уже проверено в изолированной среде
 
@@ -60,7 +64,7 @@ npm run build:web
 - Web Chat отдал HTTP 200.
 - `GET /eve/v1/health` вернул `200 ready`.
 - `GET /eve/v1/info` подтвердил root agent `freedom-agents` и регистрацию subagents: `designer`, `programmer`, `motion`, `tester`.
-- Реальный модельный вызов из локального sandbox не завершился: в нём отсутствовали `VERCEL_OIDC_TOKEN`, `AI_GATEWAY_API_KEY` и `OPENAI_API_KEY`. Это не проверка production model access. Реальную делегацию четырём специалистам пока нельзя считать подтверждённой.
+- Реальный модельный вызов из локального sandbox не завершился: в нём отсутствовали `VERCEL_OIDC_TOKEN`, `AI_GATEWAY_API_KEY` и `OPENAI_API_KEY`. Это не проверка production model access. Реальную делегацию пяти специалистам пока нельзя считать подтверждённой.
 
 ## Безопасность и ограничения
 
