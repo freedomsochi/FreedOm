@@ -11,7 +11,7 @@
 - Tester: функциональные, адаптивные, accessibility, security и regression-проверки.
 - Mentor: анализ итогов, повторяющихся ошибок и предложения по улучшению базы знаний и инструкций.
 
-Пять специалистов объявлены как Eve subagents в `agent/subagents/`. Координатор — единственный GitHub writer. Специалисты анализируют задачу и возвращают результаты; изменения репозитория выполняет координатор через GitHub tools с approval gate.
+Пять специалистов объявлены как Eve subagents в `agent/subagents/`. Programmer — единственный GitHub writer и исполнитель изменений. Координатор имеет read-only доступ, делегирует задачи и проверяет результаты; записи Programmer проходят встроенные approval gates.
 
 ## Vercel project
 
@@ -63,8 +63,8 @@ npm run build:web
 - Next.js production build завершился успешно.
 - Web Chat отдал HTTP 200.
 - `GET /eve/v1/health` вернул `200 ready`.
-- `GET /eve/v1/info` подтвердил root agent `freedom-agents` и регистрацию subagents: `designer`, `programmer`, `motion`, `tester`.
-- Реальный модельный вызов из локального sandbox не завершился: в нём отсутствовали `VERCEL_OIDC_TOKEN`, `AI_GATEWAY_API_KEY` и `OPENAI_API_KEY`. Это не проверка production model access. Реальную делегацию пяти специалистам пока нельзя считать подтверждённой.
+- Предыдущая проверка `/eve/v1/info` подтвердила root agent `freedom-agents` и регистрацию четырёх subagents. После добавления Mentor требуется повторная проверка.
+- После перехода на Yandex AI Studio требуется установить `YANDEX_API_KEY`, `YANDEX_FOLDER_ID` и `YANDEX_MODEL_URI` в Preview Environment и выполнить реальный тест генерации и tool calling. Пока этого не сделано, модельный доступ и делегацию пяти специалистов нельзя считать подтверждёнными.
 
 ## Безопасность и ограничения
 
