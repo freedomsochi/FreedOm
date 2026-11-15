@@ -50,8 +50,14 @@ Mentor не переобучает веса модели. Он формируе�
 **Требуется согласование владельца:** Production deploy/alias promotion, merge в main, удаление файлов/данных, изменения Supabase schema/RLS/grants/roles, реальные бронирования и платежи, авторские факты/история, новые платные сервисы и увеличение лимитов, отключение SSO/защиты, необратимые операции.
 
 ## Модель и провайдер
-Не привязывать архитектуру агентов к одному провайдеру. Конфигурация модели должна быть заменяемой, но конкретный provider/baseURL/model ID и API key выбираются только после проверки совместимости Eve установленной версии. Секреты хранятся в Vercel server-side environment и не попадают в GitHub или клиент.
-Пока провайдер не выбран и ключ не установлен, не объявлять runtime готовым.
+Текущий выбранный провайдер — Yandex AI Studio. Все шесть агентов используют общий адаптер `agent/provider.ts` на базе `@ai-sdk/openai` (версия 4.x, согласованная с AI SDK 7 из Eve 1.0.0-rc.6) и OpenAI-совместимого Chat Completions API.
+- Base URL: `https://ai.api.cloud.yandex.net/v1`.
+- Модель передаётся как полный URI `gpt://<folder-id>/<model>` через `YANDEX_MODEL_URI`.
+- Folder ID передаётся через `OpenAI-Project`; API key — через `Authorization: Api-Key ...`.
+- Используется Chat Completions (`provider.chat()`), поскольку Yandex документирует function calling для этого endpoint.
+- Секреты хранятся только в Vercel server-side Environment Variables: `YANDEX_API_KEY`, `YANDEX_FOLDER_ID`, `YANDEX_MODEL_URI`.
+
+Совместимость на уровне API подтверждена документацией провайдера и Yandex. Рабочий модельный вызов, streaming и function calling должны быть проверены на Preview после установки пользовательских credentials. До этого runtime не считается функционально готовым.
 
 ## Definition of Done
 - Все критерии приёмки выполнены или явно перечислены блокеры.
