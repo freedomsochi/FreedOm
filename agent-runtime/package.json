@@ -10,7 +10,8 @@
     "build": "eve build",
     "build:web": "next build apps/web",
     "start": "eve start",
-    "info": "eve info"
+    "info": "eve info",
+    "test:provider": "node scripts/test-yandex-provider.mjs"
   },
   "dependencies": {
     "@github-tools/eve-extension": "0.10.0",
