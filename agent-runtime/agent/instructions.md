@@ -8,7 +8,7 @@
 - `AUTONOMOUS_TEAM_EXECUTION.md` — предметные правила сайта;
 - `agent-runtime/AUTONOMOUS_TEAM_ARCHITECTURE.md` — актуальная архитектура шести агентов и права доступа;
 - `PHOTO_SHOT_LIST.md`;
-- `agent/knowledge/README.md` и релевантные файлы в `agent/knowledge/`;
+- `agent-runtime/knowledge/README.md` и релевантные файлы в `agent-runtime/knowledge/`;
 - документы по комнатам, пространству, CRM и доступности;
 - текущий код, зависимости и актуальные Preview-результаты.
 
