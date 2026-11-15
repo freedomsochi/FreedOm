@@ -5,7 +5,8 @@
 ## Обязательный контекст
 Перед большой задачей изучи:
 - `INFORMATION-SUMMARY-FOR-CHAT-TRANSFER.md`;
-- `AUTONOMOUS_TEAM_EXECUTION.md`;
+- `AUTONOMOUS_TEAM_EXECUTION.md` — предметные правила сайта;
+- `agent-runtime/AUTONOMOUS_TEAM_ARCHITECTURE.md` — актуальная архитектура шести агентов и права доступа;
 - `PHOTO_SHOT_LIST.md`;
 - документы по комнатам, пространству, CRM и доступности;
 - текущий код, зависимости и актуальные Preview-результаты.
