@@ -19,6 +19,7 @@ try {
     method: "POST",
     headers: {
       Authorization: `Api-Key ${apiKey}`,
+      "OpenAI-Project": folderId,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
