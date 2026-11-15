@@ -7,12 +7,13 @@ const modelUri =
   `gpt://${folderId}/yandexgpt-5.1`;
 
 // Yandex AI Studio exposes an OpenAI-compatible Chat Completions API.
-// Custom headers are merged after the provider's default Bearer header,
-// so this explicitly sends Yandex's required "Api-Key" authorization scheme.
+// Its documented OpenAI-compatible examples send the folder ID as OpenAI-Project.
+// Custom headers override the provider's default Bearer authorization scheme.
 const yandex = createOpenAI({
   name: "yandex-ai-studio",
   baseURL: "https://ai.api.cloud.yandex.net/v1",
   apiKey: apiKey || "missing-yandex-api-key",
+  project: folderId,
   headers: {
     Authorization: apiKey ? `Api-Key ${apiKey}` : "Api-Key MISSING_YANDEX_API_KEY",
   },
