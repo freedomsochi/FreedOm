@@ -17,6 +17,9 @@
 - Секреты хранить только в защищённых server-side environment variables.
 
 ## Provider
-- Текущий исходный код использует Eve OpenAI helper с моделью gpt-5.4.
-- Функциональная совместимость и работа runtime ещё не подтверждены.
-- Провайдер не менять до отдельной проверки и решения владельца.
+- Выбран Yandex AI Studio; общий адаптер находится в `agent/provider.ts`.
+- Используется `@ai-sdk/openai` 4.x, соответствующий AI SDK 7 в Eve `1.0.0-rc.6`.
+- Endpoint: `https://ai.api.cloud.yandex.net/v1`, Chat Completions.
+- Модель задаётся полным URI через `YANDEX_MODEL_URI`; каталог — `YANDEX_FOLDER_ID`; секрет — `YANDEX_API_KEY`.
+- Для function calling используется `provider.chat()`; Yandex документирует tool calls для Chat Completions.
+- Build и runtime health не подтверждают рабочую авторизацию. Реальный вызов и делегация ожидают установки Preview credentials.
