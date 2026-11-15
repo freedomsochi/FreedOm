@@ -1,6 +1,6 @@
 # FreeDom Agents — setup status
 
-Updated: 2026-11-10
+Updated: 2026-11-15
 
 ## Runtime and deployment
 
@@ -9,64 +9,74 @@ Updated: 2026-11-10
 - Repository: `freedomsochi/FreedOm`.
 - Root directory: `agent-runtime`.
 - Node.js project setting: `24.x`.
-- Active implementation branch: `freedom-github-tools-integration`.
-- Latest confirmed READY deployment: `dpl_6yG6YD4AV7P59tWCdUuWU5gHVhCm`.
-- Deployment commit: `4cf3fef618729657bfdd9f55b5dd778a3bcf1006` (`Disable recursive root-agent delegation`).
-- Preview URL: https://freedom-agents-d1ajrvd4t-sergeyogorodnik19-3325s-projects.vercel.app
-- Vercel SSO protection is enabled for deployment URLs.
+- Active audit/integration branch: `freedom-autonomy-v2-2026-11-15`.
+- Latest recorded branch commit during this audit: `f0f7d2425ce104f9709a96011b55f451f48bc595`.
+- Preview deployment for the latest branch commit is not confirmed. A previous deployment creation attempt was rejected with Vercel `402 payment_required` because the daily deployment limit had been reached.
+- Older READY deployment records refer to earlier commits and do not validate the current Yandex provider or six-agent configuration.
+- Vercel SSO / Deployment Protection must remain enabled for deployment URLs.
 - Public FreeDom project `freed-om` and its Production deployment have not been changed.
 
-The latest deployment is READY. This confirms build/deployment only, not live runtime or chat functionality.
-
-## Team structure
+## Team structure and capability isolation
 
 - Root coordinator: `agent/agent.ts` and `agent/instructions.md`.
-- Four declared specialists: `designer`, `programmer`, `motion`, `tester` under `agent/subagents/`.
-- Each specialist has its own instructions. Eve subagents do not inherit root instructions or tools; the specialist prompts explicitly constrain their scope and return findings to the coordinator.
-- Coordinator is the sole GitHub writer. Specialists provide analysis and recommendations; they do not commit repository changes.
-- Root agent sets `tool: false` to avoid recursive delegation to a copy of itself. It is instructed to invoke all four named specialists separately for multi-page/process tasks.
+- Five declared specialists: `designer`, `programmer`, `motion`, `tester`, `mentor`.
+- Every specialist has its own `agent.ts` and role instructions.
+- Eve declared subagents do not inherit the root agent's authored extensions/tools; each required specialist therefore has its own capability configuration.
+- Root coordinator mounts GitHub `repo-explorer` (read-only).
+- Designer, Motion and Tester each mount their own GitHub `repo-explorer` extension (read-only).
+- Programmer mounts GitHub `maintainer` through the configured connector; Gist operations are excluded. GitHub write operations remain subject to the extension's approval behavior.
+- Mentor has no GitHub extension and is instructed to propose, not directly apply, changes to code or team knowledge.
+- The filesystem configuration is present. Actual connector authentication, tool visibility and write approval behavior have not yet been verified in a live Eve session.
 
-## GitHub integration
+## Yandex AI Studio
 
-- Owner-created Vercel connector label: `github/freedom-agents-github`.
-- Connector ID recorded from setup: `scl_vUPTXpsk35EE0gjjFe3THw`.
-- GitHub extension file: `agent/extensions/github.ts`.
-- Extension package: `@github-tools/eve-extension@0.10.0`.
-- Current preset: `maintainer`; unsupported Gist tools are excluded because Connect installation tokens do not support Gist operations.
-- Extension compiles in the READY build.
-- Extension write tools retain the package's default approval behavior.
-- Connector-to-project lookup for this project currently returns 404; listing connectors returns 403. The owner previously reported completing the UI setup, but the available API does not confirm the attachment. Do not treat GitHub access as verified. Do not request or store a personal access token.
+- All six agents use the shared `agent/provider.ts` adapter and `YANDEX_MODEL_URI`.
+- Base URL: `https://ai.api.cloud.yandex.net/v1`.
+- Authorization: `Authorization: Api-Key ...`.
+- Folder ID is passed using `OpenAI-Project`.
+- Chat Completions is selected explicitly with `.chat(modelUri)`.
+- Vercel environment variables are configured for Preview only: `YANDEX_API_KEY`, `YANDEX_FOLDER_ID`, `YANDEX_MODEL_URI`.
+- The owner confirmed the service account has `ai.languageModels.user`.
+- The owner's screenshot shows `yc.ai.languageModels.execute` among the API key scopes.
+- Yandex's current basic Chat Completions guide also documents `yc.ai.foundationModels.execute` for its request example, while the AI Studio key-creation guide says AI Studio-created keys receive `yc.ai.languageModels.execute` for Model Gallery text generation. Treat this documentation difference as an item to resolve with the first real API request; do not rotate or broaden the key preemptively.
+- `npm run test:provider` sends a minimal direct Chat Completions request. It checks the credentials, model URI, response shape and folder header; it does not test Eve or the AI SDK adapter itself.
+- Provider smoke test has not yet been run with the owner's secret key. Never ask the owner to paste the key into chat.
 
-## Latest local validation (2026-11-10)
+## Code-level audit — 2026-11-15
 
-- In an isolated Vercel Sandbox, `npx eve info` reports 4 subagents, 6 tools, `Compile ready`, and 0 diagnostics errors/warnings.
-- `npm run build` completed successfully in that sandbox. The default sandbox provider emitted environment warnings because this ad-hoc build was not running on a Vercel deployment; the build itself exited 0.
-- The Web Chat registry scaffold was installed only inside the temporary sandbox. The first Next.js build exposed the expected missing auth-generated `apps/web/app/eve-agent.ts` file. No Web Chat scaffold files have been committed to this branch.
-- The Web Chat setup wizard selected the recommended Vercel-services hosting path and Sign in with Vercel, but stopped because the sandbox CLI has no authenticated Vercel session and `eve link` could not complete. No OAuth app or environment credentials were provisioned.
-- The temporary sandbox did not push any changes to GitHub. No production project or database was touched.
+- All five specialist `agent.ts` files use the shared Yandex model and declare `modelContextWindowTokens: 32_000`.
+- Root coordinator sets `tool: false` to prevent recursive root-agent delegation; its declared specialists remain separate tools.
+- Role-specific instructions define the designer, programmer, motion, tester and mentor boundaries.
+- Programmer is designated as the only repository writer; designer, motion and tester are read-only; mentor has no GitHub write access.
+- Provider adapter now includes the `OpenAI-Project` folder header via the SDK `project` option.
+- Direct provider smoke test includes the same `OpenAI-Project` header.
+- No current-branch build or live agent run has verified the complete integration after the Yandex provider changes.
 
 ## What is not yet verified
 
-1. Dedicated authenticated Web Chat. The default Eve HTTP channel exists, but a user-facing Web Chat has not been installed and tested. The documented interactive setup is `npx eve link` followed by `npx eve add channel/web`, then hosting-layout selection and Sign in with Vercel.
-2. Live authenticated chat session with the root coordinator.
-3. Actual GitHub repository read/write access through the attached connector.
-4. Actual invocation and successful completion of all four specialist subagents in a live session.
-5. Agent Runs observability. The Vercel Agent Runs API currently returns 403 to this integration.
-6. Browser/device testing of any site changes.
-7. Runtime configuration and model access under an authenticated user session.
+1. Eve build and Next.js build for the latest branch commit.
+2. Actual Yandex API response using the Preview secret values.
+3. Runtime streaming and function calling through the AI SDK/Eve adapter.
+4. Authenticated Web Chat session with the root coordinator.
+5. Actual GitHub repository read/write access through the configured connector.
+6. Live invocation and successful completion of all five specialists.
+7. Programmer write approval behavior and inability of read-only agents to write.
+8. Agent Runs observability.
+9. Browser/device testing of any site changes.
 
 ## Next steps
 
-1. Complete the interactive Web Chat installer and Sign in with Vercel for this project.
-2. Confirm the GitHub connector is attached to this exact project in Vercel.
-3. Start an authenticated session and perform a harmless read-only repository test.
-4. Give the coordinator a harmless multi-area brief; verify calls to designer, programmer, motion, and tester, and confirm the tester independently reviews the resulting plan.
-5. Only then test a small reversible branch change with the GitHub approval gate.
+1. When Vercel's deployment quota permits, deploy only this branch to the separate `freedom-agents` Preview project.
+2. Run the provider smoke test without exposing the secret key.
+3. Check Eve diagnostics and verify all five specialists are registered.
+4. Test a harmless coordinator delegation to each read-only specialist.
+5. Test a harmless programmer write only after confirming the approval prompt and target branch.
+6. Verify the full workflow and report actual PASS / FAIL / NOT TESTED results.
 
 ## Safety boundary
 
 - Never write to `main`, merge a Pull Request, or deploy the public FreeDom Production site.
 - Do not perform Supabase schema/data/grant/RLS changes, payment or booking mutations, or destructive operations without explicit owner approval.
-- No secrets or personal tokens in source code.
-- Do not claim the team is autonomous until authenticated runtime, connector access, delegation, and approval behavior have all been exercised successfully.
+- No secrets or personal tokens in source code, logs, commits or chat.
+- Do not claim the team is autonomous until authenticated runtime, provider calls, connector access, delegation and approval behavior have all been exercised successfully.
 - Build success is not runtime verification.
