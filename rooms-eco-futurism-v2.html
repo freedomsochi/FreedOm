@@ -910,7 +910,7 @@ function choose(i,preserveCategory=false){
  $$$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
  const info=floorInfo[activeFloor];if(info){$('#floorlabel').textContent=info.label;$('#floordesc').textContent=info.desc;}
  renderMapPoints();
- $('#heroimg').src=r.img;$('#heroimg').alt=r.name;$('#detailtitle').textContent=r.name;$('#detailmeta').textContent=r.meta;$('#description').textContent=r.desc;const amenities=$('#roomAmenities');if(amenities){amenities.innerHTML=(r.amenities||[]).map(item=>'<span class="room-amenity">'+item+'</span>').join('');amenities.style.display=(r.amenities&&r.amenities.length)?'flex':'none';}
+ $('#heroimg').src=r.img;$('#heroimg').alt=r.name;$('#detailtitle').textContent=r.name;$('#detailmeta').textContent=r.meta;$('#description').textContent=r.desc;const amenities=$('#roomAmenities');if(amenities){amenities.replaceChildren();(r.amenities||[]).forEach(item=>{const chip=document.createElement('span');chip.className='room-amenity';chip.textContent=item;amenities.appendChild(chip)});amenities.style.display=(r.amenities&&r.amenities.length)?'flex':'none';}
  $('.modelhint span').textContent=info?.desc||'Найди своё место';
  applyRoomFilters();
  renderAvailability();
