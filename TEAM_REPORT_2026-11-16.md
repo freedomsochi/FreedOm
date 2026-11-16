@@ -254,3 +254,13 @@
 - Моушн-дизайнер: логика reduced-motion и pause-on-hidden реализована; визуальная и gesture-приёмка ожидает Preview.
 - Тестировщик: независимая статическая перепроверка завершена; browser QA BLOCKED.
 - Директор: задачу можно закрыть на уровне кода, но не на уровне браузерной приёмки. Релиз NO-GO до Preview и мобильного тестирования.
+
+
+## Дополнение — Space: reduced-motion для жестов
+
+- `space.html`: обнаружено, что CSS отключал fade/transition при `prefers-reduced-motion`, но JavaScript всё ещё перехватывал вертикальные touch/wheel жесты, блокировал нативную прокрутку и запускал собственную навигацию по сценам.
+- Добавлена проверка системного media query в обработчики touchstart/touchmove/touchend, wheel, scroll и resize. При включённом Reduce Motion собственные gesture/scroll handlers не перехватывают управление; остаётся нативная прокрутка браузера с CSS scroll-snap и мгновенным поведением.
+- Коммит: `c6f04cc33dc40959fe3e50ab61c9d7039b9cef79`.
+- Проверка: inline JavaScript в `space.html` скомпилировался (1/1); 7/7 структурных проверок guard-условий прошли.
+- Ограничение: не запускались браузер, Android touch, реальное переключение системной настройки, Preview и визуальная QA. Это static/syntax PASS, не browser PASS.
+- Production/main, Supabase, формы и финансовые действия не затрагивались. Release gate остаётся NO-GO.
