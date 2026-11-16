@@ -420,3 +420,10 @@
 - **Тестировщик — static PASS:** 1/1 inline JS syntax; 5 structural checks PASS. Live form, browser and Android QA не запускались.
 - Коммит: `edaf480947509e6d9ab29861ef7f250f2720d8bd`.
 - **Директор — HOLD:** не считать заказную форму подтверждённой до тестирования на Preview без фактической отправки заявки.
+
+
+## Дополнение — shared page transitions / live Reduce Motion
+- **Моушн-дизайнер — implementation DONE / browser QA OPEN:** `freedom-transitions.js` проверяет системный Reduce Motion при каждом клике, а не только при загрузке страницы. При включённом режиме ссылка переходит нативно без 220 мс задержки.
+- **Тестировщик — static PASS:** JS syntax и 3 структурные проверки PASS. Browser toggle и Android navigation не проверены.
+- Коммит: `2de39a00d32af53e6d5dc2a1cab470928b785b28`.
+- **Директор — HOLD:** визуальная и мобильная регрессия остаются обязательными перед релизом.
