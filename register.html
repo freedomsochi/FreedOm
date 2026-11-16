@@ -293,13 +293,19 @@
 
                 } catch (error) {
                     console.error('Ошибка:', error);
-                    let message = createdAuthUserId && !profileCreated
-                        ? 'Учётная запись авторизации уже создана, но профиль FreeDom не сохранился. Не пытайся регистрироваться повторно — обратись к администрации, чтобы восстановить профиль.'
+                    const profileRecoveryRequired = Boolean(createdAuthUserId && !profileCreated);
+                    let message = profileRecoveryRequired
+                        ? 'Учётная запись авторизации уже создана, но профиль FreeDom не сохранился. Не отправляй регистрацию повторно с этим email — обратись к администрации, чтобы восстановить профиль.'
                         : (error.message || 'Ошибка регистрации.');
                     if (error.message?.includes('already registered')) {
                         message = 'Этот email уже зарегистрирован.';
                     }
                     showError(message);
+                    if (profileRecoveryRequired) {
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Обратитесь к администрации';
+                        return;
+                    }
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Зарегистрироваться';
                 }
