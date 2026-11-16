@@ -315,3 +315,12 @@
 - Не проверено реальное изменение системной настройки в браузере и межстраничные переходы на Android. Production/main и Supabase не затронуты.
 
 - Follow-up hardening: while an order submission is pending (including the short success-confirmation window), the order modal cannot be reopened; this prevents a delayed success cleanup from closing a newly opened order dialog. Commit: `a23bfff6821ad981876e783098ea4ab149756eca`. Inline JS syntax rechecked 1/1.
+
+
+## Дополнение — admin: безопасные DOM ID для user UUID
+
+- Проверены динамические места вывода в `profile.html`, `partners.html`, `purchases.html` и `admin.html`. В профиле и партнёрском разделе пользовательские поля выводятся через `textContent`; история покупок строит DOM через `createElement`/`textContent`; в админских HTML-шаблонах текстовые поля проходят через `esc`.
+- В финансовом списке админки три DOM ID полей суммы, метода и комментария строились из `x.user_id` напрямую. Хотя поле ожидается UUID, теперь для всех трёх ID используется `safeUuid`, согласованно с уже существующими inline action handlers.
+- Коммит: `e24fc161b195a2d90e04f6af6ff718a4cc27dabb`.
+- Static QA: 1/1 inline JS syntax; четыре проверки санитизации/применения UUID PASS. Это defense-in-depth, не утверждение о найденной эксплуатации.
+- Финансовые RPC, записи платежей, схема и доступы не менялись. Реальные платежи не выполнялись; браузерный QA не проводился.
