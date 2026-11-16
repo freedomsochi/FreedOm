@@ -325,8 +325,9 @@
                 loadingState.replaceChildren(paragraph);
             }
 
-            supabase.auth.getSession().then(async ({ data: sessionData }) => {
-                if (!sessionData.session) {
+            supabase.auth.getSession().then(async ({ data: sessionData, error: sessionError }) => {
+                if (sessionError) throw sessionError;
+                if (!sessionData?.session) {
                     window.location.href = 'login.html';
                     return;
                 }
