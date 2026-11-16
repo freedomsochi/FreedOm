@@ -96,3 +96,5 @@
 - **Тестировщик:** smoke/regression matrix всех страниц, ссылки/ресурсы, клавиатура, viewport, dry-run форм и отдельный отчёт по фактическому Preview SHA.
 
 Общий статический аудит охватил index, project-history, rooms, kitchen, space/space-3d, availability map, banya, events, booking form, profile, partners, purchases, admin, login/register и общие стили. Браузерная визуальная и motion-приёмка пока заблокирована; статические проверки не выдаются за browser QA.
+
+**Выполнено по итогам QA static pass:** добавлены alt-тексты генерируемым изображениям главной и изображению/миниатюрам комнат; alt hero обновляется при выборе комнаты (коммиты 327e32b, 7674427). Повторная проверка: 2/2 изображений главной и 14/14 изображений комнаты имеют alt; inline JS синтаксически корректен. Скринридер/browser QA ещё не проводились.
