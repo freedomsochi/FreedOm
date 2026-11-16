@@ -406,3 +406,10 @@
 - **Тестировщик — static PASS:** 1/1 inline JS syntax; проверки snap/RAF/cleanup PASS. Browser/Android не проверены.
 - Коммит: `6f00608d003d04e9e8346ba03fe6af827af39da1`.
 - **Директор — HOLD:** релиз NO-GO до Preview и браузерной регрессии.
+
+
+## Дополнение — banya reduced-motion input timing
+- **Моушн-дизайнер — implementation DONE / interaction QA OPEN:** при Reduce Motion блокировка ввода после мгновенного переключения сцены сокращена с 1050 до 180 мс; обычный режим не менялся.
+- **Тестировщик — static PASS:** 1/1 inline JS syntax; reduced/normal delay check PASS. Повторные wheel/touch события в браузере не тестировались.
+- Коммит: `32142d1a272122bad50bc4dff0de7215fded8ca8`.
+- **Директор — HOLD:** не закрывать motion QA до Preview и проверки Android.
