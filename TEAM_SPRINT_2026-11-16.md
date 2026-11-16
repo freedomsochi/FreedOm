@@ -223,3 +223,11 @@
 - Commit: `6529f6034bf59b0f6d3fce7441122e7f46c6b165`.
 - Повторное чтение файла, JS compile check и 5/5 статических assertions: PASS. Browser/Android/network simulation: NOT RUN.
 - RPC-контракты сохранены; Auth/RPC/grants/RLS/DB/финансы не менялись. Security review остаётся BLOCKED, не confirmed vulnerability. Release NO-GO.
+
+
+## Preview после патча кухни — проверка статуса
+
+- Vercel Preview для кодового коммита `6529f6034bf59b0f6d3fce7441122e7f46c6b165` получил статус **READY**: https://freed-mu5f7nbt0-sergeyogorodnik19-3325s-projects.vercel.app
+- Deployment: `dpl_DAc7gbeJJws5rD8inV4fkripHbng`. Это подтверждает успешную сборку Preview, но не браузерную/Android-проверку.
+- Текущий HEAD ветки после документационных записей: `9d373e08870fad9dc73aeac953311bf40e83c91b`; кодовая часть Preview соответствует патчу кухни, последующие коммиты только обновляют командную документацию.
+- Release остаётся NO-GO до browser/Android QA и read-only подтверждения серверной авторизации RPC.
