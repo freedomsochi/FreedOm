@@ -58,30 +58,8 @@
 <link rel="stylesheet" href="freedom-transitions.css">
 <script defer src="freedom-transitions.js"></script>
 <link rel="stylesheet" href="freedom-design-system.css">
-</head><body><main class="home opening" id="home" data-theme="space"><div class="ambient" id="ambient"></div><div class="veil"></div><div class="atmos space"><i class="sun"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i></div><div class="atmos kitchen"><i class="glow"></i><i class="ember"></i><i class="ember"></i><i class="ember"></i></div><div class="atmos sauna"><i class="steam"></i><i class="steam"></i><i class="ripple"></i><i class="ripple r2"></i></div><div class="atmos events"><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i></div><div class="brand-top"><strong>FreedOm</strong><span>дом, в котором живет любовь</span></div><header class="top"><a class="account" href="profile.html" aria-label="Личный кабинет" title="Личный кабинет"></a></header><section class="stage"><div class="orbit" id="orbit"><div class="line"></div><div class="line2"></div><button class="core" id="core" type="button" aria-label="Открыть дерево FreeDom"><span class="tree-home" aria-hidden="true"></span></button><div class="ring" id="ring"><button class="portal active" style="--a:0deg" data-i="0"><b>Пространство</b></button><button class="portal" style="--a:72deg" data-i="1"><b>Кухня</b></button><button class="portal" style="--a:144deg" data-i="2"><b>Баня</b></button><button class="portal" style="--a:216deg" data-i="3"><b>События</b></button><button class="portal" style="--a:288deg" data-i="4"><b>Комнаты</b></button></div></div></section><div class="direction-note" id="directionNote" aria-live="polite"></div>
-<section class="direction-showcase" id="directionShowcase" aria-live="polite">
-  <div class="direction-showcase-copy">
-    <div class="direction-showcase-kicker">FreeDom · выбери свой опыт</div>
-    <h2 id="showcaseTitle">Пространство</h2>
-    <p id="showcaseText">Познакомьтесь с FreeDom до приезда. Волшебные события и спортивные мероприятия, встречи и мастер-классы — всё, что нужно для креативного и полноценного отдыха.</p>
-  </div>
-</section><div class="hint" id="hint">Коснись дерева · открой FreeDom</div><section class="event-world" id="eventWorld" aria-label="Мир событий FreeDom">
- <header class="event-world-top"><div class="event-world-brand">FreeDom</div><button class="event-world-close" id="eventWorldClose" type="button" aria-label="Вернуться к направлениям">×</button></header>
- <div class="event-world-sparks" id="eventWorldSparks" aria-hidden="true"></div>
- <div class="event-world-copy"><div class="event-world-kicker">FreeDom · пространство встреч</div><h2>Волшебные события</h2><p>Волшебные события — это неотъемлемая часть жизни. Расслабляющие практики, чайные церемонии, музыкальные концерты, театральные представления, художественные мастер-классы. Всё это и многое другое вы сможете наблюдать в нашем центре.</p></div>
-</section>
-</main><script>const home=document.getElementById('home'),orbit=document.getElementById('orbit'),ring=document.getElementById('ring'),core=document.getElementById('core'),ps=[...document.querySelectorAll('.portal')],ambient=document.getElementById('ambient'),world=document.getElementById('world'),title=document.getElementById('title'),scroll=document.getElementById('scroll'),hint=document.getElementById('hint'),directionNote=document.getElementById('directionNote'),showcaseTitle=document.getElementById('showcaseTitle'),showcaseText=document.getElementById('showcaseText');const names=['Пространство','Кухня','Баня','События','Комнаты'],themes=['space','kitchen','sauna','events','rooms'],photos=['images/16455-compressed.png','images/16355-compressed.png','images/sauna.jpg','images/16594-compressed.png','images/16361-compressed.png'],descriptions=['Познакомьтесь с FreeDom до приезда. Волшебные события и спортивные мероприятия, встречи и мастер-классы — всё, что нужно для креативного и полноценного отдыха.','Для настоящих ценителей вегетарианской кухни. Заказать блюдо вы можете уже сейчас!','Баня во FreeDom — особая традиция нашего центра. Каждый четверг мы паримся, ныряем в холодный бассейн, веселимся и отдыхаем от рабочих будней.','В нашем доме регулярно проходят творческие вечера, медитации под звуки гонга и тибетских чаш, чайные церемонии, встречи с путешественниками, художниками, духовными учителями, общественными деятелями и писателями. Здесь можно принять участие в самых разных мероприятиях, узнать много нового или провести собственное.','В нашем пространстве вы можете остановиться как в отдельной комнате, так и арендовать место в хостеле. Посмотреть доступные варианты и забронировать проживание можно в этом разделе.'];let rot=0,idx=0,drag=false,last=0,vel=0,ignore=0,raf,ambientSwap=0;function setAmbient(src){const token=++ambientSwap;const current=ambient.querySelector('.ambient-photo-layer.is-current');const next=document.createElement('div');next.className='ambient-photo-layer';next.style.backgroundImage=`url('${src}')`;ambient.appendChild(next);requestAnimationFrame(()=>requestAnimationFrame(()=>{if(token!==ambientSwap){next.remove();return}next.classList.add('is-current');if(current){current.classList.remove('is-current');setTimeout(()=>{if(token===ambientSwap)current.remove()},1500)}else{ambient.style.backgroundImage='none'}}));ambient.querySelectorAll('.ambient-photo-layer:not(.is-current)').forEach(layer=>{if(layer!==next&&layer!==current)layer.remove()})}function ang(e){let r=orbit.getBoundingClientRect();return Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2)}function norm(x){return Math.atan2(Math.sin(x),Math.cos(x))}function apply(){idx=((Math.round(-rot/72)%5)+5)%5;home.dataset.theme=themes[idx];ps.forEach((p,i)=>{p.classList.toggle('active',i===idx);p.classList.toggle('selected',i===idx)});setAmbient(photos[idx]);directionNote.textContent=descriptions[idx];showcaseTitle.textContent=names[idx];showcaseText.textContent=descriptions[idx]}function set(v){rot=v;ring.style.setProperty('--r',rot+'deg')}function finishOpening(){home.classList.add('ready');setTimeout(()=>home.classList.remove('opening'),1500)}setTimeout(finishOpening,1100);core.onclick=()=>{if(home.classList.contains('menu-open')){home.classList.add('entering');window.location.href='project-history.html';return}home.classList.add('menu-open');home.classList.remove('opening');home.dataset.theme=themes[idx];ambient.style.backgroundImage=`url('${photos[idx]}')`;hint.textContent='Проведи пальцем по орбите · выбери направление';hint.classList.remove('tree-history')};core.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();core.click()}};ps.forEach(p=>p.addEventListener('pointerdown',e=>e.stopPropagation()));ring.onpointerdown=e=>{if(!home.classList.contains('menu-open'))return;drag=true;ring.classList.add('drag');ring.setPointerCapture(e.pointerId);last=ang(e);vel=0;e.preventDefault()};ring.onpointermove=e=>{if(!drag)return;let a=ang(e),d=norm(a-last)*180/Math.PI;set(rot+d);vel=d;last=a;apply();e.preventDefault()};function release(){if(!drag)return;drag=false;ring.classList.remove('drag');ignore=Date.now()+320;let v=vel;function coast(){if(Math.abs(v)<.02){ring.style.transition='transform .9s cubic-bezier(.12,.86,.16,1)';set(Math.round(rot/72)*72);apply();setTimeout(()=>ring.style.transition='',950);return}set(rot+v);v*=.93;apply();raf=requestAnimationFrame(coast)}coast()}ring.onpointerup=release;ring.onpointercancel=release;ring.onlostpointercapture=release;ps.forEach(p=>p.onclick=()=>{if(Date.now()<ignore)return;open(+p.dataset.i)});function open(i){idx=i;set(-i*72);apply();if(i===0){openSpace();return}if(i===1){openKitchen();return}if(i===2){openBanya();return}if(i===3){openEvents();return}if(i===4){openRooms();return}return;}function openKitchen(){home.classList.add('entering');setTimeout(()=>{const q=new URLSearchParams();q.set('from','orbit');q.set('idx',String(idx));window.location.href='kitchen-pixel-v2.html?'+q.toString()},650)}function openBanya(){sessionStorage.setItem('freedomOrbitState',JSON.stringify({idx,rot}));home.classList.add('entering');setTimeout(()=>{const q=new URLSearchParams();q.set('from','orbit');q.set('idx',String(idx));window.location.href='freedom-banya-v2.html?'+q.toString()},650)}function openEvents(){sessionStorage.setItem('freedomOrbitState',JSON.stringify({idx,rot}));window.location.href='freedom-events-v1.html'}function closeEvents(){home.classList.remove('event-preview-open')}function openRooms(){sessionStorage.setItem('freedomOrbitState',JSON.stringify({idx,rot}));home.classList.add('entering');setTimeout(()=>{const q=new URLSearchParams();q.set('from','orbit');q.set('idx',String(idx));window.location.href='rooms-eco-futurism-v2.html?'+q.toString()},650)}function openSpace(){home.classList.add('space-launch');home.classList.add('entering');sessionStorage.setItem('freedomOrbitState',JSON.stringify({idx,rot}));setTimeout(()=>{const q=new URLSearchParams();q.set('from','orbit');q.set('idx',String(idx));const share=new URLSearchParams(location.search).get('_vercel_share');if(share)q.set('_vercel_share',share);window.location.href='space.html?'+q.toString()},1050)}document.getElementById('eventWorldClose').onclick=closeEvents;document.onkeydown=e=>{if(e.key==='ArrowRight'){set(rot-72);apply()}if(e.key==='ArrowLeft'){set(rot+72);apply()}};function content(i){if(i===4)return rooms();let d=[['Здесь начинается жизнь','Дом, сад, бассейн, люди, книги, разговоры и пространство, в котором можно просто быть собой.','images/room-bungalow.jpg','Дом и территория'],['Здесь собираются вместе','Кухня FreeDom — не ресторан. Это повседневная жизнь: приготовить, поставить чайник, поделиться едой и задержаться за разговором.','images/tea-ceremony.jpg','Общий стол'],['Замедлиться и выдохнуть','Тёплое дерево, пар, вода и разговоры. Баня — отдельный ритм FreeDom.','images/sauna.jpg','Баня'],['То, что происходит между людьми','Музыка, лекции, медитации, спорт, кино, караоке, дни рождения, творчество и спонтанные вечера.','images/gong-meditation.jpg','Живая программа']][i];return `<section class="hero"><div><h2>${d[0]}</h2><p>${d[1]}</p></div></section><section class="grid"><article class="card"><img src="${d[2]}"><div class="body"><h3>${d[3]}</h3><p>Часть живого пространства FreeDom.</p></div></article></section>`}function rooms(){let r=[['Семейная комната','images/room-family.jpg'],['Двухместная с балконом','images/room-balcony.jpg'],['Мансарда','images/room-attic.jpg'],['Бунгало','images/room-bungalow.jpg'],['Место на балконе','images/room-balcony-bed.jpg'],['Стандартный хостел','images/room-hostel.jpg'],['Эконом-хостел','images/room-hostel-2.jpg']];return `<section class="hero"><div><h2>Место, где жить</h2><p>Комната — только часть опыта. Выбирай формат проживания, а жизнь FreeDom начинается уже за дверью.</p></div></section><section class="grid">${r.map(x=>`<article class="card"><img src="${x[1]}"><div class="body"><h3>${x[0]}</h3><p>Реальный вариант проживания FreeDom.</p><a class="action" href="availability_map_v3.html?room=${encodeURIComponent(x[0])}">Проверить доступность</a></div></article>`).join('')}</section>`}apply();home.dataset.theme='home';ambient.style.backgroundImage="url('images/16354-compressed.png')";
-/* Returning from any inner page starts with a calm, closed orbit. */
-</script><script>
-// V14 pointer fix: a tap on a portal must open it; only a real drag is ignored.
-(() => {
-  const portals = [...document.querySelectorAll('.portal')];
-  portals.forEach(p => {
-    const i = Number(p.dataset.i);
-    p.onclick = e => { e.preventDefault(); e.stopPropagation(); if (typeof open !== 'function') return; if (i === idx) { open(i); return; } idx = i; set(-i*72); apply(); ps.forEach((q,j)=>q.classList.toggle('selected',j===i)); };
-  });
-})();
-</script><style>
+
+<style>
 /* V14 geometry final: equal gaps */
 .portal{margin:0!important}
 @media (min-width:761px){.portal[data-i="0"]{--x:0px;--y:calc(-1 * min(calc(23.5vw + 56px),261px))}.portal[data-i="1"]{--x:calc(.9510565163 * min(calc(23.5vw + 56px),261px));--y:calc(-.3090169944 * min(calc(23.5vw + 56px),261px))}.portal[data-i="2"]{--x:calc(.5877852523 * min(calc(23.5vw + 56px),261px));--y:calc(.8090169944 * min(calc(23.5vw + 56px),261px))}.portal[data-i="3"]{--x:calc(-.5877852523 * min(calc(23.5vw + 56px),261px));--y:calc(.8090169944 * min(calc(23.5vw + 56px),261px))}.portal[data-i="4"]{--x:calc(-.9510565163 * min(calc(23.5vw + 56px),261px));--y:calc(-.3090169944 * min(calc(23.5vw + 56px),261px))}}
@@ -238,21 +216,8 @@
   .roots-story{padding-left:45px}.people-grid{grid-template-columns:1fr}.person-card img{height:190px}
   .people-title{display:grid;gap:5px}.people-title span{font-size:32px}
 }
-</style><script>
-(() => {
-  const focus = new URLSearchParams(location.search).get('focus');
-  if (focus !== 'rooms') return;
-  home.classList.add('menu-open');
-  idx = 4;
-  set(-idx * 72);
-  apply();
-  ps.forEach((p, j) => p.classList.toggle('selected', j === idx));
-  hint.textContent = 'Комнаты выбраны · нажми ещё раз, чтобы открыть';
-})();
-</script><script>
-/* Double-tap the FreeDom wordmark to open the standalone project story. */
-(()=>{const logo=document.querySelector('.brand-top');if(!logo)return;logo.style.cursor='pointer';logo.setAttribute('role','link');logo.setAttribute('tabindex','0');logo.setAttribute('aria-label','Нажми дважды, чтобы открыть историю проекта');let taps=0,timer;const activate=()=>{taps++;if(taps===1){logo.style.textShadow='0 0 18px rgba(255,211,120,.9)';timer=setTimeout(()=>{taps=0;logo.style.textShadow='';},1400)}else{clearTimeout(timer);location.href='project-history.html'}};logo.addEventListener('click',activate);logo.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate()}})})();
-</script><style id="homepage-approved-refinements">
+</style>
+<style id="homepage-approved-refinements">
 .home[data-theme=home]{background:radial-gradient(circle at 50% 43%,#f5f1df 0,#dce4ce 44%,#9eae8b 100%)}
 .ambient{opacity:.22;filter:saturate(.78) sepia(.04) blur(.7px);transform:scale(1.035)}
 .veil{background:radial-gradient(circle at 50% 46%,rgba(255,252,244,.54),transparent 38%),linear-gradient(180deg,rgba(255,250,239,.2),rgba(255,245,228,.015) 58%,rgba(34,27,21,.1))}
@@ -276,7 +241,6 @@
 @media(max-width:760px){.portal b{font-size:8.5px;letter-spacing:.035em}.direction-note{bottom:66px;max-width:90vw;padding:7px 12px;font-size:10px}.hint{bottom:12px;font-size:8px;letter-spacing:.1em;max-width:90vw;overflow:hidden;text-overflow:ellipsis}}
 @media(prefers-reduced-motion:reduce){.home *, .home *:before, .home *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
-
 <style id="homepage-tree-focus-soft-glass-v20">
 /* Gently soften only the background inside the central tree medallion.
    The tree artwork stays crisp and receives a restrained separation shadow. */
@@ -314,8 +278,6 @@
   }
 }
 </style>
-
-
 <style id="homepage-central-medallion-backdrop-blur-v21">
 /* Blur the complete circular medallion from its centre all the way to its edge.
    The logo stays sharp above this glass layer. */
@@ -350,7 +312,6 @@
   }
 }
 </style>
-</body>
 <style id="homepage-direction-showcase">
 /* Selected direction: keep its existing photo, bring it forward and shift the orbit aside. */
 .home.menu-open .ambient{
@@ -463,7 +424,6 @@
   }
 }
 </style>
-</html>
 <style id="events-preview-refinement">
 /* Keep the Events portal in the orbit; make the copy readable without a card. */
 .home[data-theme="events"] .ring{visibility:visible;opacity:1;pointer-events:auto}
@@ -490,7 +450,6 @@
   .event-world-copy p{font-size:12px;line-height:1.65}
 }
 </style>
-
 <style id="homepage-design-audit-v2">
 /* FreeDom homepage art direction: quieter interface, stronger image and type hierarchy. */
 :root{color-scheme:light}
@@ -596,8 +555,6 @@
   .home *, .home *:before, .home *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
 </style>
-
-
 <style id="homepage-solid-portals-and-tree-orbit-v6">
 /* Direction portals: clean color fields, no photographs inside the circles. */
 .home.menu-open .portal[data-i="0"],
@@ -649,9 +606,6 @@
   .core:before,.core:after{animation:none!important}
 }
 </style>
-
-</html>
-
 <style id="homepage-orbit-clarity-v2">
 /* Stronger, more legible navigation glass over the selected photograph. */
 .home.menu-open .orbit:before{
@@ -740,7 +694,6 @@
   .home.menu-open .portal b{font-size:12px}
 }
 </style>
-
 <style id="homepage-orbit-contrast-v3">
 /* Make the orbit and its labels legible over every photo, including mobile. */
 .home.menu-open .orbit{opacity:1!important}
@@ -822,7 +775,6 @@
   .home.menu-open .core{opacity:.88!important}
 }
 </style>
-
 <style id="homepage-orbit-color-harmony-v4">
 /* Restore the original soft glass circles; tint each portal to its own direction. */
 .home.menu-open .portal,
@@ -888,7 +840,6 @@
   }
 }
 </style>
-
 <style id="homepage-atmosphere-refinement-v5">
 /* A more unified, luminous orbit: the circles feel like windows into one world. */
 .home.menu-open .orbit:after{
@@ -979,8 +930,6 @@
   .home.menu-open .orbit:after{animation:none!important;opacity:.3}
 }
 </style>
-
-
 <style id="homepage-orbit-expand-on-interaction-v7">
 /* The orbit opens generously, then returns to its compact resting composition. */
 .home.menu-open.orbit-expanded .orbit{
@@ -1011,52 +960,6 @@
   .home.menu-open.orbit-expanded .orbit,.home.menu-open:not(.orbit-expanded) .orbit{transition:none!important}
 }
 </style>
-
-<script id="homepage-orbit-expansion-behavior-v7">
-(()=> {
-  const home=document.querySelector('.home');
-  const ring=document.getElementById('ring');
-  const core=document.getElementById('core');
-  if(!home||!ring||!core||home.dataset.orbitExpansionBound==='1')return;
-  home.dataset.orbitExpansionBound='1';
-  let settleTimer=null;
-  const expand=()=>{
-    clearTimeout(settleTimer);
-    home.classList.add('orbit-expanded');
-  };
-  const settle=(delay=1700)=>{
-    clearTimeout(settleTimer);
-    settleTimer=setTimeout(()=>home.classList.remove('orbit-expanded'),delay);
-  };
-  let wasOpen=home.classList.contains('menu-open');
-  const observer=new MutationObserver(()=>{
-    const isOpen=home.classList.contains('menu-open');
-    if(isOpen&&!wasOpen){
-      expand();
-      settle(2600);
-    }else if(!isOpen&&wasOpen){
-      clearTimeout(settleTimer);
-      home.classList.remove('orbit-expanded');
-    }
-    wasOpen=isOpen;
-  });
-  observer.observe(home,{attributes:true,attributeFilter:['class']});
-  ring.addEventListener('pointerdown',()=>{
-    if(home.classList.contains('menu-open'))expand();
-  },true);
-  ring.addEventListener('pointerup',()=>settle(3600),true);
-  ring.addEventListener('pointercancel',()=>settle(3600),true);
-  document.addEventListener('keydown',e=>{
-    if(!home.classList.contains('menu-open'))return;
-    if(['ArrowLeft','ArrowRight'].includes(e.key)){
-      expand();
-      settle(1900);
-    }
-  });
-})();
-</script>
-
-
 <style id="homepage-clean-orbit-and-solid-portals-v8">
 /* Simplify the composition: one quiet outer orbit, no glowing rings around the center. */
 .core{
@@ -1129,8 +1032,6 @@
   }
 }
 </style>
-
-
 <style id="homepage-natural-glass-portals-v9">
 /* Natural glass treatment: retain the five identities, but blend them into the photograph. */
 .home.menu-open .portal,
@@ -1224,8 +1125,6 @@
   .home.menu-open .portal,.home.menu-open .portal.active{transition:none!important}
 }
 </style>
-
-
 <style id="homepage-glossy-glam-portals-v10">
 /* Rich glossy finish: make the five portals read clearly against the landscape. */
 .home.menu-open .portal,
@@ -1328,8 +1227,6 @@
   .home.menu-open .portal,.home.menu-open .portal.active{transition:none!important}
 }
 </style>
-
-
 <style id="homepage-frosted-reflection-starlines-v11">
 /* Clear, reflective glass: the landscape remains visible through each portal. */
 .home.menu-open .portal,
@@ -1433,8 +1330,6 @@
   .home.menu-open .portal:after{animation:none!important;opacity:.34!important}
 }
 </style>
-
-
 <style id="homepage-orbit-fixed-pentagon-layout-v12">
 /* Anchor every glass portal to five exact points on one shared circular path.
    Percentage coordinates are relative to the ring itself, avoiding viewport
@@ -1463,8 +1358,6 @@
   .home.menu-open #ring .portal[data-i="0"]{top:18.5%!important}
 }
 </style>
-
-
 <style id="homepage-orbit-geometry-correction-v13">
 /* Restore the layout's native coordinate system: every portal is positioned
    from the exact center of #ring using its x/y radius, never viewport edges. */
@@ -1499,8 +1392,6 @@
   .home.menu-open #ring .portal[data-i="4"]{--x:calc(-.9510565163 * (31vw + 38.5px));--y:calc(-.3090169944 * (31vw + 38.5px))}
 }
 </style>
-
-
 <style id="homepage-orbit-center-lock-v14">
 /* Keep the whole five-button orbit centered on the tree and viewport.
    An older showcase rule shifted .orbit sideways by 25vw, separating the
@@ -1541,8 +1432,6 @@
   .home.menu-open #ring .portal[data-i="4"]{--x:calc(-.9510565163 * min(31vw,112px));--y:calc(-.3090169944 * min(31vw,112px))}
 }
 </style>
-
-
 <style id="homepage-portals-on-orbit-line-v15">
 /* The portal centers sit directly on the visible circular orbit line. */
 .home.menu-open #orbit .line{inset:3%!important}
@@ -1572,8 +1461,6 @@
   .home.menu-open #orbit .ring .portal[data-i="4"]{--x:calc(-.9510565163 * 36.8vw);--y:calc(-.3090169944 * 36.8vw)}
 }
 </style>
-
-
 <style id="homepage-opening-gradient-and-tree-invitation-v16">
 /* Opening scene: a coordinated jewel-toned gradient with a warm focus on the tree. */
 .home:not(.menu-open){
@@ -1640,8 +1527,6 @@
  .home:not(.menu-open) .core:before,.home:not(.menu-open) .tree-home,.home:not(.menu-open) .hint{animation:none}
 }
 </style>
-
-
 <style id="homepage-photo-crossfade-v17">
 #ambient{overflow:hidden}
 #ambient .ambient-photo-layer{
@@ -1652,8 +1537,6 @@
 #ambient .ambient-photo-layer.is-current{opacity:1;transform:scale(1.06)}
 @media(prefers-reduced-motion:reduce){#ambient .ambient-photo-layer{transition:opacity .2s linear,transform .2s linear}}
 </style>
-
-
 <style id="homepage-harmony-glass-composition-v18">
 /* Art direction: portals become part of the photographed atmosphere, not
    separate UI badges. Geometry, sizing, position and interaction stay intact. */
@@ -1738,8 +1621,6 @@
   .home.menu-open .portal:after{animation:none!important;opacity:.16!important}
 }
 </style>
-
-
 <style id="homepage-gold-edge-readable-glass-v19">
 /* Slightly deepen the image seen through each glass portal, then use a
    restrained warm-gold edge to define its circular silhouette. */
@@ -1797,7 +1678,6 @@
   }
 }
 </style>
-
 <style id="homepage-full-diameter-glass-v22">
 /* The central blur must be a full-size circular layer, not a small patch
    behind the tree. This final rule also restores the pseudo-element hidden
@@ -1837,7 +1717,6 @@
   }
 }
 </style>
-
 <style id="homepage-tree-glass-entire-disc-v24">
 /* Blur the complete central circle only after the orbit menu opens.
    The blur spans from the circle's outer edge all the way to its center. */
@@ -1886,3 +1765,129 @@
   }
 }
 </style>
+</head><body><main class="home opening" id="home" data-theme="space"><div class="ambient" id="ambient"></div><div class="veil"></div><div class="atmos space"><i class="sun"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i></div><div class="atmos kitchen"><i class="glow"></i><i class="ember"></i><i class="ember"></i><i class="ember"></i></div><div class="atmos sauna"><i class="steam"></i><i class="steam"></i><i class="ripple"></i><i class="ripple r2"></i></div><div class="atmos events"><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i></div><div class="brand-top"><strong>FreedOm</strong><span>дом, в котором живет любовь</span></div><header class="top"><a class="account" href="profile.html" aria-label="Личный кабинет" title="Личный кабинет"></a></header><section class="stage"><div class="orbit" id="orbit"><div class="line"></div><div class="line2"></div><button class="core" id="core" type="button" aria-label="Открыть дерево FreeDom"><span class="tree-home" aria-hidden="true"></span></button><div class="ring" id="ring"><button class="portal active" style="--a:0deg" data-i="0"><b>Пространство</b></button><button class="portal" style="--a:72deg" data-i="1"><b>Кухня</b></button><button class="portal" style="--a:144deg" data-i="2"><b>Баня</b></button><button class="portal" style="--a:216deg" data-i="3"><b>События</b></button><button class="portal" style="--a:288deg" data-i="4"><b>Комнаты</b></button></div></div></section><div class="direction-note" id="directionNote" aria-live="polite"></div>
+<section class="direction-showcase" id="directionShowcase" aria-live="polite">
+  <div class="direction-showcase-copy">
+    <div class="direction-showcase-kicker">FreeDom · выбери свой опыт</div>
+    <h2 id="showcaseTitle">Пространство</h2>
+    <p id="showcaseText">Познакомьтесь с FreeDom до приезда. Волшебные события и спортивные мероприятия, встречи и мастер-классы — всё, что нужно для креативного и полноценного отдыха.</p>
+  </div>
+</section><div class="hint" id="hint">Коснись дерева · открой FreeDom</div><section class="event-world" id="eventWorld" aria-label="Мир событий FreeDom">
+ <header class="event-world-top"><div class="event-world-brand">FreeDom</div><button class="event-world-close" id="eventWorldClose" type="button" aria-label="Вернуться к направлениям">×</button></header>
+ <div class="event-world-sparks" id="eventWorldSparks" aria-hidden="true"></div>
+ <div class="event-world-copy"><div class="event-world-kicker">FreeDom · пространство встреч</div><h2>Волшебные события</h2><p>Волшебные события — это неотъемлемая часть жизни. Расслабляющие практики, чайные церемонии, музыкальные концерты, театральные представления, художественные мастер-классы. Всё это и многое другое вы сможете наблюдать в нашем центре.</p></div>
+</section>
+</main><script>const home=document.getElementById('home'),orbit=document.getElementById('orbit'),ring=document.getElementById('ring'),core=document.getElementById('core'),ps=[...document.querySelectorAll('.portal')],ambient=document.getElementById('ambient'),world=document.getElementById('world'),title=document.getElementById('title'),scroll=document.getElementById('scroll'),hint=document.getElementById('hint'),directionNote=document.getElementById('directionNote'),showcaseTitle=document.getElementById('showcaseTitle'),showcaseText=document.getElementById('showcaseText');const names=['Пространство','Кухня','Баня','События','Комнаты'],themes=['space','kitchen','sauna','events','rooms'],photos=['images/16455-compressed.png','images/16355-compressed.png','images/sauna.jpg','images/16594-compressed.png','images/16361-compressed.png'],descriptions=['Познакомьтесь с FreeDom до приезда. Волшебные события и спортивные мероприятия, встречи и мастер-классы — всё, что нужно для креативного и полноценного отдыха.','Для настоящих ценителей вегетарианской кухни. Заказать блюдо вы можете уже сейчас!','Баня во FreeDom — особая традиция нашего центра. Каждый четверг мы паримся, ныряем в холодный бассейн, веселимся и отдыхаем от рабочих будней.','В нашем доме регулярно проходят творческие вечера, медитации под звуки гонга и тибетских чаш, чайные церемонии, встречи с путешественниками, художниками, духовными учителями, общественными деятелями и писателями. Здесь можно принять участие в самых разных мероприятиях, узнать много нового или провести собственное.','В нашем пространстве вы можете остановиться как в отдельной комнате, так и арендовать место в хостеле. Посмотреть доступные варианты и забронировать проживание можно в этом разделе.'];let rot=0,idx=0,drag=false,last=0,vel=0,ignore=0,raf,ambientSwap=0;function setAmbient(src){const token=++ambientSwap;const current=ambient.querySelector('.ambient-photo-layer.is-current');const next=document.createElement('div');next.className='ambient-photo-layer';next.style.backgroundImage=`url('${src}')`;ambient.appendChild(next);requestAnimationFrame(()=>requestAnimationFrame(()=>{if(token!==ambientSwap){next.remove();return}next.classList.add('is-current');if(current){current.classList.remove('is-current');setTimeout(()=>{if(token===ambientSwap)current.remove()},1500)}else{ambient.style.backgroundImage='none'}}));ambient.querySelectorAll('.ambient-photo-layer:not(.is-current)').forEach(layer=>{if(layer!==next&&layer!==current)layer.remove()})}function ang(e){let r=orbit.getBoundingClientRect();return Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2)}function norm(x){return Math.atan2(Math.sin(x),Math.cos(x))}function apply(){idx=((Math.round(-rot/72)%5)+5)%5;home.dataset.theme=themes[idx];ps.forEach((p,i)=>{p.classList.toggle('active',i===idx);p.classList.toggle('selected',i===idx)});setAmbient(photos[idx]);directionNote.textContent=descriptions[idx];showcaseTitle.textContent=names[idx];showcaseText.textContent=descriptions[idx]}function set(v){rot=v;ring.style.setProperty('--r',rot+'deg')}function finishOpening(){home.classList.add('ready');setTimeout(()=>home.classList.remove('opening'),1500)}setTimeout(finishOpening,1100);core.onclick=()=>{if(home.classList.contains('menu-open')){home.classList.add('entering');window.location.href='project-history.html';return}home.classList.add('menu-open');home.classList.remove('opening');home.dataset.theme=themes[idx];ambient.style.backgroundImage=`url('${photos[idx]}')`;hint.textContent='Проведи пальцем по орбите · выбери направление';hint.classList.remove('tree-history')};core.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();core.click()}};ps.forEach(p=>p.addEventListener('pointerdown',e=>e.stopPropagation()));ring.onpointerdown=e=>{if(!home.classList.contains('menu-open'))return;drag=true;ring.classList.add('drag');ring.setPointerCapture(e.pointerId);last=ang(e);vel=0;e.preventDefault()};ring.onpointermove=e=>{if(!drag)return;let a=ang(e),d=norm(a-last)*180/Math.PI;set(rot+d);vel=d;last=a;apply();e.preventDefault()};function release(){if(!drag)return;drag=false;ring.classList.remove('drag');ignore=Date.now()+320;let v=vel;function coast(){if(Math.abs(v)<.02){ring.style.transition='transform .9s cubic-bezier(.12,.86,.16,1)';set(Math.round(rot/72)*72);apply();setTimeout(()=>ring.style.transition='',950);return}set(rot+v);v*=.93;apply();raf=requestAnimationFrame(coast)}coast()}ring.onpointerup=release;ring.onpointercancel=release;ring.onlostpointercapture=release;ps.forEach(p=>p.onclick=()=>{if(Date.now()<ignore)return;open(+p.dataset.i)});function open(i){idx=i;set(-i*72);apply();if(i===0){openSpace();return}if(i===1){openKitchen();return}if(i===2){openBanya();return}if(i===3){openEvents();return}if(i===4){openRooms();return}return;}function openKitchen(){home.classList.add('entering');setTimeout(()=>{const q=new URLSearchParams();q.set('from','orbit');q.set('idx',String(idx));window.location.href='kitchen-pixel-v2.html?'+q.toString()},650)}function openBanya(){sessionStorage.setItem('freedomOrbitState',JSON.stringify({idx,rot}));home.classList.add('entering');setTimeout(()=>{const q=new URLSearchParams();q.set('from','orbit');q.set('idx',String(idx));window.location.href='freedom-banya-v2.html?'+q.toString()},650)}function openEvents(){sessionStorage.setItem('freedomOrbitState',JSON.stringify({idx,rot}));window.location.href='freedom-events-v1.html'}function closeEvents(){home.classList.remove('event-preview-open')}function openRooms(){sessionStorage.setItem('freedomOrbitState',JSON.stringify({idx,rot}));home.classList.add('entering');setTimeout(()=>{const q=new URLSearchParams();q.set('from','orbit');q.set('idx',String(idx));window.location.href='rooms-eco-futurism-v2.html?'+q.toString()},650)}function openSpace(){home.classList.add('space-launch');home.classList.add('entering');sessionStorage.setItem('freedomOrbitState',JSON.stringify({idx,rot}));setTimeout(()=>{const q=new URLSearchParams();q.set('from','orbit');q.set('idx',String(idx));const share=new URLSearchParams(location.search).get('_vercel_share');if(share)q.set('_vercel_share',share);window.location.href='space.html?'+q.toString()},1050)}document.getElementById('eventWorldClose').onclick=closeEvents;document.onkeydown=e=>{if(e.key==='ArrowRight'){set(rot-72);apply()}if(e.key==='ArrowLeft'){set(rot+72);apply()}};function content(i){if(i===4)return rooms();let d=[['Здесь начинается жизнь','Дом, сад, бассейн, люди, книги, разговоры и пространство, в котором можно просто быть собой.','images/room-bungalow.jpg','Дом и территория'],['Здесь собираются вместе','Кухня FreeDom — не ресторан. Это повседневная жизнь: приготовить, поставить чайник, поделиться едой и задержаться за разговором.','images/tea-ceremony.jpg','Общий стол'],['Замедлиться и выдохнуть','Тёплое дерево, пар, вода и разговоры. Баня — отдельный ритм FreeDom.','images/sauna.jpg','Баня'],['То, что происходит между людьми','Музыка, лекции, медитации, спорт, кино, караоке, дни рождения, творчество и спонтанные вечера.','images/gong-meditation.jpg','Живая программа']][i];return `<section class="hero"><div><h2>${d[0]}</h2><p>${d[1]}</p></div></section><section class="grid"><article class="card"><img src="${d[2]}"><div class="body"><h3>${d[3]}</h3><p>Часть живого пространства FreeDom.</p></div></article></section>`}function rooms(){let r=[['Семейная комната','images/room-family.jpg'],['Двухместная с балконом','images/room-balcony.jpg'],['Мансарда','images/room-attic.jpg'],['Бунгало','images/room-bungalow.jpg'],['Место на балконе','images/room-balcony-bed.jpg'],['Стандартный хостел','images/room-hostel.jpg'],['Эконом-хостел','images/room-hostel-2.jpg']];return `<section class="hero"><div><h2>Место, где жить</h2><p>Комната — только часть опыта. Выбирай формат проживания, а жизнь FreeDom начинается уже за дверью.</p></div></section><section class="grid">${r.map(x=>`<article class="card"><img src="${x[1]}"><div class="body"><h3>${x[0]}</h3><p>Реальный вариант проживания FreeDom.</p><a class="action" href="availability_map_v3.html?room=${encodeURIComponent(x[0])}">Проверить доступность</a></div></article>`).join('')}</section>`}apply();home.dataset.theme='home';ambient.style.backgroundImage="url('images/16354-compressed.png')";
+/* Returning from any inner page starts with a calm, closed orbit. */
+</script><script>
+// V14 pointer fix: a tap on a portal must open it; only a real drag is ignored.
+(() => {
+  const portals = [...document.querySelectorAll('.portal')];
+  portals.forEach(p => {
+    const i = Number(p.dataset.i);
+    p.onclick = e => { e.preventDefault(); e.stopPropagation(); if (typeof open !== 'function') return; if (i === idx) { open(i); return; } idx = i; set(-i*72); apply(); ps.forEach((q,j)=>q.classList.toggle('selected',j===i)); };
+  });
+})();
+</script>
+<script>
+(() => {
+  const focus = new URLSearchParams(location.search).get('focus');
+  if (focus !== 'rooms') return;
+  home.classList.add('menu-open');
+  idx = 4;
+  set(-idx * 72);
+  apply();
+  ps.forEach((p, j) => p.classList.toggle('selected', j === idx));
+  hint.textContent = 'Комнаты выбраны · нажми ещё раз, чтобы открыть';
+})();
+</script><script>
+/* Double-tap the FreeDom wordmark to open the standalone project story. */
+(()=>{const logo=document.querySelector('.brand-top');if(!logo)return;logo.style.cursor='pointer';logo.setAttribute('role','link');logo.setAttribute('tabindex','0');logo.setAttribute('aria-label','Нажми дважды, чтобы открыть историю проекта');let taps=0,timer;const activate=()=>{taps++;if(taps===1){logo.style.textShadow='0 0 18px rgba(255,211,120,.9)';timer=setTimeout(()=>{taps=0;logo.style.textShadow='';},1400)}else{clearTimeout(timer);location.href='project-history.html'}};logo.addEventListener('click',activate);logo.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate()}})})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="homepage-orbit-expansion-behavior-v7">
+(()=> {
+  const home=document.querySelector('.home');
+  const ring=document.getElementById('ring');
+  const core=document.getElementById('core');
+  if(!home||!ring||!core||home.dataset.orbitExpansionBound==='1')return;
+  home.dataset.orbitExpansionBound='1';
+  let settleTimer=null;
+  const expand=()=>{
+    clearTimeout(settleTimer);
+    home.classList.add('orbit-expanded');
+  };
+  const settle=(delay=1700)=>{
+    clearTimeout(settleTimer);
+    settleTimer=setTimeout(()=>home.classList.remove('orbit-expanded'),delay);
+  };
+  let wasOpen=home.classList.contains('menu-open');
+  const observer=new MutationObserver(()=>{
+    const isOpen=home.classList.contains('menu-open');
+    if(isOpen&&!wasOpen){
+      expand();
+      settle(2600);
+    }else if(!isOpen&&wasOpen){
+      clearTimeout(settleTimer);
+      home.classList.remove('orbit-expanded');
+    }
+    wasOpen=isOpen;
+  });
+  observer.observe(home,{attributes:true,attributeFilter:['class']});
+  ring.addEventListener('pointerdown',()=>{
+    if(home.classList.contains('menu-open'))expand();
+  },true);
+  ring.addEventListener('pointerup',()=>settle(3600),true);
+  ring.addEventListener('pointercancel',()=>settle(3600),true);
+  document.addEventListener('keydown',e=>{
+    if(!home.classList.contains('menu-open'))return;
+    if(['ArrowLeft','ArrowRight'].includes(e.key)){
+      expand();
+      settle(1900);
+    }
+  });
+})();
+</script>
+</body>
+</html>
