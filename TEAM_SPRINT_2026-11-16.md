@@ -206,3 +206,12 @@
 - **Малый UX mismatch:** карта комнат не передаёт `adults` в URL, хотя форма умеет его читать; сейчас остаётся default 2. Исправлять только после подтверждения, где должен выбираться состав гостей.
 - **API:** booking/availability — POST-прокси к Edge Functions; валидация, auth и idempotency функций не подтверждены без их исходников.
 - Следующий шаг: получить от владельца кухни endpoint/адресата и read-only описание Edge Functions. Live формы не отправлять. Release NO-GO без изменений.
+
+
+## Дополнение к спринту — проверка полномочий админских RPC, 16.11.2026
+
+- **P1 SECURITY REVIEW — BLOCKED / NOT A CONFIRMED VULNERABILITY:** admin_kitchen.html вызывает admin_get_kitchen_orders и admin_update_kitchen_order_status напрямую, без клиентской проверки сессии/роли. admin_bookings_v2.html ограничивает интерфейс email-проверкой, но напрямую вызывает confirm_booking / cancel_booking. Реальная защита может быть в RPC grants/RLS/внутри функций; исходников нет.
+- api/admin-booking.js имеет серверную проверку сессии и email, однако она не защищает прямые вызовы RPC с других страниц.
+- Нужен read-only export функций, grants, RLS и Auth-политик. Не тестировать обход доступа live-вызовами, не менять права/БД.
+- **P2 UI:** в admin_kitchen.html нет локального try/catch в load() и changeStatus(); сетевой reject может оставить ошибочное/зависшее состояние. Исправление отложено до следующего изолированного клиентского патча.
+- Release NO-GO; не утверждать, что доступ скомпрометирован, пока серверные политики не проверены.
