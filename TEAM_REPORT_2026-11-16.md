@@ -284,3 +284,12 @@
 - Статическая проверка: 1/1 inline JS block скомпилирован; подтверждены прямой snap, отсутствие reduced-motion RAF ветки и немедленная очистка при закрытии.
 - Browser/Android и визуальная проверка не выполнялись. Это static/syntax PASS, не browser PASS.
 - Production/main, Supabase и live-формы не затронуты; релиз NO-GO.
+
+
+## Дополнение — баня: короткая блокировка ввода при reduced motion
+
+- В `freedom-banya-v2.html` CSS уже отключает переходы/анимации при системном Reduce Motion, но JS продолжал блокировать повторный ввод на 1050 мс — длительность обычного перехода между сценами.
+- Теперь при `prefers-reduced-motion: reduce` блокировка ввода после мгновенного переключения сцены составляет 180 мс (защита от повторного wheel-события), обычный режим сохраняет 1050 мс.
+- Коммит: `32142d1a272122bad50bc4dff0de7215fded8ca8`.
+- Статическая проверка: 1/1 inline JS block скомпилирован; условие reduced/normal delay подтверждено.
+- Browser/Android QA не выполнен; это static/syntax PASS. Production/main и Supabase не затронуты; релиз NO-GO.
