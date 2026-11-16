@@ -145,3 +145,10 @@
 - Supabase проект ACTIVE_HEALTHY, но read-only introspection завершился 28P01; triggers/RLS/grants/schema остаются UNKNOWN. DB changes и live signup не выполнялись.
 - Следующий шаг: восстановить read-only доступ, проверить trigger/constraints/RLS/grants/RPC, затем выбрать безопасный транзакционный путь и план восстановления существующих orphan accounts.
 - Статус: P1 OPEN; Release NO-GO; browser QA NOT RUN.
+
+
+## Обновление — SQL-артефакты регистрации, 16.11.2026
+- Полный Git tree проверен: migration directory отсутствует, в ветке ровно два SQL-файла — orders/payments; ни один не создаёт users profile или auth.users trigger.
+- list_migrations снова завершился 28P01; Security Advisor сообщил hibernated. Не повторяли запросы и не пытались разбудить проект.
+- register.html подтверждает, что users INSERT выполняется до проверки authData.session; при session=null код затем просит подтвердить email. Доступность INSERT без сессии зависит от реальных RLS/grants и не установлена.
+- P1 остаётся OPEN до получения read-only schema export / SQL definitions от владельца. Никаких DB/Auth changes, live signup или восстановления данных.
