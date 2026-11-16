@@ -45,3 +45,58 @@ body:has(#profileContent) .container,body:has(#refBalance) .container{max-width:
   .home .portal b{font-size:6.5px;letter-spacing:.08em}
   .home .core{width:142px;height:142px}
 }
+
+
+/* Purchases page — keep the account area inside the FreeDom forest/paper system. */
+body:has(#ordersList){
+  min-height:100vh;
+  background:radial-gradient(ellipse at 78% 0%,#d9e3d1 0%,transparent 42%),linear-gradient(135deg,#f6f2e8,#e8e9dc 60%,#d9e2d4);
+  color:var(--fd-ink);
+  font-family:var(--fd-sans);
+}
+body:has(#ordersList) .container{max-width:900px}
+body:has(#ordersList) .header{
+  background:linear-gradient(115deg,#173d31,#315e43);
+  border:0;
+  border-radius:4px 34px 4px 4px;
+  box-shadow:0 20px 55px #183c2b25;
+}
+body:has(#ordersList) .header:before{opacity:.12}
+body:has(#ordersList) .header h1{
+  color:#f5e8c9;
+  font:500 clamp(30px,5vw,46px)/1.05 var(--fd-serif);
+}
+body:has(#ordersList) .header p{color:#e9efe4;opacity:.88}
+body:has(#ordersList) .back-link{color:#f5e8c9}
+body:has(#ordersList) .card,
+body:has(#ordersList) .purchase-item{
+  background:#fffdf7;
+  border:1px solid #e5e8df;
+  border-radius:4px 22px 4px 4px;
+  box-shadow:0 14px 40px #1b392316;
+  color:var(--fd-ink);
+}
+body:has(#ordersList) .card h3{color:#244b39}
+body:has(#ordersList) .empty,
+body:has(#ordersList) .items,
+body:has(#ordersList) .date{color:#68756a}
+body:has(#ordersList) .amount{color:#244b39}
+body:has(#ordersList) .badge{border-radius:999px}
+body:has(#ordersList) .btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:12px 20px;
+  border:1px solid transparent;
+  border-radius:999px;
+  background:#234b39;
+  color:#fff;
+  text-decoration:none;
+}
+body:has(#ordersList) .footer{color:#68756a}
+@media(max-width:640px){
+  body:has(#ordersList){padding-top:0}
+  body:has(#ordersList) .header{margin-top:-20px;padding:3.2rem 1rem 1.6rem;border-radius:0 0 26px 26px}
+  body:has(#ordersList) .card{padding:18px}
+}
