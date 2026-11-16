@@ -81,6 +81,8 @@ const today=new Date();const localToday=new Date(today.getTime()-today.getTimezo
 checkin.min=localToday;checkout.min=localToday;
 if(params.get('checkin'))checkin.value=params.get('checkin');
 if(params.get('checkout'))checkout.value=params.get('checkout');
+checkout.min=checkin.value||localToday;
+if(checkout.value&&checkin.value&&checkout.value<=checkin.value)checkout.value='';
 checkin.addEventListener('change',()=>{checkout.min=checkin.value||localToday;if(checkout.value&&checkout.value<=checkin.value)checkout.value=''});
 form.addEventListener('submit',async e=>{
  e.preventDefault();
@@ -89,7 +91,7 @@ form.addEventListener('submit',async e=>{
  successMessage.style.display='none';
  errorMessage.style.display='none';
  errorMessage.textContent='Не удалось отправить заявку. Проверь соединение и попробуй ещё раз.';
- if(!checkin.value||!checkout.value||checkout.value<=checkin.value){errorMessage.textContent='Дата выезда должна быть позже даты заезда.';errorMessage.style.display='block';checkout.focus();return}
+ if(!checkin.value||!checkout.value||checkout.value<=checkin.value){errorMessage.textContent='Дата выезда должна быть позже даты заезда.';errorMessage.style.display='block';(!checkin.value?checkin:checkout).focus();return}
  const button=document.getElementById('submitButton');button.disabled=true;button.textContent='Отправляем…';
  try{
   const response=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
