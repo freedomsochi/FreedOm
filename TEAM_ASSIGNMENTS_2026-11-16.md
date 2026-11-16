@@ -128,3 +128,16 @@
 ## Журнал текущих изменений
 - `admin.html`: добавлена валидация UUID перед включением user id в inline action handlers — commit `5ec1cbc87e745a9827e4fc1f4b8503dbfe8aff39`.
 - Предыдущие исправления и ссылки перечислены в `DIRECTOR_AUDIT_AND_PLAN_2026-11-16.md` и GitHub issue #24.
+
+
+## Статус выполнения ролей на момент 16.11.2026
+
+| Роль | Что сделано в текущем проходе | Что остаётся |
+|---|---|---|
+| Директор | Сформировал общий scope, P0–P3 подход, ограничения и критерии go/no-go; создал назначения и обновил issue #24 | Свести результаты остальных ролей в единый backlog и принять решение после Preview/QA |
+| Дизайнер | Провёл статическую проверку ключевых страниц; подтвердил наличие responsive breakpoints; нашёл повторные mobile overrides в главной/комнатах и отсутствие alt у части изображений; alt исправлены | Проверить визуально на 390/768/1440, контраст, обрезку фото, перекрытия, скачки фона и каскад CSS в браузере |
+| Технический программист | Провёл аудит ошибок/DOM; добавил UUID validation в админке; ранее исправлены auth/session, error states и partial registration feedback | Проверить оставшиеся формы/API в браузере; подготовить DB-safe atomic signup proposal после read-only Supabase audit |
+| Моушн-дизайнер | Статически разобраны Orbit pointer drag/inertia, Space swipe/wheel, SVG tree ResizeObserver, reduced-motion hooks | Реальные touch/pointer/scroll tests, reduced-motion и performance profiling на Android/desktop |
+| Тестировщик | Статически проверены title/lang/viewport, inline JS, основные DOM sinks; изображения главной 2/2 и комнаты 14/14 теперь имеют alt | Полный smoke/regression на свежем READY Preview, клавиатура/скринридер/console/network и responsive QA |
+
+**Важная оговорка:** выполненные дизайнером, motion и QA пункты на этом этапе — статический аудит исходников, не визуальная или браузерная приёмка. Полное завершение этих ролей зависит от доступности Preview и browser runner.
