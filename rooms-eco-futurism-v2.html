@@ -781,7 +781,7 @@ const rooms=[
 {name:'Бунгало',category:'bungalow',floors:['territory'],meta:'Отдельное размещение',desc:'Отдельное пространство на территории FreeDom для тех, кому хочется больше уединения и близости к природе.',img:'images/room-bungalow.jpg',dbNames:['Бунгало в саду']}
 ];
 const availabilityEndpoint='/api/availability';
-let active=-1,category='rooms',availabilityRows=[],availabilityState='idle',activeFloor='territory',filterFloor=null,hasInteracted=false,browsingCategory=false;
+let active=-1,category='rooms',availabilityRows=[],availabilityState='idle',availabilityRequestId=0,activeFloor='territory',filterFloor=null,hasInteracted=false,browsingCategory=false;
 const floorInfo={
  territory:{label:'Территория',desc:'Бассейн · спортивная площадка'},
  '1':{label:'1 этаж',desc:'Баня'},
@@ -964,6 +964,7 @@ function showMapPointInfo(point){
 }
 
 async function refreshAvailability(){
+ const requestId=++availabilityRequestId;
  const checkIn=$('#checkin').value,checkOut=$('#checkout').value,summary=$('#availability-summary');
  if(!checkIn||!checkOut||checkOut<=checkIn){
   availabilityState='error';availabilityRows=[];hasInteracted=false;applyRoomFilters();renderAvailability();
@@ -977,6 +978,7 @@ async function refreshAvailability(){
  try{
   const response=await fetch(availabilityEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({check_in:checkIn,check_out:checkOut})});
   const payload=await response.json();
+  if(requestId!==availabilityRequestId||checkIn!==$('#checkin').value||checkOut!==$('#checkout').value)return;
   if(!response.ok||!payload.ok||!Array.isArray(payload.rooms))throw new Error(payload.error||'Availability request failed');
   availabilityRows=payload.rooms;availabilityState='loaded';hasInteracted=true;applyRoomFilters();renderAvailability();
   const free=rooms.filter(room=>availabilityFor(room.dbNames).available===true).length;
@@ -984,12 +986,13 @@ async function refreshAvailability(){
   if(summary){summary.dataset.state=free?'free':busy?'busy':'unknown';summary.textContent='Доступность проверена · '+checkIn+' — '+checkOut+' · доступно вариантов: '+free+(busy?' · нет мест: '+busy:'')}
   $('.modelhint span').textContent='Доступность обновлена · '+checkIn+' — '+checkOut;
  }catch(error){
+  if(requestId!==availabilityRequestId||checkIn!==$('#checkin').value||checkOut!==$('#checkout').value)return;
   availabilityRows=[];availabilityState='error';applyRoomFilters();renderAvailability();
   if(summary){summary.dataset.state='error';summary.textContent='Не удалось получить данные. Доступность не подтверждена — попробуйте проверить ещё раз.'}
   $('.modelhint span').textContent='Не удалось проверить доступность · можно уточнить у команды';
   console.error('FreeDom live availability:',error);
  }finally{
-  const searchButton=$('#search');if(searchButton){searchButton.classList.remove('is-loading');searchButton.disabled=false;searchButton.removeAttribute('aria-busy');}
+  if(requestId===availabilityRequestId){const searchButton=$('#search');if(searchButton){searchButton.classList.remove('is-loading');searchButton.disabled=false;searchButton.removeAttribute('aria-busy');}}
  }
 }
 function syncDatesSelected(){const a=$('#checkin').value,b=$('#checkout').value;document.body.classList.toggle('dates-selected',!!(a&&b&&b>a));}
@@ -1001,7 +1004,15 @@ function initDates(){
  checkIn.min=localIso(today);checkOut.min=localIso(today);
  checkIn.value=localIso(today);checkOut.value=localIso(tomorrow);
  const updateMin=()=>{checkOut.min=checkIn.value||localIso(today);if(checkOut.value&&checkOut.value<=checkIn.value){const next=new Date(checkIn.value+'T12:00:00');next.setDate(next.getDate()+1);checkOut.value=localIso(next)}};
- checkIn.addEventListener('change',updateMin);
+ const invalidateAvailability=()=>{
+  availabilityRequestId++;availabilityRows=[];availabilityState='idle';hasInteracted=false;
+  applyRoomFilters();renderAvailability();
+  const summary=$('#availability-summary');if(summary){summary.dataset.state='idle';summary.textContent='Даты изменились · проверьте доступность ещё раз.'}
+  $('.modelhint span').textContent='Даты изменились · проверьте доступность ещё раз';
+  const searchButton=$('#search');if(searchButton){searchButton.classList.remove('is-loading');searchButton.disabled=false;searchButton.removeAttribute('aria-busy');}
+ };
+ checkIn.addEventListener('change',()=>{updateMin();invalidateAvailability()});
+ checkOut.addEventListener('change',invalidateAvailability);
  const summary=$('#availability-summary');if(summary){summary.dataset.state='idle';summary.textContent='';}
 }
 $$('.floorlayers button').forEach(b=>b.addEventListener('click',()=>setFloor(b.dataset.floor)));
