@@ -313,3 +313,5 @@
 - Коммит: `2de39a00d32af53e6d5dc2a1cab470928b785b28`.
 - Static QA: JS syntax PASS; проверки актуального значения media query, отсутствия раннего return и сохранения page-ready класса PASS.
 - Не проверено реальное изменение системной настройки в браузере и межстраничные переходы на Android. Production/main и Supabase не затронуты.
+
+- Follow-up hardening: while an order submission is pending (including the short success-confirmation window), the order modal cannot be reopened; this prevents a delayed success cleanup from closing a newly opened order dialog. Commit: `a23bfff6821ad981876e783098ea4ab149756eca`. Inline JS syntax rechecked 1/1.
