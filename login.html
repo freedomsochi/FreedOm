@@ -149,10 +149,16 @@
             const submitBtn = document.getElementById('submitBtn');
 
             // Проверка, не авторизован ли пользователь уже
-            supabase.auth.getSession().then(({ data }) => {
+            supabase.auth.getSession().then(({ data, error }) => {
+                if (error) throw error;
                 if (data.session) {
                     window.location.href = 'profile.html';
                 }
+            }).catch(error => {
+                console.error('Не удалось проверить текущую сессию:', error);
+                resultMessage.textContent = 'Не удалось проверить текущую авторизацию. Вы можете попробовать войти ещё раз.';
+                resultMessage.className = 'result-box error show';
+                resultMessage.style.display = 'block';
             });
 
             // Обработка отправки формы
