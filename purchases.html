@@ -19,7 +19,126 @@
 <div class="card"><h3>🧾 Остальные покупки</h3><div id="purchasesList"><div class="empty">Загрузка...</div></div></div>
 <a href="profile.html" class="btn">← Личный кабинет</a></div><div class="footer">FreeDom — место для жизни, отдыха и развития ❤️</div>
 <script>
-document.addEventListener('DOMContentLoaded',async()=>{const supabase=window.supabase.createClient('https://vutmbhsclmcfqqlzxqkc.supabase.co','sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q');const ordersList=document.getElementById('ordersList'),purchasesList=document.getElementById('purchasesList');const {data:sessionData}=await supabase.auth.getSession();if(!sessionData.session){location.href='login.html';return}const userId=sessionData.session.user.id;
-const ordersResult=await supabase.from('orders').select('*').eq('user_id',userId).order('created_at',{ascending:false});if(ordersResult.error){console.error(ordersResult.error);ordersList.innerHTML='<div class="empty">❌ Не удалось загрузить заказы</div>'}else if(!ordersResult.data?.length){ordersList.innerHTML='<div class="empty">Пока нет заказов кухни</div>'}else{ordersList.innerHTML=ordersResult.data.map(o=>{const date=o.created_at?new Date(o.created_at).toLocaleString('ru-RU'):'—';let items='';try{items=(Array.isArray(o.items)?o.items:[]).map(i=>`${i.name||'Блюдо'} × ${i.quantity||1}`).join(', ')}catch{}const status=o.status||'новый';const cls=status==='оплачен'||status==='завершён'?'paid':status==='отменён'?'cancelled':'new';return `<div class="purchase-item"><div class="row"><div><div class="amount">${o.total_amount||0} ₽</div><div class="date">${date}</div></div><span class="badge ${cls}">${status}</span></div><div class="items">${items||'Состав заказа не указан'}</div></div>`}).join('')}
-const purchasesResult=await supabase.from('purchases').select('*').eq('Buyer_id',userId).order('Created_at',{ascending:false});if(purchasesResult.error){purchasesList.innerHTML='<div class="empty">❌ Ошибка загрузки покупок</div>'}else if(!purchasesResult.data?.length){purchasesList.innerHTML='<div class="empty">Других покупок пока нет</div>'}else{purchasesList.innerHTML=purchasesResult.data.map(p=>`<div class="purchase-item"><div class="row"><div><div class="amount">${p.Amount||0} ₽</div><div class="date">${p.Created_at?new Date(p.Created_at).toLocaleDateString('ru-RU'):'—'}</div></div><span class="badge paid">✅ Подтверждено</span></div></div>`).join('')}});
+document.addEventListener('DOMContentLoaded', async () => {
+    const supabase = window.supabase.createClient(
+        'https://vutmbhsclmcfqqlzxqkc.supabase.co',
+        'sb_publishable_G7jiYh_r-oC9gkd1a09Ncw_5BKgfV_q'
+    );
+    const ordersList = document.getElementById('ordersList');
+    const purchasesList = document.getElementById('purchasesList');
+
+    function showMessage(container, message) {
+        const element = document.createElement('div');
+        element.className = 'empty';
+        element.textContent = message;
+        container.replaceChildren(element);
+    }
+
+    function createElement(tag, className, value) {
+        const element = document.createElement(tag);
+        if (className) element.className = className;
+        if (value !== undefined) element.textContent = String(value);
+        return element;
+    }
+
+    function formatAmount(value) {
+        const amount = Number(value);
+        return Number.isFinite(amount)
+            ? amount.toLocaleString('ru-RU') + ' ₽'
+            : '—';
+    }
+
+    function formatDate(value, withTime) {
+        if (!value) return '—';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return '—';
+        return withTime
+            ? date.toLocaleString('ru-RU')
+            : date.toLocaleDateString('ru-RU');
+    }
+
+    function renderOrder(order) {
+        const item = createElement('div', 'purchase-item');
+        const row = createElement('div', 'row');
+        const details = createElement('div');
+        details.append(
+            createElement('div', 'amount', formatAmount(order.total_amount)),
+            createElement('div', 'date', formatDate(order.created_at, true))
+        );
+
+        const status = String(order.status || 'новый');
+        const statusClass = status === 'оплачен' || status === 'завершён'
+            ? 'paid'
+            : status === 'отменён' ? 'cancelled' : 'new';
+        row.append(details, createElement('span', 'badge ' + statusClass, status));
+        item.append(row);
+
+        const orderItems = Array.isArray(order.items) ? order.items : [];
+        const description = orderItems.map(entry => {
+            if (!entry || typeof entry !== 'object') return '';
+            const name = String(entry.name || 'Блюдо');
+            const quantity = Number(entry.quantity);
+            return name + ' × ' + (Number.isFinite(quantity) && quantity > 0 ? quantity : 1);
+        }).filter(Boolean).join(', ');
+        item.append(createElement('div', 'items', description || 'Состав заказа не указан'));
+        return item;
+    }
+
+    function renderPurchase(purchase) {
+        const item = createElement('div', 'purchase-item');
+        const row = createElement('div', 'row');
+        const details = createElement('div');
+        details.append(
+            createElement('div', 'amount', formatAmount(purchase.Amount)),
+            createElement('div', 'date', formatDate(purchase.Created_at, false))
+        );
+        row.append(details, createElement('span', 'badge paid', '✅ Подтверждено'));
+        item.append(row);
+        return item;
+    }
+
+    try {
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError) throw sessionError;
+        if (!sessionData.session) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const userId = sessionData.session.user.id;
+        const ordersResult = await supabase
+            .from('orders')
+            .select('*')
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false });
+
+        if (ordersResult.error) {
+            console.error('Ошибка загрузки заказов:', ordersResult.error);
+            showMessage(ordersList, '❌ Не удалось загрузить заказы');
+        } else if (!ordersResult.data?.length) {
+            showMessage(ordersList, 'Пока нет заказов кухни');
+        } else {
+            ordersList.replaceChildren(...ordersResult.data.map(renderOrder));
+        }
+
+        const purchasesResult = await supabase
+            .from('purchases')
+            .select('*')
+            .eq('Buyer_id', userId)
+            .order('Created_at', { ascending: false });
+
+        if (purchasesResult.error) {
+            console.error('Ошибка загрузки покупок:', purchasesResult.error);
+            showMessage(purchasesList, '❌ Ошибка загрузки покупок');
+        } else if (!purchasesResult.data?.length) {
+            showMessage(purchasesList, 'Других покупок пока нет');
+        } else {
+            purchasesList.replaceChildren(...purchasesResult.data.map(renderPurchase));
+        }
+    } catch (error) {
+        console.error('Не удалось загрузить личную историю:', error);
+        showMessage(ordersList, '❌ Не удалось проверить авторизацию или загрузить заказы. Обновите страницу.');
+        showMessage(purchasesList, '❌ Не удалось загрузить покупки. Обновите страницу.');
+    }
+});
 </script></body></html>
