@@ -212,6 +212,12 @@
 
                     if (authError) throw authError;
 
+                    // Supabase may return an obfuscated user with no identities for an existing email.
+                    // Do not try to create a second FreeDom profile for that account.
+                    if (Array.isArray(authData.user?.identities) && authData.user.identities.length === 0) {
+                        throw new Error('Этот email уже зарегистрирован. Войди в существующий аккаунт.');
+                    }
+
                     if (!authData.user?.id) throw new Error('Аккаунт создан не полностью: не удалось получить идентификатор пользователя. Обратись к администрации FreeDom.');
                     const userId = authData.user.id;
                     createdAuthUserId = userId;
