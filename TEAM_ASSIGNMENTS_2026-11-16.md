@@ -385,3 +385,10 @@
 - **Моушн-дизайнер — DONE (implementation), OPEN (visual QA):** логика сниженного движения согласована с сохранением ручного управления; проверить ощущение управления, переходы и мобильную плавность после появления Preview.
 - **Тестировщик — DONE (static):** Import Map JSON PASS, module syntax PASS, 10/10 structural checks PASS. Не считать browser QA.
 - **Директор — HOLD:** задача технически готова, но не закрывать приёмку до браузерной проверки; релиз остаётся NO-GO.
+
+
+## Дополнение — Space reduced-motion gesture guards
+- **Моушн-дизайнер — implementation DONE / browser QA OPEN:** при системном Reduce Motion собственные обработчики вертикальных touch/wheel/scroll/resize больше не перехватывают нативную прокрутку; fade/transition уже отключаются CSS-правилами.
+- **Тестировщик — static PASS:** 1/1 inline JS block syntax; 7/7 guard checks. Android/browser interaction и изменение системной настройки не проверены.
+- Коммит: `c6f04cc33dc40959fe3e50ab61c9d7039b9cef79`.
+- **Директор — HOLD:** не повышать WIP; Production NO-GO до READY Preview и браузерной регрессии.
