@@ -137,3 +137,11 @@
 - Коммит: `4fab35f79cdf79defee173a2d6ab03030322f664`; JS syntax 1/1 PASS; структурная проверка параметра PASS.
 - Vercel Preview READY для точного SHA: https://freed-3c69vfx2r-sergeyogorodnik19-3325s-projects.vercel.app/ .
 - Browser/Android QA — NOT RUN. Следующая ручная проверка: карта → форма, adults=1 и adults=2, даты/название комнаты; остановиться до submit.
+
+
+## Обновление 16.11.2026 — регистрация и профиль
+- Проведён source audit: Auth signUp → отдельный users INSERT → отдельный referrals INSERT.
+- Подтверждён архитектурный риск orphan Auth user при отказе users INSERT; profile.html не имеет self-recovery, login.html перенаправляет на профиль без восстановления.
+- Supabase проект ACTIVE_HEALTHY, но read-only introspection завершился 28P01; triggers/RLS/grants/schema остаются UNKNOWN. DB changes и live signup не выполнялись.
+- Следующий шаг: восстановить read-only доступ, проверить trigger/constraints/RLS/grants/RPC, затем выбрать безопасный транзакционный путь и план восстановления существующих orphan accounts.
+- Статус: P1 OPEN; Release NO-GO; browser QA NOT RUN.
