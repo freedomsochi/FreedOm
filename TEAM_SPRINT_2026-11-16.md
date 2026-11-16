@@ -215,3 +215,11 @@
 - Нужен read-only export функций, grants, RLS и Auth-политик. Не тестировать обход доступа live-вызовами, не менять права/БД.
 - **P2 UI:** в admin_kitchen.html нет локального try/catch в load() и changeStatus(); сетевой reject может оставить ошибочное/зависшее состояние. Исправление отложено до следующего изолированного клиентского патча.
 - Release NO-GO; не утверждать, что доступ скомпрометирован, пока серверные политики не проверены.
+
+
+## Технический патч — устойчивость админки кухни, 16.11.2026
+
+- **Технический программист — DONE (static):** `load()` и `changeStatus()` теперь ловят сетевые/rejected ошибки; загрузка всегда снимает состояние disabled у кнопки обновления, ошибка статуса восстанавливает кнопку действия.
+- Commit: `6529f6034bf59b0f6d3fce7441122e7f46c6b165`.
+- Повторное чтение файла, JS compile check и 5/5 статических assertions: PASS. Browser/Android/network simulation: NOT RUN.
+- RPC-контракты сохранены; Auth/RPC/grants/RLS/DB/финансы не менялись. Security review остаётся BLOCKED, не confirmed vulnerability. Release NO-GO.
