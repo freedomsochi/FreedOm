@@ -496,3 +496,11 @@
 
 ### Решение директора
 **Release: NO-GO.** Следующий цикл — стабилизация и доказательная приёмка, а не наращивание объёма функций. Production, Supabase schema/data/RLS/grants/RPC, Auth settings, финансы и live-формы не менять без отдельного согласования.
+
+
+## Обновление назначений — карта доступности
+- **Технический программист — implementation DONE:** исправлен переход CTA на существующую форму бронирования; добавлена защита от stale availability response и сброс состояния при смене дат. SHA `3d29c129d15c5d87ee86164c1528a3e2ee7ca749`.
+- **Тестировщик — static PASS:** 1/1 inline JS compiled; 7/7 structural assertions; форма-получатель принимает все передаваемые query keys. Browser/network/Android QA — BLOCKED/NOT RUN.
+- **Дизайнер — OPEN:** реальная визуальная приёмка карты на 390/768/1440 требует Preview/browser.
+- **Моушн-дизайнер — OPEN:** touch/быстрые смены дат и ощущение перехода в форму требуют браузера.
+- **Директор — HOLD:** объём работ не повышать; следующий шаг — Preview + безопасный dry-run до submit. Release NO-GO.
