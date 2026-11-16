@@ -268,11 +268,19 @@
                     }
 
                     successMsg.textContent = referralNotice
-                        ? 'Регистрация успешна. ' + referralNotice + ' Перенаправляем...'
-                        : '✅ Регистрация успешна! Перенаправляем...';
+                        ? 'Регистрация успешна. ' + referralNotice
+                        : '✅ Регистрация успешна!';
                     successMsg.style.display = 'block';
-                    submitBtn.textContent = 'Готово!';
                     submitBtn.disabled = true;
+
+                    if (!authData.session) {
+                        successMsg.textContent += ' Проверь почту и подтверди email, затем войди в аккаунт.';
+                        submitBtn.textContent = 'Проверьте почту';
+                        return;
+                    }
+
+                    successMsg.textContent += ' Перенаправляем...';
+                    submitBtn.textContent = 'Готово!';
                     setTimeout(() => {
                         window.location.href = 'profile.html';
                     }, 2000);
