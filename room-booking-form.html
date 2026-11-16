@@ -92,15 +92,25 @@ form.addEventListener('submit',async e=>{
  errorMessage.style.display='none';
  errorMessage.textContent='Не удалось отправить заявку. Проверь соединение и попробуй ещё раз.';
  if(!checkin.value||!checkout.value||checkout.value<=checkin.value){errorMessage.textContent='Дата выезда должна быть позже даты заезда.';errorMessage.style.display='block';(!checkin.value?checkin:checkout).focus();return}
- const button=document.getElementById('submitButton');button.disabled=true;button.textContent='Отправляем…';
+ const button=document.getElementById('submitButton');
+ if(button.disabled)return;
+ button.disabled=true;button.textContent='Отправляем…';
+ const controller=new AbortController();
+ const timeoutId=setTimeout(()=>controller.abort(),20000);
  try{
-  const response=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+  const response=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'},signal:controller.signal});
   if(!response.ok)throw new Error('Formspree response '+response.status);
   form.querySelectorAll('.field, .submit, .note').forEach(el=>el.style.display='none');
   document.getElementById('successMessage').style.display='block';
  }catch(err){
-  document.getElementById('errorMessage').style.display='block';
+  const message=document.getElementById('errorMessage');
+  message.textContent=err.name==='AbortError'
+   ?'Сервис не ответил за 20 секунд. Заявка не подтверждена — попробуй отправить ещё раз.'
+   :'Не удалось отправить заявку. Проверь соединение и попробуй ещё раз.';
+  message.style.display='block';
   button.disabled=false;button.textContent='Повторить отправку';
+ }finally{
+  clearTimeout(timeoutId);
  }
 });
 </script>
