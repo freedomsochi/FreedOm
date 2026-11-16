@@ -793,6 +793,8 @@ const $$=s=>Array.from(document.querySelectorAll(s));
 function renderMapPoints(){
  $$$('.map-point').forEach(el=>el.remove());
  mapPoints.forEach(p=>{
+  // Territory markers belong to the territory view; don't float them over interior floors.
+  if(p.floor!==activeFloor)return;
   const b=document.createElement('button');
   b.type='button';b.className='pin map-point';b.style.setProperty('--x',p.x+'%');b.style.setProperty('--y',p.y+'%');
   b.innerHTML='<span class="map-point-dot" aria-hidden="true"></span><span class="map-point-label"></span>';
