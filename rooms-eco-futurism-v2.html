@@ -871,7 +871,9 @@ function applyRoomFilters(){
  $$('.category-tabs button').forEach(button=>{const selected=button.dataset.category===category;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
  $$('.roomcard').forEach(el=>{
   const i=Number(el.dataset.room);
-  const visible=el.dataset.category===category;
+  const room=rooms[i];
+  const onSelectedFloor=!filterFloor||(room?.floors||[]).includes(filterFloor);
+  const visible=el.dataset.category===category&&onSelectedFloor;
   el.style.display=visible?'block':'none';
   el.classList.toggle('active',visible&&i===active);
  });
@@ -897,7 +899,8 @@ function choose(i,preserveCategory=false){
 function setFloor(next){
  const info=floorInfo[next];if(!info)return;
  hasInteracted=true;activeFloor=next;filterFloor=next;
- $$$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
+ if(active>=0&&!(rooms[active]?.floors||[]).includes(next))active=-1;
+ $$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===next));
  $('#floorlabel').textContent=info.label;
  $('#floordesc').textContent=info.desc;
  $('.modelhint span').textContent=info.desc;
