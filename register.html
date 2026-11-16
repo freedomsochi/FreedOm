@@ -194,6 +194,8 @@
                     return;
                 }
 
+                let createdAuthUserId = null;
+                let profileCreated = false;
                 try {
                     const { data: authData, error: authError } = await supabase.auth.signUp({
                         email: email,
@@ -210,7 +212,9 @@
 
                     if (authError) throw authError;
 
+                    if (!authData.user?.id) throw new Error('Аккаунт создан не полностью: не удалось получить идентификатор пользователя. Обратись к администрации FreeDom.');
                     const userId = authData.user.id;
+                    createdAuthUserId = userId;
                     const generatedRefCode = generateRefCode(displayName);
 
                     let referredBy = null;
@@ -247,6 +251,7 @@
                         });
 
                     if (insertError) throw insertError;
+                    profileCreated = true;
 
                     if (referredBy) {
                         const { error: referralInsertError } = await supabase
@@ -274,7 +279,9 @@
 
                 } catch (error) {
                     console.error('Ошибка:', error);
-                    let message = error.message || 'Ошибка регистрации.';
+                    let message = createdAuthUserId && !profileCreated
+                        ? 'Учётная запись авторизации уже создана, но профиль FreeDom не сохранился. Не пытайся регистрироваться повторно — обратись к администрации, чтобы восстановить профиль.'
+                        : (error.message || 'Ошибка регистрации.');
                     if (error.message?.includes('already registered')) {
                         message = 'Этот email уже зарегистрирован.';
                     }
