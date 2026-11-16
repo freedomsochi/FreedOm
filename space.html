@@ -428,8 +428,11 @@ html{scroll-behavior:auto!important}
     if (Math.abs(list[index].getBoundingClientRect().top) > 10) goToScene(index);
   }
 
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reducedMotion = () => motionPreference.matches;
+
   document.addEventListener('touchstart', event => {
-    if (event.touches.length !== 1 || isTransitioning) return;
+    if (reducedMotion() || event.touches.length !== 1 || isTransitioning) return;
     startedInGallery = !!event.target.closest('.h-scroll');
     if (startedInGallery) return;
     const touch = event.touches[0];
@@ -441,7 +444,7 @@ html{scroll-behavior:auto!important}
   }, {passive:true});
 
   document.addEventListener('touchmove', event => {
-    if (!isTouching || startedInGallery || event.touches.length !== 1) return;
+    if (reducedMotion() || !isTouching || startedInGallery || event.touches.length !== 1) return;
     const touch = event.touches[0];
     const dx = touch.clientX - startX;
     const dy = touch.clientY - startY;
@@ -449,6 +452,7 @@ html{scroll-behavior:auto!important}
   }, {passive:false});
 
   document.addEventListener('touchend', event => {
+    if (reducedMotion()) { isTouching = false; return; }
     if (!isTouching) return;
     isTouching = false;
     if (event.changedTouches.length !== 1 || startedInGallery || event.target.closest('.h-scroll')) return;
@@ -470,7 +474,7 @@ html{scroll-behavior:auto!important}
   document.addEventListener('touchcancel', () => { isTouching = false; }, {passive:true});
 
   window.addEventListener('wheel', event => {
-    if (event.target.closest('.h-scroll') || isTransitioning || Math.abs(event.deltaY) < 12) return;
+    if (reducedMotion() || event.target.closest('.h-scroll') || isTransitioning || Math.abs(event.deltaY) < 12) return;
     event.preventDefault();
     const now = Date.now();
     if (now - lastGestureAt < 520) return;
@@ -479,13 +483,13 @@ html{scroll-behavior:auto!important}
   }, {passive:false});
 
   window.addEventListener('scroll', () => {
-    if (isTouching || isTransitioning) return;
+    if (reducedMotion() || isTouching || isTransitioning) return;
     window.clearTimeout(settleTimer);
     settleTimer = window.setTimeout(settleToScene, 180);
   }, {passive:true});
 
   window.addEventListener('resize', () => {
-    if (isTransitioning) return;
+    if (reducedMotion() || isTransitioning) return;
     const list = scenes();
     const current = nearestSceneIndex(list);
     if (list[current]) window.scrollTo(0, list[current].offsetTop);
