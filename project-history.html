@@ -627,6 +627,12 @@ body:before{
  .ref-tree-area{background-position:center 38%;background-size:cover;border-radius:0}
 }
 
+
+/* Keep the golden root connections perceptible on smaller screens without crossing the story text. */
+@media(max-width:900px){
+ .tree-branch-overlay{opacity:.42!important}
+ .tree-branch-overlay path{opacity:.76!important;filter:drop-shadow(0 0 2px rgba(255,195,83,.32))!important}
+}
 </style><style>.ref-person .quote:before,.ref-person .quote:after{content:none!important}
 /* Respect reduced motion across the complete history page, including smooth scrolling. */
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation:none!important;transition:none!important}}
