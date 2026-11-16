@@ -740,7 +740,9 @@ body.dates-selected .left{display:flex!important}
 .category-tabs button.active{background:rgba(240,255,247,.96);color:#205b50;border-color:rgba(255,255,255,.9);box-shadow:0 3px 12px rgba(0,0,0,.12)}
 .category-tabs button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 @media(max-width:850px){.left{flex-wrap:wrap;overflow:visible;gap:9px}.category-tabs{flex:0 0 100%;width:100%;position:sticky;top:0;z-index:8;justify-content:center}.category-tabs button{padding:10px 7px;font-size:10px}.roomcard{flex:0 0 165px}}
-</style></head><body><div class="backdrop"></div>
+</style><link rel="stylesheet" href="freedom-transitions.css">
+<script defer src="freedom-transitions.js"></script>
+</head><body><div class="backdrop"></div>
 <header class="top"><div class="brandgroup"><div class="logo">FreeDom<small>ROOMS</small></div><div class="tagline">Больше, чем просто<br>комнаты. Это — свобода.</div></div><div class="dates" aria-label="Календарь доступности"><label class="date">Заезд<input id="checkin" type="date" required></label><label class="date">Выезд<input id="checkout" type="date" required></label><button class="search" id="search" aria-label="Проверить доступность" title="Проверить доступность">⌕</button><div class="availability-summary" id="availability-summary" role="status" aria-live="polite"></div></div><div style="display:flex;align-items:center"><div class="place">☼ &nbsp; Сочи⌄</div><div class="menu">☰</div></div><a class="homebtn" href="index.html" aria-label="На главную">← На главную</a></header>
 <section class="left" id="roomlist" aria-label="Варианты размещения">
 <nav class="category-tabs" aria-label="Категории размещения"><button type="button" data-category="rooms" class="active" aria-pressed="true">Комнаты</button><button type="button" data-category="hostel" aria-pressed="false">Хостел</button><button type="button" data-category="bungalow" aria-pressed="false">Бунгало</button></nav>
