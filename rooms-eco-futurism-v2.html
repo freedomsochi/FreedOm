@@ -749,6 +749,28 @@ body.rooms-no-options #emptycategory{
  border-radius:16px;background:rgba(14,67,58,.68);color:#f4fffb;
  text-align:center;font-size:12px;line-height:1.55;white-space:normal;
 }
+
+/* Mobile room cards: improve photo scale and guarantee readable copy over the landscape. */
+@media(max-width:850px){
+ .roomcard{
+  height:180px!important;min-height:180px!important;max-height:180px!important;
+  background:linear-gradient(145deg,rgba(248,252,242,.76),rgba(223,238,220,.62))!important;
+  border-color:rgba(255,255,255,.82)!important;
+ }
+ .roomcard img{
+  flex:0 0 88px!important;height:88px!important;min-height:88px!important;max-height:88px!important;
+ }
+ .roomcard .roomname{
+  flex:0 0 32px!important;height:32px!important;min-height:32px!important;
+  color:#173d31!important;font-size:13px!important;line-height:15px!important;
+  margin:6px 4px 3px!important;text-shadow:none!important;
+ }
+ .roomcard .meta{
+  flex:0 0 32px!important;height:32px!important;min-height:32px!important;max-height:32px!important;
+  color:#294b3a!important;opacity:1!important;font-size:10px!important;line-height:1.35!important;
+  font-weight:600!important;text-shadow:none!important;
+ }
+}
 </style><link rel="stylesheet" href="freedom-transitions.css">
 <script defer src="freedom-transitions.js"></script>
 <link rel="stylesheet" href="freedom-design-system.css">
