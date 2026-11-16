@@ -208,6 +208,9 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
  .card.selected .front{visibility:hidden!important;opacity:0!important}
  .card.selected .backface{visibility:visible!important;opacity:1!important}
 }
+
+/* Final override: reduced motion must also win over later card-system animation rules. */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 <link rel="stylesheet" href="freedom-transitions.css">
 <script defer src="freedom-transitions.js"></script>
