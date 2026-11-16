@@ -643,3 +643,26 @@
 - Deployment: `dpl_DAc7gbeJJws5rD8inV4fkripHbng`. Это подтверждает успешную сборку Preview, но не браузерную/Android-проверку.
 - Текущий HEAD ветки после документационных записей: `9d373e08870fad9dc73aeac953311bf40e83c91b`; кодовая часть Preview соответствует патчу кухни, последующие коммиты только обновляют командную документацию.
 - Release остаётся NO-GO до browser/Android QA и read-only подтверждения серверной авторизации RPC.
+
+
+## Финансовый RPC — source-level security finding, 16.11.2026
+
+### Что подтверждено исходниками
+- В `supabase_payments.sql` функция `public.record_payment(...)` объявлена как `SECURITY DEFINER` в exposed-схеме `public`.
+- Проверка доступа записана как `if auth.email()<>'serzh.xz@mail.ru' then raise exception ...`. Для неаутентифицированного вызова `auth.email()` может быть NULL; сравнение NULL с email даёт NULL, а ветка PL/pgSQL `IF NULL` не выполняется. Для надёжной блокировки нужна явная проверка NULL/uid и роли.
+- В SQL-файле есть `GRANT EXECUTE ... TO authenticated`, но нет явного `REVOKE EXECUTE ... FROM PUBLIC/anon`. PostgreSQL по умолчанию выдаёт EXECUTE новой функции роли PUBLIC, если это не изменено default privileges. SECURITY DEFINER-функция в public при таком ACL может быть доступна anon через PUBLIC.
+- Функция записывает платёж, увеличивает `paid_amount` и меняет `payment_status`; проверка суммы и блокировка строки не заменяют проверку полномочий.
+
+### Приоритет и границы вывода
+- **P1 — потенциально критичный дефект авторизационного шаблона в migration source.** Нужна срочная read-only проверка эффективных ACL и текущего тела функции в Supabase. Файл содержит комментарий, что миграция уже применена, но актуальное состояние БД не проверено; поэтому не утверждать, что anon реально может записывать платежи.
+- RLS-политики таблицы `payments` ограничивают обычные запросы, но не являются достаточной защитой от некорректно защищённой SECURITY DEFINER-функции.
+- `admin_payments.html` дополнительно проверяет email в браузере, но этот UI guard не защищает прямой RPC вызов.
+- `admin_v11_finance_detail.html` вызывает `record_user_payment_for_charge` и напрямую читает начисления/распределения платежей; определения функции и её ACL в репозитории не найдены. `guest_profile.js` вызывает `admin_get_guest_profile` и `admin_record_guest_payment`; определения также отсутствуют.
+- `admin_v10_finance.html` использует `admin_get_finance_overview`; серверная авторизация RPC и политики чтения не подтверждены.
+
+### Безопасное решение
+- Не вызывать финансовые RPC для проверки обхода и не создавать тестовые платежи.
+- Не редактировать применённую миграцию и не менять БД, grants, RLS или функции без отдельного согласования.
+- Нужен read-only export: актуальное определение `record_payment`, `proacl`/эффективные EXECUTE grants для PUBLIC/anon/authenticated, default privileges схемы public, owner и `proconfig`; аналогично — определения/ACL всех перечисленных финансовых RPC и RLS-политики таблиц `bookings`, `orders`, `payments`, `payment_allocations`.
+- Рекомендуемая будущая правка после проверки: явная fail-closed проверка `auth.uid() IS NULL` и администратора, явный revoke execute у PUBLIC/anon с grant только нужной роли; аналогичная проверка всех SECURITY DEFINER RPC.
+- Browser/Android/live payment QA: NOT RUN. DB не подключалась, финансовых действий не выполнялось. Release **NO-GO**.
