@@ -251,12 +251,14 @@
 
                 const userId = sessionData.session.user.id;
 
-                const { data: userData } = await supabase
+                const { data: userData, error: userError } = await supabase
                     .from('users')
                     .select('*')
                     .eq('user_id', userId)
                     .maybeSingle();
 
+                if (userError) throw userError;
+                if (!userData) throw new Error('Профиль не найден');
                 if (userData) {
                     refBalance.textContent = (userData.balance || 0) + ' ₽';
                     const refCode = userData.Ref_code || userId.slice(0, 8);
@@ -264,11 +266,12 @@
                     refLinkText.textContent = siteUrl + 'register.html?ref=' + refCode;
                 }
 
-                const { data: referrals } = await supabase
+                const { data: referrals, error: referralsError } = await supabase
                     .from('referrals')
                     .select('Level')
                     .eq('Referrer_id', userId);
 
+                if (referralsError) throw referralsError;
                 if (referrals) {
                     let c1 = 0, c2 = 0, c3 = 0;
                     referrals.forEach(r => {
@@ -280,6 +283,10 @@
                     refLevel2.textContent = c2;
                     refLevel3.textContent = c3;
                 }
+            }).catch(error => {
+                console.error('Не удалось загрузить партнёрские данные:', error);
+                refBalance.textContent = 'Не удалось загрузить';
+                refLinkText.textContent = 'Ошибка загрузки. Обновите страницу.';
             });
 
             copyBtn.addEventListener('click', function() {
