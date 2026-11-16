@@ -99,6 +99,15 @@ function move(p,t,d=650){
   controls.enabled=false;
   function f(now){
     if(id!==moving)return;
+    if(reducedMotion){
+      camera.position.copy(p);
+      controls.target.copy(t);
+      camera.lookAt(controls.target);
+      controls.enabled=true;
+      controls.update();
+      renderer.render(scene,camera);
+      return;
+    }
     const q=Math.min(1,(now-start)/d),e=1-Math.pow(1-q,4);
     camera.position.lerpVectors(sp,p,e);
     controls.target.lerpVectors(st,t,e);
@@ -130,7 +139,8 @@ function syncRenderMode(){
     renderScene();
   }
 }
-motionPreference.addEventListener?.('change',event=>{reducedMotion=event.matches;syncRenderMode()});
+if(motionPreference.addEventListener)motionPreference.addEventListener('change',event=>{reducedMotion=event.matches;syncRenderMode()});
+else motionPreference.addListener(event=>{reducedMotion=event.matches;syncRenderMode()});
 document.addEventListener('visibilitychange',syncRenderMode);
 controls.update();setView('space');addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderScene()});syncRenderMode();
 </script></body></html>
