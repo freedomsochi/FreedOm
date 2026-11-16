@@ -413,3 +413,10 @@
 - **Тестировщик — static PASS:** 1/1 inline JS syntax; reduced/normal delay check PASS. Повторные wheel/touch события в браузере не тестировались.
 - Коммит: `32142d1a272122bad50bc4dff0de7215fded8ca8`.
 - **Директор — HOLD:** не закрывать motion QA до Preview и проверки Android.
+
+
+## Дополнение — kitchen order state
+- **Технический программист — implementation DONE:** заказ фиксирует выбранное блюдо на момент открытия модалки; повторный submit блокируется; retry разблокируется при ошибке; reduced-motion использует мгновенный scroll.
+- **Тестировщик — static PASS:** 1/1 inline JS syntax; 5 structural checks PASS. Live form, browser and Android QA не запускались.
+- Коммит: `edaf480947509e6d9ab29861ef7f250f2720d8bd`.
+- **Директор — HOLD:** не считать заказную форму подтверждённой до тестирования на Preview без фактической отправки заявки.
