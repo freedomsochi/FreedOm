@@ -27,3 +27,21 @@ body:has(#loginForm),body:has(#registerForm),body:has(#profileContent),body:has(
 body:has(#loginForm) .container,body:has(#registerForm) .container{max-width:480px;background:#fffdf6;border:1px solid #fff;box-shadow:0 24px 80px #263d2c18;border-radius:4px 34px 4px 4px;padding:clamp(26px,5vw,42px)}body:has(#loginForm) .logo,body:has(#registerForm) h1{font:500 44px/.95 var(--fd-serif);letter-spacing:.12em;color:#234b39}body:has(#loginForm) .subtitle,body:has(#registerForm) .subtitle{color:#6d786d;opacity:1}body:has(#loginForm) .field label,body:has(#registerForm) .field label{color:#536354}body:has(#loginForm) .field input,body:has(#registerForm) .field input,body:has(#registerForm) .field select{background:#f6f5ed;border:1px solid #dfe4d8;color:#25372b;border-radius:12px;padding:14px 15px}body:has(#loginForm) .btn,body:has(#registerForm) .btn{background:#234b39;color:#fff;border-radius:999px;padding:14px 18px;font-size:14px}body:has(#loginForm) .back-link,body:has(#registerForm) .footer-link a{color:#315a43}body:has(#loginForm) .footer-link,body:has(#registerForm) .footer-link{color:#6b776c;opacity:1}
 body:has(#profileContent) .container,body:has(#refBalance) .container{max-width:900px}body:has(#profileContent) .header,body:has(#refBalance) .header{background:linear-gradient(115deg,#173d31,#315e43);border:0;border-radius:4px 34px 4px 4px;box-shadow:0 20px 55px #183c2b25}body:has(#profileContent) .header h1,body:has(#refBalance) .header h1{font:500 clamp(32px,5vw,48px) var(--fd-serif);color:#f5e8c9}body:has(#profileContent) .header p,body:has(#refBalance) .header p{color:#e9efe4;opacity:.85}body:has(#profileContent) .profile-card,body:has(#refBalance) .card{background:#fffdf7;border:1px solid #fff;box-shadow:0 14px 40px #1b392316;border-radius:4px 24px 4px 4px;color:#26372c}body:has(#profileContent) .profile-card .name,body:has(#refBalance) .card h3{color:#244b39}body:has(#profileContent) .profile-card .field .value{color:#385f43}body:has(#profileContent) .balance-block{background:linear-gradient(120deg,#244c39,#416b4b);border-radius:4px 22px 4px 4px}body:has(#profileContent) .balance-block *{color:#fff}body:has(#profileContent) .btn-primary,body:has(#refBalance) .btn-primary{background:#234b39;color:#fff;box-shadow:none;border-radius:999px}body:has(#profileContent) .btn-secondary,body:has(#refBalance) .btn-secondary{background:#f0f1e8;color:#35513e;border:1px solid #dce3d8;border-radius:999px}body:has(#refBalance) .partner-level{background:#f1f3e9;border:1px solid #e0e6d9;border-radius:4px 18px 4px 4px}body:has(#refBalance) .partner-level strong{color:#244c39}body:has(#refBalance) .partner-level p{color:#667266}body:has(#refBalance) .ref-link-box,body:has(#profileContent) .ref-link-block{background:#f2f4eb;border:1px solid #e0e6d9;border-radius:14px;color:#26372c}body:has(#refBalance) .stat,body:has(#profileContent) .stat{background:#f3f4ec;border:1px solid #e3e7de;border-radius:16px;color:#26372c}
 @media(max-width:640px){body:has(#profileContent) .header,body:has(#refBalance) .header{border-radius:0 0 26px 26px;margin-top:-20px;padding-top:3.2rem}body:has(#profileContent) .profile-card,body:has(#refBalance) .card{padding:18px}body:has(#refBalance) .partner-levels{grid-template-columns:1fr}}
+
+
+/* 2026.11.16 — mobile geometry and rendering corrections */
+@media(max-width:760px){
+  .home .portal{margin:0!important}
+  .home .portal[data-i="0"]{--x:0px;--y:calc(-1 * min(39vw,315px))}
+  .home .portal[data-i="1"]{--x:calc(.95106 * min(39vw,315px));--y:calc(-.30902 * min(39vw,315px))}
+  .home .portal[data-i="2"]{--x:calc(.58779 * min(39vw,315px));--y:calc(.80902 * min(39vw,315px))}
+  .home .portal[data-i="3"]{--x:calc(-.58779 * min(39vw,315px));--y:calc(.80902 * min(39vw,315px))}
+  .home .portal[data-i="4"]{--x:calc(-.95106 * min(39vw,315px));--y:calc(-.30902 * min(39vw,315px))}
+  body:has(.catalog){background-attachment:scroll}
+  body:has(#roomlist) .backdrop{background-attachment:scroll}
+}
+@media(max-width:380px){
+  .home .portal{width:86px;height:86px}
+  .home .portal b{font-size:6.5px;letter-spacing:.08em}
+  .home .core{width:142px;height:142px}
+}
