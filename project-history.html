@@ -211,7 +211,7 @@
 /* Reference-matched single glass panel */
 :root{--ref-gold:#ffd36f;--ref-white:#fff8e9}
 html,body{width:100%;min-height:100%;margin:0}
-body{font-family:Manrope,Arial,sans-serif;color:#fff8e9;background:#244b3e url('https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=2200&q=88') center/cover fixed no-repeat;overflow-x:hidden}
+body{font-family:Manrope,Arial,sans-serif;color:#fff8e9;background:#173d31;overflow-x:hidden}
 body:before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradient(90deg,rgba(13,39,31,.10),rgba(13,39,31,.16) 45%,rgba(13,39,31,.25)),linear-gradient(0deg,rgba(10,38,29,.28),rgba(10,38,29,.05) 65%);pointer-events:none}
 .top{display:none}
 .reference-page{position:relative;z-index:1;min-height:100svh;display:grid;place-items:center;padding:clamp(12px,3.2vh,32px) clamp(10px,4vw,56px)}
@@ -615,7 +615,7 @@ body:before{
 
 /* New generated tree artwork from repository image; keep existing UI layers intact. */
 .ref-tree-area{
- background-image:linear-gradient(180deg,rgba(15,48,36,.08),rgba(15,48,36,.04) 58%,rgba(15,48,36,.24)),url("https://raw.githubusercontent.com/freedomsochi/FreedOm/main/images/858e8441-84f9-4a71-b37c-dd51ebd9a935.png");
+ background-image:linear-gradient(180deg,rgba(15,48,36,.08),rgba(15,48,36,.04) 58%,rgba(15,48,36,.24)),url("images/branches.png");
  background-size:cover;
  background-position:center 42%;
  background-repeat:no-repeat;
@@ -627,12 +627,15 @@ body:before{
  .ref-tree-area{background-position:center 38%;background-size:cover;border-radius:0}
 }
 
-</style></head>
+</style><style>.ref-person .quote:before,.ref-person .quote:after{content:none!important}</style>
+<link rel="stylesheet" href="freedom-transitions.css">
+<script defer src="freedom-transitions.js"></script>
+</head>
 <body>
 <main class="reference-page">
  <section class="glass-panel" aria-label="История проекта FreeDom">
   <a class="ref-home" href="index.html">← На главную</a>
-  <button class="ref-close" type="button" aria-label="Закрыть" onclick="location.href='index.html'">×</button>
+  
   <aside class="ref-sidebar">
    <a class="ref-brand" href="index.html" aria-label="FreeDom Sochi — главная"><span class="mark">☼</span><strong>FreeDom</strong><small>SOCHI</small></a>
    <nav class="ref-nav" aria-label="Разделы о доме">
@@ -649,29 +652,29 @@ body:before{
    
   </div>
   <article class="ref-story" aria-live="polite">
-   <h2>Что делает<br>место домом?</h2>
-   <p>FreeDom — пространство в Сочи, где важны дружба и взаимная поддержка, творчество, поиск себя и близость к природе.</p>
-   <p>Воскресные встречи у камина, совместная готовка, спорт, баня, медитации, сад, животные и творческие проекты — реальные моменты жизни, через которые раскрывается атмосфера дома.</p>
-   <a class="story-cta" href="#people"><span>Истории людей<br>FreeDom</span><span aria-hidden="true">→</span></a>
+   <h2>Дом, который стал точкой опоры</h2>
+   <p>FreeDom начался не с готового бизнес-плана. В непростой личный период появилась возможность пожить в доме в Сочи и помогать по хозяйству. Простое предложение стало началом новой главы.</p>
+   <p>Постепенно вокруг дома сложилась жизнь: общие дела, встречи у камина, спорт, баня, музыка, творчество и взаимная поддержка. Так пространство стало больше, чем местом проживания.</p>
+   <a class="story-cta" href="#people"><span>Из чего складывается FreeDom</span><span aria-hidden="true">→</span></a>
   </article>
-  <section class="ref-people" id="people" aria-label="Люди FreeDom"><svg class="people-roots" aria-hidden="true" focusable="false"></svg>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>01</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>02</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>03</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>04</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>05</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
-   <article class="ref-person"><div class="face" aria-hidden="true"><span>06</span></div><h3>Имя участника</h3><div class="role">Вклад в проект уточняется</div><div class="quote">Личный рассказ добавим после беседы</div></article>
+  <section class="ref-people" id="people" aria-label="Главы истории FreeDom"><svg class="people-roots" aria-hidden="true" focusable="false"></svg>
+   <article class="ref-person"><div class="face" aria-hidden="true"><span>01</span></div><h3>Начало</h3><div class="role">Неожиданная возможность</div><div class="quote">Новый путь иногда начинается с простого предложения помочь.</div></article>
+   <article class="ref-person"><div class="face" aria-hidden="true"><span>02</span></div><h3>Дом</h3><div class="role">Общая повседневность</div><div class="quote">Атмосферу создают не стены, а люди и их общие дела.</div></article>
+   <article class="ref-person"><div class="face" aria-hidden="true"><span>03</span></div><h3>Поддержка</h3><div class="role">Семья не по крови</div><div class="quote">Важно быть рядом и помогать друг другу не на словах.</div></article>
+   <article class="ref-person"><div class="face" aria-hidden="true"><span>04</span></div><h3>Движение</h3><div class="role">Тело и внимание</div><div class="quote">Спорт, баня, холодная вода и дыхание возвращают к себе.</div></article>
+   <article class="ref-person"><div class="face" aria-hidden="true"><span>05</span></div><h3>Творчество</h3><div class="role">Идеи становятся делом</div><div class="quote">Музыка, мастер-классы и общие вечера дают место самовыражению.</div></article>
+   <article class="ref-person"><div class="face" aria-hidden="true"><span>06</span></div><h3>Сегодня</h3><div class="role">Центр развития человека</div><div class="quote">FreeDom продолжает расти вместе с теми, кто в нём живёт.</div></article>
   </section>
  </section>
 </main>
 <script>
 (function(){
  const stories={
-  home:{title:"Дом и его атмосфера",p1:"FreeDom — пространство в Сочи, где важны дружба, взаимная поддержка, творчество, поиск себя и близость к природе.",p2:"О доме рассказывают его повседневные моменты: встречи у камина, совместная готовка, занятия, сад, животные и творческие проекты.",cta:"Познакомиться с домом"},
-  history:{title:"Что делает место домом?",p1:"FreeDom — пространство в Сочи, где важны дружба и взаимная поддержка, творчество, поиск себя и близость к природе.",p2:"Историю основания и первые шаги проекта мы добавим после разговора с владельцем, чтобы сохранить реальные события и не подменять их догадками.",cta:"Истории людей FreeDom"},
-  values:{title:"Что нас объединяет",p1:"Дружба и взаимная поддержка, творчество и поиск себя, близость к природе — важные части атмосферы FreeDom.",p2:"Эти ценности лучше всего раскрываются через реальные встречи, совместные дела и личные истории людей.",cta:"Наши ценности"},
-  team:{title:"Люди — сердце дома",p1:"Участники FreeDom — люди со своими историями, интересами и опытом. Их вклад и личные впечатления мы соберём в небольших рассказах.",p2:"В этом разделе появятся реальные имена, фотографии и слова участников — после того, как мы уточним их истории.",cta:"Истории участников"},
-  gallery:{title:"Жизнь в деталях",p1:"Воскресные встречи у камина, совместная готовка, спорт, баня, медитации, сад, животные и творческие проекты — моменты, которые помогают показать повседневную жизнь FreeDom.",p2:"Здесь соберём фотографии и реальные эпизоды из жизни дома. Подписи добавим после проверки деталей.",cta:"Смотреть галерею"}
+  home:{title:"Дом, в котором есть жизнь",p1:"FreeDom — дом и центр развития человека в Сочи, среди гор, зелени и живой природы.",p2:"Здесь соседствуют проживание, общая кухня, баня, события, движение, творчество и ежедневные дела. Важна не программа сама по себе, а то, что люди создают вместе.",cta:"Из чего складывается FreeDom"},
+  history:{title:"Дом, который стал точкой опоры",p1:"FreeDom начался не с готового бизнес-плана. В непростой личный период появилась возможность пожить в доме в Сочи и помогать по хозяйству. Простое предложение стало началом новой главы.",p2:"Постепенно вокруг дома сложилась жизнь: общие дела, встречи у камина, спорт, баня, музыка, творчество и взаимная поддержка. Так пространство стало больше, чем местом проживания.",cta:"Из чего складывается FreeDom"},
+  values:{title:"Свобода с уважением к другим",p1:"Свобода здесь — не отсутствие границ. Это возможность выбирать, пробовать, ошибаться и быть собой, уважая пространство других людей.",p2:"Мы ценим осознанный образ жизни, отказ от алкоголя и курения, растительную кухню, взаимную поддержку и открытость к новым идеям.",cta:"Наши ценности"},
+  team:{title:"Дом создают люди",p1:"FreeDom складывается из людей с разными характерами, навыками и интересами. Здесь не нужно быть похожими друг на друга, чтобы делать что-то общее.",p2:"Кто-то привносит творчество, кто-то заботится о доме, проводит практики, готовит, помогает гостям или просто поддерживает разговор. Вклад каждого становится частью общей истории.",cta:"Люди и их вклад"},
+  gallery:{title:"Жизнь в деталях",p1:"Атмосферу FreeDom лучше всего передают не постановочные кадры, а повседневные моменты: чай у камина, работа в саду, музыка, тренировки, парная и вечерние разговоры.",p2:"Галерея будет собирать именно такие эпизоды — без рекламной постановки и одинаковых описаний. Каждая фотография должна рассказывать о своём моменте.",cta:"Смотреть моменты жизни"}
  };
  const title=document.querySelector(".ref-story h2"), ps=document.querySelectorAll(".ref-story p"), cta=document.querySelector(".story-cta span:first-child");
  document.querySelectorAll(".ref-nav button").forEach(btn=>btn.addEventListener("click",()=>{
