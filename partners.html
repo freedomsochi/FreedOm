@@ -178,6 +178,9 @@
             .flex-buttons .btn { flex: 1 1 100%; }
         }
     </style>
+<link rel="stylesheet" href="freedom-transitions.css">
+<script defer src="freedom-transitions.js"></script>
+<link rel="stylesheet" href="freedom-account.css">
 </head>
 <body>
     <div class="container">
@@ -189,22 +192,22 @@
 
         <div class="card">
             <h3>Как это работает</h3>
-            <p style="margin-bottom: 0.5rem;">Вы приглашаете друзей во FreeDom, а они приглашают своих друзей — вы получаете кэшбэк с их покупок.</p>
+            <p style="margin-bottom: 0.5rem;">Вы делитесь приглашением, друзья присоединяются к FreeDom, а вознаграждение может приходить с покупок участников вашей сети на трёх уровнях.</p>
             <ul>
-                <li>🔹 <span class="highlight">10%</span> от покупок друзей, которых пригласили вы</li>
-                <li>🔹 <span class="highlight">5%</span> от покупок друзей ваших друзей</li>
+                <li>🔹 <span class="highlight">10%</span> от покупок приглашённых вами участников</li>
+                <li>🔹 <span class="highlight">5%</span> от покупок второго уровня</li>
                 <li>🔹 <span class="highlight">2%</span> от покупок третьего уровня</li>
             </ul>
         </div>
 
         <div class="card">
-            <h3>Ваша статистика</h3>
+            <h3>Ваша сеть FreeDom</h3>
             <div class="ref-stats">
                 <div class="stat"><span id="refLevel1">0</span>Уровень 1</div>
                 <div class="stat"><span id="refLevel2">0</span>Уровень 2</div>
                 <div class="stat"><span id="refLevel3">0</span>Уровень 3</div>
             </div>
-            <p style="text-align:center; margin-top: 1rem;">💰 Ваш баланс</p>
+            <p style="text-align:center; margin-top: 1rem;">Ваш накопленный баланс</p>
             <div class="balance-amount" id="refBalance">0 ₽</div>
         </div>
 
