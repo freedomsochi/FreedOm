@@ -392,3 +392,10 @@
 - **Тестировщик — static PASS:** 1/1 inline JS block syntax; 7/7 guard checks. Android/browser interaction и изменение системной настройки не проверены.
 - Коммит: `c6f04cc33dc40959fe3e50ab61c9d7039b9cef79`.
 - **Директор — HOLD:** не повышать WIP; Production NO-GO до READY Preview и браузерной регрессии.
+
+
+## Дополнение — homepage reduced-motion
+- **Моушн-дизайнер — implementation DONE / visual QA OPEN:** отключена JS-инерция орбиты при Reduce Motion, фотофон больше не использует crossfade/scale transition; обычный режим сохранён.
+- **Тестировщик — static PASS:** 5/5 inline JS syntax; проверки snap/ambient override/normal inertia PASS. Browser, Android, визуальная композиция и live toggle не проверены.
+- Коммит: `fd986667c2f721a6616b8eca1093238852484f4a`.
+- **Директор — HOLD:** WIP не повышать, Production NO-GO до Preview и браузерной регрессии.
