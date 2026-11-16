@@ -279,6 +279,7 @@
                         <div class="stat"><span id="refLevel2">0</span>Уровень 2</div>
                         <div class="stat"><span id="refLevel3">0</span>Уровень 3</div>
                     </div>
+                    <p id="referralStatsStatus" role="status" hidden></p>
                 </div>
 
                 <a href="partners.html" class="btn btn-primary" style="margin-bottom:0.5rem;">🤝 Партнёрская программа</a>
@@ -375,14 +376,24 @@
                     const refUrl = siteUrl + 'register.html?ref=' + refCode;
                     refLinkText.textContent = refUrl;
 
-                    const { data: referrals } = await supabase
+                    const { data: referrals, error: referralsError } = await supabase
                         .from('referrals')
                         .select('Level')
                         .eq('Referrer_id', userId);
 
-                    if (referrals) {
+                    if (referralsError) {
+                        console.error('Не удалось загрузить статистику приглашений:', referralsError);
+                        refLevel1.textContent = '—';
+                        refLevel2.textContent = '—';
+                        refLevel3.textContent = '—';
+                        const referralStatus = document.getElementById('referralStatsStatus');
+                        if (referralStatus) {
+                            referralStatus.textContent = 'Не удалось загрузить статистику приглашений. Попробуйте обновить страницу.';
+                            referralStatus.hidden = false;
+                        }
+                    } else {
                         let count1 = 0, count2 = 0, count3 = 0;
-                        referrals.forEach(r => {
+                        (referrals || []).forEach(r => {
                             if (r.Level === 1) count1++;
                             else if (r.Level === 2) count2++;
                             else if (r.Level === 3) count3++;
