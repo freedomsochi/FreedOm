@@ -254,3 +254,53 @@
 - Нужен read-only export: актуальное определение `record_payment`, `proacl`/эффективные EXECUTE grants для PUBLIC/anon/authenticated, default privileges схемы public, owner и `proconfig`; аналогично — определения/ACL всех перечисленных финансовых RPC и RLS-политики таблиц `bookings`, `orders`, `payments`, `payment_allocations`.
 - Рекомендуемая будущая правка после проверки: явная fail-closed проверка `auth.uid() IS NULL` и администратора, явный revoke execute у PUBLIC/anon с grant только нужной роли; аналогичная проверка всех SECURITY DEFINER RPC.
 - Browser/Android/live payment QA: NOT RUN. DB не подключалась, финансовых действий не выполнялось. Release **NO-GO**.
+
+## Ежедневное обновление спринта — 16.11.2026
+
+### Рабочая ветка и код
+- Branch: site-finish-2026-11-16.
+- Latest code SHA: 8ea772c5ec3e134fa617af25129766f722dcb435.
+- Сравнение с предыдущей отчётной базой 4249bfebac81a5f0830bbad2e87a0c63d03ea054: до текущего прохода ветка была ahead на 46 commits, behind 0. Net diff: 5 файлов сайта + 3 командных документа.
+- Предыдущий READY Preview dpl_DAc7gbeJJws5rD8inV4fkripHbng соответствует 6529f6034bf59b0f6d3fce7441122e7f46c6b165; новый commit 8ea772c в него не входит.
+
+### Принятые результаты текущего пакета
+| Результат | Commit | Приёмка |
+|---|---|---|
+| Rooms collection selectors | 222608fb79cf33e39820db75484e406fb4380bf6 | $$ для коллекций; статическая проверка без single-element .forEach() |
+| Удаление duplicate hero preload | d2d0dd1f6614118d3fb5fdad1caa1a882ad6c35c | один hero preload с high priority |
+| Карта → форма + stale response guard | 3d29c129d15c5d87ee86164c1528a3e2ee7ca749 | передача room/dates/adults/availability; request ID invalidation |
+| Guest count mapping | 4fab35f79cdf79defee173a2d6ab03030322f664 | только допустимое значение select |
+| Partial signup retry guard | 3bdc5ae265cc78aa22c4cc001c81e21ac21e3bad | повторная отправка блокируется после созданного Auth user без профиля |
+| Admin kitchen error recovery | 6529f6034bf59b0f6d3fce7441122e7f46c6b165 | catch/finally и восстановление кнопок |
+| Local asset path audit | 0557fc936eebb3237dfa706afcbe4fc0c9f776c0 | 17/17 + 8/8 images; 3/3 + 3/3 shared resources; missing 0 |
+| Availability map Reduce Motion | 8ea772c5ec3e134fa617af25129766f722dcb435 | reduce отключает transition и hover/selected transform; normal mode не изменён |
+
+### Ролевые статусы
+- **Директор:** пакет заморожен; WIP ≤2; расширение объёма запрещено до закрытия P1 и достижения ≥90% принятия.
+- **Технический программист:** один узкий CSS-only patch в карте; серверные/RPC/DB изменения не выполнялись.
+- **Дизайнер:** статический аудит breakpoints; реальная визуальная матрица не получена.
+- **Моушн-дизайнер:** карта исправлена для Reduce Motion; в регистрации остался transition/scale без reduce override.
+- **Тестировщик:** 5/5 inline JS compile PASS и 11/11 structural assertions PASS после повторного чтения исходников.
+
+### Учёт
+- Assigned 12 / Done 8 / Accepted 8 (static scope) / Blocked 4.
+- 8/12 = 66,7% текущих work items; это операционный счётчик пакета, не KPI директора.
+- Новых P0 нет. Новые/подтверждённые P1: source-level риск record_payment; не подтверждена server-side authorization административных RPC; partial signup recovery остаётся нерешённым.
+- P2: Events CTA Share/copy, Kitchen manual-message flow, Register Reduce Motion gap.
+- P3: Rooms CSS override density и duplicate showMapPointInfo.
+
+### QA gate и блокеры
+- Static QA: PASS — 5/5 scripts, 11/11 assertions.
+- Build QA: READY только для SHA 6529f603...; latest code 8ea772c... не собран.
+- Browser/Android QA: NOT RUN / BLOCKED — TinyFish wallet -$0.584.
+- Vercel: 402 api-deployments-free-per-day, retry-after 24h; новые deployment вызовы не делались.
+- Supabase read-only audit: предыдущий 28P01 и hibernated status; не повторять до восстановления полномочий/проекта.
+- Live forms, signup, booking, kitchen orders, payments и admin actions не выполнялись.
+- Release: **NO-GO**.
+
+### Следующий gate
+1. Read-only schema/RPC/grants/RLS export от владельца Supabase.
+2. Read-only Auth/users/referral schema export.
+3. Preview exact SHA 8ea772c... после восстановления Vercel quota.
+4. Browser/Android smoke + visual matrix; никакого submit.
+5. Согласовать канал заявок Events/Kitchen.
