@@ -213,3 +213,20 @@
 - Тестировщик: статическая независимая проверка завершена; browser QA остаётся BLOCKED.
 - Дизайнер и motion-дизайнер: визуальная и gesture-приёмка остаётся открытой до доступного Preview/browser.
 - Директор: не повышать нагрузку и не переводить релиз в GO. Vercel deployment quota и browser runner остаются блокерами.
+
+
+## Дополнение — аудит зависимостей и 3D-пространства
+
+- Проверены 15 HTML-страниц на локальные CSS/JS/asset references. Все найденные общие локальные файлы доступны в ветке: `freedom-transitions.css`, `freedom-transitions.js`, `freedom-design-system.css`, `freedom-account.css`; изображения `16354`, `16355`, `16361`, `room-hostel.jpg`, `room-family.jpg`, `branches.png` также существуют.
+- `space-3d.html`: import map корректный JSON; зависимости Three.js и OrbitControls указывают на CDN `three@0.161.0`. Пять локальных изображений 3D-комнат существуют.
+- Важно: это проверка наличия файлов в GitHub-ветке, не проверка загрузки CDN или браузерного рендера.
+
+### Motion finding — Space 3D (P2, OPEN)
+- В `space-3d.html` есть непрерывный `renderer.setAnimationLoop`, анимированное перемещение камеры через `requestAnimationFrame` и damping OrbitControls.
+- Не обнаружено ни CSS/JS обработки `prefers-reduced-motion`, ни остановки/паузы цикла при скрытии вкладки (`visibilitychange`).
+- Не меняли код в этом проходе: требуется аккуратно спроектировать режим Reduced Motion и экономию кадров без поломки интерактивного вращения/масштабирования. Browser QA недоступен.
+- Import map JSON прошёл JSON.parse; ES module не выдаётся за проверенный обычный JS parser.
+
+### Назначение
+- Моушн-дизайнер + технический программист: предложить минимальный reduced-motion режим для Space 3D и паузу фонового цикла при скрытой вкладке; не ломать ручное управление камерой.
+- Тестировщик: после появления Preview проверить обычный режим, системный Reduce Motion, переключение вкладки и мобильный touch.
