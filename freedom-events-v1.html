@@ -258,10 +258,11 @@ function apply(){
 }
 function animateRotation(target,duration=950){
  cancelAnimationFrame(raf);deck.classList.add('animating');
- const start=rot,delta=target-start,startTime=performance.now();
  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+ if(reduced){rot=target;apply();deck.classList.remove('animating');raf=0;return}
+ const start=rot,delta=target-start,startTime=performance.now();
  function tick(now){
-  const p=reduced?1:Math.min(1,(now-startTime)/duration);
+  const p=Math.min(1,(now-startTime)/duration);
   const eased=1-Math.pow(1-p,4);rot=start+delta*eased;apply();
   if(p<1)raf=requestAnimationFrame(tick);
   else{rot=target;apply();deck.classList.remove('animating');raf=0}
@@ -283,7 +284,9 @@ function closeCard(){
  if(!opened)return;
  opened=false;const card=cards[idx];card.classList.add('closing');
  deck.classList.remove('open');apply();
- window.setTimeout(()=>{card.classList.remove('selected','closing');apply()},480);
+ const cleanup=()=>{card.classList.remove('selected','closing');apply()};
+ if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)cleanup();
+ else window.setTimeout(cleanup,480);
 }
 function showToast(message){
  if(!toast)return;
