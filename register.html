@@ -214,6 +214,7 @@
                     const generatedRefCode = generateRefCode(displayName);
 
                     let referredBy = null;
+                    let referralNotice = '';
                     if (refCode) {
                         const { data: referrerData, error: referrerError } = await supabase
                             .from('users')
@@ -221,8 +222,13 @@
                             .eq('Ref_code', refCode)
                             .maybeSingle();
 
-                        if (!referrerError && referrerData) {
+                        if (referrerError) {
+                            console.error('Не удалось проверить промокод:', referrerError);
+                            referralNotice = 'Не удалось проверить промокод. Обратись к администрации, чтобы уточнить приглашение.';
+                        } else if (referrerData) {
                             referredBy = referrerData.user_id;
+                        } else {
+                            referralNotice = 'Промокод не найден — регистрация продолжится без привязки приглашения.';
                         }
                     }
 
@@ -243,15 +249,22 @@
                     if (insertError) throw insertError;
 
                     if (referredBy) {
-                        await supabase
+                        const { error: referralInsertError } = await supabase
                             .from('referrals')
                             .insert({
                                 Referrer_id: referredBy,
                                 Referee_id: userId,
                                 Level: 1
                             });
+                        if (referralInsertError) {
+                            console.error('Не удалось сохранить приглашение:', referralInsertError);
+                            referralNotice = 'Аккаунт создан, но приглашение не удалось закрепить. Обратись к администрации FreeDom.';
+                        }
                     }
 
+                    successMsg.textContent = referralNotice
+                        ? 'Регистрация успешна. ' + referralNotice + ' Перенаправляем...'
+                        : '✅ Регистрация успешна! Перенаправляем...';
                     successMsg.style.display = 'block';
                     submitBtn.textContent = 'Готово!';
                     submitBtn.disabled = true;
