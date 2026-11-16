@@ -427,3 +427,9 @@
 - **Тестировщик — static PASS:** JS syntax и 3 структурные проверки PASS. Browser toggle и Android navigation не проверены.
 - Коммит: `2de39a00d32af53e6d5dc2a1cab470928b785b28`.
 - **Директор — HOLD:** визуальная и мобильная регрессия остаются обязательными перед релизом.
+
+
+## Дополнение — admin DOM identifiers
+- **Технический программист — implementation DONE:** ID полей `amt`, `met`, `note` в списке финансовых задолженностей теперь формируются из UUID после `safeUuid` проверки.
+- **Тестировщик — static PASS:** 1/1 inline JS syntax; проверены sanitization и три ID. Просмотрены также выводы profile/partners/purchases: `textContent` или `createElement`/`textContent` для пользовательских данных; админские текстовые шаблоны используют `esc`.
+- Коммит: `e24fc161b195a2d90e04f6af6ff718a4cc27dabb`. Browser QA remains OPEN. Финансовые операции и БД не затронуты.
