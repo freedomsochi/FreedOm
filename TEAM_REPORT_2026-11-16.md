@@ -666,3 +666,142 @@
 - Нужен read-only export: актуальное определение `record_payment`, `proacl`/эффективные EXECUTE grants для PUBLIC/anon/authenticated, default privileges схемы public, owner и `proconfig`; аналогично — определения/ACL всех перечисленных финансовых RPC и RLS-политики таблиц `bookings`, `orders`, `payments`, `payment_allocations`.
 - Рекомендуемая будущая правка после проверки: явная fail-closed проверка `auth.uid() IS NULL` и администратора, явный revoke execute у PUBLIC/anon с grant только нужной роли; аналогичная проверка всех SECURITY DEFINER RPC.
 - Browser/Android/live payment QA: NOT RUN. DB не подключалась, финансовых действий не выполнялось. Release **NO-GO**.
+
+
+---
+
+# Ежедневный директорский отчёт — 16.11.2026
+
+## Паспорт отчёта
+- **Репозиторий:** freedomsochi/FreedOm.
+- **Рабочая ветка:** site-finish-2026-11-16 (поиск веток не выявил более новой согласованной рабочей ветки).
+- **Предыдущая отчётная база:** 4249bfebac81a5f0830bbad2e87a0c63d03ea054.
+- **Последний code SHA:** 8ea772c5ec3e134fa617af25129766f722dcb435.
+- **Сравнение до текущего прохода:** branch ahead 46, behind 0; net diff 8 файлов — 5 файлов сайта и 3 командных документа.
+- **Code baseline Preview:** 6529f6034bf59b0f6d3fce7441122e7f46c6b165, deployment dpl_DAc7gbeJJws5rD8inV4fkripHbng, READY. Между этим SHA и началом прохода были только 9 документационных коммитов. Новый CSS-коммит 8ea772c Preview не содержит.
+
+## Директорское резюме
+За отчётный интервал закрыты шесть клиентских исправлений и один статический аудит локальных ресурсов; в этом проходе добавлен ещё один небольшой accessibility fix. Главный новый риск — source-level authorization issue в финансовом SECURITY DEFINER RPC. Его реальная доступность в текущей Supabase не установлена. Серверная авторизация административных RPC и восстановление частично созданных аккаунтов также остаются неподтверждёнными.
+
+**Решение:** не увеличивать пакет. В текущем ledger 8 из 12 work items приняты только в статическом scope (66,7%); четыре пункта заблокированы внешними зависимостями/решением владельца. Появились новые P1, regression rate не измерен. Production release — **NO-GO**.
+
+## Результаты пяти ролей
+
+### 1. Директор
+- Подтвердил рабочую ветку и сравнение с предыдущей отчётной базой.
+- Установил приоритет: P1 security verification → browser/build gate → только затем визуальная полировка.
+- WIP: 0 незакоммиченных code changes; 1 committed CSS patch ожидает Preview/browser verification; лимит ≤2 соблюдён.
+- Нагрузку не увеличивал: критерии ≥90% принятия, отсутствие P0/P1 и regression ≤5% не выполнены/не доказаны.
+
+### 2. Технический программист
+- Проверены изменения в rooms-eco-futurism-v2.html, availability_map_v3.html, room-booking-form.html, register.html, admin_kitchen.html.
+- Выполнен один новый безопасный CSS-only патч карты для Reduce Motion.
+- Повторно просмотрены supabase_payments.sql, supabase_orders.sql, admin_bookings_v2.html, api/admin-booking.js, admin_kitchen.html, admin_payments.html, admin_v11_finance_detail.html, guest_profile.js, admin_v10_finance.html.
+- Серверные RPC не вызывались; БД, Auth, grants, RLS, финансовые правила и пользовательские данные не менялись.
+
+### 3. Дизайнер
+- Статически: Rooms содержит 48 media-query blocks, много повторов 850px и 31 backdrop-filter; availability map — 850/560px; booking form — 520px; admin kitchen — 1050/650px; в register.html inline media query отсутствует.
+- Rooms содержит две декларации showMapPointInfo; поздняя декларация перекрывает раннюю. Это P3 maintainability cleanup.
+- Нет реальных screenshots/viewport evidence. Нельзя утверждать отсутствие clipping, overflow или визуальных регрессий.
+
+### 4. Моушн-дизайнер
+- В availability_map_v3.html обнаружен .zone{transition:.2s} и hover/selected translateY/scale без Reduce Motion. Исправлено: при prefers-reduced-motion: reduce transition и transform отключаются; обычный режим не изменён.
+- Статические Reduce Motion правила/проверки присутствуют в Rooms, homepage, Space, Events, Banya и общем transition script.
+- В register.html остаются две CSS transition и scale transform без Reduce Motion override — P2, в следующий пакет.
+- Pointer/touch/gesture/browser tests не выполнялись.
+
+### 5. Тестировщик
+- После code patch повторно загружены все 5 затронутых HTML-файлов.
+- **Static JavaScript:** 5/5 inline blocks compiled.
+- **Structural QA:** 11/11 assertions PASS: route/adults, stale response invalidation, form allowlist/submit guard/timeout, signup guard, Rooms collection selectors and single hero preload, admin error recovery, map Reduce Motion.
+- Отдельный asset audit: главная 17/17 image paths и 3/3 shared CSS/JS references; Rooms 8/8 images и 3/3 shared references; missing assets 0.
+- Это статические проверки, не browser/runtime QA.
+
+## Реестр изменений и критерии приёмки
+
+| Изменение | Точный commit | Критерий приёмки / доказательство |
+|---|---|---|
+| Rooms: исправлены 6 collection selectors | [222608fb79cf33e39820db75484e406fb4380bf6](https://github.com/freedomsochi/FreedOm/commit/222608fb79cf33e39820db75484e406fb4380bf6) | Все коллекции вызывают $$; single-element $().forEach отсутствует; JS compile. Browser interaction ещё нужен. |
+| Rooms: удалён duplicate hero preload | [d2d0dd1f6614118d3fb5fdad1caa1a882ad6c35c](https://github.com/freedomsochi/FreedOm/commit/d2d0dd1f6614118d3fb5fdad1caa1a882ad6c35c) | Один preload 16361-compressed.png с fetchpriority=high; network/LCP не измерены. |
+| Availability map: booking route + stale response guard | [3d29c129d15c5d87ee86164c1528a3e2ee7ca749](https://github.com/freedomsochi/FreedOm/commit/3d29c129d15c5d87ee86164c1528a3e2ee7ca749) | CTA ведёт в room-booking-form.html, передаёт room/dates/adults/availability; старые запросы не обновляют новый период. Static 7/7 в исходной проверке. |
+| Booking form: prefill guest count | [4fab35f79cdf79defee173a2d6ab03030322f664](https://github.com/freedomsochi/FreedOm/commit/4fab35f79cdf79defee173a2d6ab03030322f664) | adults применяется только если значение есть в options select; JS syntax PASS. |
+| Registration: stop repeat signup after partial Auth creation | [3bdc5ae265cc78aa22c4cc001c81e21ac21e3bad](https://github.com/freedomsochi/FreedOm/commit/3bdc5ae265cc78aa22c4cc001c81e21ac21e3bad) | При Auth user без users profile повторная регистрация блокируется; recovery/transaction не реализованы; structural 4/4. |
+| Admin kitchen: rejected/network error handling | [6529f6034bf59b0f6d3fce7441122e7f46c6b165](https://github.com/freedomsochi/FreedOm/commit/6529f6034bf59b0f6d3fce7441122e7f46c6b165) | Load всегда возвращает refresh button через finally; RPC error восстанавливает action button; JS compile + 5/5 assertions. |
+| Asset path audit | [0557fc936eebb3237dfa706afcbe4fc0c9f776c0](https://github.com/freedomsochi/FreedOm/commit/0557fc936eebb3237dfa706afcbe4fc0c9f776c0) | 25/25 локальных image paths и 6/6 общих resource refs найдены; missing 0. HTTP/image decode не проверены. |
+| Availability map: Reduce Motion | [8ea772c5ec3e134fa617af25129766f722dcb435](https://github.com/freedomsochi/FreedOm/commit/8ea772c5ec3e134fa617af25129766f722dcb435) | При reduce отключены .zone transition и hover/selected transform; normal-motion selector сохранён; JS compile и CSS assertion PASS. Preview/browser ещё нет. |
+
+## Назначено / сделано / принято / заблокировано
+- **Назначено:** 12 work items.
+- **Сделано:** 8.
+- **Принято:** 8 по статическим критериям.
+- **Заблокировано:** 4 — Preview для latest SHA, browser/Android QA, Supabase read-only security/schema audit, подтверждение владельца/канала Events/Kitchen.
+- 8/12 = 66,7% текущего пакета; это счётчик выполнения, не KPI директора.
+
+## P0–P3
+
+### P0
+- Не выявлено в доступном source/static scope.
+
+### P1
+1. **Финансовый RPC source-level risk:** supabase_payments.sql объявляет public.record_payment(...) как SECURITY DEFINER; проверка auth.email() <> 'serzh.xz@mail.ru' не fail-closed при NULL; в исходном SQL нет явного REVOKE EXECUTE FROM PUBLIC/anon. При стандартных PostgreSQL default privileges это может оставить EXECUTE у PUBLIC, но фактические default privileges/effective ACL в текущей БД неизвестны. Это подтверждённый риск исходника, не доказанная доступность anon и не подтверждённая эксплуатация.
+2. **Admin RPC authorization verification:** admin_kitchen.html напрямую вызывает admin_get_kitchen_orders и admin_update_kitchen_order_status; admin_bookings_v2.html проверяет email в UI, но напрямую вызывает confirm_booking/cancel_booking; guest_profile.js проверяет наличие session, но server-side role enforcement RPC не подтверждён. Определения/ACL отсутствуют в доступных SQL-файлах. Не считать это доказанной уязвимостью до read-only проверки.
+3. **Partial signup:** Auth user и public.users создаются отдельными операциями. UI теперь блокирует повтор, но не восстанавливает профиль и не даёт транзакционной гарантии. DB schema/RLS/triggers неизвестны.
+
+### P2
+- Events CTA «Записаться» фактически открывает Share или копирует текст; серверной записи/сохранения нет.
+- kitchen.html формирует сообщение для ручной отправки; автоматического online order flow нет. Нельзя подключать к booking Formspree без владельца и согласованного канала.
+- register.html имеет transitions/scale без Reduce Motion override.
+- Idempotency/auth/validation внутри Supabase Edge Functions для booking/availability не подтверждены доступными исходниками.
+- Visual/browser/Android QA остаётся заблокированной.
+
+### P3
+- Rooms CSS cascade сложный: 48 media blocks, многочисленные 850px overrides, 31 backdrop filters; без screenshots/device profiling это риск, а не подтверждённый дефект.
+- В Rooms две декларации showMapPointInfo; требуется удалить мёртвый/дублирующий код после проверки вызовов.
+- Нет inline media query в register.html; проверить fluid layout на viewport, не считать это автоматически поломкой.
+
+## Статусы QA раздельно
+
+| Gate | Статус | Доказательство / ограничение |
+|---|---|---|
+| Static QA | **PASS** | 5/5 inline JS blocks + 11/11 assertions; path audit 25/25 images, 6/6 shared resources |
+| Build QA | **READY для старого code SHA 6529f603...** | Vercel deployment dpl_DAc7gbeJJws5rD8inV4fkripHbng; latest code SHA 8ea772c... этим Preview не покрыт |
+| Browser/Android QA | **BLOCKED / NOT RUN** | TinyFish wallet ранее -$0.584; повторных платных вызовов не делали |
+| New Preview build | **BLOCKED** | Известный Vercel 402 api-deployments-free-per-day, retry-after 24h; не повторяли вызов |
+
+## KPI директора — числовые значения не измерены
+
+Не выставляю баллы и не переношу историческую оценку прошлого цикла. Для текущего интервала нет достаточной формализованной базы:
+
+| Метрика | Вес | Статус | Что есть / чего не хватает |
+|---|---:|---|---|
+| Доставка принятого результата | 25% | Не измерено | Есть операционный счётчик 8/12; нет заранее зафиксированного полного denominator и единого правила acceptance |
+| Качество и QA-gate | 25% | Не измерено | Есть 5/5 JS и 11/11 static assertions; нет browser test matrix/results для полного пакета |
+| Предотвращение регрессий | 20% | Не измерено | Нет подтверждённого runtime regression count и сопоставимого baseline |
+| Скорость цикла | 15% | Не измерено | Есть отдельные commit timestamps, но нет start time/lead time по задачам |
+| Координация и прозрачность | 15% | Не измерено | Документы и issue comments обновляются, но нет заранее заданной шкалы handoff latency/acceptance |
+
+Для расчёта KPI следующего цикла фиксировать task ID, owner-role, start timestamp, commit/finish timestamp, acceptance status, regression ID и planned/actual test cases. Не выводить score из количества коммитов.
+
+## Блокеры
+- **Supabase:** предыдущая read-only introspection завершилась 28P01; позднее проект сообщал hibernated. Не повторяли одинаковые DB-запросы. Нужен read-only export от владельца/восстановленный доступ.
+- **TinyFish:** известный отрицательный wallet -$0.584; browser runner не запускался.
+- **Vercel:** предыдущий API 402 с retry-after 24h; новые deployment вызовы не выполнялись. Существующий Preview не покрывает 8ea772c.
+- **Business workflow:** не определены владелец и endpoint/канал заявок Events и Kitchen.
+
+## Безопасность и go/no-go
+- Изменения только в site-finish-2026-11-16.
+- Production/main не менялись.
+- Supabase schema/data/RLS/grants/RPC/Auth settings не менялись.
+- Финансовые правила, платежи, роли и пользовательские данные не менялись.
+- Live forms, signup, bookings, kitchen orders и admin actions не выполнялись.
+- Нового deploy не выполняли.
+- **Release recommendation: NO-GO** до read-only P1 verification, Preview для 8ea772c и browser/Android regression.
+
+## Следующий пакет директора
+1. Получить read-only export текущих definitions, owners, proacl/effective grants, default privileges и proconfig для record_payment и административных/финансовых RPC; проверить RLS для bookings, orders, payments, payment_allocations.
+2. Получить read-only схему Auth/users/referrals: constraints, triggers, RLS/grants, referral level mechanics; только затем проектировать recovery.
+3. После восстановления quota получить Preview exact SHA 8ea772c, без Production deployment.
+4. Browser smoke на 390×844, 768×1024 и 1440×900: map→booking (adults 1/2, date changes), Rooms selectors/floors/gallery, admin kitchen network errors, Reduce Motion. Остановиться до submit.
+5. Получить решение владельца по каналу Events/Kitchen; не менять CTA/backend до этого.
+6. Проверить Register Reduce Motion; визуальную консолидацию Rooms делать только по screenshots.
+7. Сохранить WIP ≤2; не расширять пакет до ≥90% accepted, отсутствия новых P0/P1 и regression rate ≤5%.
