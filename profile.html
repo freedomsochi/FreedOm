@@ -316,6 +316,13 @@
             const refLevel3 = document.getElementById('refLevel3');
             const copyBtn = document.getElementById('copyRefBtn');
 
+            function showLoadingError(message) {
+                const paragraph = document.createElement('p');
+                paragraph.style.color = '#ff6b6b';
+                paragraph.textContent = '❌ ' + String(message || 'Не удалось загрузить профиль');
+                loadingState.replaceChildren(paragraph);
+            }
+
             supabase.auth.getSession().then(async ({ data: sessionData }) => {
                 if (!sessionData.session) {
                     window.location.href = 'login.html';
@@ -336,12 +343,12 @@
 
                     if (error) {
                         console.error('❌ Ошибка Supabase:', error);
-                        loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка: ' + error.message + '</p>';
+                        showLoadingError('Ошибка: ' + (error?.message || 'Не удалось загрузить профиль'));
                         return;
                     }
 
                     if (!userData) {
-                        loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Профиль не найден. Проверьте таблицу users.</p>';
+                        showLoadingError('Профиль не найден. Проверьте таблицу users.');
                         return;
                     }
 
@@ -389,7 +396,7 @@
 
                 } catch (error) {
                     console.error('❌ Критическая ошибка:', error);
-                    loadingState.innerHTML = '<p style="color:#ff6b6b;">❌ Ошибка: ' + error.message + '</p>';
+                    showLoadingError('Ошибка: ' + (error?.message || 'Не удалось загрузить профиль'));
                 }
             });
 
