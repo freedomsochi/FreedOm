@@ -800,7 +800,7 @@ const mapPoints=[
 const $=s=>document.querySelector(s);
 const $$=s=>Array.from(document.querySelectorAll(s));
 function renderMapPoints(){
- $$$('.map-point').forEach(el=>el.remove());
+ $('.map-point').forEach(el=>el.remove());
  mapPoints.forEach(p=>{
   // Territory markers belong to the territory view; don't float them over interior floors.
   if(p.floor!==activeFloor)return;
@@ -907,7 +907,7 @@ function choose(i,preserveCategory=false){
  const r=rooms[i];
  hasInteracted=true;browsingCategory=false;active=i;category=r.category;filterFloor=null;
  activeFloor=(r.floors||['territory'])[0];
- $$$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
+ $('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
  const info=floorInfo[activeFloor];if(info){$('#floorlabel').textContent=info.label;$('#floordesc').textContent=info.desc;}
  renderMapPoints();
  $('#heroimg').src=r.img;$('#heroimg').alt=r.name;$('#detailtitle').textContent=r.name;$('#detailmeta').textContent=r.meta;$('#description').textContent=r.desc;const amenities=$('#roomAmenities');if(amenities){amenities.replaceChildren();(r.amenities||[]).forEach(item=>{const chip=document.createElement('span');chip.className='room-amenity';chip.textContent=item;amenities.appendChild(chip)});amenities.style.display=(r.amenities&&r.amenities.length)?'flex':'none';}
@@ -936,7 +936,7 @@ function showMapPointInfo(point){
  document.body.classList.remove('rooms-no-options');
  if(empty){empty.style.display='none';empty.hidden=true;}
  activeFloor=point.floor;
- $$$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
+ $('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
  const label=$('#floorlabel'),desc=$('#floordesc');
  if(label)label.textContent=point.label;
  if(desc)desc.textContent=point.desc;
@@ -1036,7 +1036,7 @@ $('#book').addEventListener('click',e=>{
  const params=new URLSearchParams({room:rooms[active].name,checkin:a,checkout:b,availability:status.text||'Не проверена'});
  location.href='room-booking-form.html?'+params.toString();
 });
-$$$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
+$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
 $('#map-point-close').addEventListener('click',e=>{e.stopPropagation();closeMapPointInfo()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMapPointInfo()});
 initDates();document.body.classList.remove('dates-selected','rooms-revealed');renderAvailability();renderMapPoints();$('#floorlabel').textContent=floorInfo.territory.label;$('#floordesc').textContent=floorInfo.territory.desc;$('.modelhint span').textContent='Выберите даты и нажмите поиск, чтобы увидеть варианты';
