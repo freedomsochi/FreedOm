@@ -76,6 +76,9 @@ form.insertAdjacentHTML('beforeend','<input type="hidden" name="room_type" id="r
 document.getElementById('roomField').value=room;
 const availability=params.get('availability')||'Не проверена';
 document.getElementById('availabilityField').value=availability;
+const adultsParam=params.get('adults');
+const adultsSelect=document.getElementById('adults');
+if(adultsParam&&Array.from(adultsSelect.options).some(option=>option.value===adultsParam))adultsSelect.value=adultsParam;
 const checkin=document.getElementById('checkin'),checkout=document.getElementById('checkout');
 const today=new Date();const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
 checkin.min=localToday;checkout.min=localToday;
