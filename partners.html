@@ -243,8 +243,9 @@
             const refLevel3 = document.getElementById('refLevel3');
             const refBalance = document.getElementById('refBalance');
 
-            supabase.auth.getSession().then(async ({ data: sessionData }) => {
-                if (!sessionData.session) {
+            supabase.auth.getSession().then(async ({ data: sessionData, error: sessionError }) => {
+                if (sessionError) throw sessionError;
+                if (!sessionData?.session) {
                     window.location.href = 'login.html';
                     return;
                 }
