@@ -319,6 +319,7 @@
             function showLoadingError(message) {
                 const paragraph = document.createElement('p');
                 paragraph.style.color = '#ff6b6b';
+                paragraph.setAttribute('role', 'alert');
                 paragraph.textContent = '❌ ' + String(message || 'Не удалось загрузить профиль');
                 loadingState.replaceChildren(paragraph);
             }
@@ -398,6 +399,9 @@
                     console.error('❌ Критическая ошибка:', error);
                     showLoadingError('Ошибка: ' + (error?.message || 'Не удалось загрузить профиль'));
                 }
+            }).catch(error => {
+                console.error('❌ Не удалось проверить сессию:', error);
+                showLoadingError('Не удалось проверить авторизацию. Проверьте соединение и обновите страницу.');
             });
 
             copyBtn.addEventListener('click', function() {
@@ -407,6 +411,10 @@
                         const original = copyBtn.textContent;
                         copyBtn.textContent = '✅ Скопировано!';
                         setTimeout(() => copyBtn.textContent = original, 2000);
+                    }).catch(error => {
+                        console.error('Не удалось скопировать ссылку:', error);
+                        copyBtn.textContent = 'Не удалось скопировать';
+                        setTimeout(() => copyBtn.textContent = '📋 Копировать', 2500);
                     });
                 } else {
                     const textarea = document.createElement('textarea');
@@ -422,9 +430,18 @@
             });
 
             logoutBtn.addEventListener('click', async function() {
-                if (confirm('Вы уверены, что хотите выйти?')) {
-                    await supabase.auth.signOut();
+                if (!confirm('Вы уверены, что хотите выйти?')) return;
+                logoutBtn.disabled = true;
+                logoutBtn.textContent = 'Выходим…';
+                try {
+                    const { error } = await supabase.auth.signOut();
+                    if (error) throw error;
                     window.location.href = 'index.html';
+                } catch (error) {
+                    console.error('Не удалось выйти из аккаунта:', error);
+                    alert('Не удалось завершить выход. Проверьте соединение и попробуйте ещё раз.');
+                    logoutBtn.disabled = false;
+                    logoutBtn.textContent = '🚪 Выйти из аккаунта';
                 }
             });
         });
