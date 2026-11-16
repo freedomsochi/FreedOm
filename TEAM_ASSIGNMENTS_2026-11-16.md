@@ -593,3 +593,11 @@
 - **Технический программист — DONE (static):** добавлены try/catch для загрузки заказов и смены статуса; кнопки возвращаются в рабочее состояние при ошибках.
 - **Тестировщик — STATIC PASS:** исходник повторно загружен; JS compile check PASS; 5/5 проверок структуры PASS. Browser/Android/network simulation — NOT RUN.
 - **Директор — HOLD:** не считать это подтверждением серверной защиты. P1 security verification остаётся заблокированным до read-only export RPC/grants/RLS. Release NO-GO.
+
+
+## Preview после патча кухни — проверка статуса
+
+- Vercel Preview для кодового коммита `6529f6034bf59b0f6d3fce7441122e7f46c6b165` получил статус **READY**: https://freed-mu5f7nbt0-sergeyogorodnik19-3325s-projects.vercel.app
+- Deployment: `dpl_DAc7gbeJJws5rD8inV4fkripHbng`. Это подтверждает успешную сборку Preview, но не браузерную/Android-проверку.
+- Текущий HEAD ветки после документационных записей: `9d373e08870fad9dc73aeac953311bf40e83c91b`; кодовая часть Preview соответствует патчу кухни, последующие коммиты только обновляют командную документацию.
+- Release остаётся NO-GO до browser/Android QA и read-only подтверждения серверной авторизации RPC.
