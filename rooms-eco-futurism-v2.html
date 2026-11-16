@@ -820,6 +820,7 @@ function closeMapPointInfo(){
   popup.hidden=true;popup.classList.remove('is-closing');
   if(model)model.classList.remove('map-info-active');
   document.body.classList.remove('map-info-open');
+  applyRoomFilters();
  };
  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){finishClose();return}
  popup.classList.add('is-closing');
@@ -931,7 +932,9 @@ function showMapPointInfo(point){
  active=-1;
  $('.details').style.display='none';
  $$('.roomcard').forEach(el=>el.classList.remove('active'));
- const empty=$('#emptycategory');if(empty)empty.style.display='none';
+ const empty=$('#emptycategory');
+ document.body.classList.remove('rooms-no-options');
+ if(empty){empty.style.display='none';empty.hidden=true;}
  activeFloor=point.floor;
  $$$('.floorlayers button').forEach(b=>b.classList.toggle('active',b.dataset.floor===activeFloor));
  const label=$('#floorlabel'),desc=$('#floordesc');
