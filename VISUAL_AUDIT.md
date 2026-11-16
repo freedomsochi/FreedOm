@@ -51,3 +51,29 @@
 
 ## Правило
 Не создавать визуальные дефекты на основании догадки о CSS. Если визуального доказательства нет, пометить HYPOTHESIS и запросить скриншот/браузерный доступ. Не выставлять VISUAL PASS до сравнения реального экрана с требованиями.
+
+
+## Проверка доступности HTML Preview — 17.11.2026
+
+Проверен Vercel Preview:
+- URL: https://freed-6dekucaox-sergeyogorodnik19-3325s-projects.vercel.app/
+- Deployment: `dpl_F3z9YMDZBpmdPmjX34sf5FxkYKLR`
+- Exact commit SHA: `cb930a2a5f8165f599d5b0f49c70cefd356039fd`
+- Vercel state: READY.
+- HTML fetch: HTTP 200 для всех 11 маршрутов ниже.
+
+| Route | HTTP | Document title | Visual/browser QA |
+|---|---:|---|---|
+| / | 200 | FreeDom — дом, в котором живет любовь | NOT RUN |
+| /space.html | 200 | Пространство — FreeDom | NOT RUN |
+| /rooms-eco-futurism-v2.html | 200 | FreeDom Rooms — Nature Interface | NOT RUN |
+| /kitchen-pixel-v2.html | 200 | FreeDom — Кухня | NOT RUN |
+| /freedom-banya-v2.html | 200 | FreeDom — Баня | NOT RUN |
+| /freedom-events-v1.html | 200 | FreeDom — События | NOT RUN |
+| /project-history.html | 200 | FreeDom — История проекта | NOT RUN |
+| /register.html | 200 | Регистрация — FreeDom | NOT RUN |
+| /login.html | 200 | Вход — FreeDom | NOT RUN |
+| /profile.html | 200 | Личный кабинет — FreeDom | NOT RUN |
+| /availability_map_v3.html | 200 | FreeDom — выбор размещения | NOT RUN |
+
+HTTP 200 подтверждает только получение HTML-документа. Не подтверждает загрузку всех assets, выполнение JavaScript, доступность API, отсутствие console errors, визуальную композицию или успешность интерактивных сценариев. Скриншоты реальных viewport пока не получены. Browser/Android QA остаётся NOT RUN.
