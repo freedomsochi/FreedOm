@@ -740,6 +740,15 @@ body.dates-selected .left{display:flex!important}
 .category-tabs button.active{background:rgba(240,255,247,.96);color:#205b50;border-color:rgba(255,255,255,.9);box-shadow:0 3px 12px rgba(0,0,0,.12)}
 .category-tabs button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 @media(max-width:850px){.left{flex-wrap:wrap;overflow:visible;gap:9px}.category-tabs{flex:0 0 100%;width:100%;position:sticky;top:0;z-index:8;justify-content:center}.category-tabs button{padding:10px 7px;font-size:10px}.roomcard{flex:0 0 165px}}
+
+/* Helpful empty state when a selected floor has no bookable accommodation. */
+body.rooms-no-options #emptycategory{
+ display:block!important;flex:1 0 calc(100% - 28px)!important;
+ min-width:0!important;max-width:none!important;margin:0 14px 10px!important;
+ padding:14px 18px!important;border:1px solid rgba(229,255,247,.42);
+ border-radius:16px;background:rgba(14,67,58,.68);color:#f4fffb;
+ text-align:center;font-size:12px;line-height:1.55;white-space:normal;
+}
 </style><link rel="stylesheet" href="freedom-transitions.css">
 <script defer src="freedom-transitions.js"></script>
 <link rel="stylesheet" href="freedom-design-system.css">
@@ -867,16 +876,25 @@ function applyRoomFilters(){
  document.body.classList.add('rooms-revealed');
  document.body.classList.remove('rooms-prompt-open');
  const empty=$('#emptycategory');
- if(empty){empty.style.display='none';empty.setAttribute('hidden','');}
- $$('.category-tabs button').forEach(button=>{const selected=button.dataset.category===category;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
- $$('.roomcard').forEach(el=>{
+ $('.category-tabs button').forEach(button=>{const selected=button.dataset.category===category;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
+ let visibleCount=0;
+ $('.roomcard').forEach(el=>{
   const i=Number(el.dataset.room);
   const room=rooms[i];
   const onSelectedFloor=!filterFloor||(room?.floors||[]).includes(filterFloor);
   const visible=el.dataset.category===category&&onSelectedFloor;
   el.style.display=visible?'block':'none';
+  if(visible)visibleCount++;
   el.classList.toggle('active',visible&&i===active);
  });
+ if(empty){
+  const noOptions=visibleCount===0;
+  const level=floorInfo[filterFloor]?.label;
+  empty.textContent=noOptions?(level?'На уровне «'+level+'» нет отдельных вариантов размещения. Выберите другой этаж или категорию.':'В этой категории пока нет вариантов размещения.'):'';
+  empty.hidden=!noOptions;
+  empty.style.display=noOptions?'block':'none';
+  document.body.classList.toggle('rooms-no-options',noOptions);
+ }
  // The room detail panel belongs only to an explicitly selected room.
  // Territory pins and floor controls must never reveal the default family room.
  $('.details').style.display=(active>=0&&rooms[active])?'block':'none';
