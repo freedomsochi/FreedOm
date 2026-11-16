@@ -104,11 +104,11 @@ form.addEventListener('submit',async e=>{
   document.getElementById('successMessage').style.display='block';
  }catch(err){
   const message=document.getElementById('errorMessage');
-  message.textContent=err.name==='AbortError'
-   ?'Сервис не ответил за 20 секунд. Заявка не подтверждена — попробуй отправить ещё раз.'
-   :'Не удалось отправить заявку. Проверь соединение и попробуй ещё раз.';
+  message.textContent=(err.name==='AbortError'||err instanceof TypeError)
+   ?'Не удалось получить подтверждение. Заявка могла уже поступить. Перед повторной отправкой уточни её получение у команды FreeDom.'
+   :'Сервис отклонил заявку. Проверь данные и попробуй ещё раз.';
   message.style.display='block';
-  button.disabled=false;button.textContent='Повторить отправку';
+  button.disabled=false;button.textContent='Повторить после уточнения';
  }finally{
   clearTimeout(timeoutId);
  }
