@@ -399,3 +399,10 @@
 - **Тестировщик — static PASS:** 5/5 inline JS syntax; проверки snap/ambient override/normal inertia PASS. Browser, Android, визуальная композиция и live toggle не проверены.
 - Коммит: `fd986667c2f721a6616b8eca1093238852484f4a`.
 - **Директор — HOLD:** WIP не повышать, Production NO-GO до Preview и браузерной регрессии.
+
+
+## Дополнение — events reduced-motion JS
+- **Моушн-дизайнер — implementation DONE / visual QA OPEN:** при Reduce Motion карточки событий перемещаются мгновенно без RAF, закрытие очищает состояние без отложенных 480 мс. Обычная анимация сохранена.
+- **Тестировщик — static PASS:** 1/1 inline JS syntax; проверки snap/RAF/cleanup PASS. Browser/Android не проверены.
+- Коммит: `6f00608d003d04e9e8346ba03fe6af827af39da1`.
+- **Директор — HOLD:** релиз NO-GO до Preview и браузерной регрессии.
