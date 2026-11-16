@@ -635,3 +635,11 @@
 - Это только UI resilience fix: RPC, статусы, бизнес-правила, Auth, grants, RLS и БД не менялись. Серверная авторизация RPC по-прежнему BLOCKED до read-only schema export; это не подтверждённая уязвимость.
 - Browser/Android/network simulation: NOT RUN. Production и live-данные не затронуты. Release NO-GO до security verification и браузерной регрессии.
 - Эффективность цикла: один точечный патч устраняет два зависающих состояния без изменения серверной логики; проверка ограничена статикой и компиляцией JS, поэтому поведенческий PASS пока не заявляется.
+
+
+## Preview после патча кухни — проверка статуса
+
+- Vercel Preview для кодового коммита `6529f6034bf59b0f6d3fce7441122e7f46c6b165` получил статус **READY**: https://freed-mu5f7nbt0-sergeyogorodnik19-3325s-projects.vercel.app
+- Deployment: `dpl_DAc7gbeJJws5rD8inV4fkripHbng`. Это подтверждает успешную сборку Preview, но не браузерную/Android-проверку.
+- Текущий HEAD ветки после документационных записей: `9d373e08870fad9dc73aeac953311bf40e83c91b`; кодовая часть Preview соответствует патчу кухни, последующие коммиты только обновляют командную документацию.
+- Release остаётся NO-GO до browser/Android QA и read-only подтверждения серверной авторизации RPC.
