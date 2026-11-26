@@ -25,20 +25,11 @@ begin
     v_definition := pg_get_functiondef(f.oid);
     v_new_definition := v_definition;
 
-    v_new_definition := replace(
-      v_new_definition,
-      'if auth.email() <> ''serzh.xz@mail.ru'' then',
-      'if auth.uid() is null or auth.email() is distinct from ''serzh.xz@mail.ru'' then'
-    );
-    v_new_definition := replace(
-      v_new_definition,
-      'if auth.email()<>' ' ''serzh.xz@mail.ru'' then',
-      'if auth.uid() is null or auth.email() is distinct from ''serzh.xz@mail.ru'' then'
-    );
-    v_new_definition := replace(
-      v_new_definition,
-      'if auth.email() <> ''serzh.xz@mail.ru'' then',
-      'if auth.uid() is null or auth.email() is distinct from ''serzh.xz@mail.ru'' then'
+    v_new_definition := regexp_replace(
+      v_definition,
+      'if[[:space:]]+auth\\.email\\(\\)[[:space:]]*<>[[:space:]]*''serzh\\.xz@mail\\.ru''[[:space:]]+then',
+      'if auth.uid() is null or auth.email() is distinct from ''serzh.xz@mail.ru'' then',
+      'gi'
     );
 
     if v_new_definition <> v_definition then
