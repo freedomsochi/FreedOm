@@ -18,6 +18,8 @@ Affected functions:
 - `confirm_booking(uuid)`
 - `get_payment_history(uuid,uuid)`
 - `get_user_payment_history(uuid)`
+- `admin_get_kitchen_orders()`
+- `admin_update_kitchen_order_status(uuid,text)`
 
 ## Source patch
 
@@ -27,7 +29,7 @@ The migration aborts if any expected function or exact old guard is missing; it 
 
 ## Verification
 
-Run `supabase/sql/20261127_harden_booking_and_payment_history_rpcs_verification.sql` after applying in a controlled staging environment. Expected: exactly five rows; guard and search_path checks true; authenticated EXECUTE true; anon and PUBLIC EXECUTE false.
+Run `supabase/sql/20261127_harden_booking_and_payment_history_rpcs_verification.sql` after applying in a controlled staging environment. Expected: exactly seven rows; guard and search_path checks true; authenticated EXECUTE true; anon and PUBLIC EXECUTE false.
 
 ## Compatibility / remaining checks
 
