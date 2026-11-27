@@ -1,16 +1,16 @@
--- SOURCE-ONLY STAGING MIGRATION. Depends on private.has_admin_role().
+-- SOURCE-ONLY STAGING MIGRATION. Depends on private.has_owner_role().
 -- Replaces browser reads from bookings, orders, service_orders, event_registrations,
 -- payment_allocations and payments with one role-checked endpoint.
 begin;
 
 do $preflight$
 begin
-  if to_regprocedure('private.has_admin_role()') is null then
-    raise exception 'Missing prerequisite private.has_admin_role(); apply and validate admin-role-foundation.sql in staging first';
+  if to_regprocedure('private.has_owner_role()') is null then
+    raise exception 'Missing prerequisite private.has_owner_role(); apply and validate admin-role-foundation.sql in staging first';
   end if;
   if exists (
     select 1 from pg_proc h
-    where h.oid='private.has_admin_role()'::regprocedure
+    where h.oid='private.has_owner_role()'::regprocedure
       and h.proowner <> (select oid from pg_roles where rolname=current_user)
   ) then
     raise exception 'Migration role must own the admin role helper';
@@ -32,7 +32,7 @@ declare
   v_charge jsonb;
   v_allocations jsonb;
 begin
-  if auth.uid() is null or not private.has_admin_role() then
+  if auth.uid() is null or not private.has_owner_role() then
     raise exception 'Administrator access required' using errcode = '42501';
   end if;
   if p_charge_id is null or p_charge_type is null or p_charge_type not in ('booking','order','service','event') then
