@@ -25,7 +25,7 @@ where table_schema='public'
   and table_name='users'
   and grantee='authenticated'
   and column_name in (
-    'user_id','Display_name','Phone','City','Birth_date',
+    'user_id','Email','Display_name','Phone','City','Birth_date',
     'Ref_code','balance','Created_at'
   )
 order by column_name;
