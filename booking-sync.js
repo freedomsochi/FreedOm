@@ -9,18 +9,21 @@
   function val(form,name){const el=form.querySelector('[name="'+name+'"]');return el?String(el.value||'').trim():'';}
 
   async function resolveRoom(roomType,roomName){
+    // Public room lookup must use the restricted catalog RPC. Direct SELECT
+    // from public.rooms is intentionally unavailable to anon clients.
+    const {data,error}=await sb.rpc('get_rooms_catalog');
+    if(error)throw error;
+    const rooms=Array.isArray(data)?data:[];
     if(roomName){
-      const {data,error}=await sb.from('rooms').select('id,name,price_per_night').eq('name',roomName).maybeSingle();
-      if(error)throw error;
-      if(data)return data;
+      const exact=rooms.find(room=>room.name===roomName);
+      if(exact)return exact;
     }
     const map={family:['Семейная комната'],balcony:['Двухместный с балконом №1','Двухместный с балконом №2'],attic:['Мансардная комната №1','Мансардная комната №2'],bungalow:['Бунгало в саду'],balcony_bed:['Спальное место на балконе'],hostel_standart:['Хостел стандарт'],hostel_economy:['Хостел эконом']};
     const names=map[roomType];
     if(!names)throw new Error('Не определён тип номера.');
-    const {data,error}=await sb.from('rooms').select('id,name,price_per_night').in('name',names);
-    if(error)throw error;
-    if(!data?.length)throw new Error('Выбранный номер не найден в базе.');
-    return data[0];
+    const match=rooms.find(room=>names.includes(room.name));
+    if(!match)throw new Error('Выбранный номер не найден в базе.');
+    return match;
   }
 
   async function createBookingFromData(d){
