@@ -5,7 +5,7 @@ Branch: fix/security-rpc-hardening-2026-11-26
 
 ## Live read-only findings
 
-A catalog query against the connected Supabase project found 24 RLS policies in 17 public tables whose USING or WITH CHECK expressions compare `auth.email()` to the fixed owner email. All 17 tables have RLS enabled.
+A catalog query against the connected Supabase project found 24 RLS policies across 13 public tables whose USING or WITH CHECK expressions compare `auth.email()` to the fixed owner email. All 17 tables have RLS enabled.
 
 The protected role foundation is not installed in the live database:
 - `private.user_roles`: absent
@@ -34,6 +34,17 @@ This is a proposed least-privilege mapping for review, not an approved authoriza
 | transactions | admin_all_transactions | owner | Financial transaction ledger. |
 | users | admin_all_users | owner | Identity/profile administration and personal data. |
 | veg_raw_menu | admin_write_veg_raw_menu | admin | Menu content operations. |
+
+## Column-level sensitivity discovered
+
+The live schemas confirm that several operational tables combine sensitive identity and financial fields:
+- `bookings`: guest name, phone, email, dates, status, total, discount, paid amount, payment method and payment status.
+- `event_registrations`: guest name, phone, email, status, payment status, amount and paid amount.
+- `orders`: guest name, phone, email, items, total, status, payment status, paid amount and discount.
+- `users`: email, phone, city, birth date, balance, debt and discount rate.
+- `service_orders`: user ID, quantity, unit price, total, status and comment.
+
+Because the existing ALL policies expose both operational and financial columns, simply changing ALL from fixed-email to admin-role would grant operational admins access to financial fields. A safer design may require owner-only RPCs for financial mutations/reads, narrowly scoped operational RPCs or column-level grants, and separate policies where the table model supports them. Column-level grants must be tested with PostgREST and existing UI behavior.
 
 ## Why a one-shot rewrite is unsafe
 
