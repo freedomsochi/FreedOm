@@ -1,5 +1,18 @@
--- Source-only hardening. Do not apply to production until coordinated admin-role rollout.
+-- Source-only hardening. Requires the role foundation and an assigned owner in staging.
+-- Do not apply to production until the coordinated admin-role rollout is approved.
 begin;
+do $prerequisite$
+begin
+  if to_regclass('private.user_roles') is null
+     or to_regprocedure('private.has_owner_role()') is null then
+    raise exception 'Owner role foundation missing; apply and verify it in staging first';
+  end if;
+  if not exists (select 1 from private.user_roles where role = 'owner') then
+    raise exception 'No owner role is assigned; refusing to replace the existing payment guard';
+  end if;
+end;
+$prerequisite$;
+
 create or replace function public.record_event_registration_payment(
   p_registration_id uuid, p_amount integer, p_payment_method text
 )
@@ -14,8 +27,7 @@ declare
   v_remaining integer;
   v_method text;
 begin
-  if auth.uid() is null
-     or auth.email() is distinct from 'serzh.xz@mail.ru' then
+  if auth.uid() is null or not private.has_owner_role() then
     raise exception 'Доступ запрещён' using errcode = '42501';
   end if;
   if p_registration_id is null then raise exception 'Не указана регистрация'; end if;
