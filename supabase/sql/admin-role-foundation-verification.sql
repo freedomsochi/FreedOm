@@ -14,7 +14,11 @@ with schema_state as (
   select n.oid,
          has_schema_privilege('anon', n.oid, 'USAGE') as anon_usage,
          has_schema_privilege('authenticated', n.oid, 'USAGE') as authenticated_usage,
-         has_schema_privilege('public', n.oid, 'USAGE') as public_usage
+         not exists (
+           select 1
+           from aclexplode(coalesce(n.nspacl, acldefault('n', n.nspowner))) a
+           where a.grantee = 0 and a.privilege_type = 'USAGE'
+         ) as public_usage_revoked
   from pg_namespace n
   where n.nspname = 'private'
 ),
@@ -82,7 +86,7 @@ helper_checks as (
 )
 select
   (select oid is not null from schema_state) as private_schema_found,
-  (select not anon_usage and not authenticated_usage and not public_usage from schema_state) as schema_closed_to_api_roles,
+  (select not anon_usage and not authenticated_usage and public_usage_revoked from schema_state) as schema_closed_to_api_roles,
   (select oid is not null from table_state) as role_table_found,
   (select relrowsecurity from table_state) as rls_enabled,
   (select policy_count = 0 from policy_state) as no_client_policies,
