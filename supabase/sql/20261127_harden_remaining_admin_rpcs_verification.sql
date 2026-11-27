@@ -28,8 +28,7 @@ actual as (
 select signature,
        oid is not null as function_found,
        coalesce(prosecdef,false) as security_definer,
-       coalesce(prosrc ilike '%private.has_owner_role()% ',false)
-         or coalesce(prosrc ilike '%private.has_owner_role()%',false) as owner_guard_present,
+       coalesce(prosrc ilike '%private.has_owner_role()%',false) as owner_guard_present,
        coalesce(array_to_string(proconfig,','),'') as function_settings,
        anon_execute,
        authenticated_execute,
