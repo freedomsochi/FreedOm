@@ -203,3 +203,20 @@ Two additional source-only RPC changes are now prepared:
 Both changes are source-only, include verification SQL and security notes, and depend on the role foundation. Static source checks passed. The live production role helper and new finance-detail RPC remain absent; no migration or frontend deployment has been performed. The finance overview's existing live implementation still uses a fixed-email guard and `search_path=public`; the new migration replaces that guard with the role check only after staging role setup.
 
 The charge-detail page preserves the existing payment mutation call. Viewing a charge as an operational admin does not grant payment-write authority; that write remains separately owner-gated by the role migration.
+
+
+## 2026-11-27 follow-up — admin overview dashboard consolidation
+
+The source-only `admin_get_dashboard_overview()` migration replaces the remaining
+direct dashboard reads from `users`, `events`, `event_registrations` and
+`user_financial_summary` in `admin_v10_dashboard.html`. It returns aggregate
+counts, debt-only IDs/amounts, five upcoming active events and six latest
+registrations with limited event labels. The frontend retains the separate
+`admin_get_bookings()` call for actionable booking cards and removes the
+client-side fixed-email gate; the database role check is authoritative.
+
+Static checks passed: no direct table reads remain on this dashboard, the
+overview RPC checks `auth.uid()` and `private.has_admin_role()`, uses
+`search_path=pg_catalog`, and grants EXECUTE only to authenticated. The
+migration remains source-only and depends on the role foundation. Production
+was not changed and the updated page must not be deployed before staging tests.
