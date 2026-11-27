@@ -26,11 +26,11 @@ begin
   if not found then raise exception 'Регистрация не найдена'; end if;
   if r.user_id is null then raise exception 'У регистрации нет привязанного пользователя'; end if;
 
-  v_remaining := pg_catalog.greatest(pg_catalog.coalesce(r.amount, 0) - pg_catalog.coalesce(r.paid_amount, 0), 0);
+  v_remaining := greatest(coalesce(r.amount, 0) - coalesce(r.paid_amount, 0), 0);
   if v_remaining = 0 then raise exception 'Регистрация уже оплачена'; end if;
   if p_amount > v_remaining then raise exception 'Оплата превышает остаток: %', v_remaining; end if;
 
-  v_method := pg_catalog.coalesce(pg_catalog.nullif(pg_catalog.btrim(p_payment_method), ''), 'Перевод');
+  v_method := coalesce(nullif(pg_catalog.btrim(p_payment_method), ''), 'Перевод');
   insert into public.payments(user_id, amount, payment_method, method, status, note, created_by)
   values (r.user_id, p_amount, v_method, v_method, 'успешно',
           'Оплата события: ' || r.event_id::text, auth.uid())
@@ -40,9 +40,9 @@ begin
   values (v_payment_id, r.id, p_amount);
 
   update public.event_registrations
-     set paid_amount = pg_catalog.coalesce(paid_amount, 0) + p_amount,
+     set paid_amount = coalesce(paid_amount, 0) + p_amount,
          payment_status = case
-           when pg_catalog.coalesce(paid_amount, 0) + p_amount >= pg_catalog.coalesce(amount, 0) then 'paid'
+           when coalesce(paid_amount, 0) + p_amount >= coalesce(amount, 0) then 'paid'
            else 'partial'
          end,
          updated_at = pg_catalog.now()
