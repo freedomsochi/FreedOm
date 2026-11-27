@@ -19,6 +19,8 @@ where n.nspname='public'
     to_regprocedure('public.cancel_booking(uuid)'),
     to_regprocedure('public.confirm_booking(uuid)'),
     to_regprocedure('public.get_payment_history(uuid,uuid)'),
-    to_regprocedure('public.get_user_payment_history(uuid)')
+    to_regprocedure('public.get_user_payment_history(uuid)'),
+    to_regprocedure('public.admin_get_kitchen_orders()'),
+    to_regprocedure('public.admin_update_kitchen_order_status(uuid,text)')
   )
 order by 1;
