@@ -13,7 +13,7 @@ begin
     where n.nspname='private'
       and not has_schema_privilege('anon',n.oid,'USAGE')
       and not has_schema_privilege('authenticated',n.oid,'USAGE')
-      and not has_schema_privilege('public',n.oid,'USAGE')
+      and not exists (select 1 from aclexplode(coalesce(n.nspacl, acldefault('n',n.nspowner))) acl where acl.grantee=0 and acl.privilege_type='USAGE')
   ) then
     raise exception 'private schema is missing or exposed to PUBLIC/anon/authenticated';
   end if;
@@ -28,7 +28,7 @@ begin
 
   if has_table_privilege('anon',v_table,'SELECT,INSERT,UPDATE,DELETE')
      or has_table_privilege('authenticated',v_table,'SELECT,INSERT,UPDATE,DELETE')
-     or has_table_privilege('public',v_table,'SELECT,INSERT,UPDATE,DELETE') then
+     or exists (select 1 from aclexplode(coalesce((select c.relacl from pg_class c where c.oid=v_table), acldefault('r',(select c.relowner from pg_class c where c.oid=v_table)))) acl where acl.grantee=0 and acl.privilege_type in ('SELECT','INSERT','UPDATE','DELETE')) then
     raise exception 'private.user_roles has client-facing table privileges';
   end if;
 
@@ -42,7 +42,7 @@ begin
 
   if has_function_privilege('anon',v_helper,'EXECUTE')
      or has_function_privilege('authenticated',v_helper,'EXECUTE')
-     or has_function_privilege('public',v_helper,'EXECUTE') then
+     or exists (select 1 from aclexplode(coalesce((select p.proacl from pg_proc p where p.oid=v_helper), acldefault('f',(select p.proowner from pg_proc p where p.oid=v_helper)))) acl where acl.grantee=0 and acl.privilege_type='EXECUTE') then
     raise exception 'private.has_admin_role() is executable by client roles/PUBLIC';
   end if;
 
