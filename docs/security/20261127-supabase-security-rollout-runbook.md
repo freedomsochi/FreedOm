@@ -1,4 +1,4 @@
-# FreeDom Supabase security rollout runbook
+| 6 || 7 || 8 || 9 || 10 || 11 || 12 |# FreeDom Supabase security rollout runbook
 
 Date: 2026-11-27  
 Branch: `fix/security-rpc-hardening-2026-11-26`  
@@ -71,7 +71,7 @@ For each migration, use a fresh staging snapshot and perform the following befor
 
 - No staging environment has been verified for this project.
 - Role foundation exists only as source; live `private.user_roles` and helpers were absent in the last audit.
-- Role migration covers only a subset of administrative RPCs.
+- The initial role migration covers 12 operational/owner RPCs; a separate source-only follow-up now covers 12 additional admin read/payment RPCs conservatively as owner-only. Neither set has been tested in staging or applied to production.
 - Frontend caller inventory remains incomplete because GitHub code search returned no indexed matches for key RPC/view names. Do not infer that no callers exist.
 - `user_financial_summary` anon grant is unnecessary, but caller compatibility still needs explicit source review before production rollout.
 - The Edge Function `telegram-notify` auth change is a separate coordinated deployment and is intentionally excluded here.
@@ -89,3 +89,8 @@ The two contact-linking migrations both replace `public.attach_event_user_by_pho
 The seven-function booking/payment hardening migration and the 12-function admin role migration overlap on five RPCs: `admin_get_bookings()`, `admin_get_kitchen_orders()`, `admin_update_kitchen_order_status(uuid,text)`, `confirm_booking(uuid)`, and `cancel_booking(uuid)`. This overlap is now handled in both directions: the booking/payment migration preserves an existing matching `private.has_admin_role()` or `private.has_owner_role()` guard, while the role migration accepts either the original nullable email guard or the fail-closed email guard installed by the booking/payment migration. Therefore either order is safe; keep steps 2 and 3 adjacent and run both matching verification scripts after both migrations. The two payment-history RPCs are also in the role migration's owner-only subset, so the role migration accepts their hardened email guard too.
 
 The 12-function admin role migration pins `search_path=pg_catalog`. The live bodies inspected for its 12 targets use schema-qualified `public.*` table/function references and qualified `auth.*` helpers; keep this property when reviewing any future target added to the migration. Never broaden the search_path to include writable schemas merely to make an unqualified reference resolve.
+
+
+## Remaining admin RPC classification
+
+The follow-up migration `20261127_harden_remaining_admin_rpcs.sql` assigns the owner-only helper to the remaining 12 functions: booking overview, finance overview, guest dashboard stats/profile/overview, room list, space location/navigation/overview, user debts/users, and guest payment recording. This is intentionally conservative: several read RPCs expose guest phone/email, payment history, debt, or current room occupancy. Operational-admin access to any subset requires a separate privacy review and explicit policy decision. The migration preserves function signatures, return shapes, business logic, and existing grants; it changes authorization guards and pins `search_path=pg_catalog`. It requires an already assigned owner in staging and must be verified with `20261127_harden_remaining_admin_rpcs_verification.sql`.
