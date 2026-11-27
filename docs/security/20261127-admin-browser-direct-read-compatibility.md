@@ -6,8 +6,8 @@ This document records the live browser callers inspected on the working branch. 
 
 | Page | Direct reads | Current purpose | Required release condition |
 |---|---|---|---|
-| `admin_v10_finance.html` | `users(user_id, Display_name, Phone, Email)` | Decorates `admin_get_finance_overview()` summaries with guest contact labels | Admin-only RLS on `users` plus authenticated column SELECT for these four fields. The self-service read migration grants these columns; its own-row policy does not remove the existing admin policy. |
-| `admin_v11_finance_detail.html` | `bookings`, `orders`, `service_orders`, `event_registrations`, `payment_allocations` | Loads one charge by ID and owner ID; sums successful allocations | Keep each table's admin-only SELECT policy and grants aligned. URL `user_id` is a filter, not authorization. Do not rely on it as a security boundary. The payment RPC must independently authorize the caller. |
+| `admin_v10_finance.html` | `admin_get_finance_overview()` RPC | Uses a minimal guest identity projection included in the finance summary response | Role foundation and updated role-checked RPC must be staged before release; no direct `users` SELECT remains. |
+| `admin_v11_finance_detail.html` | `admin_get_finance_charge_detail(type,id)` RPC | Loads one charge and its successful allocation history | Role foundation and role-checked RPC must be staged; payment mutation remains separately owner-gated. URL `user_id` is not an authorization input. |
 | `admin_v11_services.html` | `admin_get_services_dashboard()` RPC | Lists projected service rows and totals successful allocations | Role foundation must exist; RPC requires admin/owner and counts only successful payments. |
 | `admin_v10_events.html` | `admin_get_events_dashboard()` RPC | Lists projected event rows and participant contact/registration details | Role foundation must exist; RPC requires admin/owner. |
 
@@ -27,3 +27,11 @@ This document records the live browser callers inspected on the working branch. 
 3. Replace service listing direct reads with an admin RPC returning service rows and successful allocation totals.
 4. Migrate the fixed-email table policies to the role model only after all page callers and RPC authorization are verified.
 5. Stage-test with anonymous, ordinary authenticated, admin, and owner accounts before production rollout.
+
+
+## Finance read-path update (2026-11-27)
+
+- `admin_v10_finance.html` now reads guest identity fields from `admin_get_finance_overview()`; the browser-side `users` query has been removed. The RPC migration is source-only and replaces the live fixed-email guard with `private.has_admin_role()`.
+- `admin_v11_finance_detail.html` now calls `admin_get_finance_charge_detail(text,uuid)`; direct reads from the five finance charge/allocation tables and payments have been removed from the page.
+- Both RPCs use explicit projections, `auth.uid()` plus the protected role helper, fixed `search_path=pg_catalog`, and authenticated-only EXECUTE.
+- Static checks passed. Production still lacks the role foundation and finance detail RPC. Do not deploy either updated finance page before staging tests and coordinated approval.
