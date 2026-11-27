@@ -59,3 +59,19 @@ The earlier 12-RPC role migration does not cover the complete 15-function admin 
 - Direct database caller map: documented above.
 - Live DB schema/policies were queried read-only in the preceding audit.
 - No live migrations, grants, policy edits, role assignments, payment writes, or deployments were performed.
+
+
+## Follow-up: financial summary view and Data API grants (live read-only)
+
+The `user_financial_summary` view is configured with `security_invoker=true`, which is the correct safer view mode. It exposes only user_id and aggregate charged/paid/debt/status values. However, catalog inspection found:
+- `anon` has SELECT on `public.user_financial_summary`;
+- `anon` does not have SELECT on `public.user_financial_breakdown`;
+- `user_financial_breakdown` is also `security_invoker=true`;
+- underlying `users`, `bookings`, `orders`, `service_orders`, `event_registrations`, `payments`, and `payment_allocations` have RLS enabled;
+- the inspected sensitive-table policies are authenticated-only fixed-email admin policies; no anon policy was found for those tables.
+
+This is not evidence of an anonymous financial-data disclosure: the invoker view's dependency privileges and underlying RLS should prevent anon access. The extra anon SELECT grant on the summary view is nevertheless unnecessary and confusing. Recommended staged cleanup: revoke anon SELECT on `user_financial_summary`, keep authenticated access only if its role/policy path is explicitly approved, and test the view as anon/ordinary authenticated/admin/owner. Do not revoke until any public callers are checked.
+
+Catalog inspection also found table-level SELECT/INSERT privileges for anon and authenticated on several sensitive base tables (including orders, payments, payment_allocations, service_orders, and event_registrations), with RLS currently providing the row-level boundary. Treat these grants as an additional hardening review: reduce grants to the minimum operations actually needed by public booking/event flows, while retaining intended public API functions. Do not blanket-revoke until PostgREST and public flows are traced.
+
+No live grants, policies, views, or data were changed.
