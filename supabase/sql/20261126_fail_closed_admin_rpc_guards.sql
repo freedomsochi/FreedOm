@@ -37,7 +37,22 @@ begin
     end if;
   end loop;
 
-  raise notice 'Updated % SECURITY DEFINER function definitions', v_changed;
+  -- Fail the transaction if any fixed-owner SECURITY DEFINER function still
+  -- contains the exact NULL-unsafe comparison this migration is intended to fix.
+  if exists (
+    select 1
+      from pg_proc p
+      join pg_namespace n on n.oid = p.pronamespace
+     where n.nspname = 'public'
+       and p.prosecdef
+       and p.prosrc ilike '%auth.email()%'
+       and p.prosrc ilike '%serzh.xz@mail.ru%'
+       and p.prosrc ~* 'if[[:space:]]+auth[.]email[(][)][[:space:]]*<>[[:space:]]*''serzh[.]xz@mail[.]ru''[[:space:]]+then'
+  ) then
+    raise exception 'Fail-closed migration incomplete: NULL-unsafe owner guard remains';
+  end if;
+
+  raise notice 'Updated % SECURITY DEFINER function definitions; residual exact-pattern check passed', v_changed;
 end
 $migration$;
 
@@ -49,4 +64,7 @@ commit;
 -- 2. With anon and a normal authenticated account, calls fail with 42501.
 -- 3. Owner calls retain their pre-existing behavior.
 -- 4. No PUBLIC/anon grants or unrelated function definitions changed.
--- 5. Review the NOTICE count against the current function inventory.
+-- 5. Review the NOTICE count against the current function inventory (current audit baseline: 12).
+-- 6. The migration aborts if an exact-pattern NULL-unsafe owner guard remains.
+-- 7. Manually inspect any other owner-email guard syntax; this migration deliberately
+--    does not rewrite DISTINCT FROM, COALESCE/JWT, local-variable, or unrelated guards.
