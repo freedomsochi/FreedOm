@@ -1,22 +1,14 @@
--- Read-only verification of the guest/bookings/payment admin RPC role follow-up.
+-- Read-only verification after 20261127_harden_remaining_admin_rpcs.sql
+-- and 20261127_admin_guest_booking_rpc_role_hardening.sql.
 select p.oid::regprocedure as signature,p.prosecdef,p.proconfig,
- has_function_privilege('anon',p.oid,'EXECUTE') as anon_execute,
- has_function_privilege('authenticated',p.oid,'EXECUTE') as authenticated_execute,
- p.prosrc ilike '%private.has_admin_role()%' as admin_role_guard,
- p.prosrc ilike '%private.has_owner_role()%' as owner_role_guard,
- p.prosrc ilike '%serzh.xz@mail.ru%' as legacy_email_guard,
- p.prosrc ilike '%to_jsonb(u)%' as serializes_full_user_row,
- p.prosrc ilike '%can_record_payments%' as returns_owner_payment_capability
+       p.prosrc ilike '%private.has_owner_role()%' as owner_role_guard,
+       p.prosrc ilike '%to_jsonb(u)%' as serializes_full_user_row,
+       p.prosrc ilike '%can_record_payments%' as returns_owner_payment_capability,
+       has_function_privilege('anon',p.oid,'EXECUTE') as anon_execute,
+       has_function_privilege('authenticated',p.oid,'EXECUTE') as authenticated_execute
 from pg_proc p
-where p.oid in (
- 'public.admin_get_bookings_overview()'::regprocedure,
- 'public.admin_get_guest_dashboard_stats()'::regprocedure,
- 'public.admin_get_guest_profile(uuid)'::regprocedure,
- 'public.admin_get_guests_overview()'::regprocedure,
- 'public.admin_record_guest_payment(uuid,integer,text,text,uuid)'::regprocedure
-)
-order by p.proname;
+where p.oid='public.admin_get_guest_profile(uuid)'::regprocedure;
 
 select
- to_regprocedure('private.has_admin_role()') is not null as admin_helper_present,
- to_regprocedure('private.has_owner_role()') is not null as owner_helper_present;
+  position('jsonb_build_object(''user_id''' in pg_get_functiondef('public.admin_get_guest_profile(uuid)'::regprocedure))>0 as minimal_user_projection,
+  position('can_record_payments' in pg_get_functiondef('public.admin_get_guest_profile(uuid)'::regprocedure))>0 as owner_payment_capability_returned;
