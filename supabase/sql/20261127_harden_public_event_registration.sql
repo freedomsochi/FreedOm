@@ -129,6 +129,37 @@ begin
 end;
 $function$;
 
+-- The table trigger also used to resolve accounts from an unverified phone.
+-- Replace that path as well: otherwise it would silently undo the RPC protection.
+create or replace function public.attach_event_user_by_phone()
+returns trigger
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $trigger$
+declare
+  v_uid uuid := auth.uid();
+  v_verified_phone text;
+begin
+  if new.user_id is not null or v_uid is null then
+    return new;
+  end if;
+
+  select u.phone
+    into v_verified_phone
+    from auth.users u
+   where u.id = v_uid
+     and u.phone_confirmed_at is not null;
+
+  if v_verified_phone is not null
+     and public.normalize_phone(v_verified_phone) = public.normalize_phone(new.guest_phone) then
+    new.user_id := v_uid;
+  end if;
+
+  return new;
+end;
+$trigger$;
+
 -- Keep the intentional public-registration API, but remove the implicit
 -- PUBLIC grant. Explicit role grants make the endpoint surface auditable.
 revoke all on function public.create_event_registration(uuid, text, text, text, integer, text) from public;
