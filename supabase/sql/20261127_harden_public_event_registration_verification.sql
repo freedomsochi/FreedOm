@@ -24,6 +24,19 @@ begin
     raise exception 'Verified Auth identity check is missing';
   end if;
 
+  -- The BEFORE INSERT/UPDATE trigger must not reintroduce phone-based account lookup.
+  if to_regprocedure('public.attach_event_user_by_phone()') is null then
+    raise exception 'Event registration identity trigger is missing';
+  end if;
+
+  if pg_get_functiondef('public.attach_event_user_by_phone()'::regprocedure) ilike '%find_user_by_phone%' then
+    raise exception 'Unsafe trigger phone-based account lookup remains';
+  end if;
+
+  if pg_get_functiondef('public.attach_event_user_by_phone()'::regprocedure) not ilike '%phone_confirmed_at%' then
+    raise exception 'Trigger verified-phone check is missing';
+  end if;
+
   if v_def not ilike '%^7[0-9]{10}$%' then
     raise exception 'Strict normalized phone validation is missing';
   end if;
