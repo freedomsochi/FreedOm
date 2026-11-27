@@ -56,3 +56,47 @@ by `admin_v11_finance_detail.html`. A failed allocation lookup is displayed
 as an error rather than silently producing misleading paid totals.
 
 Source commit: `3b635225e6840cbea38426d122c2db77b23e15c6`.
+
+
+## Additional verified access compatibility findings (live snapshot 2026-11-27)
+
+A follow-up comparison of the inspected browser code with live table privileges and
+`pg_policies` found several important compatibility gaps. These are not inferred
+from GRANTs alone: the relevant live RLS policies were checked as well.
+
+| Browser caller | Required access | Live access state | Consequence / safe action |
+|---|---|---|---|
+| `booking-sync.js` `resolveRoom()` | anon SELECT on `rooms(id,name,price_per_night)` | anon has no SELECT privilege on `rooms`; only `admin_all_rooms` exists for authenticated | Public booking room resolution is incompatible with current grants. Do not grant broad room SELECT; route through a narrowly scoped public RPC that returns only fields required for room selection. Existing `get_public_rooms()` omits `price_per_night`; do not assume it is a drop-in replacement. |
+| `rooms-catalog.js` | anon/authenticated execute `get_rooms_catalog()` | RPC is SECURITY INVOKER, but anon/authenticated have no SELECT on `rooms` | Function EXECUTE alone does not make catalog work. The prepared migration `20261127_harden_public_room_catalog.sql` addresses this with a restricted SECURITY DEFINER projection; still source-only. |
+| `profile.html` | authenticated SELECT `users.*` for current user | authenticated has no SELECT privilege on `users`; live policy list contains only fixed-email `admin_all_users` | User self-profile query is incompatible with current live access. Needs a narrow self-profile projection/RPC or explicit owner-row policy plus column minimization; do not simply grant SELECT *. |
+| `purchases.html` | authenticated SELECT `orders.*` filtered by current `user_id` | SELECT grant exists, but only `admin_all_orders` policy exists and it is fixed-email | Ordinary signed-in users cannot read their own order rows under the inspected policy set. Needs a strict owner-row SELECT policy or restricted RPC. |
+| `admin_v10_finance.html` | admin finance RPC + direct SELECT `users(user_id,Display_name,Phone,Email)` | direct SELECT is absent for authenticated; live policy is fixed-email ALL | Even after finance RPC role hardening, guest enrichment still depends on direct users access. Replace with a scoped RPC projection or explicitly approved column grants/policy. |
+| `admin_v11_finance_detail.html` | direct SELECT bookings/orders/service_orders/event_registrations/payment_allocations, then owner-only payment RPC | Direct table policies are fixed-email; broad table grants exist | Admin role rollout must migrate corresponding RLS policies or the page will stop working for operational admins. Preserve successful-payment join semantics. |
+| `admin_v11_services.html` | direct SELECT service_orders and successful payment allocations joined to payments | fixed-email policies on service_orders, payment_allocations and payments | Do not revoke SELECT until replaced by a service ledger RPC/view scoped to required columns. |
+| `admin_v10_events.html` | direct SELECT events and event_registrations, including participant contact/payment fields | events has public SELECT; registrations has only fixed-email authenticated ALL policy | Admin event screen needs a deliberate role/column policy. Public event visibility patch should narrow event rows but must not expose registration data. |
+
+### Important live privilege distinction
+
+The current live `has_table_privilege` snapshot reports anon/authenticated SELECT
+privileges on several tables (including orders, payments, allocations, service orders,
+and event registrations), but RLS still limits visible rows. In particular,
+`event_registrations` has no anon policy, and financial/admin tables have only
+fixed-email authenticated policies. Conversely, `rooms` and `users` lack direct
+SELECT privileges for anon/authenticated in the current snapshot. Never infer
+effective row visibility from GRANTs without checking RLS, and never infer that
+a missing policy is harmless for a user-facing page.
+
+### Required remediation order
+
+1. Restore public room selection through a minimal public RPC with exact required
+   fields; do not expose the full `rooms` row.
+2. Restore authenticated self-profile and own-order reads using row ownership
+   checks based on `auth.uid()` and a verified mapping to the application user id;
+   avoid `SELECT *` on personal/financial tables.
+3. Replace admin finance and service direct reads with scoped projections, or
+   explicitly map the minimum required columns and role policy.
+4. Update event-admin registration access separately from public event listing.
+5. Only after these changes, prepare table-level GRANT revocations. Preserve
+   service_role and verified server-side integration paths.
+6. Test anon, ordinary authenticated, admin, owner and service_role independently
+   in staging. No production GRANT/RLS changes are authorized by this inventory.
