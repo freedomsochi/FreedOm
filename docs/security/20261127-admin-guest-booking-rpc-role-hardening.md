@@ -1,29 +1,19 @@
-# Admin guest, booking overview and payment RPC hardening
+# Guest profile response minimization
 
-## Scope
-The migration updates five remaining legacy RPCs:
-- `admin_get_bookings_overview()` — admin role
-- `admin_get_guest_dashboard_stats()` — admin role
-- `admin_get_guest_profile(uuid)` — admin role
-- `admin_get_guests_overview()` — admin role
-- `admin_record_guest_payment(...)` — owner role only
+## Prerequisite
+Apply and verify `supabase/sql/20261127_harden_remaining_admin_rpcs.sql` in isolated staging first. That migration assigns owner-role authorization to guest, booking overview, financial and space-detail RPCs. This follow-up does not duplicate or alter those guards.
 
-All five move to `search_path=pg_catalog`, schema-qualified table references, and authenticated-only client EXECUTE. All guest identity, guest debt and booking overview reads in this package are owner-only because they expose personal and financial information. The guest profile response now returns only user_id, Display_name, Phone, Email and City rather than serializing every column of `public.users`. It also returns `can_record_payments`, computed from the owner-role helper.
+## Change
+- The profile RPC returns only `user_id`, `Display_name`, `Phone`, `Email`, and `City` for the identity object instead of serializing every column in `public.users`.
+- It adds `can_record_payments`, computed by `private.has_owner_role()`.
+- `guest_profile.js` displays the payment form only when the capability is true. If the viewer can see the profile but lacks owner payment capability, the page displays an explanatory note instead of a form.
+- Owner-only payment mutation remains enforced inside `admin_record_guest_payment(...)`; hiding the form is a usability measure, not the security boundary.
 
-## Existing page compatibility
-- Booking map/list calls `admin_get_bookings_overview()`.
-- Guest list calls `admin_get_guest_dashboard_stats()` and `admin_get_guests_overview()`.
-- Guest profile calls `admin_get_guest_profile(uuid)`.
-- Guest profile payment form calls `admin_record_guest_payment(...)`; the backend deliberately requires owner role. The profile hides the payment form for non-owners and displays an explanatory note; an admin without owner role can still view all permitted profile data.
-
-## Staging requirements
-1. Apply role foundation and assign an approved staging owner/admin.
-2. Apply this migration after reviewing role assignment.
-3. Run verification SQL.
-4. Test anonymous, ordinary authenticated, admin and owner accounts.
-5. Verify guest profile still renders identity, bookings, kitchen orders, services, events, debts and payment history.
-6. Confirm only owner can submit a guest payment; admin can view guest profile and overview pages.
-7. Exercise bookings map, filters and guest dashboard statistics.
-8. Do not deploy updated client pages until the corresponding RPCs pass staging tests.
+## Staging tests
+1. Apply the role foundation, assign a staging owner, and apply/verify the 12-RPC owner hardening migration.
+2. Apply this response-minimization migration.
+3. Verify guest identity fields render and no unrelated `users` columns are returned.
+4. Test owner payment form visibility and payment mutation; test non-owner denial at the RPC layer.
+5. Run the rollback only if needed; it restores the former full-row projection but preserves the owner guard and fixed search path.
 
 No production SQL or deployment was performed.
