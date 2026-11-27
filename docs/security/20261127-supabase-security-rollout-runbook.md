@@ -80,3 +80,10 @@ For each migration, use a fresh staging snapshot and perform the following befor
 ## Completion definition
 
 The security rollout is complete only when staging verification passes, all frontend flows pass, every admin/owner RPC is covered by a role/authorization matrix, advisors show no unexplained new findings, rollback steps are tested, and production rollout is separately approved.
+
+
+## Migration overlap review
+
+The two contact-linking migrations both replace `public.attach_event_user_by_phone()`. The event-registration migration removes phone-based account discovery; the verified-contact migration installs the final trigger-only definition and revokes direct client EXECUTE on all five trigger functions. Therefore the listed order (event-registration migration first, verified-contact migration second) is intentional. Do not reverse the order. After both migrations, verify the final trigger body still checks `auth.uid()`, `phone_confirmed_at`, and exact normalized phone equality, and that client EXECUTE remains revoked. Both definitions preserve existing non-null `user_id` values.
+
+The 12-function admin role migration pins `search_path=pg_catalog`. The live bodies inspected for its 12 targets use schema-qualified `public.*` table/function references and qualified `auth.*` helpers; keep this property when reviewing any future target added to the migration. Never broaden the search_path to include writable schemas merely to make an unqualified reference resolve.
