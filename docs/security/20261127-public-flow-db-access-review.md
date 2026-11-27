@@ -56,6 +56,10 @@ RLS is enabled on all inspected tables.
 
 The broad table-level INSERT/SELECT grants on sensitive tables do not by themselves prove anonymous access: inspected RLS policies on `event_registrations`, `orders`, `service_orders`, `payments`, and `payment_allocations` are authenticated fixed-owner-email policies, with no anon policy returned for those tables. The event table does have a public SELECT policy. Keep grants and policies distinct in the review.
 
+### Additional admin RPC finding
+
+- `confirm_public_booking(uuid)` is SECURITY DEFINER and currently has anon EXECUTE even though its function body immediately rejects callers unless the JWT email matches the administrator address. No direct frontend caller was found in the inspected source search. A source-only ACL patch is prepared in `supabase/sql/20261127_restrict_public_booking_confirmation.sql`: revoke anon and implicit PUBLIC execution, preserve authenticated/service_role, and pin `search_path` to `pg_catalog`. Companion verification SQL is included. Not applied to live DB.
+
 ## Recommended changes — source/staging only
 
 1. **Fix event registration identity association first.** Source patch prepared for both the RPC and its BEFORE trigger; it prevents unverified phone-based account linking and adds validation. Still requires isolated staging tests, including anon and verified-auth identities, before any production release. Rate limiting/anti-abuse remains a separate follow-up.
@@ -70,6 +74,7 @@ The broad table-level INSERT/SELECT grants on sensitive tables do not by themsel
 - Test anonymous execution of the patched `get_rooms_catalog()` against staging/test data and verify exactly seven public fields.
 - Test anon direct SELECT returns only active/homepage-visible event rows; confirm inactive and hidden rows are not visible.
 - Test `get_home_events(integer)` remains callable by anon/authenticated, returns only future active/homepage-visible rows, and has no implicit PUBLIC EXECUTE.
+- Test anon cannot execute `confirm_public_booking(uuid)` while authenticated admin and service_role retain intended execution.
 - Test event registration with a phone number belonging to an existing user and verify both RPC and trigger leave `user_id` NULL without verified authentication; verify matching verified `auth.uid()` is linked.
 - Re-run grants, policies, function ACL, and Supabase Security Advisor after any staged change.
 
