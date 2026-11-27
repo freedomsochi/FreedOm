@@ -11,7 +11,7 @@ This is a catalog inventory, not a complete authorization proof. Function bodies
 - 44 non-system `SECURITY DEFINER` functions were returned across non-system schemas.
 - 37? functions in `public` were enumerated separately; use the live catalog query below for the authoritative count rather than relying on this document's abbreviated listing.
 - `anon` has EXECUTE on 7 public SECURITY DEFINER RPCs intended as public-facing endpoints: `confirm_public_booking`, `create_event_registration`, `create_public_booking`, `get_home_events`, `get_public_availability`, `get_public_room_availability`, `get_public_rooms`.
-- The `public` schema has no CREATE privilege for PUBLIC, anon, or authenticated.
+- The `public` schema has no CREATE privilege for PUBLIC, anon, or authenticated. Of the 7 anon-callable functions, 3 have a PUBLIC EXECUTE ACL entry (inherited by anon/authenticated) and 4 grant anon explicitly.
 - All 15 `admin_*` SECURITY DEFINER functions are executable by authenticated; none is executable by anon. They all contain a fixed-email authorization check in their body (the check is written in multiple syntactic forms, so a single narrow regex does not detect all of them).
 - The previously prepared role migration covered only 3 of those 15 admin-named functions, plus two booking mutation functions and seven owner-only finance/guest-management functions. It therefore does not cover the full admin RPC surface.
 
@@ -36,6 +36,14 @@ All below were observed in schema `public`, SECURITY DEFINER, authenticated EXEC
 15. `admin_update_kitchen_order_status(p_order_id uuid, p_status text)`
 
 The prior 12-function migration included only `admin_get_bookings()`, `admin_get_kitchen_orders()`, and `admin_update_kitchen_order_status(uuid,text)` from this list. The remaining 12 admin-named functions must be classified and added to a complete role migration or explicitly documented as excluded with a security rationale.
+
+## ACL and advisor snapshot
+
+- `PUBLIC EXECUTE = true` for 3 functions: `create_event_registration`, `create_public_booking`, and `get_home_events`.
+- `anon EXECUTE = true` for 7 functions total; the other 4 have explicit anon grants without PUBLIC EXECUTE.
+- `authenticated EXECUTE = true` for 32 functions.
+- Supabase Security Advisor reported 7 anon-executable SECURITY DEFINER functions and 32 authenticated-executable SECURITY DEFINER functions. These are warnings requiring endpoint-by-endpoint intent review, not a recommendation to revoke all such access indiscriminately.
+- The advisor also reports leaked-password protection disabled in Auth; enabling it is a separate Auth configuration change and has not been performed.
 
 ## High-priority separate finding
 
