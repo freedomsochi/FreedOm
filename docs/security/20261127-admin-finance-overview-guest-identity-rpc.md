@@ -27,4 +27,8 @@ remain client-side.
 5. Confirm the page has no direct browser read from `public.users`.
 6. Release only after staging passes and explicit approval.
 
+## Rollback
+
+The matching rollback SQL restores the exact pre-migration function definition captured from the live database on 2026-11-27, including its legacy fixed-email guard and prior grants. It is for emergency staging rollback only; do not use it to reintroduce the legacy guard as a production target.
+
 No production SQL or deployment was performed.
