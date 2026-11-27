@@ -28,7 +28,8 @@ Do not apply a blanket revoke of `anon` table privileges. Public website flows u
 - The live `events` table has a public SELECT policy (`public_read_events`, roles `anon,authenticated`, predicate `true`). This currently permits reading all rows allowed by the policy, not just active/homepage-visible rows. The frontend filters its own result; that is not an access-control boundary.
 - Registration uses `sb.rpc('create_event_registration', ...)`.
 - Live `create_event_registration(uuid,text,text,text,integer,text)` is SECURITY DEFINER and is executable by PUBLIC/anon/authenticated. It checks that the event is active and shown on home, normalizes the phone, calls `find_user_by_phone`, and inserts a registration.
-- The registration RPC does not enforce a non-empty guest name or a practical upper bound for `p_participants`; it only coerces the lower bound to at least 1. This should be tightened with input validation.
+- A second flaw was found in the table trigger `attach_event_user_by_phone()`: even if the RPC stops resolving accounts by phone, the BEFORE INSERT/UPDATE trigger independently calls `find_user_by_phone(new.guest_phone)` and can reattach an unverified account. Both layers must be fixed together.
+- Source-only hardening is now prepared in `supabase/sql/20261127_harden_public_event_registration.sql` with companion verification SQL. It validates name/phone/participants/field lengths/amount, links only `auth.uid()` with a matching verified Auth phone, replaces the trigger's unsafe lookup, fixes search paths, and removes the implicit PUBLIC EXECUTE grant while preserving anon/authenticated access. Neither SQL file has been applied to the live database.
 
 ### Availability and public room data
 
@@ -36,6 +37,7 @@ Do not apply a blanket revoke of `anon` table privileges. Public website flows u
 - The inspected public availability SQL functions are SECURITY DEFINER and query `rooms` and `bookings` internally; the caller does not need direct SELECT on those base tables.
 - `get_public_rooms()` is SECURITY DEFINER and exposes a limited public room projection.
 - `get_rooms_catalog()` is SECURITY INVOKER, despite having EXECUTE for anon/authenticated. It selects `price_per_night` from `rooms`, but anonymous callers have no SELECT privilege on `rooms`. This is an inconsistent public API contract.
+- The room table schema confirms the seven catalog fields (`id,name,description,price_per_night,capacity,image_url,booking_mode`) exist. A source-only patch is prepared in `supabase/sql/20261127_harden_public_room_catalog.sql`: it preserves the exact frontend return contract, uses a fixed `pg_catalog` search path, exposes only those seven fields, and removes implicit PUBLIC EXECUTE. Companion verification SQL is included. Not applied to the live database.
 
 ## Live table ACL and RLS snapshot
 
@@ -56,18 +58,18 @@ The broad table-level INSERT/SELECT grants on sensitive tables do not by themsel
 
 ## Recommended changes — source/staging only
 
-1. **Fix event registration identity association first.** In the public RPC, do not infer `user_id` from an unverified phone number. Set `user_id := auth.uid()` only for a genuinely authenticated caller, or use a separately verified-contact linking flow. Preserve guest contact fields independently. Add required guest-name validation, participant bounds, sensible field-length limits, and a rate-limit/anti-abuse strategy.
+1. **Fix event registration identity association first.** Source patch prepared for both the RPC and its BEFORE trigger; it prevents unverified phone-based account linking and adds validation. Still requires isolated staging tests, including anon and verified-auth identities, before any production release. Rate limiting/anti-abuse remains a separate follow-up.
 2. **Narrow event public reads.** Replace the broad `public_read_events USING (true)` policy with a public projection/RPC or a predicate that exposes only intended public event fields and active/homepage-visible records. Do not assume the client-side `.eq('is_active', true)` filter protects hidden events.
-3. **Resolve room catalog contract.** Prefer a narrow public SECURITY DEFINER projection (similar to `get_public_rooms`) if the site needs anonymous room lookup. Otherwise keep direct table access private and route lookup through that RPC. Do not grant anon broad SELECT on `rooms` just to make the legacy script work.
+3. **Resolve room catalog contract.** A narrow `get_rooms_catalog()` SECURITY DEFINER projection is prepared with the exact seven fields used by `rooms-catalog.js`; test anonymous execution in staging. Do not grant anon broad SELECT on `rooms` just to make the legacy script work.
 4. **Retire or repair legacy `booking-sync.js` path.** It directly queries `rooms` and `events`; verify whether any deployed page loads it before changing its behavior or table grants. The newer `booking_form_v2.html` → API → Edge → RPC path does not require browser-side SELECT on `rooms`.
 5. **Reduce unnecessary table privileges after call-site verification.** For tables only touched inside SECURITY DEFINER RPCs or server-side functions, revoke direct anon/authenticated grants only in a reviewed migration with explicit tests. Keep public RPC EXECUTE grants intentional and audited.
 
 ## Verification still required before a migration
 
 - Enumerate deployed HTML entry points that load `booking-sync.js` and `rooms-catalog.js`; repository presence alone does not prove runtime use.
-- Test anonymous execution of `get_rooms_catalog()` and `get_public_rooms()` against staging/test data.
+- Test anonymous execution of the patched `get_rooms_catalog()` against staging/test data and verify exactly seven public fields.
 - Test public event list responses for inactive and non-homepage events.
-- Test event registration with a phone number belonging to an existing user and verify that the new row is not linked without verified authentication.
+- Test event registration with a phone number belonging to an existing user and verify both RPC and trigger leave `user_id` NULL without verified authentication; verify matching verified `auth.uid()` is linked.
 - Re-run grants, policies, function ACL, and Supabase Security Advisor after any staged change.
 
 ## Safety
