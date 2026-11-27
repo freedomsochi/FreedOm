@@ -44,15 +44,14 @@ language sql
 stable
 security definer
 set search_path = pg_catalog
-as $
+as $$
   select exists (
     select 1
     from private.user_roles ur
     where ur.user_id = auth.uid()
       and ur.role = 'owner'
   );
-$;
-
+$$;
 revoke all on function private.has_owner_role() from public, anon, authenticated;
 
 commit;
