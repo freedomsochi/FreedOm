@@ -7,6 +7,7 @@ declare
   v_def text;
   v_old constant text := 'if auth.email() <> ''serzh.xz@mail.ru'' then';
   v_new constant text := 'if auth.uid() is null or auth.email() is distinct from ''serzh.xz@mail.ru'' then';
+  v_role_guard constant text := 'private.has_admin_role()';
   v_targets text[] := array[
     'public.admin_get_bookings()',
     'public.cancel_booking(uuid)',
@@ -23,10 +24,12 @@ begin
       raise exception 'Required function missing: %', v_sig;
     end if;
     v_def := pg_catalog.pg_get_functiondef(v_oid);
-    if pg_catalog.strpos(v_def, v_old) = 0 then
-      raise exception 'Expected legacy authorization guard not found in %; aborting', v_sig;
+    if pg_catalog.strpos(v_def, v_old) > 0 then
+      v_def := pg_catalog.replace(v_def, v_old, v_new);
+      execute v_def;
+    elsif pg_catalog.strpos(v_def, v_role_guard) = 0 then
+      raise exception 'Expected legacy email or approved admin-role guard not found in %; aborting', v_sig;
     end if;
-    execute pg_catalog.replace(v_def, v_old, v_new);
     execute pg_catalog.format('alter function %s set search_path = pg_catalog', v_oid::regprocedure);
     execute pg_catalog.format('revoke all on function %s from public, anon', v_oid::regprocedure);
     execute pg_catalog.format('grant execute on function %s to authenticated, service_role', v_oid::regprocedure);
