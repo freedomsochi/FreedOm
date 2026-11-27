@@ -273,3 +273,13 @@ Read-only production check still returns NULL for `private.user_roles`, `private
 A complete branch-tree scan found legacy screens that were outside the current navigation but still contained direct table reads. To prevent old bookmarks or manually entered URLs from reopening those pages, the following source files now redirect to the canonical protected CRM screens: `admin.html`, `admin_payments.html`, `admin_v10_guest.html`, `admin_v10_guest_profile.html`, `admin_v12_guest_profile.html`, and `admin_bookings_v2.html`. Query strings are preserved for guest profiles and the booking workspace. The legacy-finance link was removed from the current finance page. Files were retained; nothing was deleted.
 
 The canonical guest profile is `admin_guest_profile.html` + `guest_profile.js`, which calls `admin_get_guest_profile` and does not directly read tables. Ten static checks passed. These redirects are defense-in-depth only; the database remains the actual security boundary. See `docs/security/20261127-admin-legacy-entrypoint-consolidation.md`.
+
+
+## Consolidated staging validation plan (2026-11-27)
+
+The complete end-to-end execution order, actor matrix, data-integrity checks, rollback rehearsal and production go/no-go checklist are maintained in
+`docs/security/20261127-staging-validation-plan.md`. Use that document as the operational test plan; this runbook remains the migration inventory and dependency rationale.
+
+The staging plan adds explicit validation for two separate ordinary users (cross-user isolation), admin-versus-owner separation, service-role denial on interactive booking confirmation, public room/event field contracts, verified-contact account linking, payment/allocation idempotency and before/after financial invariants.
+
+**Current release gate: NO-GO.** No staging project has been verified and no staging SQL/browser tests have been executed. The connected project remains production; no SQL, Edge Function deployment or production data change is authorized by this source-only preparation. A production rollout requires every staging gate and a separate explicit approval.
