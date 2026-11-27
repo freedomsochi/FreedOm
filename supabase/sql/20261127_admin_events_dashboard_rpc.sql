@@ -4,12 +4,12 @@ begin;
 
 do $preflight$
 begin
-  if to_regprocedure('private.has_admin_role()') is null then
-    raise exception 'Missing prerequisite private.has_admin_role(); apply and validate admin-role-foundation.sql in staging first';
+  if to_regprocedure('private.has_owner_role()') is null then
+    raise exception 'Missing prerequisite private.has_owner_role(); apply and validate admin-role-foundation.sql in staging first';
   end if;
   if exists (
     select 1 from pg_proc h
-    where h.oid='private.has_admin_role()'::regprocedure
+    where h.oid='private.has_owner_role()'::regprocedure
       and h.proowner <> (select oid from pg_roles where rolname=current_user)
   ) then
     raise exception 'Migration role must own the admin role helper before creating the SECURITY DEFINER endpoint';
@@ -27,7 +27,7 @@ as $function$
 declare
   v_result jsonb;
 begin
-  if auth.uid() is null or not private.has_admin_role() then
+  if auth.uid() is null or not private.has_owner_role() then
     raise exception 'Administrator access required' using errcode = '42501';
   end if;
 
