@@ -100,3 +100,23 @@ The follow-up migration `20261127_harden_remaining_admin_rpcs.sql` assigns the o
 ## Financial table grants and RLS follow-up
 
 The read-only inventory in `docs/security/20261127-financial-table-grants-and-rls-audit.md` found RLS enabled on all inspected base tables and `security_invoker=true` on both financial views. No anon RLS policy appeared for the inspected financial/guest tables. However, direct grants remain broader than necessary: anon and authenticated have extensive DML/REFERENCES/TRIGGER/TRUNCATE grants on payments, payment allocations, orders, service orders and event registrations; the summary view also has broad anon grants. RLS limits row access but does not govern TRUNCATE, REFERENCES or TRIGGER privileges. Do not revoke these grants blindly: finish the browser/Edge/admin caller inventory first, then prepare a narrow grant migration and test it in staging. The inventory does not establish a confirmed anon data leak.
+
+
+## Client caller map and service-payment display correction
+
+The bounded source caller inventory is in
+`docs/security/20261127-financial-client-caller-map.md`. It identifies direct
+reads of `users`, `orders`, `service_orders`, `event_registrations` and
+`payment_allocations`, as well as RPC-mediated kitchen and payment actions.
+It is not a complete proof of reachability or an exhaustive search of every
+legacy page. Keep the legacy files until their links and usage are proven absent.
+
+A source-only correction in `admin_v11_services.html` now counts only
+`payment_allocations` linked to payments with status `успешно`, consistent
+with the finance detail page and the reconciliation rule. The page now surfaces
+allocation query failures instead of silently showing misleading paid totals.
+Commit: `3b635225e6840cbea38426d122c2db77b23e15c6`.
+
+Next grant work must preserve the observed direct reads until they are replaced
+with appropriately scoped RPCs or views. In particular, role-based admin RLS
+migration must account for direct table reads as well as SECURITY DEFINER RPCs.
