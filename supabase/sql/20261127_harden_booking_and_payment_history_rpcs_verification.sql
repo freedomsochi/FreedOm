@@ -1,7 +1,7 @@
 -- READ ONLY verification for 20261127_harden_booking_and_payment_history_rpcs.sql.
--- Run immediately after that migration and before the final role migration.
--- Seven functions are expected; the later role migration replaces these
--- fail-closed email guards with private.has_admin_role()/has_owner_role().
+-- Run after the booking/payment migration, either before or after the final role migration.
+-- Seven functions are expected. Accept the intermediate fail-closed email guard
+-- or the final admin/owner role guard installed by 20261127_admin_rpc_role_migration.sql.
 
 do $verify$
 declare
@@ -39,7 +39,16 @@ begin
        and (
          not p.prosecdef
          or not (p.proconfig @> array['search_path=pg_catalog'])
-         or pg_get_functiondef(p.oid) not ilike '%auth.uid() is null or auth.email() is distinct from ''serzh.xz@mail.ru''%'
+         or not (
+           pg_get_functiondef(p.oid) ilike '%auth.uid() is null or auth.email() is distinct from ''serzh.xz@mail.ru''%'
+           or (
+             case
+               when p.proname in ('get_payment_history','get_user_payment_history')
+                 then pg_get_functiondef(p.oid) ilike '%private.has_owner_role()%'
+               else pg_get_functiondef(p.oid) ilike '%private.has_admin_role()%'
+             end
+           )
+         )
          or has_function_privilege('anon',p.oid,'EXECUTE')
          or not has_function_privilege('authenticated',p.oid,'EXECUTE')
          or has_function_privilege('service_role',p.oid,'EXECUTE') is false
@@ -56,7 +65,14 @@ $verify$;
 
 select
   p.oid::regprocedure as signature,
-  pg_get_functiondef(p.oid) ilike '%auth.uid() is null or auth.email() is distinct from ''serzh.xz@mail.ru''%' as fail_closed_email_guard,
+  (
+    pg_get_functiondef(p.oid) ilike '%auth.uid() is null or auth.email() is distinct from ''serzh.xz@mail.ru''%'
+    or case
+      when p.proname in ('get_payment_history','get_user_payment_history')
+        then pg_get_functiondef(p.oid) ilike '%private.has_owner_role()%'
+      else pg_get_functiondef(p.oid) ilike '%private.has_admin_role()%'
+    end
+  ) as authorization_guard_ok,
   p.proconfig @> array['search_path=pg_catalog'] as search_path_ok,
   has_function_privilege('authenticated',p.oid,'EXECUTE') as authenticated_exec,
   has_function_privilege('anon',p.oid,'EXECUTE') as anon_exec,
