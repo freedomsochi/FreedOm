@@ -45,6 +45,9 @@ begin
       v_new := replace(v_new,
         'select to_jsonb(u) into v_user from public.users u where u.user_id=p_user_id;',
         'select jsonb_build_object(''user_id'',u.user_id,''Display_name'',u."Display_name",''Phone'',u."Phone",''Email'',u."Email",''City'',u."City") into v_user from public.users u where u.user_id=p_user_id;');
+      v_new := replace(v_new,
+        '''payments'',v_payments);',
+        '''payments'',v_payments,''can_record_payments'',private.has_owner_role());');
     elsif v.signature = 'public.admin_record_guest_payment(uuid,integer,text,text,uuid)' then
       v_new := replace(v_new,
         'if v_email is null or v_email <> ''serzh.xz@mail.ru'' then',
