@@ -1,5 +1,5 @@
 -- Read-only verification for 20261127_user_self_service_reads.sql.
--- Checks RLS state, exact ownership predicates, and the intended column grant.
+-- Checks RLS state, exact ownership predicates, and the intended SELECT grants.
 
 with expected(table_name, policy_name, expected_column) as (
   values
@@ -31,6 +31,7 @@ select table_name,
          when not relrowsecurity then 'FAIL_RLS_DISABLED'
          when cmd is distinct from 'SELECT' then 'FAIL_POLICY_COMMAND'
          when not ('authenticated' = any(roles)) then 'FAIL_POLICY_ROLE'
+         when 'public' = any(roles) then 'FAIL_POLICY_INCLUDES_PUBLIC'
          when qual is null
            or qual not ilike '%auth.uid()%'
            or qual not ilike '%' || expected_column || '%' then 'FAIL_OWNERSHIP_PREDICATE'
@@ -63,7 +64,14 @@ select column_name, granted,
   from actual
  order by column_name;
 
--- No broad table-level SELECT grant should bypass the intended column allowlist.
+-- Orders, purchases and referrals require table-level SELECT plus own-row RLS.
+select table_name,
+       has_table_privilege('authenticated','public.'||table_name,'SELECT') as authenticated_select,
+       has_table_privilege('anon','public.'||table_name,'SELECT') as anon_select
+from (values ('orders'),('purchases'),('referrals')) t(table_name)
+order by table_name;
+
+-- A table-level users SELECT grant would bypass the intended column allowlist.
 select
   has_table_privilege('authenticated','public.users','SELECT') as authenticated_table_select,
   has_table_privilege('anon','public.users','SELECT') as anon_table_select;
