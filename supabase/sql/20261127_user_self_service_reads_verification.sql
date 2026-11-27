@@ -65,6 +65,18 @@ select column_name, granted,
  order by column_name;
 
 -- Orders, purchases and referrals require table-level SELECT plus own-row RLS.
+do $grants$
+declare
+  v_table text;
+begin
+  foreach v_table in array array['orders','purchases','referrals'] loop
+    if not has_table_privilege('authenticated','public.'||v_table,'SELECT') then
+      raise exception 'authenticated lacks SELECT on public.%',v_table;
+    end if;
+  end loop;
+end
+$grants$;
+
 select table_name,
        has_table_privilege('authenticated','public.'||table_name,'SELECT') as authenticated_select,
        has_table_privilege('anon','public.'||table_name,'SELECT') as anon_select
