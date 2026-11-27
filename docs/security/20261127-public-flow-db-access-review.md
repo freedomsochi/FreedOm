@@ -59,7 +59,7 @@ The broad table-level INSERT/SELECT grants on sensitive tables do not by themsel
 ## Recommended changes — source/staging only
 
 1. **Fix event registration identity association first.** Source patch prepared for both the RPC and its BEFORE trigger; it prevents unverified phone-based account linking and adds validation. Still requires isolated staging tests, including anon and verified-auth identities, before any production release. Rate limiting/anti-abuse remains a separate follow-up.
-2. **Narrow event public reads.** Replace the broad `public_read_events USING (true)` policy with a public projection/RPC or a predicate that exposes only intended public event fields and active/homepage-visible records. Do not assume the client-side `.eq('is_active', true)` filter protects hidden events.
+2. **Narrow event public reads.** Prepared a staging-only RLS policy matching the existing legacy client's active/homepage-visible filter, plus explicit grants and fixed search path for `get_home_events`. This narrows rows but still exposes all columns of visible events; a separate public projection may be preferable if fields become sensitive.
 3. **Resolve room catalog contract.** A narrow `get_rooms_catalog()` SECURITY DEFINER projection is prepared with the exact seven fields used by `rooms-catalog.js`; test anonymous execution in staging. Do not grant anon broad SELECT on `rooms` just to make the legacy script work.
 4. **Retire or repair legacy `booking-sync.js` path.** It directly queries `rooms` and `events`; verify whether any deployed page loads it before changing its behavior or table grants. The newer `booking_form_v2.html` → API → Edge → RPC path does not require browser-side SELECT on `rooms`.
 5. **Reduce unnecessary table privileges after call-site verification.** For tables only touched inside SECURITY DEFINER RPCs or server-side functions, revoke direct anon/authenticated grants only in a reviewed migration with explicit tests. Keep public RPC EXECUTE grants intentional and audited.
@@ -68,7 +68,8 @@ The broad table-level INSERT/SELECT grants on sensitive tables do not by themsel
 
 - Enumerate deployed HTML entry points that load `booking-sync.js` and `rooms-catalog.js`; repository presence alone does not prove runtime use.
 - Test anonymous execution of the patched `get_rooms_catalog()` against staging/test data and verify exactly seven public fields.
-- Test public event list responses for inactive and non-homepage events.
+- Test anon direct SELECT returns only active/homepage-visible event rows; confirm inactive and hidden rows are not visible.
+- Test `get_home_events(integer)` remains callable by anon/authenticated, returns only future active/homepage-visible rows, and has no implicit PUBLIC EXECUTE.
 - Test event registration with a phone number belonging to an existing user and verify both RPC and trigger leave `user_id` NULL without verified authentication; verify matching verified `auth.uid()` is linked.
 - Re-run grants, policies, function ACL, and Supabase Security Advisor after any staged change.
 
