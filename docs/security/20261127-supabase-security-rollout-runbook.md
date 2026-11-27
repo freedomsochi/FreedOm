@@ -16,7 +16,7 @@ The connected Supabase project is production. Do not execute any migration in th
 | 2 | `supabase/sql/20261127_harden_booking_and_payment_history_rpcs.sql` | Harden seven booking/payment/kitchen RPC guards and grants | Can run before or after step 3. It preserves an already-installed matching `private.has_admin_role()` or `private.has_owner_role()` guard on overlapping functions; otherwise it installs the fail-closed email guard. |
 | 3 | `supabase/sql/20261127_admin_rpc_role_migration.sql` | Replace email checks with database role checks for its covered RPC subset | Depends on step 1. Accepts either the legacy email guard or the fail-closed guard from step 2. This is one of the two role-migration groups; the separate follow-up covers 12 additional administrative read/payment RPCs. |
 | 4 | `supabase/sql/20261127_harden_remaining_admin_rpcs.sql` | Convert 12 remaining admin read/payment RPCs to owner-role checks | Depends on role foundation and owner assignment in isolated staging. Conservative owner-only scope because results include guest identity, financial history, or occupancy details. Run its matching verification script. |
-| 5 | `supabase/sql/20261127_harden_event_registration_payment.sql` | Add authorization to event payment mutation RPC | Must be tested with authorized admin and ordinary authenticated user; this RPC previously had no body-level authorization check. |
+| 5 | `supabase/sql/20261127_harden_event_registration_payment.sql` | Add owner-role authorization to event payment mutation RPC | Depends on step 1 and a separately assigned owner in staging; verification checks `private.has_owner_role()`. This RPC previously had no body-level authorization check. |
 | 6 | `supabase/sql/20261127_harden_public_event_registration.sql` | Remove phone-only account linking from registration RPC and trigger | Test both anonymous and signed-in registration, verified and unverified phone, and existing user_id preservation. |
 | 7 | `supabase/sql/20261127_verified_contact_account_linking.sql` | Harden other contact-based trigger linking | Coordinate with step 5; test all five trigger functions and preserve pre-existing links. |
 | 8 | `supabase/sql/20261127_harden_public_room_catalog.sql` | Provide a restricted public room-catalog RPC matching frontend fields | Test anon room catalog, booking form, image and booking_mode fields. |
@@ -120,3 +120,26 @@ Commit: `3b635225e6840cbea38426d122c2db77b23e15c6`.
 Next grant work must preserve the observed direct reads until they are replaced
 with appropriately scoped RPCs or views. In particular, role-based admin RLS
 migration must account for direct table reads as well as SECURITY DEFINER RPCs.
+
+
+## Finance RPC coverage reconciliation
+
+The live function-definition review on 2026-11-27 confirms that the seven finance/guest RPCs
+`add_service_order`, `create_manual_guest`, `get_payment_history`,
+`get_user_payment_history`, `record_payment`, `record_user_payment`, and
+`record_user_payment_for_charge` are already included in the 12-function role migration
+(step 3) as owner-only targets. Do not create a duplicate migration for them.
+
+A separate gap was confirmed for `record_event_registration_payment(uuid,integer,text)`:
+it was SECURITY DEFINER, executable by authenticated, and had no authorization check in
+its live body. Its dedicated hardening migration (step 5) now uses
+`private.has_owner_role()`, checks that the role foundation and at least one owner
+assignment exist before replacing the function, and has a matching verification query.
+This avoids the prior rollout hazard where a later event-payment migration could have
+replaced a role-based guard with a fixed-email guard. The event-payment migration remains
+source-only and must run after role foundation and owner assignment in isolated staging.
+
+Live inventory also showed these seven owner-target RPCs still use `search_path=public`
+and fixed-email guards before rollout. The coordinated role migration pins their path to
+`pg_catalog` and replaces those guards; it has not been applied. Do not treat this
+source-level coverage as a production fix.
