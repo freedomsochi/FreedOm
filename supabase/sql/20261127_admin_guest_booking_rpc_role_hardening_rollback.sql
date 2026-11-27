@@ -28,6 +28,7 @@ begin
     v_new := replace(v_new,'where auth.uid() is not null and private.has_admin_role();',
       'where auth.uid() is not null and auth.email() = ''serzh.xz@mail.ru'';');
     if v_sig='public.admin_get_guest_profile(uuid)' then
+      v_new := replace(v_new, '''payments'',v_payments,''can_record_payments'',private.has_owner_role());', '''payments'',v_payments);');
       v_new := replace(v_new,
         'select jsonb_build_object(''user_id'',u.user_id,''Display_name'',u."Display_name",''Phone'',u."Phone",''Email'',u."Email",''City'',u."City") into v_user from public.users u where u.user_id=p_user_id;',
         'select to_jsonb(u) into v_user from public.users u where u.user_id=p_user_id;');
