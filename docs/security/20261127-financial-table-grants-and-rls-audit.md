@@ -87,3 +87,47 @@ This report does not prove an anon data leak: the inspected base-table RLS
 policies were authenticated-only and the financial views are security-invoker.
 It does identify excessive direct grants and fixed-email policies that should
 be reduced. No grants, policies, view definitions, or data were changed.
+
+
+## Follow-up: browser compatibility and effective access (2026-11-27)
+
+A second read-only check compared browser queries against live SELECT privileges
+and the exact live RLS policy set. It identified compatibility gaps that are
+separate from the excessive GRANT surface:
+
+- `booking-sync.js` selects `rooms(id,name,price_per_night)`, but anon has no
+  SELECT privilege on `rooms`; the only listed policy is authenticated
+  `admin_all_rooms`. The public booking room-resolution step therefore cannot
+  rely on this direct query. `get_public_rooms()` is too narrow for a drop-in
+  replacement because it does not return `price_per_night`; a new minimal
+  server-side resolver/projection is needed.
+- `rooms-catalog.js` calls `get_rooms_catalog()`, which is SECURITY INVOKER.
+  Although anon/authenticated can execute the function, they cannot SELECT
+  `rooms`; the function's underlying read is incompatible. A source-only
+  replacement is already prepared separately.
+- `profile.html` selects `users.*`, but authenticated currently has no SELECT
+  privilege on `users`; only fixed-email `admin_all_users` is listed.
+  Restore self-profile access through a minimal projection or a carefully
+  scoped self-row policy after confirming the Auth-to-users identity mapping.
+- `purchases.html` selects `orders.*` by current user_id. Authenticated has
+  table SELECT, but the only listed RLS policy is fixed-email
+  `admin_all_orders`; normal users therefore have no own-order row access.
+- `admin_v10_finance.html` calls the finance overview RPC and then directly
+  selects guest name/phone/email from `users`; the latter has no authenticated
+  SELECT privilege in the current snapshot.
+- `admin_v11_finance_detail.html`, `admin_v11_services.html`, and
+  `admin_v10_events.html` depend on direct admin table reads protected by
+  fixed-email policies. Converting only RPC guards to roles is insufficient:
+  the corresponding RLS policies must be migrated in coordination, or the
+  dashboards will lose access for role-based admins.
+
+The live policy inventory shows no anon policy on event registrations,
+payments, payment allocations, orders, service orders, users or bookings.
+Their anon SELECT GRANTs (where present) do not by themselves prove anon row
+exposure. Events is the exception: it has an explicit anon/authenticated
+SELECT policy with `USING (true)`, which is why the separate public-event
+visibility migration is important.
+
+These findings require a caller-compatible access redesign before any table
+GRANT revocation. They do not authorize broad public SELECT or production
+policy changes.
