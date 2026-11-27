@@ -241,3 +241,21 @@ Static checks for the five-function migration and owner-aware payment UI passed.
 The 2026-11-27 role matrix is the source of truth for minimum privileges. Operational `admin` is limited to approved booking and kitchen actions. Guest lists/profiles, guest-linked bookings overview, event registrations with contact/payment details, services, debts, finance summaries and charge details require `private.has_owner_role()`.
 
 The consolidated guest/booking follow-up was narrowed to a response-minimization migration only; the 12-function owner-role migration `20261127_harden_remaining_admin_rpcs.sql` is the prerequisite that actually replaces those legacy guards. The follow-up does not attempt to replace the same authorization guards a second time. It removes full-row serialization from the guest profile identity object and exposes an owner payment capability flag for the UI.
+
+
+## Superseding role-policy correction (2026-11-27)
+
+This section supersedes earlier follow-up notes that described the new guest, dashboard, event, services or finance RPCs as `admin`-accessible. The role matrix is authoritative: guest identity, guest-linked bookings, debt, event-registration contact/payment data, service orders and all financial charge details are **owner-only**. Only the explicitly enumerated operational booking/kitchen RPCs in `admin_rpc_role_matrix.md` use the `admin` role.
+
+Accordingly, these source migrations now require `private.has_owner_role()`:
+- `20261127_admin_dashboard_overview_rpc.sql`
+- `20261127_admin_events_dashboard_rpc.sql`
+- `20261127_admin_services_dashboard_rpc.sql`
+- `20261127_admin_finance_overview_guest_identity_rpc.sql`
+- `20261127_admin_finance_charge_detail_rpc.sql`
+
+The existing `20261127_harden_remaining_admin_rpcs.sql` is the single owner-role guard migration for the 12 legacy guest/finance/space RPCs. The similarly named `20261127_admin_guest_booking_rpc_role_hardening.sql` is only a follow-up to minimize the guest profile identity payload and add a UI capability flag; it no longer duplicates or changes authorization guards. Apply the 12-RPC migration before that payload follow-up.
+
+The guest profile itself remains owner-only under the current policy. The `can_record_payments` flag is defense-in-depth for the form and supports a possible future read-only profile policy, but it is not an authorization substitute. The payment RPC continues to enforce owner role independently.
+
+The live production database remains unchanged. These corrections are source-only and do not make the migrations ready for production without staging validation.
