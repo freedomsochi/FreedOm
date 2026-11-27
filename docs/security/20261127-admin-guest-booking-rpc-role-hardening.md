@@ -8,7 +8,7 @@ The migration updates five remaining legacy RPCs:
 - `admin_get_guests_overview()` — admin role
 - `admin_record_guest_payment(...)` — owner role only
 
-All five move to `search_path=pg_catalog`, schema-qualified table references, and authenticated-only client EXECUTE. The guest profile response now returns only user_id, Display_name, Phone, Email and City rather than serializing every column of `public.users`. It also returns `can_record_payments`, computed from the owner-role helper.
+All five move to `search_path=pg_catalog`, schema-qualified table references, and authenticated-only client EXECUTE. All guest identity, guest debt and booking overview reads in this package are owner-only because they expose personal and financial information. The guest profile response now returns only user_id, Display_name, Phone, Email and City rather than serializing every column of `public.users`. It also returns `can_record_payments`, computed from the owner-role helper.
 
 ## Existing page compatibility
 - Booking map/list calls `admin_get_bookings_overview()`.
