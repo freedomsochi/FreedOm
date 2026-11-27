@@ -35,7 +35,7 @@ begin
   if auth.uid() is null or not private.has_admin_role() then
     raise exception 'Administrator access required' using errcode = '42501';
   end if;
-  if p_charge_id is null or p_charge_type not in ('booking','order','service','event') then
+  if p_charge_id is null or p_charge_type is null or p_charge_type not in ('booking','order','service','event') then
     raise exception 'Invalid charge reference' using errcode = '22023';
   end if;
 
