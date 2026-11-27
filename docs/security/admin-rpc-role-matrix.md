@@ -82,3 +82,6 @@ The following RPCs also require `owner`, because their responses contain guest i
 | `admin_get_finance_overview()` | owner | Finance summary plus guest identity labels |
 
 The operational `admin` role remains limited to the explicitly listed booking and kitchen workflows. Guest list, guest profile, guest debt, finance, event-registration and service-order data remain owner-only unless a future field-minimized policy is reviewed and approved.
+
+
+| `confirm_public_booking(uuid)` | owner | Legacy confirmation endpoint; no direct in-repository caller found. Public creation and current admin confirmation use separate RPCs. Keep non-public and test staging callers. |
