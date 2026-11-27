@@ -1,4 +1,4 @@
-| 6 || 7 || 8 || 9 || 10 || 11 || 12 |# FreeDom Supabase security rollout runbook
+| 6 || 7 || 8 || 9 || 10 || 11 || 6 || 7 || 8 || 9 || 10 || 11 || 12 |# FreeDom Supabase security rollout runbook
 
 Date: 2026-11-27  
 Branch: `fix/security-rpc-hardening-2026-11-26`  
@@ -14,8 +14,9 @@ The connected Supabase project is production. Do not execute any migration in th
 |---:|---|---|---|
 | 1 | `supabase/sql/admin-role-foundation.sql` | Create private role table and role-check helpers | Must precede any migration that calls `private.has_admin_role()` or `private.has_owner_role()`. No role assignments are included; admin and owner assignment must be separately reviewed. |
 | 2 | `supabase/sql/20261127_harden_booking_and_payment_history_rpcs.sql` | Harden seven booking/payment/kitchen RPC guards and grants | Can run before or after step 3. It preserves an already-installed matching `private.has_admin_role()` or `private.has_owner_role()` guard on overlapping functions; otherwise it installs the fail-closed email guard. |
-| 3 | `supabase/sql/20261127_admin_rpc_role_migration.sql` | Replace email checks with database role checks for its covered RPC subset | Depends on step 1. Accepts either the legacy email guard or the fail-closed guard from step 2. This is not a complete conversion of all 15 admin RPCs; verify remaining functions before declaring role migration complete. |
-| 4 | `supabase/sql/20261127_harden_event_registration_payment.sql` | Add authorization to event payment mutation RPC | Must be tested with authorized admin and ordinary authenticated user; this RPC previously had no body-level authorization check. |
+| 3 | `supabase/sql/20261127_admin_rpc_role_migration.sql` | Replace email checks with database role checks for its covered RPC subset | Depends on step 1. Accepts either the legacy email guard or the fail-closed guard from step 2. This is one of the two role-migration groups; the separate follow-up covers 12 additional administrative read/payment RPCs. |
+| 4 | `supabase/sql/20261127_harden_remaining_admin_rpcs.sql` | Convert 12 remaining admin read/payment RPCs to owner-role checks | Depends on role foundation and owner assignment in isolated staging. Conservative owner-only scope because results include guest identity, financial history, or occupancy details. Run its matching verification script. |
+| 5 | `supabase/sql/20261127_harden_event_registration_payment.sql` | Add authorization to event payment mutation RPC | Must be tested with authorized admin and ordinary authenticated user; this RPC previously had no body-level authorization check. |
 | 5 | `supabase/sql/20261127_harden_public_event_registration.sql` | Remove phone-only account linking from registration RPC and trigger | Test both anonymous and signed-in registration, verified and unverified phone, and existing user_id preservation. |
 | 6 | `supabase/sql/20261127_verified_contact_account_linking.sql` | Harden other contact-based trigger linking | Coordinate with step 5; test all five trigger functions and preserve pre-existing links. |
 | 7 | `supabase/sql/20261127_harden_public_room_catalog.sql` | Provide a restricted public room-catalog RPC matching frontend fields | Test anon room catalog, booking form, image and booking_mode fields. |
