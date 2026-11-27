@@ -6,7 +6,7 @@ Replace direct browser reads from `bookings`, `orders`, `service_orders`,
 `admin_v11_finance_detail.html` with `admin_get_finance_charge_detail(text,uuid)`.
 
 ## Authorization and data minimization
-- Requires a non-null `auth.uid()` and `private.has_admin_role()` in the function body.
+- Requires a non-null `auth.uid()` and `private.has_owner_role()` in the function body.
 - SECURITY DEFINER with fixed `search_path=pg_catalog`; all relations are schema-qualified.
 - EXECUTE revoked from PUBLIC and anon; granted only to authenticated.
 - Charge type is allowlisted to booking/order/service/event; unknown types are rejected.
@@ -16,12 +16,12 @@ Replace direct browser reads from `bookings`, `orders`, `service_orders`,
 ## Frontend
 The detail page calls the RPC once, renders the charge and successful allocation history, and preserves the existing
 `record_user_payment_for_charge` payment action. That mutation remains separately guarded by the owner-only role
-migration; operational admin permission to inspect a charge does not imply permission to post a payment.
+migration; Only the owner can inspect these financial charge details or post a payment.
 
 ## Release gates
 1. Apply role foundation in isolated staging, assign test admin and owner identities through the approved process.
 2. Apply the RPC migration and run its verification query.
-3. Test anon and ordinary authenticated denial; admin and owner read access; all four charge types; missing IDs and invalid types.
+3. Test anon and ordinary authenticated denial; owner read access only; all four charge types; missing IDs and invalid types.
 4. Compare totals and allocation history against known fixtures, including pending payments (which must not count).
 5. Verify ordinary admin can inspect but cannot post payments unless separately assigned owner.
 6. Deploy the frontend only after staging validation and explicit release approval.
