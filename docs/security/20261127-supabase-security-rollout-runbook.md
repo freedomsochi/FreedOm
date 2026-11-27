@@ -259,3 +259,10 @@ The existing `20261127_harden_remaining_admin_rpcs.sql` is the single owner-role
 The guest profile itself remains owner-only under the current policy. The `can_record_payments` flag is defense-in-depth for the form and supports a possible future read-only profile policy, but it is not an authorization substitute. The payment RPC continues to enforce owner role independently.
 
 The live production database remains unchanged. These corrections are source-only and do not make the migrations ready for production without staging validation.
+
+
+## Final fixed-email function inventory (read-only production snapshot)
+
+The live inventory contains 25 SECURITY DEFINER functions with the legacy fixed-email body check. Two source migration groups cover 24: 12 operational/owner RPCs in `20261127_admin_rpc_role_migration.sql`, and 12 sensitive CRM/occupancy RPCs in `20261127_harden_remaining_admin_rpcs.sql`. The single separate exception is `confirm_public_booking(uuid)`; its live anon EXECUTE grant is still present in the snapshot, although its body checks the fixed email. The source-only `20261127_restrict_public_booking_confirmation.sql` revokes PUBLIC/anon execution and pins its search path. Caller compatibility must be confirmed before staging rollout. See `docs/security/20261127-fixed-email-rpc-final-inventory.md`.
+
+Read-only production check still returns NULL for `private.user_roles`, `private.has_admin_role()` and `private.has_owner_role()`. No production SQL or deployment has been performed.
