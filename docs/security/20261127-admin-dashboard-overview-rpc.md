@@ -5,7 +5,7 @@ Replace direct dashboard reads from `users`, `events`, `event_registrations` and
 `user_financial_summary` in `admin_v10_dashboard.html` with one role-checked RPC.
 
 ## Security
-- Requires non-null `auth.uid()` and `private.has_admin_role()`.
+- Requires non-null `auth.uid()` and `private.has_owner_role()`.
 - SECURITY DEFINER, fixed `search_path=pg_catalog`, schema-qualified relations.
 - EXECUTE revoked from PUBLIC and anon; granted to authenticated.
 - Returns aggregate guest/event counts, debt-only user IDs and amounts, five upcoming
@@ -22,7 +22,7 @@ Unauthenticated sessions still redirect to login.
 ## Release gates
 1. Apply role foundation in isolated staging and assign test roles through the approved process.
 2. Apply this RPC migration and run verification.
-3. Test anon and ordinary authenticated denial; admin/owner access.
+3. Test anon and ordinary authenticated denial; owner access only.
 4. Compare guest/event/registration counts and samples against source tables.
 5. Test zero events, no registrations, debt-free users, and time-zone boundary around current_date.
 6. Confirm new booking cards still use the authorized bookings RPC and server action API.
