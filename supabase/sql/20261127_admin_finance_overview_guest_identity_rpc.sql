@@ -1,16 +1,16 @@
--- SOURCE-ONLY STAGING MIGRATION. Requires private.has_admin_role().
+-- SOURCE-ONLY STAGING MIGRATION. Requires private.has_owner_role().
 -- Adds the minimal guest identity projection to the protected finance overview
 -- so the browser no longer reads public.users directly.
 begin;
 
 do $preflight$
 begin
-  if to_regprocedure('private.has_admin_role()') is null then
-    raise exception 'Missing private.has_admin_role(); apply and validate admin-role-foundation.sql in staging first';
+  if to_regprocedure('private.has_owner_role()') is null then
+    raise exception 'Missing private.has_owner_role(); apply and validate admin-role-foundation.sql in staging first';
   end if;
   if exists (
     select 1 from pg_proc h
-    where h.oid='private.has_admin_role()'::regprocedure
+    where h.oid='private.has_owner_role()'::regprocedure
       and h.proowner <> (select oid from pg_roles where rolname=current_user)
   ) then
     raise exception 'Migration role must own the admin role helper';
@@ -35,7 +35,7 @@ declare
   v_payments jsonb;
   v_users jsonb;
 begin
-  if auth.uid() is null or not private.has_admin_role() then
+  if auth.uid() is null or not private.has_owner_role() then
     raise exception 'Administrator access required' using errcode = '42501';
   end if;
 
