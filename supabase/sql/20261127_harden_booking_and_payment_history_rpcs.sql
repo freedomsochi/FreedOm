@@ -12,7 +12,9 @@ declare
     'public.cancel_booking(uuid)',
     'public.confirm_booking(uuid)',
     'public.get_payment_history(uuid,uuid)',
-    'public.get_user_payment_history(uuid)'
+    'public.get_user_payment_history(uuid)',
+    'public.admin_get_kitchen_orders()',
+    'public.admin_update_kitchen_order_status(uuid,text)'
   ];
 begin
   foreach v_sig in array v_targets loop
