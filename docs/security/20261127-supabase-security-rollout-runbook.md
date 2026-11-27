@@ -191,3 +191,15 @@ Source-only additions:
 **Security advisor snapshot (2026-11-27):** 7 anon-executable SECURITY DEFINER functions, 32 authenticated-executable SECURITY DEFINER functions, and leaked-password protection disabled. The anon list includes expected public endpoints (`create_public_booking`, `create_event_registration`, availability/catalog/home-events) as well as `confirm_public_booking`, which already has a source-only restriction migration. The authenticated list includes admin RPCs whose authorization is being hardened through the role migration. Do not bulk-revoke EXECUTE: classify each function by intended public/admin/service caller and preserve legitimate public flows.
 
 Staging gate remains mandatory: establish role foundation, assign disposable admin/owner identities, apply all dependent RPC migrations, test anon / ordinary authenticated / admin / owner, then approve a coordinated frontend release. No production SQL or deployment was performed.
+
+
+## 2026-11-27 follow-up — finance admin read consolidation
+
+Two additional source-only RPC changes are now prepared:
+
+- `admin_get_finance_charge_detail(text,uuid)` replaces direct detail reads from bookings, orders, service orders, event registrations, payment allocations and payments in `admin_v11_finance_detail.html`. It requires `private.has_admin_role()`, restricts the charge type, and returns successful allocation history only.
+- `admin_get_finance_overview()` now includes a minimal `users` projection (user_id, Display_name, Phone, Email) for finance-summary users. `admin_v10_finance.html` consumes that payload and no longer queries `public.users` directly.
+
+Both changes are source-only, include verification SQL and security notes, and depend on the role foundation. Static source checks passed. The live production role helper and new finance-detail RPC remain absent; no migration or frontend deployment has been performed. The finance overview's existing live implementation still uses a fixed-email guard and `search_path=public`; the new migration replaces that guard with the role check only after staging role setup.
+
+The charge-detail page preserves the existing payment mutation call. Viewing a charge as an operational admin does not grant payment-write authority; that write remains separately owner-gated by the role migration.
