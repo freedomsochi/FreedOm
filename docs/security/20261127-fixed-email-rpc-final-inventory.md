@@ -50,16 +50,22 @@ migration. A staging-only rollback for the 12-function owner migration is
 provided as `20261127_harden_remaining_admin_rpcs_rollback.sql`; it restores the
 legacy email predicates but intentionally keeps `search_path=pg_catalog`.
 
-## Remaining special case
+### Separate owner-only confirmation RPC — 1 RPC
 
-`confirm_public_booking(uuid)` is intentionally not folded into either group
-until its caller contract is confirmed. The source migration
-`20261127_restrict_public_booking_confirmation.sql` pins its search path and
-revokes EXECUTE from PUBLIC/anon while preserving authenticated/service_role
-grants. A caller inventory must confirm that no anonymous or Edge Function
-workflow depends on the current behavior before rollout. Do not claim the
-fixed-email inventory is fully closed until this function is reviewed and the
-anon grant is removed in staging.
+`confirm_public_booking(uuid)` is covered by
+`20261127_restrict_public_booking_confirmation.sql`. The source patch replaces
+the fixed-email check with `auth.uid()` + `private.has_owner_role()`, pins
+`search_path=pg_catalog`, revokes EXECUTE from PUBLIC/anon/service_role, and
+grants only authenticated. Its caller audit found no direct invocation in the
+tracked public booking or admin booking paths: public booking uses
+`create_public_booking`; the admin API uses `confirm_booking` and
+`cancel_booking`. This does not rule out external callers; staging must test
+both intended booking flows after the restriction. See
+`docs/security/20261127-public-booking-confirmation-caller-audit.md`.
+
+The source package now covers all 25 live fixed-email SECURITY DEFINER functions
+(12 operational/owner, 12 sensitive CRM/occupancy, 1 separate owner-only
+confirmation RPC). This is source coverage, not production completion.
 
 ## Release rule
 
