@@ -340,7 +340,7 @@
                 try {
                     const { data: userData, error } = await supabase
                         .from('users')
-                        .select('*')
+                        .select('user_id,Display_name,Phone,City,Birth_date,Ref_code,balance,Created_at')
                         .eq('user_id', userId)
                         .maybeSingle();
 
