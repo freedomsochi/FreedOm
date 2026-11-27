@@ -8,13 +8,13 @@ The migration updates five remaining legacy RPCs:
 - `admin_get_guests_overview()` — admin role
 - `admin_record_guest_payment(...)` — owner role only
 
-All five move to `search_path=pg_catalog`, schema-qualified table references, and authenticated-only client EXECUTE. The guest profile response now returns only user_id, Display_name, Phone and Email, City rather than serializing every column of `public.users`.
+All five move to `search_path=pg_catalog`, schema-qualified table references, and authenticated-only client EXECUTE. The guest profile response now returns only user_id, Display_name, Phone, Email and City rather than serializing every column of `public.users`. It also returns `can_record_payments`, computed from the owner-role helper.
 
 ## Existing page compatibility
 - Booking map/list calls `admin_get_bookings_overview()`.
 - Guest list calls `admin_get_guest_dashboard_stats()` and `admin_get_guests_overview()`.
 - Guest profile calls `admin_get_guest_profile(uuid)`.
-- Guest profile payment form calls `admin_record_guest_payment(...)`; the backend deliberately requires owner role, so an admin without owner role can view but cannot record payments.
+- Guest profile payment form calls `admin_record_guest_payment(...)`; the backend deliberately requires owner role. The profile hides the payment form for non-owners and displays an explanatory note; an admin without owner role can still view all permitted profile data.
 
 ## Staging requirements
 1. Apply role foundation and assign an approved staging owner/admin.
