@@ -4,8 +4,11 @@
 -- test roles through a separately controlled owner procedure.
 --
 -- This migration changes only the 12 enumerated SECURITY DEFINER RPC guards
--- and their fixed search_path. It preserves signatures, defaults, return types,
--- grants, owners, and function business logic.
+-- and their fixed search_path. It accepts either the original nullable email
+-- guard or the fail-closed guard installed by
+-- 20261127_harden_booking_and_payment_history_rpcs.sql, so both rollout orders
+-- are safe. It preserves signatures, defaults, return types, grants, owners,
+-- and function business logic.
 
 begin;
 
@@ -84,7 +87,7 @@ begin
 
     v_new_definition := regexp_replace(
       v_definition,
-      'if[[:space:]]+auth[.]email[(][)][[:space:]]*<>[[:space:]]*''serzh[.]xz@mail[.]ru''[[:space:]]+then',
+      'if[[:space:]]+(auth[.]email[(][)][[:space:]]*<>[[:space:]]*''serzh[.]xz@mail[.]ru''|auth[.]uid[(][)][[:space:]]+is[[:space:]]+null[[:space:]]+or[[:space:]]+auth[.]email[(][)][[:space:]]+is[[:space:]]+distinct[[:space:]]+from[[:space:]]+''serzh[.]xz@mail[.]ru'')[[:space:]]+then',
       'if auth.uid() is null or not ' || v_guard || ' then',
       'gi'
     );
