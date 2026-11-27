@@ -29,6 +29,8 @@ create policy orders_select_own
   to authenticated
   using ((select auth.uid()) = user_id);
 
+grant select on public.orders to authenticated;
+
 drop policy if exists purchases_select_own on public.purchases;
 create policy purchases_select_own
   on public.purchases
@@ -36,11 +38,15 @@ create policy purchases_select_own
   to authenticated
   using ((select auth.uid()) = "Buyer_id");
 
+grant select on public.purchases to authenticated;
+
 drop policy if exists referrals_select_own_as_referrer on public.referrals;
 create policy referrals_select_own_as_referrer
   on public.referrals
   for select
   to authenticated
   using ((select auth.uid()) = "Referrer_id");
+
+grant select on public.referrals to authenticated;
 
 commit;
