@@ -176,3 +176,18 @@ See `docs/security/20261127-financial-client-caller-map.md` and
 verified per-page matrix. These findings are read-only snapshots; they do not
 prove every legacy page is reachable, and no broad grant or policy change should
 be made until each caller has a tested replacement.
+
+
+## 2026-11-27 follow-up — admin dashboard read-path consolidation
+
+Source-only additions:
+- `admin_get_events_dashboard()`: replaces direct reads from `events` and `event_registrations` in `admin_v10_events.html`.
+- `admin_get_services_dashboard()`: replaces direct reads from `service_orders` and `payment_allocations` in `admin_v11_services.html`; only successful payment allocations are counted.
+- Each RPC has a verification and manual rollback SQL file plus a dedicated security note.
+- Both RPCs require non-null `auth.uid()` and `private.has_admin_role()`, pin `search_path=pg_catalog`, and revoke execution from PUBLIC/anon.
+
+**Hard production blocker confirmed by read-only query (2026-11-27):** `private.has_admin_role()`, `private.has_owner_role()`, and the new dashboard RPCs do not exist in production. The role foundation has not been applied. These frontend pages must not be deployed independently of the staging migration sequence.
+
+**Security advisor snapshot (2026-11-27):** 7 anon-executable SECURITY DEFINER functions, 32 authenticated-executable SECURITY DEFINER functions, and leaked-password protection disabled. The anon list includes expected public endpoints (`create_public_booking`, `create_event_registration`, availability/catalog/home-events) as well as `confirm_public_booking`, which already has a source-only restriction migration. The authenticated list includes admin RPCs whose authorization is being hardened through the role migration. Do not bulk-revoke EXECUTE: classify each function by intended public/admin/service caller and preserve legitimate public flows.
+
+Staging gate remains mandatory: establish role foundation, assign disposable admin/owner identities, apply all dependent RPC migrations, test anon / ordinary authenticated / admin / owner, then approve a coordinated frontend release. No production SQL or deployment was performed.
