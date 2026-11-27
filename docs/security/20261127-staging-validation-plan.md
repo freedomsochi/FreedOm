@@ -33,14 +33,15 @@
 
 ### Группа A — основа ролей и legacy RPC
 
-1. `supabase/sql/admin-role-foundation.sql` — private.user_roles и role helpers. Убедиться, что схема закрыта от PUBLIC/anon/authenticated, RLS включён, клиенты не могут сами назначать роли.
-2. Назначить `owner` только тестовому owner и `admin` только тестовому admin через контролируемую staging-only процедуру. Обычным пользователям роли не назначать.
-3. `supabase/sql/20261127_harden_booking_and_payment_history_rpcs.sql`.
-4. `supabase/sql/20261127_admin_rpc_role_migration.sql`.
-5. Запустить обе verification-проверки после обоих файлов: они перекрываются на пяти RPC; проверить итоговый guard и ACL, а не только факт выполнения скрипта.
-6. `supabase/sql/20261127_harden_remaining_admin_rpcs.sql` + `_verification.sql` — 12 чувствительных RPC только owner.
-7. `supabase/sql/20261127_harden_event_registration_payment.sql` + verification — запись оплаты события только owner.
-8. `supabase/sql/20261127_pin_admin_read_rpc_search_path.sql` + verification — закрепить search_path у административных read RPC.
+1. `supabase/sql/admin-role-foundation.sql` — private.user_roles и role helpers.
+2. `supabase/sql/admin-role-foundation-verification.sql` — read-only проверка закрытости схемы/таблицы, RLS, constraints, владельцев и ACL обоих helpers; требовать `PASS_ROLE_FOUNDATION_STATIC_CHECKS`.
+3. Назначить `owner` только тестовому owner и `admin` только тестовому admin через контролируемую staging-only процедуру. Обычным пользователям роли не назначать.
+4. `supabase/sql/20261127_harden_booking_and_payment_history_rpcs.sql`.
+5. `supabase/sql/20261127_admin_rpc_role_migration.sql`.
+6. Запустить обе verification-проверки после обоих файлов: они перекрываются на пяти RPC; проверить итоговый guard и ACL, а не только факт выполнения скрипта.
+7. `supabase/sql/20261127_harden_remaining_admin_rpcs.sql` + `_verification.sql` — 12 чувствительных RPC только owner.
+8. `supabase/sql/20261127_harden_event_registration_payment.sql` + verification — запись оплаты события только owner.
+9. `supabase/sql/20261127_pin_admin_read_rpc_search_path.sql` + verification — закрепить search_path у административных read RPC.
 
 ### Группа B — новые admin/owner read RPC и совместимость UI
 
