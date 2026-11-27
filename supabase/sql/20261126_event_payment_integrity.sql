@@ -29,7 +29,7 @@ create or replace function public.record_event_registration_payment(
 returns public.event_registrations
 language plpgsql
 security definer
-set search_path = pg_catalog, public, auth
+set search_path = pg_catalog
 as $function$
 declare
   r public.event_registrations;
