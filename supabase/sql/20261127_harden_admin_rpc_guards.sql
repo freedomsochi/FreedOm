@@ -15,12 +15,12 @@ begin
   ]
   loop
     v_def := pg_catalog.pg_get_functiondef(v_sig);
-    if pg_catalog.position(v_old in v_def) = 0 then
+    if pg_catalog.strpos(v_def, v_old) = 0 then
       raise exception 'Expected legacy guard not found in %', v_sig;
     end if;
     v_def := pg_catalog.replace(v_def, v_old, v_new);
-    if pg_catalog.position(v_old in v_def) > 0
-       or pg_catalog.position(v_new in v_def) = 0 then
+    if pg_catalog.strpos(v_def, v_old) > 0
+       or pg_catalog.strpos(v_def, v_new) = 0 then
       raise exception 'Guard replacement verification failed for %', v_sig;
     end if;
     execute v_def;
