@@ -8,11 +8,11 @@ declare
   v record;
   v_def text;
   v_new text;
-  v_admin_guard constant text := 'if auth.uid() is null or not private.has_admin_role() then';
+  v_admin_guard constant text := 'if auth.uid() is null or not private.has_owner_role() then';
   v_owner_guard constant text := 'if auth.uid() is null or not private.has_owner_role() then';
 begin
   if to_regclass('private.user_roles') is null
-     or to_regprocedure('private.has_admin_role()') is null
+     or to_regprocedure('private.has_owner_role()') is null
      or to_regprocedure('private.has_owner_role()') is null then
     raise exception 'Role foundation missing; apply and validate admin-role-foundation.sql in staging first';
   end if;
@@ -35,7 +35,7 @@ begin
     if v.signature = 'public.admin_get_guest_dashboard_stats()' then
       v_new := replace(v_new,
         'where auth.uid() is not null and auth.email() = ''serzh.xz@mail.ru'';',
-        'where auth.uid() is not null and private.has_admin_role();');
+        'where auth.uid() is not null and private.has_owner_role();');
     elsif v.signature = 'public.admin_get_guest_profile(uuid)' then
       v_new := replace(v_new,
         'if v_email is null or v_email <> ''serzh.xz@mail.ru'' then',
