@@ -83,5 +83,6 @@ The following RPCs also require `owner`, because their responses contain guest i
 
 The operational `admin` role remains limited to the explicitly listed booking and kitchen workflows. Guest list, guest profile, guest debt, finance, event-registration and service-order data remain owner-only unless a future field-minimized policy is reviewed and approved.
 
+## Additional legacy confirmation endpoint
 
-| `confirm_public_booking(uuid)` | owner | Legacy confirmation endpoint; no direct in-repository caller found. Public creation and current admin confirmation use separate RPCs. Keep non-public and test staging callers. |
+- `confirm_public_booking(uuid)` — owner-only. The caller audit found no direct in-repository caller; public creation and current admin confirmation use separate RPCs. Keep it non-public and validate both flows in staging.
