@@ -220,3 +220,17 @@ overview RPC checks `auth.uid()` and `private.has_admin_role()`, uses
 `search_path=pg_catalog`, and grants EXECUTE only to authenticated. The
 migration remains source-only and depends on the role foundation. Production
 was not changed and the updated page must not be deployed before staging tests.
+
+
+## 2026-11-27 follow-up — guest and booking RPC authorization
+
+A further source-only migration now covers five remaining RPCs used by the guest list, guest profile, and bookings map:
+
+- `admin_get_bookings_overview()`, `admin_get_guest_dashboard_stats()`, `admin_get_guest_profile(uuid)`, and `admin_get_guests_overview()` require the admin role.
+- `admin_record_guest_payment(...)` requires the owner role, preserving the separation between CRM administration and financial mutation.
+- All five use `search_path=pg_catalog`, and their browser EXECUTE grants are limited to authenticated users.
+- Guest profile no longer serializes the entire `users` row; it returns only user_id, display name, phone, email and city. It also returns `can_record_payments`; the page now hides the payment form from non-owners and explains the restriction.
+
+The booking map, guest list, guest profile, kitchen, finance, services and events pages were inspected. The kitchen screen already uses only `admin_get_kitchen_orders()` and `admin_update_kitchen_order_status()`; the existing role migration covers both as admin-role functions. The guest profile and booking overview were the remaining legacy fixed-email guards identified in this pass.
+
+Static checks for the five-function migration and owner-aware payment UI passed. This is source-only: role foundation is still absent in production, and no SQL or deployment was performed.
