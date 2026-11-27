@@ -5,7 +5,8 @@ select p.oid::regprocedure as signature,p.prosecdef,p.proconfig,
  p.prosrc ilike '%private.has_admin_role()%' as admin_role_guard,
  p.prosrc ilike '%private.has_owner_role()%' as owner_role_guard,
  p.prosrc ilike '%serzh.xz@mail.ru%' as legacy_email_guard,
- p.prosrc ilike '%to_jsonb(u)%' as serializes_full_user_row
+ p.prosrc ilike '%to_jsonb(u)%' as serializes_full_user_row,
+ p.prosrc ilike '%can_record_payments%' as returns_owner_payment_capability
 from pg_proc p
 where p.oid in (
  'public.admin_get_bookings_overview()'::regprocedure,
