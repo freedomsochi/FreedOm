@@ -46,7 +46,9 @@ The minimum roles follow `docs/security/admin-rpc-role-matrix.md`: only the expl
 All 12 are owner-only. The follow-up
 `20261127_admin_guest_booking_rpc_role_hardening.sql` only minimizes the guest
 profile identity payload and adds a capability flag; it is not a second guard
-migration.
+migration. A staging-only rollback for the 12-function owner migration is
+provided as `20261127_harden_remaining_admin_rpcs_rollback.sql`; it restores the
+legacy email predicates but intentionally keeps `search_path=pg_catalog`.
 
 ## Remaining special case
 
