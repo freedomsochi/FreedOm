@@ -10,7 +10,6 @@ declare
   f record;
   v_definition text;
   v_new_definition text;
-  v_old_count integer;
   v_changed integer := 0;
 begin
   for f in
@@ -27,7 +26,7 @@ begin
 
     v_new_definition := regexp_replace(
       v_definition,
-      'if[[:space:]]+auth\\.email\\(\\)[[:space:]]*<>[[:space:]]*''serzh\\.xz@mail\\.ru''[[:space:]]+then',
+      'if[[:space:]]+auth\.email\(\)[[:space:]]*<>[[:space:]]*''serzh\.xz@mail\.ru''[[:space:]]+then',
       'if auth.uid() is null or auth.email() is distinct from ''serzh.xz@mail.ru'' then',
       'gi'
     );
