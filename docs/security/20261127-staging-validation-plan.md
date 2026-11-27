@@ -57,6 +57,8 @@
 
 Каждый новый RPC должен быть проверен как anon, обычный authenticated, admin-only и owner. Все чувствительные CRM, guest identity, finance, event-registration и service-order ответы — owner-only согласно role matrix. UI-скрытие кнопки не считается проверкой авторизации.
 
+Для пяти dashboard/finance/events/services RPC verification-файлы теперь выполняют fail-fast проверки: точная сигнатура, `SECURITY DEFINER`, `STABLE`, `search_path=pg_catalog`, `auth.uid()` + `private.has_owner_role()`, тип результата, EXECUTE для `authenticated`, запрет `anon`/`service_role` и отсутствие EXECUTE у `PUBLIC`. Не ограничиваться просмотром диагностического SELECT: успешное выполнение DO-блока обязательно.
+
 ### Группа C — публичные сценарии и привязка аккаунта
 
 1. `20261127_harden_public_event_registration.sql` + verification.
