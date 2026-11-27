@@ -86,4 +86,4 @@ where p.oid in (
   to_regprocedure('public.record_user_payment_for_charge(uuid,text,uuid,integer,text,text)'),
   to_regprocedure('public.record_event_registration_payment(uuid,integer,text)')
 )
-order by signature::text;
+order by p.oid::regprocedure::text;
