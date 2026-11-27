@@ -29,6 +29,6 @@ remain client-side.
 
 ## Rollback
 
-The matching rollback SQL restores the exact pre-migration function definition captured from the live database on 2026-11-27, including its legacy fixed-email guard and prior grants. It is for emergency staging rollback only; do not use it to reintroduce the legacy guard as a production target.
+The matching rollback SQL restores the pre-extension response shape while preserving the owner-role guard and `search_path=pg_catalog` from the prerequisite 12-RPC hardening migration. It does not reintroduce the legacy fixed-email guard. Use only in staging.
 
 No production SQL or deployment was performed.
