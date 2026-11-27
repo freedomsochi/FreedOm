@@ -143,3 +143,36 @@ Live inventory also showed these seven owner-target RPCs still use `search_path=
 and fixed-email guards before rollout. The coordinated role migration pins their path to
 `pg_catalog` and replaces those guards; it has not been applied. Do not treat this
 source-level coverage as a production fix.
+
+
+## Direct browser access compatibility gate
+
+The 2026-11-27 follow-up compared the current browser source with live SELECT
+privileges and RLS policies. This is now a mandatory gate before any table GRANT
+revocation or role-policy rollout:
+
+- Public booking currently resolves a room by direct `rooms` SELECT, but anon
+  lacks SELECT on that table. Replace this with a narrowly scoped public RPC;
+  `get_public_rooms()` does not currently return the price field used by the
+  browser's notification calculation.
+- `rooms-catalog.js` calls SECURITY INVOKER `get_rooms_catalog()`, whose
+  underlying `rooms` SELECT is not available to anon/authenticated. The
+  source-only catalog migration must be staged and tested before release.
+- `profile.html` selects `users.*`, while authenticated has no SELECT privilege
+  on `users` in the live snapshot. Design a self-profile projection; do not
+  grant the full users row to every authenticated account.
+- `purchases.html` selects `orders.*` by user_id, but the only live orders
+  policy is fixed-email admin ALL. Add a strict own-row access path after
+  verifying the Auth UID to application user_id mapping.
+- `admin_v10_finance.html` enriches finance RPC results with a direct users
+  SELECT; `admin_v11_finance_detail.html`, `admin_v11_services.html`, and
+  `admin_v10_events.html` also rely on direct reads behind fixed-email RLS.
+  Role RPC guards alone will not migrate these pages to the new admin/owner
+  model. RLS policies and any required column projections must be handled as
+  a separate coordinated workstream.
+
+See `docs/security/20261127-financial-client-caller-map.md` and
+`docs/security/20261127-financial-table-grants-and-rls-audit.md` for the
+verified per-page matrix. These findings are read-only snapshots; they do not
+prove every legacy page is reachable, and no broad grant or policy change should
+be made until each caller has a tested replacement.
