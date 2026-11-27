@@ -266,3 +266,10 @@ The live production database remains unchanged. These corrections are source-onl
 The live inventory contains 25 SECURITY DEFINER functions with the legacy fixed-email body check. Two source migration groups cover 24: 12 operational/owner RPCs in `20261127_admin_rpc_role_migration.sql`, and 12 sensitive CRM/occupancy RPCs in `20261127_harden_remaining_admin_rpcs.sql`. The single separate exception is `confirm_public_booking(uuid)`; its live anon EXECUTE grant is still present in the snapshot, although its body checks the fixed email. The source-only `20261127_restrict_public_booking_confirmation.sql` revokes PUBLIC/anon execution and pins its search path. Caller compatibility must be confirmed before staging rollout. See `docs/security/20261127-fixed-email-rpc-final-inventory.md`.
 
 Read-only production check still returns NULL for `private.user_roles`, `private.has_admin_role()` and `private.has_owner_role()`. No production SQL or deployment has been performed.
+
+
+## Legacy admin entrypoint consolidation (2026-11-27)
+
+A complete branch-tree scan found legacy screens that were outside the current navigation but still contained direct table reads. To prevent old bookmarks or manually entered URLs from reopening those pages, the following source files now redirect to the canonical protected CRM screens: `admin.html`, `admin_payments.html`, `admin_v10_guest.html`, `admin_v10_guest_profile.html`, `admin_v12_guest_profile.html`, and `admin_bookings_v2.html`. Query strings are preserved for guest profiles and the booking workspace. The legacy-finance link was removed from the current finance page. Files were retained; nothing was deleted.
+
+The canonical guest profile is `admin_guest_profile.html` + `guest_profile.js`, which calls `admin_get_guest_profile` and does not directly read tables. Ten static checks passed. These redirects are defense-in-depth only; the database remains the actual security boundary. See `docs/security/20261127-admin-legacy-entrypoint-consolidation.md`.
