@@ -104,7 +104,7 @@ select
     when not (select oid is not null from schema_state) then 'FAIL_PRIVATE_SCHEMA_MISSING'
     when not (select oid is not null from table_state) then 'FAIL_ROLE_TABLE_MISSING'
     when not (select relrowsecurity from table_state) then 'FAIL_RLS_DISABLED'
-    when not (select not anon_usage and not authenticated_usage and not public_usage from schema_state) then 'FAIL_SCHEMA_EXPOSED'
+    when not (select not anon_usage and not authenticated_usage and public_usage_revoked from schema_state) then 'FAIL_SCHEMA_EXPOSED'
     when not (select policy_count = 0 from policy_state) then 'FAIL_UNEXPECTED_ROLE_TABLE_POLICY'
     when not (select not anon_select and not anon_insert and not authenticated_select
                     and not authenticated_insert and not authenticated_update and not authenticated_delete
