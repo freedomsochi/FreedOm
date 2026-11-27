@@ -67,3 +67,18 @@ These functions were separately identified in the 2026-11-27 live inventory. The
 | `admin_record_guest_payment(uuid,integer,text,text,uuid)` | owner | Creates a payment and allocation and updates charge balances. |
 
 The source-only follow-up migration is `supabase/sql/20261127_harden_remaining_admin_rpcs.sql`; verify it with `supabase/sql/20261127_harden_remaining_admin_rpcs_verification.sql`. Do not widen any of these to the operational admin role without first reducing returned fields and documenting the minimum required access.
+
+
+## Newly consolidated admin pages (2026-11-27)
+
+The following RPCs also require `owner`, because their responses contain guest identity/contact details, event-registration PII, service-order details, debt or payment data:
+
+| RPC | Minimum role | Reason |
+| --- | --- | --- |
+| `admin_get_dashboard_overview()` | owner | Guest counts, debt-bearing user IDs and recent registration names |
+| `admin_get_events_dashboard()` | owner | Event registrations with guest contact information and payment fields |
+| `admin_get_services_dashboard()` | owner | Guest-linked service orders and payment totals |
+| `admin_get_finance_charge_detail(text,uuid)` | owner | Individual charge details and payment allocations |
+| `admin_get_finance_overview()` | owner | Finance summary plus guest identity labels |
+
+The operational `admin` role remains limited to the explicitly listed booking and kitchen workflows. Guest list, guest profile, guest debt, finance, event-registration and service-order data remain owner-only unless a future field-minimized policy is reviewed and approved.
