@@ -29,6 +29,22 @@ begin
   ) then
     raise exception 'Existing admin write policy was unexpectedly changed';
   end if;
+
+  if (select proconfig from pg_proc where oid=to_regprocedure('public.get_home_events(integer)')) is distinct from array['search_path=pg_catalog']::text[] then
+    raise exception 'get_home_events search_path is not pinned to pg_catalog';
+  end if;
+
+  if has_function_privilege('anon','public.get_home_events(integer)','EXECUTE') is not true
+     or has_function_privilege('authenticated','public.get_home_events(integer)','EXECUTE') is not true then
+    raise exception 'Public homepage event RPC grants were not preserved';
+  end if;
+
+  if exists (
+    select 1 from aclexplode(coalesce((select proacl from pg_proc where oid=to_regprocedure('public.get_home_events(integer)')),acldefault('f',(select proowner from pg_proc where oid=to_regprocedure('public.get_home_events(integer)'))))) a
+    where a.grantee=0 and a.privilege_type='EXECUTE'
+  ) then
+    raise exception 'get_home_events still has implicit PUBLIC EXECUTE';
+  end if;
 end
 $verify$;
 
