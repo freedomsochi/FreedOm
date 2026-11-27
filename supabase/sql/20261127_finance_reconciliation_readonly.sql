@@ -86,15 +86,30 @@ where p.status='успешно'
   )
 order by p.created_at desc;
 
--- RPC authorization inventory: identify SECURITY DEFINER functions whose body
--- contains the fixed owner email but does not explicitly fail closed on auth.uid().
-select n.nspname, p.proname, pg_get_function_identity_arguments(p.oid) as arguments,
-       p.prosecdef,
-       (p.prosrc ilike '%serzh.xz@mail.ru%') as uses_fixed_owner_email,
-       (p.prosrc ilike '%auth.uid() is null%') as has_explicit_null_uid_guard,
-       (p.prosrc ilike '%auth.email()%') as reads_auth_email
+-- RPC authorization inventory. This classifies common null-safe patterns separately;
+-- text-pattern analysis is a triage aid, not a substitute for reviewing function logic.
+select
+  p.proname,
+  pg_get_function_identity_arguments(p.oid) as arguments,
+  case
+    when p.prosrc ~* 'auth[.]uid[(][)][[:space:]]+is[[:space:]]+not[[:space:]]+null'
+      and p.prosrc ~* 'auth[.]email[(][)][[:space:]]*='
+      then 'uid_and_owner_email_guard'
+    when p.prosrc ~* 'auth[.]email[(][)][[:space:]]+is[[:space:]]+distinct[[:space:]]+from'
+      then 'null_safe_distinct_guard'
+    when p.prosrc ~* 'v_email[[:space:]]+is[[:space:]]+null[[:space:]]+or[[:space:]]+v_email[[:space:]]*<>'
+      then 'null_safe_local_email_guard'
+    when p.prosrc ~* 'coalesce[(]auth[.]jwt[(][)][[:space:]]*->[>]?[[:space:]]*''email''[[:space:]]*,[[:space:]]*''''[)][[:space:]]*<>'
+      then 'null_safe_jwt_email_guard'
+    when p.prosrc ~* 'auth[.]email[(][)][[:space:]]*<>[[:space:]]*''serzh[.]xz@mail[.]ru'''
+      then 'REVIEW_NULL_UNSAFE_EMAIL_COMPARISON'
+    else 'manual_review_required'
+  end as guard_assessment,
+  has_function_privilege('anon', p.oid, 'EXECUTE') as anon_execute,
+  has_function_privilege('authenticated', p.oid, 'EXECUTE') as authenticated_execute
 from pg_proc p
-join pg_namespace n on n.oid=p.pronamespace
-where n.nspname='public'
+join pg_namespace n on n.oid = p.pronamespace
+where n.nspname = 'public'
   and p.prosecdef
-order by p.proname, arguments;
+  and p.prosrc ilike '%serzh.xz@mail.ru%'
+order by guard_assessment, p.proname, arguments;
