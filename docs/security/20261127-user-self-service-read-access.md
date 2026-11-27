@@ -12,7 +12,7 @@ Live read-only inspection confirmed:
 
 ## Changes
 - Adds owner-scoped SELECT policies: `users.user_id = auth.uid()`, `orders.user_id = auth.uid()`, `purchases.Buyer_id = auth.uid()`, and `referrals.Referrer_id = auth.uid()`.
-- Grants authenticated users SELECT only on the eight profile columns actually rendered by `profile.html`.
+- Grants authenticated users SELECT only on the profile fields rendered by `profile.html` plus `Email`, which the admin finance overview uses to identify guests.
 - Keeps existing admin policies intact; PostgreSQL combines permissive policies with OR.
 - Changes both pages to request explicit columns rather than `*`.
 
