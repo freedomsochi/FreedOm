@@ -283,3 +283,18 @@ The complete end-to-end execution order, actor matrix, data-integrity checks, ro
 The staging plan adds explicit validation for two separate ordinary users (cross-user isolation), admin-versus-owner separation, service-role denial on interactive booking confirmation, public room/event field contracts, verified-contact account linking, payment/allocation idempotency and before/after financial invariants.
 
 **Current release gate: NO-GO.** No staging project has been verified and no staging SQL/browser tests have been executed. The connected project remains production; no SQL, Edge Function deployment or production data change is authorized by this source-only preparation. A production rollout requires every staging gate and a separate explicit approval.
+
+
+## Role foundation verification added (2026-11-27)
+
+A dedicated read-only check now exists at
+`supabase/sql/admin-role-foundation-verification.sql`. Run it immediately
+after `admin-role-foundation.sql` on isolated staging and require
+`PASS_ROLE_FOUNDATION_STATIC_CHECKS` before assigning disposable test roles
+or applying any role-dependent RPC migration. It checks schema/table exposure,
+RLS and policies, role constraints, helper SECURITY DEFINER/STABLE/search_path,
+client EXECUTE ACLs, and that the helper owner matches the role-table owner.
+It does not assign roles or change data.
+
+This verification is source-only and has not been executed against production
+or staging. See the consolidated staging validation plan for the exact order.
