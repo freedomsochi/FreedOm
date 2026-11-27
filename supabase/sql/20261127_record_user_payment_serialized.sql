@@ -247,9 +247,21 @@ begin
       update public.event_registrations
          set paid_amount = coalesce(paid_amount, 0) + v_alloc,
              payment_status = case
-               when coalesce(paid_amount, 0) + v_alloc >= coalesce(amount, 0)
+               when coalesce((
+                 select sum(pa.amount)
+                   from public.payment_allocations pa
+                   join public.payments p on p.id = pa.payment_id
+                  where pa.event_registration_id = public.event_registrations.id
+                    and p.status = 'успешно'
+               ), 0) >= coalesce(amount, 0)
                  then 'paid'
-               when coalesce(paid_amount, 0) + v_alloc > 0
+               when coalesce((
+                 select sum(pa.amount)
+                   from public.payment_allocations pa
+                   join public.payments p on p.id = pa.payment_id
+                  where pa.event_registration_id = public.event_registrations.id
+                    and p.status = 'успешно'
+               ), 0) > 0
                  then 'partial'
                else coalesce(payment_status, 'unpaid')
              end,
