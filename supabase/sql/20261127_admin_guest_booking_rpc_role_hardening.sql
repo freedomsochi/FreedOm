@@ -1,92 +1,47 @@
--- FreeDom admin CRM RPC role follow-up.
--- SOURCE-ONLY. Requires admin-role-foundation.sql and approved staging role assignments.
--- Replaces remaining fixed-email guards in guest, booking-overview and payment RPCs.
+-- Guest profile data minimization and owner payment capability.
+-- SOURCE-ONLY STAGING FOLLOW-UP.
+-- Prerequisite: apply 20261127_harden_remaining_admin_rpcs.sql in staging.
+-- This file deliberately does not duplicate or replace its owner-role guard.
 begin;
 
 do $migration$
 declare
-  v record;
+  v_oid oid := to_regprocedure('public.admin_get_guest_profile(uuid)');
   v_def text;
   v_new text;
-  v_owner_guard constant text := 'if auth.uid() is null or not private.has_owner_role() then';
 begin
-  if to_regclass('private.user_roles') is null
-     or to_regprocedure('private.has_owner_role()') is null then
-    raise exception 'Role foundation missing; apply and validate admin-role-foundation.sql in staging first';
+  if v_oid is null then
+    raise exception 'Missing public.admin_get_guest_profile(uuid)';
   end if;
-
-  for v in
-    select * from (values
-      ('public.admin_get_bookings_overview()', 'owner'),
-      ('public.admin_get_guest_dashboard_stats()', 'owner'),
-      ('public.admin_get_guest_profile(uuid)', 'owner'),
-      ('public.admin_get_guests_overview()', 'owner'),
-      ('public.admin_record_guest_payment(uuid,integer,text,text,uuid)', 'owner')
-    ) as targets(signature, required_role)
-  loop
-    if to_regprocedure(v.signature) is null then
-      raise exception 'Required RPC missing: %', v.signature;
-    end if;
-    select pg_get_functiondef(to_regprocedure(v.signature)) into v_def;
-    v_new := v_def;
-
-    if v.signature = 'public.admin_get_guest_dashboard_stats()' then
-      v_new := replace(v_new,
-        'where auth.uid() is not null and auth.email() = ''serzh.xz@mail.ru'';',
-        'where auth.uid() is not null and private.has_owner_role();');
-    elsif v.signature = 'public.admin_get_guest_profile(uuid)' then
-      v_new := replace(v_new,
-        'if v_email is null or v_email <> ''serzh.xz@mail.ru'' then',
-        v_admin_guard);
-      -- The profile UI uses only these four identity fields. Do not serialize
-      -- every users-table column into the browser response.
-      v_new := replace(v_new,
-        'select to_jsonb(u) into v_user from public.users u where u.user_id=p_user_id;',
-        'select jsonb_build_object(''user_id'',u.user_id,''Display_name'',u."Display_name",''Phone'',u."Phone",''Email'',u."Email",''City'',u."City") into v_user from public.users u where u.user_id=p_user_id;');
-      v_new := replace(v_new,
-        '''payments'',v_payments);',
-        '''payments'',v_payments,''can_record_payments'',private.has_owner_role());');
-    elsif v.signature = 'public.admin_record_guest_payment(uuid,integer,text,text,uuid)' then
-      v_new := replace(v_new,
-        'if v_email is null or v_email <> ''serzh.xz@mail.ru'' then',
-        v_owner_guard);
-    else
-      v_new := replace(v_new,
-        'if auth.email() is distinct from ''serzh.xz@mail.ru'' then',
-        v_admin_guard);
-    end if;
-
-    if v_new = v_def then
-      raise exception 'No expected fixed-email guard changed in %; aborting', v.signature;
-    end if;
-
-    execute v_new;
-    execute format('alter function %s set search_path = pg_catalog', to_regprocedure(v.signature));
-    execute format('revoke all on function %s from public, anon', to_regprocedure(v.signature));
-    execute format('grant execute on function %s to authenticated', to_regprocedure(v.signature));
-  end loop;
-
-  -- Postconditions: every target has its required guard and fixed search_path.
-  if exists (
-    select 1
-    from pg_proc p
-    where p.oid in (
-      to_regprocedure('public.admin_get_bookings_overview()'),
-      to_regprocedure('public.admin_get_guest_dashboard_stats()'),
-      to_regprocedure('public.admin_get_guest_profile(uuid)'),
-      to_regprocedure('public.admin_get_guests_overview()'),
-      to_regprocedure('public.admin_record_guest_payment(uuid,integer,text,text,uuid)')
-    )
-    and (
-      p.prosrc ilike '%serzh.xz@mail.ru%'
-      or coalesce(array_to_string(p.proconfig,','),'') not ilike '%search_path=pg_catalog%'
-    )
+  if not exists (
+    select 1 from pg_proc p
+    where p.oid=v_oid
+      and p.prosecdef
+      and p.prosrc ilike '%private.has_owner_role()%'
+      and coalesce(array_to_string(p.proconfig,','),'') like '%search_path=pg_catalog%'
   ) then
-    raise exception 'Postcondition failed: fixed email or mutable search_path remains';
+    raise exception 'Guest profile RPC must first pass the owner-role hardening migration';
   end if;
-  if position('jsonb_build_object(''user_id''' in pg_get_functiondef('public.admin_get_guest_profile(uuid)'::regprocedure))=0 then
-    raise exception 'Guest profile still serializes full users row';
+
+  v_def := pg_get_functiondef(v_oid);
+  v_new := replace(v_def,
+    'select to_jsonb(u) into v_user from public.users u where u.user_id=p_user_id;',
+    'select jsonb_build_object(''user_id'',u.user_id,''Display_name'',u."Display_name",''Phone'',u."Phone",''Email'',u."Email",''City'',u."City") into v_user from public.users u where u.user_id=p_user_id;');
+
+  v_new := replace(v_new,
+    '''payments'',v_payments);',
+    '''payments'',v_payments,''can_record_payments'',private.has_owner_role());');
+
+  if v_new=v_def then
+    raise exception 'No guest profile projection or capability change generated';
   end if;
+  if position('jsonb_build_object(''user_id''' in v_new)=0
+     or position('can_record_payments' in v_new)=0 then
+    raise exception 'Guest profile projection/capability postcondition failed';
+  end if;
+
+  execute v_new;
+  execute format('alter function %s set search_path = pg_catalog',v_oid::regprocedure);
 end
 $migration$;
 
