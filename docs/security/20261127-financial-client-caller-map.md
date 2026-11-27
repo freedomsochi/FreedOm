@@ -100,3 +100,19 @@ a missing policy is harmless for a user-facing page.
    service_role and verified server-side integration paths.
 6. Test anon, ordinary authenticated, admin, owner and service_role independently
    in staging. No production GRANT/RLS changes are authorized by this inventory.
+
+
+## Source fix prepared: public booking room lookup
+
+Commit `16bb26d254b85401af23dc5ede510a92f90585f4` updates
+`booking-sync.js` so `resolveRoom()` uses the restricted
+`get_rooms_catalog()` RPC instead of directly selecting from `public.rooms`.
+It still receives the exact fields it uses (`id`, `name`,
+`price_per_night`) and preserves room-name matching and booking submission.
+
+Release dependency: this browser change must be deployed only together with
+`supabase/sql/20261127_harden_public_room_catalog.sql` (or after that migration
+has been verified in staging and applied in the approved release). The live
+`get_rooms_catalog()` is still SECURITY INVOKER in the last inspected snapshot,
+so deploying the JS change alone would fail. No database migration or deploy
+was performed in this work session.
