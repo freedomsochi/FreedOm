@@ -56,6 +56,11 @@ RLS is enabled on all inspected tables.
 
 The broad table-level INSERT/SELECT grants on sensitive tables do not by themselves prove anonymous access: inspected RLS policies on `event_registrations`, `orders`, `service_orders`, `payments`, and `payment_allocations` are authenticated fixed-owner-email policies, with no anon policy returned for those tables. The event table does have a public SELECT policy. Keep grants and policies distinct in the review.
 
+### Finance RPC authorization finding
+
+- Read-only review of eight financial/admin SECURITY DEFINER RPCs found that seven use `auth.email() <> 'serzh.xz@mail.ru'`. If a signed-in caller has no email claim, the comparison evaluates to SQL NULL and the `IF` does not reject the call. The eighth function, `record_event_registration_payment(uuid,integer,text)`, had no caller authorization check at all while remaining executable by `authenticated`; it could create successful payment/allocation records against any known registration ID. This is a high-priority authorization flaw; no production writes were performed.
+- Source-only hardening is prepared in `supabase/sql/20261127_harden_finance_rpc_authorization.sql`: use `IS DISTINCT FROM` for NULL-safe admin checks, add the missing admin check to event-payment recording, pin all eight search paths, and revoke implicit PUBLIC execution while preserving authenticated/service_role grants. Companion verification SQL included. Not applied to live DB.
+
 ### Additional admin RPC finding
 
 - `confirm_public_booking(uuid)` is SECURITY DEFINER and currently has anon EXECUTE even though its function body immediately rejects callers unless the JWT email matches the administrator address. No direct frontend caller was found in the inspected source search. A source-only ACL patch is prepared in `supabase/sql/20261127_restrict_public_booking_confirmation.sql`: revoke anon and implicit PUBLIC execution, preserve authenticated/service_role, and pin `search_path` to `pg_catalog`. Companion verification SQL is included. Not applied to live DB.
@@ -75,6 +80,8 @@ The broad table-level INSERT/SELECT grants on sensitive tables do not by themsel
 - Test anon direct SELECT returns only active/homepage-visible event rows; confirm inactive and hidden rows are not visible.
 - Test `get_home_events(integer)` remains callable by anon/authenticated, returns only future active/homepage-visible rows, and has no implicit PUBLIC EXECUTE.
 - Test anon cannot execute `confirm_public_booking(uuid)` while authenticated admin and service_role retain intended execution.
+- Test each of the eight finance RPCs rejects a non-admin authenticated account, including an account with no email claim; verify the admin can still perform intended operations.
+- Specifically verify `record_event_registration_payment()` rejects a non-admin before inserting a payment or allocation, and verify no rows change after rejected calls.
 - Test event registration with a phone number belonging to an existing user and verify both RPC and trigger leave `user_id` NULL without verified authentication; verify matching verified `auth.uid()` is linked.
 - Re-run grants, policies, function ACL, and Supabase Security Advisor after any staged change.
 
