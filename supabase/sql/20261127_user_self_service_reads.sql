@@ -12,6 +12,7 @@ create policy users_select_own_profile
 
 grant select (
   user_id,
+  "Email",
   "Display_name",
   "Phone",
   "City",
