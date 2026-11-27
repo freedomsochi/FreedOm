@@ -18,4 +18,10 @@ using (
   and show_on_home is true
 );
 
+-- Keep the intentionally public, filtered homepage event RPC available to visitors,
+-- but remove implicit PUBLIC execution and pin its function search path.
+alter function public.get_home_events(integer) set search_path = pg_catalog;
+revoke all on function public.get_home_events(integer) from public;
+grant execute on function public.get_home_events(integer) to anon, authenticated, service_role;
+
 commit;
