@@ -234,3 +234,10 @@ A further source-only migration now covers five remaining RPCs used by the guest
 The booking map, guest list, guest profile, kitchen, finance, services and events pages were inspected. The kitchen screen already uses only `admin_get_kitchen_orders()` and `admin_update_kitchen_order_status()`; the existing role migration covers both as admin-role functions. The guest profile and booking overview were the remaining legacy fixed-email guards identified in this pass.
 
 Static checks for the five-function migration and owner-aware payment UI passed. This is source-only: role foundation is still absent in production, and no SQL or deployment was performed.
+
+
+## Role policy clarification — sensitive CRM pages remain owner-only
+
+The 2026-11-27 role matrix is the source of truth for minimum privileges. Operational `admin` is limited to approved booking and kitchen actions. Guest lists/profiles, guest-linked bookings overview, event registrations with contact/payment details, services, debts, finance summaries and charge details require `private.has_owner_role()`.
+
+The consolidated guest/booking follow-up was narrowed to a response-minimization migration only; the 12-function owner-role migration `20261127_harden_remaining_admin_rpcs.sql` is the prerequisite that actually replaces those legacy guards. The follow-up does not attempt to replace the same authorization guards a second time. It removes full-row serialization from the guest profile identity object and exposes an owner payment capability flag for the UI.
