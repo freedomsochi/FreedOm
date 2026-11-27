@@ -7,7 +7,7 @@ The finance overview already returns totals and charge breakdowns through
 three display fields and `user_id` into the existing protected response.
 
 ## Authorization
-- Requires authenticated `auth.uid()` and `private.has_admin_role()`.
+- Requires authenticated `auth.uid()` and `private.has_owner_role()`.
 - SECURITY DEFINER with fixed `search_path=pg_catalog`; relations are schema-qualified.
 - EXECUTE is revoked from PUBLIC and anon and granted to authenticated.
 - Guest identities are limited to users represented in the finance summary.
@@ -21,7 +21,7 @@ remain client-side.
 ## Release gates
 1. Apply role foundation in isolated staging and assign approved test roles.
 2. Apply the migration and run the verification query.
-3. Test anon/ordinary authenticated denial and admin/owner access.
+3. Test anon/ordinary authenticated denial and owner access only.
 4. Compare finance totals and breakdowns before/after; verify users without a
    summary row are not included and guests with a summary row retain name/phone/email.
 5. Confirm the page has no direct browser read from `public.users`.
