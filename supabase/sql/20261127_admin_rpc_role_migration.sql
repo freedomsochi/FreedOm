@@ -20,9 +20,17 @@ declare
   v_admin_count integer := 0;
   v_owner_count integer := 0;
 begin
-  if to_regprocedure('private.has_admin_role()') is null
+  if to_regclass('private.user_roles') is null
+     or to_regprocedure('private.has_admin_role()') is null
      or to_regprocedure('private.has_owner_role()') is null then
     raise exception 'Role foundation missing: apply admin-role-foundation.sql in staging first';
+  end if;
+
+  -- Critical lockout prevention: never replace the only working owner-email
+  -- guard unless a verified owner role already exists in the protected table.
+  -- The migration intentionally does not create or guess an owner identity.
+  if not exists (select 1 from private.user_roles where role = 'owner') then
+    raise exception 'No owner role is assigned. Assign and verify a staging owner before migrating RPC guards';
   end if;
 
   for f in
