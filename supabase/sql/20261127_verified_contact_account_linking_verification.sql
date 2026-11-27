@@ -61,7 +61,7 @@ begin
        and (
          has_function_privilege('anon',p.oid,'EXECUTE')
          or has_function_privilege('authenticated',p.oid,'EXECUTE')
-         or has_function_privilege('public',p.oid,'EXECUTE')
+         or exists (select 1 from aclexplode(coalesce(p.proacl, acldefault('f',p.proowner))) acl where acl.grantee=0 and acl.privilege_type='EXECUTE')
        )
   ) then
     raise exception 'A trigger-only linking function is still directly executable by client roles/PUBLIC';
