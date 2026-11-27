@@ -8,21 +8,19 @@ declare
   v record;
   v_def text;
   v_new text;
-  v_admin_guard constant text := 'if auth.uid() is null or not private.has_owner_role() then';
   v_owner_guard constant text := 'if auth.uid() is null or not private.has_owner_role() then';
 begin
   if to_regclass('private.user_roles') is null
-     or to_regprocedure('private.has_owner_role()') is null
      or to_regprocedure('private.has_owner_role()') is null then
     raise exception 'Role foundation missing; apply and validate admin-role-foundation.sql in staging first';
   end if;
 
   for v in
     select * from (values
-      ('public.admin_get_bookings_overview()', 'admin'),
-      ('public.admin_get_guest_dashboard_stats()', 'admin'),
-      ('public.admin_get_guest_profile(uuid)', 'admin'),
-      ('public.admin_get_guests_overview()', 'admin'),
+      ('public.admin_get_bookings_overview()', 'owner'),
+      ('public.admin_get_guest_dashboard_stats()', 'owner'),
+      ('public.admin_get_guest_profile(uuid)', 'owner'),
+      ('public.admin_get_guests_overview()', 'owner'),
       ('public.admin_record_guest_payment(uuid,integer,text,text,uuid)', 'owner')
     ) as targets(signature, required_role)
   loop
