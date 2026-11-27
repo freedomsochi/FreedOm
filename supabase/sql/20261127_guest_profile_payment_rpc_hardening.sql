@@ -24,7 +24,6 @@ declare
   v_admin uuid;
   v_due integer;
   v_total integer;
-  v_discount integer;
   v_paid integer;
   v_payment_id uuid;
   v_method_label text;
@@ -46,7 +45,7 @@ begin
      ('cash', 'card', 'transfer', 'наличные', 'нал', 'карта', 'перевод', 'безнал', 'бонусы') then
     raise exception 'invalid payment method';
   end if;
-  if p_charge_type not in ('booking', 'order', 'event', 'service') then
+  if p_charge_type is null or p_charge_type not in ('booking', 'order', 'event', 'service') then
     raise exception 'invalid charge type';
   end if;
 
@@ -66,9 +65,8 @@ begin
   if p_charge_type = 'booking' then
     select greatest(
       coalesce(b.total_amount, 0) - coalesce(b.discount_amount, 0), 0
-    ), coalesce(b.paid_amount, 0),
-       coalesce(b.discount_amount, 0)
-      into v_total, v_paid, v_discount
+    ), coalesce(b.paid_amount, 0)
+      into v_total, v_paid
       from public.bookings b
      where b.id = p_charge_id
        and b.user_id = p_user_id
@@ -80,9 +78,8 @@ begin
   elsif p_charge_type = 'order' then
     select greatest(
       coalesce(o.total_amount, 0) - coalesce(o.discount_amount, 0), 0
-    ), coalesce(o.paid_amount, 0),
-       coalesce(o.discount_amount, 0)
-      into v_total, v_paid, v_discount
+    ), coalesce(o.paid_amount, 0)
+      into v_total, v_paid
       from public.orders o
      where o.id = p_charge_id
        and o.user_id = p_user_id
