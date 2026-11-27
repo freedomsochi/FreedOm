@@ -53,14 +53,14 @@ begin
   perform b.id
     from public.bookings b
    where b.user_id = p_user_id
-     and coalesce(b.status, '') not in ('отменено', 'отменена', 'cancelled')
+     and coalesce(b.status, '') in ('подтверждено', 'confirmed', 'завершена')
    order by b.id
    for update;
 
   perform o.id
     from public.orders o
    where o.user_id = p_user_id
-     and coalesce(o.status, '') not in ('отменён', 'отменена', 'cancelled')
+     and coalesce(o.status, '') <> 'отменён'
    order by o.id
    for update;
 
@@ -89,7 +89,7 @@ begin
       ) as due
         from public.bookings b
        where b.user_id = p_user_id
-         and coalesce(b.status, '') not in ('отменено', 'отменена', 'cancelled')
+         and coalesce(b.status, '') in ('подтверждено', 'confirmed', 'завершена')
       union all
       select greatest(
         coalesce(o.total_amount, 0)
@@ -98,7 +98,7 @@ begin
       )
         from public.orders o
        where o.user_id = p_user_id
-         and coalesce(o.status, '') not in ('отменён', 'отменена', 'cancelled')
+         and coalesce(o.status, '') <> 'отменён'
       union all
       select greatest(
         coalesce(so.total_amount, 0)
@@ -115,7 +115,13 @@ begin
          and coalesce(so.status, '') not in ('отменён', 'отменена', 'cancelled')
       union all
       select greatest(
-        coalesce(er.amount, 0) - coalesce(er.paid_amount, 0), 0
+        coalesce(er.amount, 0) - coalesce((
+          select sum(pa.amount)
+            from public.payment_allocations pa
+            join public.payments p on p.id = pa.payment_id
+           where pa.event_registration_id = er.id
+             and p.status = 'успешно'
+        ), 0), 0
       )
         from public.event_registrations er
        where er.user_id = p_user_id
@@ -150,7 +156,7 @@ begin
           b.created_at
           from public.bookings b
          where b.user_id = p_user_id
-           and coalesce(b.status, '') not in ('отменено', 'отменена', 'cancelled')
+           and coalesce(b.status, '') in ('подтверждено', 'confirmed', 'завершена')
         union all
         select 'order', o.id,
           greatest(coalesce(o.total_amount, 0)
@@ -159,7 +165,7 @@ begin
           o.created_at
           from public.orders o
          where o.user_id = p_user_id
-           and coalesce(o.status, '') not in ('отменён', 'отменена', 'cancelled')
+           and coalesce(o.status, '') <> 'отменён'
         union all
         select 'service', so.id,
           greatest(coalesce(so.total_amount, 0) - coalesce((
@@ -175,7 +181,13 @@ begin
            and coalesce(so.status, '') not in ('отменён', 'отменена', 'cancelled')
         union all
         select 'event', er.id,
-          greatest(coalesce(er.amount, 0) - coalesce(er.paid_amount, 0), 0),
+          greatest(coalesce(er.amount, 0) - coalesce((
+            select sum(pa.amount)
+              from public.payment_allocations pa
+              join public.payments p on p.id = pa.payment_id
+             where pa.event_registration_id = er.id
+               and p.status = 'успешно'
+          ), 0), 0),
           er.created_at
           from public.event_registrations er
          where er.user_id = p_user_id
