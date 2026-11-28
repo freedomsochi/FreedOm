@@ -1022,9 +1022,15 @@ function initDates(){
  const checkIn=$('#checkin'),checkOut=$('#checkout');
  const localIso=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day};
  const today=new Date();today.setHours(0,0,0,0);
+ const todayValue=localIso(today);
  const tomorrow=new Date(today);tomorrow.setDate(tomorrow.getDate()+1);
- checkIn.min=localIso(today);
- checkIn.value=localIso(today);checkOut.value=localIso(tomorrow);
+ const tomorrowValue=localIso(tomorrow);
+ const incomingParams=new URLSearchParams(location.search);
+ const validDate=value=>{if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(value||''))return false;const date=new Date(value+'T12:00:00');return Number.isFinite(date.getTime())&&localIso(date)===value};
+ const requestedCheckin=incomingParams.get('checkin'),requestedCheckout=incomingParams.get('checkout');
+ checkIn.min=todayValue;
+ checkIn.value=validDate(requestedCheckin)&&requestedCheckin>=todayValue?requestedCheckin:todayValue;
+ checkOut.value=validDate(requestedCheckout)&&requestedCheckout>checkIn.value?requestedCheckout:tomorrowValue;
  const updateMin=()=>{const next=checkIn.value?new Date(checkIn.value+'T12:00:00'):new Date(today);next.setDate(next.getDate()+1);const min=localIso(next);checkOut.min=min;if(!checkOut.value||checkOut.value<min)checkOut.value=min};
  updateMin();
  const invalidateAvailability=()=>{
@@ -1056,7 +1062,10 @@ $('#book').addEventListener('click',e=>{
  if(active<0||!rooms[active]){alert('Сначала выберите вариант размещения.');return}
  const status=availabilityFor(selectedDbNames());
  if(status.known&&!status.available){alert('На выбранные даты нет свободных мест. Выберите другие даты.');return}
- const params=new URLSearchParams({room:rooms[active].name,checkin:a,checkout:b,availability:status.text||'Не проверена'});
+ const requestedAdults=incomingParams.get('adults'),requestedChildren=incomingParams.get('children');
+ const adults=['1','2','3','4','5','6'].includes(requestedAdults)?requestedAdults:'2';
+ const children=['0','1','2','3'].includes(requestedChildren)?requestedChildren:'0';
+ const params=new URLSearchParams({room:rooms[active].name,checkin:a,checkout:b,adults,children,availability:status.text||'Не проверена'});
  location.href='room-booking-form.html?'+params.toString();
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
