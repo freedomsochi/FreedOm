@@ -219,6 +219,27 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 <link rel="stylesheet" href="freedom-transitions.css">
 <script defer src="freedom-transitions.js"></script>
 <link rel="stylesheet" href="freedom-design-system.css">
+
+<style id="events-readable-type">
+/* Improve event-card readability without changing the orbit layout or motion. */
+.card .front-description{font-size:11px!important;line-height:1.48!important}
+.card .front-meta{font-size:9px!important;line-height:1.5!important}
+.card .date{font-size:9px!important;line-height:1.45!important}
+.card.selected .backface p{font-size:12px!important;line-height:1.58!important}
+.card.selected .backface .event-time,
+.card.selected .backface .event-host,
+.card.selected .backface .event-price{font-size:9px!important;line-height:1.5!important}
+@media(max-width:760px){
+ .card .front-description{font-size:10px!important;line-height:1.45!important}
+ .card .front-meta{font-size:8.5px!important;line-height:1.45!important}
+ .card .date{font-size:9px!important;line-height:1.4!important}
+ .card.selected .backface p{font-size:11px!important;line-height:1.52!important}
+ .card.selected .backface .event-time,
+ .card.selected .backface .event-host,
+ .card.selected .backface .event-price{font-size:8.5px!important}
+}
+</style>
+
 </head>
 <body>
 <main class="events">
@@ -229,7 +250,7 @@ filter:blur(25px);animation:drift 14s ease-in-out infinite alternate}
 <article class="card" data-i="0" tabindex="0" role="button" aria-expanded="false" aria-label="Открыть событие: Молитвенная встреча"><div class="card-inner"><div class="front"><img src="images/gong-meditation.jpg" alt=""><div class="card-content"><div class="card-num">01</div><h2>Молитвенная встреча</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Встреча для тишины, молитвы и совместного присутствия.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/gong-meditation.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Молитвенная встреча</h3><div class="line"></div><p>Встреча для тишины, молитвы и совместного присутствия. Это спокойное пространство, где можно остановиться, побыть в единстве с другими, обратиться к важным мыслям и провести время без спешки и внешнего шума.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="1" tabindex="0" role="button" aria-expanded="false" aria-label="Открыть событие: Поющие чаши"><div class="card-inner"><div class="front"><img src="images/tea-ceremony.jpg" alt=""><div class="card-content"><div class="card-num">02</div><h2>Поющие чаши</h2><div class="date">Дата и время · по расписанию</div><p class="front-description">Звуковая практика, пространство тишины и мягкого возвращения к себе.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/tea-ceremony.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Поющие чаши</h3><div class="line"></div><p>Звуковая практика с поющими чашами — время замедлиться, расслабиться и переключить внимание с повседневных забот. Мягкие звуковые вибрации помогают создать атмосферу тишины, присутствия и внутреннего равновесия.</p><div class="event-time">Дата и время · <span>по расписанию · уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="2" tabindex="0" role="button" aria-expanded="false" aria-label="Открыть событие: Баня"><div class="card-inner"><div class="front"><img src="images/sauna.jpg" alt=""><div class="card-content"><div class="card-num">03</div><h2>Баня</h2><div class="date">Каждый четверг · время уточняется</div><p class="front-description">Тёплый вечер: пар, холодная вода, разговоры и восстановление.</p><div class="front-meta"><span>Ведущий · Евгений</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/sauna.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Баня</h3><div class="line"></div><p>Традиционный вечер FreeDom: сначала жар и парная, затем прохладная вода и отдых. Мы собираемся, чтобы восстановить силы, пообщаться, посмеяться и переключиться после рабочих будней. Можно провести вечер в своём ритме, чередуя тепло, холод и расслабление.</p><div class="event-time">Дата и время · <span>каждый четверг · время уточняется</span></div><div class="event-host">Проводит · <span>Евгений</span></div><div class="event-price">Стоимость · <span>200 ₽ для жителей</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="3" tabindex="0" role="button" aria-expanded="false" aria-label="Открыть событие: Караоке"><div class="card-inner"><div class="front"><img src="images/16594-compressed.png" alt=""><div class="card-content"><div class="card-num">04</div><h2>Караоке</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Музыка, смех и вечер, когда можно перестать стесняться.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/16594-compressed.png" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Караоке</h3><div class="line"></div><p>Неформальный музыкальный вечер, где не нужно быть профессиональным певцом. Выбираем любимые песни, поддерживаем друг друга, смеёмся и просто наслаждаемся моментом. Можно петь самому или устроиться рядом и слушать остальных.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article><article class="card" data-i="4" tabindex="0" role="button" aria-expanded="false" aria-label="Открыть событие: Клуб позитивной психологии"><div class="card-inner"><div class="front"><img src="images/room-bungalow.jpg" alt=""><div class="card-content"><div class="card-num">05</div><h2>Клуб позитивной психологии</h2><div class="date">Дата и время · уточняются</div><p class="front-description">Разговор о том, что помогает жить осознаннее, свободнее и добрее.</p><div class="front-meta"><span>Ведущий · FreeDom</span></div><div class="hint">нажми, чтобы открыть</div></div></div><div class="backface"><img src="images/room-bungalow.jpg" alt=""><button class="close" type="button" aria-label="Закрыть">×</button><div class="event-body"><h3>Клуб позитивной психологии</h3><div class="line"></div><p>Встреча для открытого разговора о мышлении, привычках и отношении к жизни. Вместе исследуем идеи, делимся личным опытом и ищем практические способы жить осознаннее, свободнее и добрее — с уважением к разным взглядам и историям.</p><div class="event-time">Дата и время · <span>уточняются</span></div><div class="event-host">Проводит · <span>FreeDom</span></div><div class="event-price">Стоимость · <span>по записи</span></div><button class="signup" type="button">Записаться</button></div></div></div></article>
 </section>
 <div class="event-toast" id="eventToast" role="status" aria-live="polite"></div>
-<div class="selection-guide">нажми на карточку · затем ещё раз, чтобы открыть</div>
+<div class="selection-guide">нажми на событие, чтобы открыть</div>
 <div class="foot">выбери событие · оно приблизится</div></div>
 </main>
 <script>
@@ -328,10 +349,10 @@ cards.forEach((card,i)=>{
   if(e.target.closest('.close')){e.preventDefault();e.stopPropagation();closeCard();return;}
   if(opened)return;
   if(Date.now()<ignoreUntil||moved)return;
-  if(i===idx)openCard(card);else focusCard(i);
+  openCard(card);
  });
  card.addEventListener('keydown',e=>{
-  if(e.key==='Enter'||e.key===' '){e.preventDefault();if(opened)return;if(i===idx)openCard(card);else focusCard(i);}
+  if(e.key==='Enter'||e.key===' '){e.preventDefault();if(opened)return;openCard(card);}
  });
 });
 deck.addEventListener('pointerdown',e=>{
