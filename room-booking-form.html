@@ -70,7 +70,8 @@ textarea{min-height:95px;resize:vertical}
 <script>
 const params=new URLSearchParams(location.search);
 const room=params.get('room')||'Вариант размещения не выбран';
-document.getElementById('selectedRoom').textContent=room;
+const roomLabel=params.get('room_label')||room;
+document.getElementById('selectedRoom').textContent=roomLabel;
 const form=document.getElementById('bookingForm');
 form.insertAdjacentHTML('beforeend','<input type="hidden" name="room_type" id="roomField">');
 document.getElementById('roomField').value=room;
