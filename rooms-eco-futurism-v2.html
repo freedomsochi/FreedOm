@@ -1026,7 +1026,7 @@ function initDates(){
  const tomorrow=new Date(today);tomorrow.setDate(tomorrow.getDate()+1);
  const tomorrowValue=localIso(tomorrow);
  const incomingParams=new URLSearchParams(location.search);
- const validDate=value=>{if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(value||''))return false;const date=new Date(value+'T12:00:00');return Number.isFinite(date.getTime())&&localIso(date)===value};
+ const validDate=value=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(value||''))return false;const date=new Date(value+'T12:00:00');return Number.isFinite(date.getTime())&&localIso(date)===value};
  const requestedCheckin=incomingParams.get('checkin'),requestedCheckout=incomingParams.get('checkout');
  checkIn.min=todayValue;
  checkIn.value=validDate(requestedCheckin)&&requestedCheckin>=todayValue?requestedCheckin:todayValue;
