@@ -83,6 +83,8 @@ if(adultsParam&&Array.from(adultsSelect.options).some(option=>option.value===adu
 const childrenParam=params.get('children');
 const childrenSelect=document.getElementById('children');
 if(childrenParam&&Array.from(childrenSelect.options).some(option=>option.value===childrenParam))childrenSelect.value=childrenParam;
+const maxGuestsParam=Number(params.get('max_guests'));
+const maxGuests=Number.isInteger(maxGuestsParam)&&maxGuestsParam>0&&maxGuestsParam<=12?maxGuestsParam:null;
 const checkin=document.getElementById('checkin'),checkout=document.getElementById('checkout');
 const today=new Date();const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
 checkin.min=localToday;
@@ -107,6 +109,8 @@ form.addEventListener('submit',async e=>{
  errorMessage.style.display='none';
  errorMessage.textContent='Не удалось отправить заявку. Проверь соединение и попробуй ещё раз.';
  if(!checkin.value||!checkout.value||checkout.value<=checkin.value){errorMessage.textContent='Дата выезда должна быть позже даты заезда.';errorMessage.style.display='block';(!checkin.value?checkin:checkout).focus();return}
+ const guestCount=Number(adultsSelect.value)+Number(childrenSelect.value);
+ if(maxGuests!==null&&guestCount>maxGuests){errorMessage.textContent='Для выбранного размещения максимальная вместимость — '+maxGuests+' '+(maxGuests===1?'гость':maxGuests<5?'гостя':'гостей')+'. Уменьши количество взрослых или детей.';errorMessage.style.display='block';adultsSelect.focus();return}
  const button=document.getElementById('submitButton');
  if(button.disabled)return;
  button.disabled=true;button.textContent='Отправляем…';
