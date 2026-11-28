@@ -79,11 +79,16 @@ document.getElementById('availabilityField').value=availability;
 const adultsParam=params.get('adults');
 const adultsSelect=document.getElementById('adults');
 if(adultsParam&&Array.from(adultsSelect.options).some(option=>option.value===adultsParam))adultsSelect.value=adultsParam;
+const childrenParam=params.get('children');
+const childrenSelect=document.getElementById('children');
+if(childrenParam&&Array.from(childrenSelect.options).some(option=>option.value===childrenParam))childrenSelect.value=childrenParam;
 const checkin=document.getElementById('checkin'),checkout=document.getElementById('checkout');
 const today=new Date();const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
 checkin.min=localToday;
-if(params.get('checkin'))checkin.value=params.get('checkin');
-if(params.get('checkout'))checkout.value=params.get('checkout');
+const validDate=value=>{if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(value||''))return false;const date=new Date(value+'T12:00:00');return Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)===value};
+const requestedCheckin=params.get('checkin'),requestedCheckout=params.get('checkout');
+if(validDate(requestedCheckin)&&requestedCheckin>=localToday)checkin.value=requestedCheckin;
+if(validDate(requestedCheckout)&&requestedCheckout>checkin.value)checkout.value=requestedCheckout;
 const updateCheckoutMin=()=>{
  const base=checkin.value?new Date(checkin.value+'T12:00:00'):new Date(localToday+'T12:00:00');
  base.setDate(base.getDate()+1);
