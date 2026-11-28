@@ -85,7 +85,7 @@ if(childrenParam&&Array.from(childrenSelect.options).some(option=>option.value==
 const checkin=document.getElementById('checkin'),checkout=document.getElementById('checkout');
 const today=new Date();const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
 checkin.min=localToday;
-const validDate=value=>{if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(value||''))return false;const date=new Date(value+'T12:00:00');return Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)===value};
+const validDate=value=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(value||''))return false;const date=new Date(value+'T12:00:00');return Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)===value};
 const requestedCheckin=params.get('checkin'),requestedCheckout=params.get('checkout');
 if(validDate(requestedCheckin)&&requestedCheckin>=localToday)checkin.value=requestedCheckin;
 if(validDate(requestedCheckout)&&requestedCheckout>checkin.value)checkout.value=requestedCheckout;
