@@ -1065,7 +1065,7 @@ $('#book').addEventListener('click',e=>{
  const requestedAdults=incomingParams.get('adults'),requestedChildren=incomingParams.get('children');
  const adults=['1','2','3','4','5','6'].includes(requestedAdults)?requestedAdults:'2';
  const children=['0','1','2','3'].includes(requestedChildren)?requestedChildren:'0';
- const params=new URLSearchParams({room:rooms[active].name,checkin:a,checkout:b,adults,children,availability:status.text||'Не проверена'});
+ const params=new URLSearchParams({room:rooms[active].dbNames[0],room_label:rooms[active].name,checkin:a,checkout:b,adults,children,availability:status.text||'Не проверена'});
  location.href='room-booking-form.html?'+params.toString();
 });
 $$('#thumbs img').forEach(img=>img.addEventListener('click',()=>{$('#heroimg').src=img.src.replace(/w=300/g,'w=900').replace(/q=70/g,'q=85')}));
