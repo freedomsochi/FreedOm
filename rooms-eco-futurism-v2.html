@@ -865,7 +865,7 @@ function showMapPointInfo(point){
 function selectedDbNames(){return rooms[active]?.dbNames||[]}
 function availabilityFor(names){
  const matches=availabilityRows.filter(r=>names.includes(r.name));
- if(!matches.length)return {known:false,available:null,text:availabilityState==='loading'?'Проверяем…':availabilityState==='error'?'Не удалось проверить':availabilityState==='idle'?'Выберите даты':'Нет данных',className:'status-unknown',freePlaces:0};
+ if(!matches.length)return {known:false,available:null,text:availabilityState==='loading'?'Проверяем…':availabilityState==='error'?'Не удалось проверить':availabilityState==='idle'?'Нажмите «Проверить доступность»':'Нет данных',className:'status-unknown',freePlaces:0};
  const placesMode=matches.some(r=>r.booking_mode==='places');
  if(placesMode){
   const freePlaces=matches.reduce((sum,r)=>sum+Math.max(0,Number(r.free_places)||0),0);
