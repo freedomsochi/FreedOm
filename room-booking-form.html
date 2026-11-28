@@ -81,12 +81,18 @@ const adultsSelect=document.getElementById('adults');
 if(adultsParam&&Array.from(adultsSelect.options).some(option=>option.value===adultsParam))adultsSelect.value=adultsParam;
 const checkin=document.getElementById('checkin'),checkout=document.getElementById('checkout');
 const today=new Date();const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
-checkin.min=localToday;checkout.min=localToday;
+checkin.min=localToday;
 if(params.get('checkin'))checkin.value=params.get('checkin');
 if(params.get('checkout'))checkout.value=params.get('checkout');
-checkout.min=checkin.value||localToday;
-if(checkout.value&&checkin.value&&checkout.value<=checkin.value)checkout.value='';
-checkin.addEventListener('change',()=>{checkout.min=checkin.value||localToday;if(checkout.value&&checkout.value<=checkin.value)checkout.value=''});
+const updateCheckoutMin=()=>{
+ const base=checkin.value?new Date(checkin.value+'T12:00:00'):new Date(localToday+'T12:00:00');
+ base.setDate(base.getDate()+1);
+ const min=base.getFullYear()+'-'+String(base.getMonth()+1).padStart(2,'0')+'-'+String(base.getDate()).padStart(2,'0');
+ checkout.min=min;
+ if(!checkout.value||checkout.value<min)checkout.value=min;
+};
+updateCheckoutMin();
+checkin.addEventListener('change',updateCheckoutMin);
 form.addEventListener('submit',async e=>{
  e.preventDefault();
  const successMessage=document.getElementById('successMessage');
