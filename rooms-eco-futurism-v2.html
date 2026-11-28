@@ -1023,9 +1023,10 @@ function initDates(){
  const localIso=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day};
  const today=new Date();today.setHours(0,0,0,0);
  const tomorrow=new Date(today);tomorrow.setDate(tomorrow.getDate()+1);
- checkIn.min=localIso(today);checkOut.min=localIso(today);
+ checkIn.min=localIso(today);
  checkIn.value=localIso(today);checkOut.value=localIso(tomorrow);
- const updateMin=()=>{checkOut.min=checkIn.value||localIso(today);if(checkOut.value&&checkOut.value<=checkIn.value){const next=new Date(checkIn.value+'T12:00:00');next.setDate(next.getDate()+1);checkOut.value=localIso(next)}};
+ const updateMin=()=>{const next=checkIn.value?new Date(checkIn.value+'T12:00:00'):new Date(today);next.setDate(next.getDate()+1);const min=localIso(next);checkOut.min=min;if(!checkOut.value||checkOut.value<min)checkOut.value=min};
+ updateMin();
  const invalidateAvailability=()=>{
   availabilityRequestId++;availabilityRows=[];availabilityState='idle';hasInteracted=false;
   applyRoomFilters();renderAvailability();
